@@ -11,6 +11,7 @@
 #include "common.h"
 #include "console.h"
 #include "gpio.h"
+#include "i8042.h"
 #include "registers.h"
 #include "task.h"
 #include "uart.h"
@@ -24,14 +25,48 @@
 /* Clock divider for I2C controller */
 #define I2C_CCR (CPU_CLOCK/(2 * I2C_FREQ))
 
+#ifdef CONFIG_TASK_I8042CMD
+static uint8_t last_char;
+static int available_char;
+
+int keyboard_has_char(void)
+{
+	return available_char;
+}
+
+void keyboard_put_char(uint8_t chr, int send_irq)
+{
+	last_char = chr;
+	available_char = 1;
+	if (send_irq) {
+		/* TODO: send host interrupt : needs to be implemented */
+	}
+}
+#endif
+
 static uint8_t i2c_read_reg(uint8_t reg)
 {
+#ifdef CONFIG_TASK_I8042CMD
+	if (reg == 0x60) {
+		available_char = 1;
+		return last_char;
+		//task_send_msg(TASK_ID_I8042CMD, TASK_ID_I8042CMD, 0);
+	} else
+#endif
 	/* Dummy implementation : return inverted value  */
 	return reg ^ 0xff;
 }
 
 static void i2c_write_reg(uint8_t reg, uint8_t value)
 {
+#ifdef CONFIG_TASK_I8042CMD
+	if (reg == 0x60) {
+		/* Handle port 60 command */
+		i8042_receives_data(value);
+	} else if (reg == 0x64) {
+		i8042_receives_command(value);
+	} else
+#endif
 	/* Dummy implementation : just display it */
 	uart_printf("reg %02x = %02x\n", reg, value);
 }

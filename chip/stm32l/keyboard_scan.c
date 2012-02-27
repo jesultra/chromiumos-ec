@@ -452,14 +452,3 @@ void matrix_interrupt(enum gpio_signal signal)
 {
 	task_send_msg(TASK_ID_KEYSCAN, TASK_ID_KEYSCAN, 0);
 }
-
-int keyboard_has_char()
-{
-	/* TODO: needs to be implemented */
-	return 0;
-}
-
-void keyboard_put_char(uint8_t chr, int send_irq)
-{
-	/* TODO: needs to be implemented */
-}
