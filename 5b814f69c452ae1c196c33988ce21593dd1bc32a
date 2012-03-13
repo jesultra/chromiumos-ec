@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAHn//XZ4\u003d",
+        "filename": "common/keyboard.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1000187
+      },
+      "writtenOn": "2012-03-13T15:31:25Z",
+      "side": 1,
+      "message": "Quick check: does BDS still compile with this change?",
+      "revId": "5b814f69c452ae1c196c33988ce21593dd1bc32a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
