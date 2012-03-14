@@ -16,6 +16,24 @@
       "revId": "5b814f69c452ae1c196c33988ce21593dd1bc32a",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAHn//WQM\u003d",
+        "filename": "common/keyboard.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1000122
+      },
+      "writtenOn": "2012-03-14T04:24:30Z",
+      "side": 1,
+      "message": "Done. Added #ifdef CONFIG_TASK_X86POWER",
+      "parentUuid": "AAAAHn//XZ4\u003d",
+      "revId": "5b814f69c452ae1c196c33988ce21593dd1bc32a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
