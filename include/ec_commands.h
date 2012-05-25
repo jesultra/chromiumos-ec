@@ -573,6 +573,21 @@ struct ec_response_host_event_mask {
 #define EC_CMD_HOST_EVENT_SET_WAKE_MASK 0x8e
 
 /*****************************************************************************/
+/* GPIO switch commands */
+
+/* Enable/disable LCD backlight */
+#define EC_CMD_SWITCH_ENABLE_BKLIGHT 0x90
+struct ec_params_switch_enable_backlight {
+	uint8_t enabled;
+} __attribute__ ((packed));
+
+/* Enabled/disable WLAN/Bluetooth */
+#define EC_CMD_SWITCH_ENABLE_WIRELESS 0x91
+struct ec_params_switch_enable_wireless {
+	uint8_t enabled;
+} __attribute__ ((packed));
+
+/*****************************************************************************/
 /* Special commands
  *
  * These do not follow the normal rules for commands.  See each command for
