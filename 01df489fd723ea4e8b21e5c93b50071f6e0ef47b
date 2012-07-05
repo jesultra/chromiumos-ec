@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAALn//9Rk\u003d",
+        "filename": "chip/stm32/i2c.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000434
+      },
+      "writtenOn": "2012-07-05T16:30:04Z",
+      "side": 1,
+      "message": "this mutex used to protect the I2C master accesses.\nHere we are doing I2C slave response.\nI\u0027m under the impression that if we end up here while an I2C master access is on-going, something is wrong is the arbitration code (and delaying the answer of the on-going transfer is probably not the right answer)",
+      "revId": "01df489fd723ea4e8b21e5c93b50071f6e0ef47b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
