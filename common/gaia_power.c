@@ -255,6 +255,7 @@ int gaia_power_init(void)
 	gpio_enable_interrupt(GPIO_SOC1V8_XPSHOLD);
 	gpio_enable_interrupt(GPIO_SUSPEND_L);
 
+#if 0 /* Disable automatic AP startup */
 	/* Leave power off only if requested by reset flags */
 	if (!(system_get_reset_flags() & RESET_FLAG_AP_OFF)) {
 		CPRINTF("[%T auto_power_on is set due to reset_flag 0x%x]\n",
@@ -268,6 +269,7 @@ int gaia_power_init(void)
 			"keyboard_scan_recovery_pressed() ...]\n");
 		auto_power_on = 1;
 	}
+#endif
 
 	return EC_SUCCESS;
 }
