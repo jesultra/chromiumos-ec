@@ -16,6 +16,24 @@
       "revId": "8c467ca8a89dc1e86b21d474726ab0478caf9aea",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAXX//wAk\u003d",
+        "filename": "include/pmu_tpschrome.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001139
+      },
+      "writtenOn": "2013-05-01T17:57:33Z",
+      "side": 1,
+      "message": "I\u0027m now keeping this syntax so that it\u0027s easier to be merged with charge_state.h. But I agree that we should write what you suggested after merging them. (we will need to change a few switch statement to avoid compilation error.)",
+      "parentUuid": "AAAAXX//wBU\u003d",
+      "revId": "8c467ca8a89dc1e86b21d474726ab0478caf9aea",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
