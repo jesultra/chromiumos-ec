@@ -137,6 +137,13 @@ int pmu_version(int *version);
 int pmu_is_charger_alarm(void);
 
 /**
+ * Check pmu fast-charge timeout
+ *
+ * @return 1 if fast-charge timed out
+ */
+int pmu_is_fastcharge_timeout(void);
+
+/**
  * Get pmu power source
  *
  * @param ac_good	pointer to output value of ac voltage good
