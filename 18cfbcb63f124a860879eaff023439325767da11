@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAZX//+nw\u003d",
+        "filename": "common/gaia_power.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2013-05-28T15:04:41Z",
+      "side": 1,
+      "message": "you should add a comment about (value !\u003d 1) meaning system already on",
+      "revId": "18cfbcb63f124a860879eaff023439325767da11",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
