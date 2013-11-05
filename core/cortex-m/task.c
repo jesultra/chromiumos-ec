@@ -15,6 +15,8 @@
 #include "uart.h"
 #include "util.h"
 
+#include "registers.h"
+
 typedef union {
 	struct {
 		/*
@@ -60,6 +62,8 @@ static uint32_t irq_dist[CONFIG_IRQ_COUNT];  /* Distribution of IRQ calls */
 extern void __switchto(task_ *from, task_ *to);
 extern int __task_start(int *task_stack_ready);
 
+extern void myprintnum(uint32_t);
+
 #ifndef CONFIG_LOW_POWER_IDLE
 /* Idle task.  Executed when no tasks are ready to be scheduled. */
 void __idle(void)
@@ -76,7 +80,10 @@ void __idle(void)
 		 * Wait for the next irq event.  This stops the CPU clock
 		 * (sleep / deep sleep, depending on chip config).
 		 */
+		uart_write_char('+');
+		/*myprintnum(MEC1322_TMR32_CNT(0));*/
 		asm("wfi");
+		uart_write_char('w');
 	}
 }
 #endif /* !CONFIG_LOW_POWER_IDLE */
@@ -199,6 +206,24 @@ uint32_t *task_get_event_bitmap(task_id_t tskid)
 int task_start_called(void)
 {
 	return start_called;
+}
+
+void myprintnumrec(uint32_t v)
+{
+	int i = v % 10;
+	if (!v)
+		return;
+	myprintnumrec(v / 10);
+	uart_write_char(i + '0');
+}
+
+void myprintnum(uint32_t v)
+{
+	if (!v)
+		uart_write_char('0');
+	myprintnumrec(v);
+	uart_write_char('\n');
+	uart_write_char('\r');
 }
 
 /**

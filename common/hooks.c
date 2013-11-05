@@ -12,6 +12,8 @@
 #include "timer.h"
 #include "util.h"
 
+#include "uart.h"
+
 #ifdef CONFIG_HOOK_DEBUG
 #define CPUTS(outstr) cputs(CC_HOOK, outstr)
 #define CPRINTF(format, args...) cprintf(CC_HOOK, format, ## args)
@@ -167,6 +169,8 @@ int hook_call_deferred(void (*routine)(void), int us)
 
 	return EC_SUCCESS;
 }
+
+extern void myprintnum(uint32_t v);
 
 void hook_task(void)
 {
