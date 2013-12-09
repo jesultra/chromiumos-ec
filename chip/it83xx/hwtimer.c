@@ -5,6 +5,7 @@
 
 /* Hardware timers driver */
 
+#include "cpu.h"
 #include "common.h"
 #include "hooks.h"
 #include "hwtimer.h"
@@ -63,6 +64,12 @@ void __hw_clock_source_set(uint32_t ts)
 
 static void __hw_clock_source_irq(void)
 {
+	/* WORKAROUND: got a sw interrupt */
+	if (get_itype() & 8) {
+		process_timers(0);
+		return;
+	}
+
 	/* clear interrupt status */
 	task_clear_pending_irq(IT83XX_IRQ_TMR_B0);
 
