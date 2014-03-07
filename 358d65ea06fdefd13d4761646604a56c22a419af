@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc586570_a0a6bed1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000122
+      },
+      "writtenOn": "2014-03-07T18:35:57Z",
+      "side": 1,
+      "message": "\"big\" is needed to match the board name when using \"make\" (platform/ec/build/big).\n\"nyan_big\" is needed to match the board when using \"emerge-nyan_big\" (/build/byan_big/firmware/).",
+      "revId": "358d65ea06fdefd13d4761646604a56c22a419af",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
