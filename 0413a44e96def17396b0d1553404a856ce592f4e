@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c5137f9f_c71f8075",
+        "filename": "board/big/battery.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000058
+      },
+      "writtenOn": "2014-04-23T19:30:15Z",
+      "side": 1,
+      "message": "rename this variable?",
+      "revId": "0413a44e96def17396b0d1553404a856ce592f4e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e516c38e_4bfd59d5",
+        "filename": "board/blaze/battery.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000058
+      },
+      "writtenOn": "2014-04-23T19:30:15Z",
+      "side": 1,
+      "message": "I suggest you rename this variable \"cut_off_supported\" or similar. Otherwise, it sounds like you\u0027re remembering whether the battery has already been cut off or not.",
+      "revId": "0413a44e96def17396b0d1553404a856ce592f4e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5137f9f_e7227cbf",
+        "filename": "board/nyan/battery.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000058
+      },
+      "writtenOn": "2014-04-23T19:30:15Z",
+      "side": 1,
+      "message": "rename this variable?",
+      "revId": "0413a44e96def17396b0d1553404a856ce592f4e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
