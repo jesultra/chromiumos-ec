@@ -61,7 +61,13 @@ int pd_choose_voltage(int cnt, uint32_t *src_caps, uint32_t *rdo)
 	ma = 10 * (src_caps[i] & 0x3FF);
 	*rdo = RDO_FIXED(i + 1, ma, ma, 0);
 	ccprintf("Request [%d] %d V %d mA\n", i, set_mv/1000, ma);
-	return EC_SUCCESS;
+	return ma;
+}
+
+void pd_set_input_current_limit(uint32_t max_ma)
+{
+	/* No battery, nothing to do */
+	return;
 }
 
 void pd_set_max_voltage(unsigned mv)

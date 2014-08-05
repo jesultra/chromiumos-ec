@@ -237,6 +237,11 @@ static struct pd_protocol {
 	uint8_t polarity;
 	/* PD state for port */
 	enum pd_states task_state;
+
+#ifdef CONFIG_USB_PD_DUAL_ROLE
+	/* Current limit based on the last request message */
+	uint32_t curr_limit;
+#endif
 } pd[PD_PORT_COUNT];
 
 /*
@@ -571,6 +576,7 @@ static void pd_send_request_msg(int port)
 	/* we were waiting for them, let's process them */
 	res = pd_choose_voltage(pd_src_cap_cnt[port], pd_src_caps[port], &rdo);
 	if (res >= 0) {
+		pd[port].curr_limit = res;
 		res = send_request(port, rdo);
 		if (res >= 0)
 			pd[port].task_state =
@@ -661,8 +667,10 @@ static void handle_ctrl_request(int port, uint16_t head,
 	case PD_CTRL_GOTO_MIN:
 		break;
 	case PD_CTRL_PS_RDY:
-		if (pd[port].role == PD_ROLE_SINK)
+		if (pd[port].role == PD_ROLE_SINK) {
 			pd[port].task_state = PD_STATE_SNK_READY;
+			pd_set_input_current_limit(pd[port].curr_limit);
+		}
 		break;
 	case PD_CTRL_REJECT:
 		pd[port].task_state = PD_STATE_SNK_DISCOVERY;
@@ -1205,6 +1213,8 @@ void pd_task(void)
 			if (pd[port].task_state != PD_STATE_VDM_COMM) {
 				/* Sink: detect disconnect by monitoring VBUS */
 				pd[port].task_state = PD_STATE_SNK_DISCONNECTED;
+				/* Clear the input current limit */
+				pd_set_input_current_limit(0);
 				/* set timeout small to reconnect fast */
 				timeout = 5*MSEC;
 			}
