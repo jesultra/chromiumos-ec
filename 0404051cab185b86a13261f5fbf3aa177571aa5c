@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "56202fde_2b75854d",
+        "filename": "board/winky/battery.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000187
+      },
+      "writtenOn": "2014-08-07T17:27:37Z",
+      "side": 1,
+      "message": "Just use batt-\u003efull_capacity, rather than re-reading the capacity from the battery.  That avoids an extra (and slow) I2C operation.",
+      "revId": "0404051cab185b86a13261f5fbf3aa177571aa5c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
