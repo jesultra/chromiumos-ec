@@ -16,6 +16,24 @@
       "revId": "ac75ed84adc0aa2f54b7bb3f8d39903e1aedd6d7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b6a40b88_f765a896",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1112255
+      },
+      "writtenOn": "2014-08-07T01:13:55Z",
+      "side": 1,
+      "message": "Yes, it is. C means FCC.",
+      "parentUuid": "f63f63e6_b201e6d7",
+      "revId": "ac75ed84adc0aa2f54b7bb3f8d39903e1aedd6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
