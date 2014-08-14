@@ -945,6 +945,12 @@
 #undef CONFIG_USB_MS_BUFFER_SIZE
 
 /*****************************************************************************/
+/* USB closed-case debugging config */
+
+/* Keybinding for closed-case debugging */
+#undef CONFIG_USB_DEBUG_KEY
+
+/*****************************************************************************/
 
 /* Compile chip support for the USB device controller */
 #undef CONFIG_USB

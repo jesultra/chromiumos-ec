@@ -106,6 +106,15 @@ enum usb_strings {
 	USB_STR_COUNT
 };
 
+/* Deferred function used to disable debug */
+void board_disable_debug(void);
+
+/*
+ * Used to set GPIO's and clock to SPI module used for debug
+ * @param enable Whether to enable or disable debug
+ */
+int board_set_debug(int enable);
+
 #endif /* !__ASSEMBLER__ */
 
 /* USB interface indexes (use define rather than enum to expand them) */

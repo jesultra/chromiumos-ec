@@ -2527,6 +2527,9 @@ struct ec_params_usb_pd_control {
 	uint8_t mux;
 } __packed;
 
+/* Toggle closed-case debugging operation */
+#define EC_CMD_DEBUG_MODE 0x102
+
 /*****************************************************************************/
 /*
  * Passthru commands

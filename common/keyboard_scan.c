@@ -9,6 +9,7 @@
 #include "clock.h"
 #include "common.h"
 #include "console.h"
+#include "ec_commands.h"
 #include "hooks.h"
 #include "host_command.h"
 #include "keyboard_config.h"
@@ -306,7 +307,16 @@ static int check_runtime_keys(const uint8_t *state)
 		CPRINTS("KB hibernate");
 		system_hibernate(0, 0);
 		return 1;
+#ifdef CONFIG_USB_DEBUG_KEY
+	/* always send debug-mode keybinding, PD will check WP */
+	} else if (state[KEYBOARD_COL_KEY_D] == KEYBOARD_MASK_KEY_D) {
+			/* D = closed-case debugging */
+			CPRINTF("KB debug");
+			pd_host_command(EC_CMD_DEBUG_MODE, 0, NULL, 0, NULL, 0);
+			return 1;
+#endif
 	}
+
 
 	return 0;
 }

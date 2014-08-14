@@ -11,6 +11,7 @@
 #include "console.h"
 #include "gpio.h"
 #include "hooks.h"
+#include "host_command.h"
 #include "i2c.h"
 #include "pi3usb9281.h"
 #include "power.h"
@@ -28,10 +29,17 @@ static enum power_state ps;
 /* Battery state of charge */
 int batt_soc;
 
+/* Debug state */
+static uint8_t debug_enabled;
+
 void vbus0_evt(enum gpio_signal signal)
 {
 	ccprintf("VBUS %d, %d!\n", signal, gpio_get_level(signal));
 	task_wake(TASK_ID_PD_C0);
+
+	/* debug enabled and USB disconnected */
+	if (debug_enabled && !gpio_get_level(signal))
+		hook_call_deferred(board_disable_debug, 0);
 }
 
 void vbus1_evt(enum gpio_signal signal)
@@ -286,6 +294,9 @@ int board_set_debug(int enable)
 	if (system_is_locked())
 		return EC_ERROR_ACCESS_DENIED;
 
+	if (enable == debug_enabled)
+		return EC_SUCCESS;
+
 #ifdef CONFIG_USB_INHIBIT
 	if (enable)
 		usb_init();
@@ -299,10 +310,20 @@ int board_set_debug(int enable)
 
 	rv = set_usb_debug(enable);
 
+	if (rv == EC_SUCCESS)
+		debug_enabled = enable;
+
 	return rv;
 }
 
-void board_entering_rw(void)
+/* Used to avoid having interrupt routine try to disable debug */
+void board_disable_debug(void)
+{
+	board_set_debug(0);
+}
+DECLARE_DEFERRED(board_disable_debug);
+
+static void board_entering_rw(void)
 {
 	/* Set latch to disable debugging */
 	gpio_set_level(GPIO_PD_DISABLE_DEBUG, 1);
@@ -432,3 +453,14 @@ enum battery_present battery_is_present(void)
 		return BP_YES;
 	return BP_NOT_SURE;
 }
+
+static int ec_debug_host_cmd(struct host_cmd_handler_args *args)
+{
+	int rv = board_set_debug(!debug_enabled);
+
+	if (rv == EC_SUCCESS)
+		return EC_RES_SUCCESS;
+
+	return EC_RES_ERROR;
+}
+DECLARE_HOST_COMMAND(EC_CMD_DEBUG_MODE, ec_debug_host_cmd, EC_VER_MASK(0));
