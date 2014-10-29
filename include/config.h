@@ -1085,6 +1085,9 @@
 /* USB Binary device Object Store support */
 #undef CONFIG_USB_BOS
 
+/* USB Device version of product */
+#undef CONFIG_USB_BCD_DEV
+
 /*****************************************************************************/
 /* USB interfaces config */
 
