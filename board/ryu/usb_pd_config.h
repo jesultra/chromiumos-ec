@@ -219,7 +219,7 @@ static inline int pd_snk_is_vbus_provided(int port)
 #define PD_OPERATING_POWER_MW 10000
 #define PD_MAX_POWER_MW       24000
 #define PD_MAX_CURRENT_MA     3000
-#define PD_MAX_VOLTAGE_MV     20000
+#define PD_MAX_VOLTAGE_MV     12000
 
 /* The lower the input voltage, the higher the power efficiency. */
 #define PD_PREFER_LOW_VOLTAGE
