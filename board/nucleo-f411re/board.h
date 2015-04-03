@@ -28,7 +28,6 @@
 
 #undef CONFIG_ADC
 #define CONFIG_DMA_HELP
-#undef CONFIG_FLASH
 #define CONFIG_I2C
 
 #define CONFIG_UART_TX_DMA
@@ -43,6 +42,8 @@
 #define CONFIG_ACCELGYRO_BMI160
 #define CONFIG_CMD_ACCELS
 #define CONFIG_CMD_ACCEL_INFO
+
+#define CONFIG_CMD_FLASH
 
 /* I2C ports configuration */
 #define CONFIG_I2C_DEBUG

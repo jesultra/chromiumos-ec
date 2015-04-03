@@ -85,6 +85,35 @@ static void lock(void)
 	STM32_FLASH_CR |= STM32_FLASH_CR_LOCK;
 }
 
+#ifdef CHIP_FAMILY_STM32F4
+static int write_optb(uint32_t mask, uint32_t value)
+{
+	int rv;
+
+	rv = wait_busy();
+	if (rv)
+		return rv;
+
+	/* The target byte is the value we want to write. */
+	if ((STM32_FLASH_OPTCR & mask) == value)
+		return EC_SUCCESS;
+
+	rv = unlock(OPT_LOCK);
+	if (rv)
+		return rv;
+
+	STM32_FLASH_OPTCR = (STM32_FLASH_OPTCR & ~mask) | value;
+	STM32_FLASH_OPTCR |= STM32_FLASH_OPTSTRT;
+
+	rv = wait_busy();
+	if (rv)
+		return rv;
+	lock();
+
+	return EC_SUCCESS;
+}
+#else
+static int write_optb(int byte, uint8_t value);
 /*
  * Option byte organization
  *
@@ -202,6 +231,7 @@ static int write_optb(int byte, uint8_t value)
 
 	return EC_SUCCESS;
 }
+#endif
 
 /*****************************************************************************/
 /* Physical layer APIs */
@@ -288,6 +318,12 @@ int flash_physical_erase(int offset, int size)
 	int res = EC_SUCCESS;
 	int sector_size;
 	int timeout_us;
+#ifdef CHIP_FAMILY_STM32F4
+	int sector = flash_bank_offset(offset);
+	/* we take advantage of sector_size == erase_size */
+	if ((sector < 0) || (flash_bank_offset(offset + size) < 0))
+		return EC_ERROR_INVAL;  /* Invalid range */
+#endif
 
 	if (unlock(NO_EXTRA_LOCK) != EC_SUCCESS)
 		return EC_ERROR_UNKNOWN;
@@ -300,22 +336,29 @@ int flash_physical_erase(int offset, int size)
 
 	while (size > 0) {
 		timestamp_t deadline;
+#ifdef CHIP_FAMILY_STM32F4
+		sector_size = flash_bank_size(sector);
+		/* Timeout: from spec, proportional to the size
+		 * inversely proportional to the write size.
+		 */
+		timeout_us = sector_size * 4 / CONFIG_FLASH_WRITE_SIZE;
+#else
 		sector_size = CONFIG_FLASH_ERASE_SIZE;
 		timeout_us = FLASH_TIMEOUT_US;
+#endif
 		/* Do nothing if already erased */
 		if (flash_is_erased(offset, sector_size))
 			goto next_sector;
+#ifdef CHIP_FAMILY_STM32F4
+		/* select page to erase */
+		STM32_FLASH_CR = (STM32_FLASH_CR & ~STM32_FLASH_CR_SNB_MASK) |
+			(sector << STM32_FLASH_CR_SNB_OFFSET);
+#else
 		/* select page to erase */
 		STM32_FLASH_AR = CONFIG_FLASH_BASE + offset;
-
+#endif
 		/* set STRT bit : start erase */
 		STM32_FLASH_CR |= STM32_FLASH_CR_STRT;
-
-		/*
-		 * Reload the watchdog timer to avoid watchdog reset during a
-		 * long erase operation.
-		 */
-		watchdog_reload();
 
 		deadline.val = get_time().val + timeout_us;
 		/* Wait for erase to complete */
@@ -340,6 +383,9 @@ int flash_physical_erase(int offset, int size)
 next_sector:
 		size -= sector_size;
 		offset += sector_size;
+#ifdef CHIP_FAMILY_STM32F4
+		sector++;
+#endif
 	}
 
 exit_er:
@@ -351,6 +397,69 @@ exit_er:
 	return res;
 }
 
+#ifdef CHIP_FAMILY_STM32F4
+static int flash_physical_get_protect_at_boot(int block)
+{
+	/* 0: Write protection active on sector i. */
+	return !(STM32_OPTB_WP & STM32_OPTB_nWRP(block));
+}
+
+int flash_physical_protect_at_boot(enum flash_wp_range range)
+{
+	int block;
+	int original_val, val;
+	enum flash_wp_range cur_range;
+
+	original_val = val = STM32_OPTB_WP & STM32_OPTB_nWRP_ALL;
+
+	for (block = RO_BANK_OFFSET;
+	     block < RO_BANK_OFFSET + PHYSICAL_BANKS;
+	     block++) {
+		if (block >= RO_BANK_OFFSET + RO_BANK_COUNT)
+			cur_range = FLASH_WP_ALL;
+		else
+			cur_range = FLASH_WP_RO;
+
+		if (cur_range <= range)
+			val &= ~(1 << block);
+		else
+			val |= 1 << block;
+	}
+	if (original_val != val) {
+		write_optb(STM32_FLASH_nWRP_ALL,
+			   val << STM32_FLASH_nWRP_OFFSET);
+	}
+
+
+#ifdef CONFIG_WP_ALWAYS
+	/*
+	 * Set a permanent protection by increasing RDP to level 1,
+	 * trying to unprotected the flash will trigger a full erase.
+	 */
+	STM32_OPTB_RDP_USER = STM32_OPTB_RDP_USER &
+		~(0xFF << (STM32_OPTB_RDP_OFF*8) | 0x1100;
+#endif
+
+	return EC_SUCCESS;
+}
+
+static void unprotect_all_blocks(void)
+{
+	write_optb(STM32_FLASH_nWRP_ALL, STM32_FLASH_nWRP_ALL);
+}
+
+int flash_physical_protect_now(int all)
+{
+	if (all) {
+		write_optb(STM32_FLASH_nWRP_ALL, 0);
+		return EC_SUCCESS;
+	} else {
+		/* No way to protect just the RO flash until next boot */
+		return EC_ERROR_INVAL;
+	}
+}
+
+#else   /* CHIP_FAMILY_STM32F4 */
 static int flash_physical_get_protect_at_boot(int block)
 {
 	uint8_t val = read_optb(STM32_OPTB_WRP_OFF(block/8));
@@ -398,6 +507,14 @@ int flash_physical_protect_at_boot(enum flash_wp_range range)
 	return EC_SUCCESS;
 }
 
+static void unprotect_all_blocks(void)
+{
+	int i;
+	for (i = 4; i < 8; ++i)
+		write_optb(i * 2, 0xff);
+}
+#endif
+
 /**
  * Check if write protect register state is inconsistent with RO_AT_BOOT and
  * ALL_AT_BOOT state.
@@ -421,13 +538,6 @@ static int registers_need_reset(void)
 	return 0;
 }
 
-static void unprotect_all_blocks(void)
-{
-	int i;
-	for (i = 4; i < 8; ++i)
-		write_optb(i * 2, 0xff);
-}
-
 /*****************************************************************************/
 /* High-level APIs */
 
@@ -437,6 +547,15 @@ int flash_pre_init(void)
 	uint32_t prot_flags = flash_get_protect();
 	int need_reset = 0;
 
+
+#ifdef CHIP_FAMILY_STM32F4
+	unlock(NO_EXTRA_LOCK);
+	/* Set the proper write size */
+	STM32_FLASH_CR = (STM32_FLASH_CR & ~STM32_FLASH_CR_PSIZE_MASK) |
+		 (31 - __builtin_clz(CONFIG_FLASH_WRITE_SIZE)) <<
+		 STM32_FLASH_CR_PSIZE_OFFSET;
+	lock();
+#endif
 	if (flash_physical_restore_state())
 		return EC_SUCCESS;
 

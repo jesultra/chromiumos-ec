@@ -31,6 +31,7 @@ endif
 # Select between 16-bit and 32-bit timer for clock source
 TIMER_TYPE=$(if $(CONFIG_STM_HWTIMER32),32,)
 DMA_TYPE=$(if $(CHIP_FAMILY_STM32F4),-stm32f4,)
+FLASH_COMMON=$(if $(CHIP_FAMILY_STM32L),,flash-f.o)
 
 chip-$(CONFIG_DMA)+=dma$(DMA_TYPE).o
 chip-$(CONFIG_COMMON_RUNTIME)+=system.o
@@ -46,13 +47,9 @@ chip-$(CONFIG_WATCHDOG)+=watchdog.o
 chip-$(HAS_TASK_CONSOLE)+=uart.o
 chip-$(HAS_TASK_KEYSCAN)+=keyboard_raw.o
 chip-$(HAS_TASK_POWERLED)+=power_led.o
-chip-$(CONFIG_FLASH)+=flash-$(CHIP_FAMILY).o
-ifdef CONFIG_FLASH
-chip-$(CHIP_FAMILY_STM32F)+=flash-f.o
-chip-$(CHIP_FAMILY_STM32F0)+=flash-f.o
-chip-$(CHIP_FAMILY_STM32F3)+=flash-f.o
-endif
+chip-$(CONFIG_FLASH)+=flash-$(CHIP_FAMILY).o $(FLASH_COMMON)
 chip-$(CONFIG_ADC)+=adc-$(CHIP_FAMILY).o
+chip-$(CONFIG_OTP)+=otp-$(CHIP_FAMILY).o
 chip-$(CONFIG_PWM)+=pwm.o
 chip-$(CONFIG_USB)+=usb.o usb-$(CHIP_FAMILY).o usb_endpoints.o
 chip-$(CONFIG_USB_CONSOLE)+=usb_console.o

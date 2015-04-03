@@ -1068,18 +1068,72 @@ defined(CHIP_FAMILY_STM32F3)
 #define STM32_FLASH_REGS_BASE       0x40023C00
 
 #define STM32_FLASH_ACR             REG32(STM32_FLASH_REGS_BASE + 0x00)
-#define STM32_FLASH_ACR_SHIFT       0
-#define STM32_FLASH_ACR_LAT_MASK    0xf
-#define STM32_FLASH_ACR_PRFTEN      (1 << 8)
-#define STM32_FLASH_ACR_ICEN        (1 << 9)
-#define STM32_FLASH_ACR_DCEN        (1 << 10)
-#define STM32_FLASH_ACR_ICRST       (1 << 11)
-#define STM32_FLASH_ACR_DCRST       (1 << 12)
+#define STM32_FLASH_ACR_SHIFT           0
+#define STM32_FLASH_ACR_LAT_MASK        0xf
+#define STM32_FLASH_ACR_PRFTEN          (1 << 8)
+#define STM32_FLASH_ACR_ICEN            (1 << 9)
+#define STM32_FLASH_ACR_DCEN            (1 << 10)
+#define STM32_FLASH_ACR_ICRST           (1 << 11)
+#define STM32_FLASH_ACR_DCRST           (1 << 12)
 #define STM32_FLASH_KEYR            REG32(STM32_FLASH_REGS_BASE + 0x04)
+#define STM32_FLASH_KEY1                0x45670123
+#define STM32_FLASH_KEY2                0xCDEF89AB
 #define STM32_FLASH_OPTKEYR         REG32(STM32_FLASH_REGS_BASE + 0x08)
+#define STM32_FLASH_OPTKEY1             0x08192A3B
+#define STM32_FLASH_OPTKEY2             0x4C5D6E7F
 #define STM32_FLASH_SR              REG32(STM32_FLASH_REGS_BASE + 0x0c)
+#define STM32_FLASH_SR_EOP              (1 << 0)
+#define STM32_FLASH_SR_OPERR            (1 << 1)
+#define STM32_FLASH_SR_WRPERR           (1 << 4)
+#define STM32_FLASH_SR_PGAERR           (1 << 5)
+#define STM32_FLASH_SR_PGPERR           (1 << 6)
+#define STM32_FLASH_SR_PGSERR           (1 << 7)
+#define STM32_FLASH_SR_RDERR            (1 << 8)
+#define STM32_FLASH_SR_ALL_ERR \
+	(STM32_FLASH_SR_OPERR | STM32_FLASH_SR_WRPERR | \
+	 STM32_FLASH_SR_PGAERR | STM32_FLASH_SR_PGPERR | \
+	 STM32_FLASH_SR_PGSERR | STM32_FLASH_SR_RDERR)
+#define STM32_FLASH_SR_BSY              (1 << 16)
 #define STM32_FLASH_CR              REG32(STM32_FLASH_REGS_BASE + 0x10)
+#define STM32_FLASH_CR_PG               (1 << 0)
+#define STM32_FLASH_CR_PER              (1 << 1)
+#define STM32_FLASH_CR_MER              (1 << 2)
+#define STM32_FLASH_CR_SNB_OFFSET       (3)
+#define STM32_FLASH_CR_SNB_MASK         (0xF << STM32_FLASH_CR_SNB_OFFSET)
+#define STM32_FLASH_CR_PSIZE_OFFSET     (8)
+#define STM32_FLASH_CR_PSIZE_MASK       (3 << STM32_FLASH_CR_PSIZE_OFFSET)
+#define STM32_FLASH_CR_STRT             (1 << 16)
+#define STM32_FLASH_CR_LOCK             (1 << 31)
 #define STM32_FLASH_OPTCR           REG32(STM32_FLASH_REGS_BASE + 0x14)
+#define STM32_FLASH_OPTLOCK             (1 << 0)
+#define STM32_FLASH_OPTSTRT             (1 << 1)
+#define STM32_FLASH_BOR_LEV_OFFSET      (2)
+#define STM32_FLASH_RDP_MASK            (0xFF << 8)
+#define STM32_FLASH_nWRP_OFFSET         (16)
+#define STM32_FLASH_nWRP(_bank)         (1 << (_bank + STM32_FLASH_nWRP_OFFSET))
+#define STM32_FLASH_nWRP_ALL            (0xFF << STM32_FLASH_nWRP_OFFSET)
+#define STM32_FLASH_OPT_LOCKED      (STM32_FLASH_OPTCR & STM32_FLASH_OPTLOCK)
+
+#define STM32_OPTB_REGS_BASE        0x1FFFC000
+#define STM32_OPTB_RDP_USER         REG32(STM32_OPTB_REGS_BASE + 0x00)
+#define STM32_OPTB_RDP_OFF              0x01
+#define STM32_OPTB_USER_OFF             0x00
+#define STM32_OPTB_WP               REG32(STM32_OPTB_REGS_BASE + 0x08)
+#define STM32_OPTB_nWRP(_bank)          (1 << (_bank))
+#define STM32_OPTB_nWRP_ALL             (0xFF)
+
+#define STM32_OTP_BASE              0x1FFF7800
+#define STM32_OTP_BLOCK_NB              16
+#define STM32_OTP_BLOCK_SIZE            32
+#define STM32_OTP_BLOCK_DATA(_block, _offset) \
+	(STM32_OTP_BASE + STM32_OTP_BLOCK_SIZE * (_block) + (_offset) * 4)
+#define STM32_OTP_UNLOCK_BYTE           0x00
+#define STM32_OTP_LOCK_BYTE             0xFF
+#define STM32_OTP_LOCK_BASE         \
+	(STM32_OTP_BASE + STM32_OTP_BLOCK_NB * STM32_OTP_BLOCK_SIZE)
+#define STM32_OTP_LOCK(_block) \
+	(STM32_OTP_LOCK_BASE + ((_block) / 4) * 4)
+#define STM32_OPT_LOCK_MASK(_block)    ((0xFF << ((_block) % 4) * 8))
 
 #else
 #error Unsupported chip variant
