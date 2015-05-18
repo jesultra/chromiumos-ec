@@ -2366,6 +2366,7 @@ void tcpc_alert(void)
 		}
 	}
 }
+DECLARE_DEFERRED(tcpc_alert);
 
 #ifdef CONFIG_USB_PD_DUAL_ROLE
 static void dual_role_on(void)

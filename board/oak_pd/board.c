@@ -15,6 +15,7 @@
 #include "registers.h"
 #include "system.h"
 #include "task.h"
+#include "usb_pd.h"
 #include "util.h"
 
 #define CPRINTS(format, args...) cprints(CC_USBCHARGE, format, ## args)
@@ -69,6 +70,7 @@ static void board_init(void)
 	gpio_enable_interrupt(GPIO_USB_C1_VBUS_WAKE_L);
 
 	/* OAK_PD: TODO: Power management of ARM based system */
+	disable_sleep(SLEEP_MASK_AP_RUN);
 }
 DECLARE_HOOK(HOOK_INIT, board_init, HOOK_PRIO_DEFAULT);
 
