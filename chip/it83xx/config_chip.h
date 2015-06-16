@@ -98,5 +98,6 @@
 #define CONFIG_ADC
 #define CONFIG_EC2I
 #define CONFIG_LPC
+#define CONFIG_SPI
 
 #endif  /* __CROS_EC_CONFIG_CHIP_H */

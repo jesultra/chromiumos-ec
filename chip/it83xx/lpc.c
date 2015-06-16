@@ -115,6 +115,16 @@ uint32_t lpc_get_host_event_mask(enum lpc_host_event_type type)
 	return 0;
 }
 
+void lpc_set_acpi_status_mask(uint8_t mask)
+{
+	/* --- (not implemented yet) --- */
+}
+
+void lpc_clear_acpi_status_mask(uint8_t mask)
+{
+	/* --- (not implemented yet) --- */
+}
+
 int lpc_get_pltrst_asserted(void)
 {
 	return !gpio_get_level(GPIO_PCH_PLTRST_L);
