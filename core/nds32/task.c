@@ -146,6 +146,7 @@ int need_resched;
 static uint32_t tasks_ready = (1 << TASK_ID_HOOKS);
 
 static int start_called;  /* Has task swapping started */
+static uint32_t int_mask;
 
 static inline task_ *__task_id_to_ptr(task_id_t id)
 {
@@ -154,15 +155,17 @@ static inline task_ *__task_id_to_ptr(task_id_t id)
 
 void interrupt_disable(void)
 {
-	/* clear GIE (Global Interrupt Enable) bit */
-	asm volatile ("setgie.d");
+	/* Mask all interrupts, only keep division by zero exception */
+	uint32_t val = (1 << 30);
+	asm volatile ("mtsr %0, $INT_MASK" : : "r"(val));
 	asm volatile ("dsb");
 }
 
 void interrupt_enable(void)
 {
-	/* set GIE (Global Interrupt Enable) bit */
-	asm volatile ("setgie.e");
+	/* Restore all interrupts */
+	uint32_t val = int_mask;
+	asm volatile ("mtsr %0, $INT_MASK" : : "r"(val));
 }
 
 inline int in_interrupt_context(void)
@@ -300,6 +303,8 @@ static uint32_t get_int_mask(void)
 
 static void set_int_mask(uint32_t val)
 {
+	/* save interrupt mask */
+	int_mask = val;
 	asm volatile ("mtsr %0, $INT_MASK" : : "r"(val));
 }
 
@@ -365,6 +370,7 @@ static void ivic_init_irqs(void)
 	 * they're not.
 	 */
 	interrupt_enable();
+	asm volatile ("setgie.e");
 
 	/* Set priorities */
 	for (i = 0; i < exc_calls; i++) {
@@ -382,24 +388,24 @@ void mutex_lock(struct mutex *mtx)
 	ASSERT(id != TASK_ID_INVALID);
 
 	/* critical section with interrupts off */
-	asm volatile ("setgie.d ; dsb");
+	interrupt_disable();
 	mtx->waiters |= id;
 	while (1) {
 		if (!mtx->lock) { /* we got it ! */
 			mtx->lock = 2;
 			mtx->waiters &= ~id;
 			/* end of critical section : re-enable interrupts */
-			asm volatile ("setgie.e");
+			interrupt_enable();
 			return;
 		} else { /* Contention on the mutex */
 			/* end of critical section : re-enable interrupts */
-			asm volatile ("setgie.e");
+			interrupt_enable();
 			/* Sleep waiting for our turn */
 			/* TODO(crbug.com/435612, crbug.com/435611)
 			 * This discards any pending events! */
 			task_wait_event(0);
 			/* re-enter critical section */
-			asm volatile ("setgie.d ; dsb");
+			interrupt_disable();
 		}
 	}
 }
