@@ -146,7 +146,13 @@
 #define IT83XX_IRQ_EXT_TIMER7     159
 #define IT83XX_IRQ_PECI           160
 #define IT83XX_IRQ_SOFTWARE       161
-#define IT83XX_IRQ_COUNT          162
+#define IT83XX_IRQ_WKO162         162
+#define IT83XX_IRQ_WKO163         163
+#define IT83XX_IRQ_WKO164         164
+#define IT83XX_IRQ_USBPD0         165
+#define IT83XX_IRQ_USBPD1         166
+#define IT83XX_IRQ_WKO167         167
+#define IT83XX_IRQ_COUNT          168
 
 /* IRQ dispatching to CPU INT vectors */
 #define IT83XX_CPU_INT_IRQ_1       2
@@ -291,6 +297,12 @@
 #define IT83XX_CPU_INT_IRQ_159     3
 #define IT83XX_CPU_INT_IRQ_160    12
 #define IT83XX_CPU_INT_IRQ_161    12
+#define IT83XX_CPU_INT_IRQ_162    12
+#define IT83XX_CPU_INT_IRQ_163    12
+#define IT83XX_CPU_INT_IRQ_164    12
+#define IT83XX_CPU_INT_IRQ_165    12
+#define IT83XX_CPU_INT_IRQ_166    12
+#define IT83XX_CPU_INT_IRQ_167    12
 
 /* "Fake" IRQ to declare in readable fashion all WKO IRQ routed to INT#2 */
 #define CPU_INT_2_ALL_GPIOS      255
@@ -474,10 +486,16 @@
 #define IT83XX_GPIO_BASE  0x00F01600
 
 #define IT83XX_GPIO_GCR         REG8(IT83XX_GPIO_BASE+0x00)
-
+#define IT83XX_GPIO_GPDRA       REG8(IT83XX_GPIO_BASE+0x01)
 #define IT83XX_GPIO_GPDRB       REG8(IT83XX_GPIO_BASE+0x02)
 #define IT83XX_GPIO_GPDRC       REG8(IT83XX_GPIO_BASE+0x03)
+#define IT83XX_GPIO_GPDRD       REG8(IT83XX_GPIO_BASE+0x04)
+#define IT83XX_GPIO_GPDRE       REG8(IT83XX_GPIO_BASE+0x05)
 #define IT83XX_GPIO_GPDRF       REG8(IT83XX_GPIO_BASE+0x06)
+#define IT83XX_GPIO_GPDRG       REG8(IT83XX_GPIO_BASE+0x07)
+#define IT83XX_GPIO_GPDRH       REG8(IT83XX_GPIO_BASE+0x08)
+#define IT83XX_GPIO_GPDRI       REG8(IT83XX_GPIO_BASE+0x09)
+#define IT83XX_GPIO_GPDRJ       REG8(IT83XX_GPIO_BASE+0x0A)
 
 #define IT83XX_GPIO_GPCRA0      REG8(IT83XX_GPIO_BASE+0x10)
 #define IT83XX_GPIO_GPCRA1      REG8(IT83XX_GPIO_BASE+0x11)
@@ -506,14 +524,23 @@
 #define IT83XX_GPIO_GPCRC6      REG8(IT83XX_GPIO_BASE+0x26)
 #define IT83XX_GPIO_GPCRC7      REG8(IT83XX_GPIO_BASE+0x27)
 
-#define IT83XX_GPIO_GPCRF0      REG8(IT83XX_GPIO_BASE+0x38)
-#define IT83XX_GPIO_GPCRF1      REG8(IT83XX_GPIO_BASE+0x39)
-#define IT83XX_GPIO_GPCRF2      REG8(IT83XX_GPIO_BASE+0x3A)
-#define IT83XX_GPIO_GPCRF3      REG8(IT83XX_GPIO_BASE+0x3B)
-#define IT83XX_GPIO_GPCRF4      REG8(IT83XX_GPIO_BASE+0x3C)
-#define IT83XX_GPIO_GPCRF5      REG8(IT83XX_GPIO_BASE+0x3D)
-#define IT83XX_GPIO_GPCRF6      REG8(IT83XX_GPIO_BASE+0x3E)
-#define IT83XX_GPIO_GPCRF7      REG8(IT83XX_GPIO_BASE+0x3F)
+#define IT83XX_GPIO_GPCRD0      REG8(IT83XX_GPIO_BASE+0x28)
+#define IT83XX_GPIO_GPCRD1      REG8(IT83XX_GPIO_BASE+0x29)
+#define IT83XX_GPIO_GPCRD2      REG8(IT83XX_GPIO_BASE+0x2A)
+#define IT83XX_GPIO_GPCRD3      REG8(IT83XX_GPIO_BASE+0x2B)
+#define IT83XX_GPIO_GPCRD4      REG8(IT83XX_GPIO_BASE+0x2C)
+#define IT83XX_GPIO_GPCRD5      REG8(IT83XX_GPIO_BASE+0x2D)
+#define IT83XX_GPIO_GPCRD6      REG8(IT83XX_GPIO_BASE+0x2E)
+#define IT83XX_GPIO_GPCRD7      REG8(IT83XX_GPIO_BASE+0x2F)
+
+#define IT83XX_GPIO_GPCRE0      REG8(IT83XX_GPIO_BASE+0x30)
+#define IT83XX_GPIO_GPCRE1      REG8(IT83XX_GPIO_BASE+0x31)
+#define IT83XX_GPIO_GPCRE2      REG8(IT83XX_GPIO_BASE+0x32)
+#define IT83XX_GPIO_GPCRE3      REG8(IT83XX_GPIO_BASE+0x33)
+#define IT83XX_GPIO_GPCRE4      REG8(IT83XX_GPIO_BASE+0x34)
+#define IT83XX_GPIO_GPCRE5      REG8(IT83XX_GPIO_BASE+0x35)
+#define IT83XX_GPIO_GPCRE6      REG8(IT83XX_GPIO_BASE+0x36)
+#define IT83XX_GPIO_GPCRE7      REG8(IT83XX_GPIO_BASE+0x37)
 
 #define IT83XX_GPIO_GPCRF0      REG8(IT83XX_GPIO_BASE+0x38)
 #define IT83XX_GPIO_GPCRF1      REG8(IT83XX_GPIO_BASE+0x39)
@@ -523,6 +550,24 @@
 #define IT83XX_GPIO_GPCRF5      REG8(IT83XX_GPIO_BASE+0x3D)
 #define IT83XX_GPIO_GPCRF6      REG8(IT83XX_GPIO_BASE+0x3E)
 #define IT83XX_GPIO_GPCRF7      REG8(IT83XX_GPIO_BASE+0x3F)
+
+#define IT83XX_GPIO_GPCRG0      REG8(IT83XX_GPIO_BASE+0x40)
+#define IT83XX_GPIO_GPCRG1      REG8(IT83XX_GPIO_BASE+0x41)
+#define IT83XX_GPIO_GPCRG2      REG8(IT83XX_GPIO_BASE+0x42)
+#define IT83XX_GPIO_GPCRG3      REG8(IT83XX_GPIO_BASE+0x43)
+#define IT83XX_GPIO_GPCRG4      REG8(IT83XX_GPIO_BASE+0x44)
+#define IT83XX_GPIO_GPCRG5      REG8(IT83XX_GPIO_BASE+0x45)
+#define IT83XX_GPIO_GPCRG6      REG8(IT83XX_GPIO_BASE+0x46)
+#define IT83XX_GPIO_GPCRG7      REG8(IT83XX_GPIO_BASE+0x47)
+
+#define IT83XX_GPIO_GPCRH0      REG8(IT83XX_GPIO_BASE+0x48)
+#define IT83XX_GPIO_GPCRH1      REG8(IT83XX_GPIO_BASE+0x49)
+#define IT83XX_GPIO_GPCRH2      REG8(IT83XX_GPIO_BASE+0x4A)
+#define IT83XX_GPIO_GPCRH3      REG8(IT83XX_GPIO_BASE+0x4B)
+#define IT83XX_GPIO_GPCRH4      REG8(IT83XX_GPIO_BASE+0x4C)
+#define IT83XX_GPIO_GPCRH5      REG8(IT83XX_GPIO_BASE+0x4D)
+#define IT83XX_GPIO_GPCRH6      REG8(IT83XX_GPIO_BASE+0x4E)
+#define IT83XX_GPIO_GPCRH7      REG8(IT83XX_GPIO_BASE+0x4F)
 
 #define IT83XX_GPIO_GPCRI0      REG8(IT83XX_GPIO_BASE+0x50)
 #define IT83XX_GPIO_GPCRI1      REG8(IT83XX_GPIO_BASE+0x51)
@@ -607,6 +652,7 @@ enum ec_pll_ctrl {
 #define IT83XX_ECPM_SCDCR1	REG8(IT83XX_ECPM_BASE+0x0d)
 #define IT83XX_ECPM_SCDCR2	REG8(IT83XX_ECPM_BASE+0x0e)
 #define IT83XX_ECPM_SCDCR3	REG8(IT83XX_ECPM_BASE+0x0f)
+#define IT83XX_ECPM_SCDCR4	REG8(IT83XX_ECPM_BASE+0x10)
 
 /*
  * The clock gate offsets combine the register offset from ECPM_BASE and the
@@ -973,6 +1019,173 @@ REG8(IT83XX_PMC_BASE + (ch > LPC_PM2 ? 5 : 8) + (ch << 4))
 #define IT83XX_SMB_PECERC(ch)   REG8(IT83XX_SMB_BASE+0x47+(ch << 6))
 #define IT83XX_SMB_SMBPCTL(ch)  REG8(IT83XX_SMB_BASE+0x4A+(ch << 6))
 #define IT83XX_SMB_HOCTL2(ch)   REG8(IT83XX_SMB_BASE+0x50+(ch << 6))
+
+#ifdef CONFIG_USB_PD_8320
+#define EC_Register_Base_Address    0x00F00000
+#define USBPD_BASE(Port) (EC_Register_Base_Address + 0x3700 + (Port)*0x100)
+#define USBPD_GCR(Port)         REG8(USBPD_BASE(Port) + 0x0)
+#define USBPD_SW_RESET_BIT        BIT7
+#define USBPD_TYPE_C_DETECT_RESET BIT6
+#define USBPD_BMC_PHY             BIT4
+#define USBPD_AUTO_SEND_SW_RESET  BIT3
+#define USBPD_AUTO_SEND_HW_RESET  BIT2
+#define USBPD_SNIFFER_MODE        BIT1
+#define USBPD_GLOBAL_ENABLE       BIT0
+#define PDMSR(Port)             REG8(USBPD_BASE(Port) + 0x01)
+#define SOPPP_ENABLE              BIT7
+#define SOPP_ENABLE               BIT6
+#define SOP_ENABLE                BIT5
+#define PDCSR(Port)             REG8(USBPD_BASE(Port) + 0x02)
+#define VCONN_ENABLE              BIT2
+#define ACTIVE_MODE_ENABLE        BIT1
+#define VBUS_STAT_5V_ENABLE       BIT0
+#define PEPDRSR(Port)           REG8(USBPD_BASE(Port) + 0x03)
+#define USBPD_CC_BUSY             BIT4
+#define USBPD_ROLE_DATA           BIT1
+#define USBPD_ROLE_POWER          BIT0
+#define CCGCR(Port)             REG8(USBPD_BASE(Port) + 0x04)
+#define USBPD_DISABLE_CC          BIT4
+#define CCCSR(Port)             REG8(USBPD_BASE(Port) + 0x05)
+#define CCPSR(Port)             REG8(USBPD_BASE(Port) + 0x06)
+#define USBPD_DISCONNECT_POWER_CC2    BIT5
+#define USBPD_DISCONNECT_POWER_CC1    BIT1
+
+#define DFPVDR(Port)            REG8(USBPD_BASE(Port) + 0x08)
+#define UFPVDR(Port)            REG8(USBPD_BASE(Port) + 0x09)
+#define CCADCR(Port)            REG8(USBPD_BASE(Port) + 0x0C)
+#define AUTO_CC_VBUS_REMOVE_NOTIFY    BIT7
+#define AUTO_CC_DISABLE_DURING_DETACH BIT2
+#define AUTO_CC_DETACH_DETECT_ENABLE  BIT1
+#define AUTO_CC_ATTACH_DETECT_ENABLE  BIT0
+#define CCADIR(Port)            REG8(USBPD_BASE(Port) + 0x0D)
+#define AUTO_CC_DETECT_SOURCE_CUR_CHANGE_ISR    BIT2
+#define AUTO_CC_DETECT_TYPE_C_DETACH_ISR        BIT1
+#define AUTO_CC_DETECT_TYPE_C_ATTACH_ISR        BIT0
+#define CCADRR(Port)            REG8(USBPD_BASE(Port) + 0x0E)
+#define USBPD_VCONN_DETECT_NEED_ENABLE          BIT7
+#define USBPD_AUTO_DETECT_CC                    BIT6
+#define USBPD_AUTO_DETECT_DEBUG_ATTACH          BIT3
+#define USBPD_AUTO_DETECT_AUDIO_ATTACH          BIT2
+#define USBPD_AUTO_DETECT_DFP_ATTACH            BIT1
+#define USBPD_AUTO_DETECT_UFP_ATTACH            BIT0
+#define CCADIMR(Port)           REG8(USBPD_BASE(Port) + 0x0F)
+#define TSR0_OFFSET(Port)       (USBPD_BASE(Port) + 0x10)
+#define TSR0(Port)              REG8(USBPD_BASE(Port) + 0x10)
+#define USBPD_TIMEOUT_BIST_CON_MODE_BIT          BIT3
+#define USBPD_TIMEOUT_SOURCE_CAP_BIT             BIT2
+#define USBPD_TIMEOUT_SEND_RESP_BIT              BIT1
+#define USBPD_TIMEOUT_CRC_RX_BIT                 BIT0
+#define TSR1(Port)              REG8(USBPD_BASE(Port) + 0x11)
+#define USBPD_TIMEOUT_VDM_WAIT_ENTRY_OR_EXIT_BIT        BIT7
+#define USBPD_TIMEOUT_SOURCE_TRANS_PS_HARD_RESET_BIT    BIT6
+#define USBPD_TIMEOUT_SINK_WAIT_CAP_BIT                 BIT5
+#define USBPD_TIMEOUT_VCON_ON_BIT                       BIT4
+#define USBPD_TIMEOUT_NO_RESP_BIT                       BIT3
+#define USBPD_TIMEOUT_PS_SOURCE_ON_BIT                  BIT2
+#define USBPD_TIMEOUT_PS_SOURCE_OFF_BIT                 BIT1
+#define USBPD_TIMEOUT_PS_TRANS_BIT                      BIT0
+#define TIMR0(Port)             REG8(USBPD_BASE(Port) + 0x12)
+#define TIMR1(Port)             REG8(USBPD_BASE(Port) + 0x13)
+#define USBPD_ISR(Port)         REG8(USBPD_BASE(Port) + 0x14)
+#define USBPD_TYPE_C_DETECT           BIT7
+#define USBPD_CABLE_RESET_DETECT      BIT6
+#define USBPD_HARD_RESET_DETECT       BIT5
+#define USBPD_MSG_RX_DONE             BIT4
+#define USBPD_AUTO_SOFT_RESET_TX_DONE BIT3
+#define USBPD_HARD_RESET_TX_DONE      BIT2
+#define USBPD_MSG_TX_DONE             BIT1
+#define USBPD_TIMER_TIMEOUT           BIT0
+#define IMR(Port)               REG8(USBPD_BASE(Port) + 0x15)
+#define MTCR(Port)              REG8(USBPD_BASE(Port) + 0x18)
+#define USBPD_SW_RESET_TX_STAT        BIT3
+#define USBPD_TX_BUSY_STAT            BIT2
+#define USBPD_TX_DISCARD_STAT         BIT2
+#define USBPD_TX_ERR_STAT             BIT1
+#define USBPD_TX_START                BIT0
+#define MTSR0(Port)             REG8(USBPD_BASE(Port) + 0x19)
+#define USBPD_CABLE_ENABLE            BIT7
+#define USBPD_SEND_HW_RESET           BIT6
+#define USBPD_SEND_BIST_MODE_2        BIT5
+#define MTSR1(Port)             REG8(USBPD_BASE(Port) + 0x1A)
+#define VDMMCSR(Port)           REG8(USBPD_BASE(Port) + 0x1B)
+#define MRSR(Port)              REG8(USBPD_BASE(Port) + 0x1C)
+#define USBPD_RX_MSG_VALID            BIT0
+#define PEFSMR(Port)            REG8(USBPD_BASE(Port) + 0x1D)
+#define PES0R(Port)             REG8(USBPD_BASE(Port) + 0x1E)
+#define PES1R(Port)             REG8(USBPD_BASE(Port) + 0x1F)
+#define TDO_BASE(Port)          (USBPD_BASE(Port) + 0x20)
+#define TDO0R0(Port)            REG8(USBPD_BASE(Port) + 0x20)
+#define TDO0R1(Port)            REG8(USBPD_BASE(Port) + 0x21)
+#define TDO0R2(Port)            REG8(USBPD_BASE(Port) + 0x22)
+#define TDO0R3(Port)            REG8(USBPD_BASE(Port) + 0x23)
+#define TDO1R0(Port)            REG8(USBPD_BASE(Port) + 0x24)
+#define TDO1R1(Port)            REG8(USBPD_BASE(Port) + 0x25)
+#define TDO1R2(Port)            REG8(USBPD_BASE(Port) + 0x26)
+#define TDO1R3(Port)            REG8(USBPD_BASE(Port) + 0x27)
+#define TDO2R0(Port)            REG8(USBPD_BASE(Port) + 0x28)
+#define TDO2R1(Port)            REG8(USBPD_BASE(Port) + 0x29)
+#define TDO2R2(Port)            REG8(USBPD_BASE(Port) + 0x2A)
+#define TDO2R3(Port)            REG8(USBPD_BASE(Port) + 0x2B)
+#define TDO3R0(Port)            REG8(USBPD_BASE(Port) + 0x2C)
+#define TDO3R1(Port)            REG8(USBPD_BASE(Port) + 0x2D)
+#define TDO3R2(Port)            REG8(USBPD_BASE(Port) + 0x2E)
+#define TDO3R3(Port)            REG8(USBPD_BASE(Port) + 0x2F)
+#define TDO4R0(Port)            REG8(USBPD_BASE(Port) + 0x30)
+#define TDO4R1(Port)            REG8(USBPD_BASE(Port) + 0x31)
+#define TDO4R2(Port)            REG8(USBPD_BASE(Port) + 0x32)
+#define TDO4R3(Port)            REG8(USBPD_BASE(Port) + 0x33)
+#define TDO5R0(Port)            REG8(USBPD_BASE(Port) + 0x34)
+#define TDO5R1(Port)            REG8(USBPD_BASE(Port) + 0x35)
+#define TDO5R2(Port)            REG8(USBPD_BASE(Port) + 0x36)
+#define TDO5R3(Port)            REG8(USBPD_BASE(Port) + 0x37)
+#define TDO6R0(Port)            REG8(USBPD_BASE(Port) + 0x38)
+#define TDO6R1(Port)            REG8(USBPD_BASE(Port) + 0x39)
+#define TDO6R2(Port)            REG8(USBPD_BASE(Port) + 0x3A)
+#define TDO6R3(Port)            REG8(USBPD_BASE(Port) + 0x3B)
+#define AGTMH_BASE(Port)        (USBPD_BASE(Port) + 0x3C)
+#define AGTMHLR(Port)           REG8(USBPD_BASE(Port) + 0x3C)
+#define AGTMHHR(Port)           REG8(USBPD_BASE(Port) + 0x3D)
+#define TMHLR(Port)             REG8(USBPD_BASE(Port) + 0x3E)
+#define TMHHR(Port)             REG8(USBPD_BASE(Port) + 0x3F)
+#define RDO_BASE(Port)          (USBPD_BASE(Port) + 0x40)
+#define RDO0R0(Port)            REG8(USBPD_BASE(Port) + 0x40)
+#define RDO0R1(Port)            REG8(USBPD_BASE(Port) + 0x41)
+#define RDO0R2(Port)            REG8(USBPD_BASE(Port) + 0x42)
+#define RDO0R3(Port)            REG8(USBPD_BASE(Port) + 0x43)
+#define RDO1R0(Port)            REG8(USBPD_BASE(Port) + 0x44)
+#define RDO1R1(Port)            REG8(USBPD_BASE(Port) + 0x45)
+#define RDO1R2(Port)            REG8(USBPD_BASE(Port) + 0x46)
+#define RDO1R3(Port)            REG8(USBPD_BASE(Port) + 0x47)
+#define RDO2R0(Port)            REG8(USBPD_BASE(Port) + 0x48)
+#define RDO2R1(Port)            REG8(USBPD_BASE(Port) + 0x49)
+#define RDO2R2(Port)            REG8(USBPD_BASE(Port) + 0x4A)
+#define RDO2R3(Port)            REG8(USBPD_BASE(Port) + 0x4B)
+#define RDO3R0(Port)            REG8(USBPD_BASE(Port) + 0x4C)
+#define RDO3R1(Port)            REG8(USBPD_BASE(Port) + 0x4D)
+#define RDO3R2(Port)            REG8(USBPD_BASE(Port) + 0x4E)
+#define RDO3R3(Port)            REG8(USBPD_BASE(Port) + 0x4F)
+#define RDO4R0(Port)            REG8(USBPD_BASE(Port) + 0x50)
+#define RDO4R1(Port)            REG8(USBPD_BASE(Port) + 0x51)
+#define RDO4R2(Port)            REG8(USBPD_BASE(Port) + 0x52)
+#define RDO4R3(Port)            REG8(USBPD_BASE(Port) + 0x53)
+#define RDO5R0(Port)            REG8(USBPD_BASE(Port) + 0x54)
+#define RDO5R1(Port)            REG8(USBPD_BASE(Port) + 0x55)
+#define RDO5R2(Port)            REG8(USBPD_BASE(Port) + 0x56)
+#define RDO5R3(Port)            REG8(USBPD_BASE(Port) + 0x57)
+#define RDO6R0(Port)            REG8(USBPD_BASE(Port) + 0x58)
+#define RDO6R1(Port)            REG8(USBPD_BASE(Port) + 0x59)
+#define RDO6R2(Port)            REG8(USBPD_BASE(Port) + 0x5A)
+#define RDO6R3(Port)            REG8(USBPD_BASE(Port) + 0x5B)
+#define RMH_BASE(Port)          (USBPD_BASE(Port) + 0x5E)
+#define RMHLR(Port)             REG8(USBPD_BASE(Port) + 0x5E)
+#define RMHHR(Port)             REG8(USBPD_BASE(Port) + 0x5F)
+#define CCPSR0(Port)            REG8(USBPD_BASE(Port) + 0x60)
+#define CCPSR1(Port)            REG8(USBPD_BASE(Port) + 0x61)
+#define CCPSR2(Port)            REG8(USBPD_BASE(Port) + 0x62)
+#define CCPSR3(Port)            REG8(USBPD_BASE(Port) + 0x63)
+#define BMCSR(Port)             REG8(USBPD_BASE(Port) + 0x64)
+#define PDMHSR(Port)            REG8(USBPD_BASE(Port) + 0x65)
+#endif /* CONFIG_USB_PD_8320 */
 
 /* BRAM */
 #define IT83XX_BRAM_BASE  0x00F02200

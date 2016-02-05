@@ -37,7 +37,10 @@
  */
 static int debug_level;
 
+#ifndef CONFIG_USB_PD_8320
 static struct mutex pd_crc_lock;
+#endif
+
 #else
 #define CPRINTF(format, args...)
 static const int debug_level;
@@ -256,9 +259,13 @@ static struct pd_port_controller {
 
 static int rx_buf_is_full(int port)
 {
+#ifdef CONFIG_USB_PD_8320
+	return 0;
+#else
 	/* Buffer is full if the tail is 1 ahead of head */
 	int diff = pd[port].rx_buf_tail - pd[port].rx_buf_head;
 	return (diff == 1) || (diff == -RX_BUFFER_SIZE);
+#endif	/*CONFIG_USB_PD_8320*/
 }
 
 static int rx_buf_is_empty(int port)
@@ -274,22 +281,33 @@ static void rx_buf_increment(int port, int *buf_ptr)
 
 static inline int encode_short(int port, int off, uint16_t val16)
 {
+#ifdef CONFIG_USB_PD_8320
+	return 0;
+#else
 	off = pd_write_sym(port, off, bmc4b5b[(val16 >> 0) & 0xF]);
 	off = pd_write_sym(port, off, bmc4b5b[(val16 >> 4) & 0xF]);
 	off = pd_write_sym(port, off, bmc4b5b[(val16 >> 8) & 0xF]);
 	return pd_write_sym(port, off, bmc4b5b[(val16 >> 12) & 0xF]);
+#endif/*CONFIG_USB_PD_8320*/
 }
 
 int encode_word(int port, int off, uint32_t val32)
 {
+#ifdef CONFIG_USB_PD_8320
+	return 0;
+#else
 	off = encode_short(port, off, (val32 >> 0) & 0xFFFF);
 	return encode_short(port, off, (val32 >> 16) & 0xFFFF);
+#endif/*CONFIG_USB_PD_8320*/
 }
 
 /* prepare a 4b/5b-encoded PD message to send */
 int prepare_message(int port, uint16_t header, uint8_t cnt,
 		   const uint32_t *data)
 {
+#ifdef CONFIG_USB_PD_8320
+	return 0;
+#else
 	int off, i;
 	/* 64-bit preamble */
 	off = pd_write_preamble(port);
@@ -323,10 +341,16 @@ int prepare_message(int port, uint16_t header, uint8_t cnt,
 	off = pd_write_sym(port, off, BMC(PD_EOP));
 	/* Ensure that we have a final edge */
 	return pd_write_last_edge(port, off);
+#endif /*CONFIG_USB_PD_8320*/
 }
 
 static int send_hard_reset(int port)
 {
+#ifdef CONFIG_USB_PD_8320
+	usbpd_hw_reset(port, USBPD_RESET_TYPE_HARD);
+	return 0;
+#else
+
 	int off;
 
 	if (debug_level >= 1)
@@ -348,11 +372,27 @@ static int send_hard_reset(int port)
 	/* Keep RX monitoring on */
 	pd_rx_enable_monitoring(port);
 	return 0;
+#endif/*CONFIG_USB_PD_8320*/
 }
 
 static int send_validate_message(int port, uint16_t header,
 				 const uint32_t *data)
 {
+#ifdef CONFIG_USB_PD_8320
+	uint8_t cnt = PD_HEADER_CNT(header);
+	enum usbpd_sop_type enumSopType = USBPD_SOP_TYPE_SOP;
+	enum usbpd_result result = USBPD_RESULT_FAIL;
+	/*chrome code return bit_len (result >= 0) if tx success.*/
+	result = usbpd_tx_data(port, enumSopType, (header & 0x0f), cnt, data);
+
+	/*check TX status*/
+	if (result == USBPD_RESULT_SUCC)
+		return 1;
+	else if (result == USBPD_RESULT_TX_DISCARD)
+		return PD_TX_ERR_DISABLED;
+	else
+		return PD_TX_ERR_GOODCRC;
+#else
 	int r;
 	static uint32_t payload[7];
 	uint8_t expected_msg_id = PD_HEADER_ID(header);
@@ -427,8 +467,10 @@ static int send_validate_message(int port, uint16_t header,
 	if (debug_level >= 1)
 		CPRINTF("TX NOACK%d %04x/%d\n", port, header, cnt);
 	return PD_TX_ERR_GOODCRC;
+#endif /*CONFIG_USB_PD_8320*/
 }
 
+#ifndef CONFIG_USB_PD_8320
 static void send_goodcrc(int port, int id)
 {
 	uint16_t header = PD_HEADER(PD_CTRL_GOOD_CRC, pd[port].power_role,
@@ -442,6 +484,7 @@ static void send_goodcrc(int port, int id)
 	/* Keep RX monitoring on */
 	pd_rx_enable_monitoring(port);
 }
+#endif /*CONFIG_USB_PD_8320*/
 
 #if 0
 /* TODO: when/how do we trigger this ? */
@@ -497,6 +540,9 @@ void bist_mode_2_rx(int port)
 
 static void bist_mode_2_tx(int port)
 {
+#ifdef CONFIG_USB_PD_8320
+	usbpd_bist_mode_2_tx(port);
+#else
 	int bit;
 
 	CPRINTF("BIST 2: p%d\n", port);
@@ -519,10 +565,14 @@ static void bist_mode_2_tx(int port)
 	pd_tx_clear_circular_mode(port);
 	/* finish and cleanup transmit */
 	pd_tx_done(port, pd[port].polarity);
+#endif /*CONFIG_USB_PD_8320*/
 }
 
 static inline int decode_short(int port, int off, uint16_t *val16)
 {
+#ifdef CONFIG_USB_PD_8320
+	return 0;
+#else
 	uint32_t w;
 	int end;
 
@@ -539,12 +589,17 @@ static inline int decode_short(int port, int off, uint16_t *val16)
 		(dec4b5b[(w >> 10) & 0x1f] << 8) |
 		(dec4b5b[(w >> 15) & 0x1f] << 12);
 	return end;
+#endif /*CONFIG_USB_PD_8320*/
 }
 
 static inline int decode_word(int port, int off, uint32_t *val32)
 {
+#ifdef CONFIG_USB_PD_8320
+	return 0;
+#else
 	off = decode_short(port, off, (uint16_t *)val32);
 	return decode_short(port, off, ((uint16_t *)val32 + 1));
+#endif /*CONFIG_USB_PD_8320*/
 }
 
 #ifdef CONFIG_COMMON_RUNTIME
@@ -606,6 +661,20 @@ static int analyze_rx_bist(int port)
 
 int pd_analyze_rx(int port, uint32_t *payload)
 {
+#ifdef CONFIG_USB_PD_8320
+	enum usbpd_result     enumResult = USBPD_RESULT_SUCC;
+	enum usbpd_sop_type   enumSopType = USBPD_SOP_TYPE_SOP;
+	struct usbpd_header   stHeader;
+	int header = 0;
+
+	enumResult = usbpd_rx_data(port, &enumSopType, &stHeader, payload);
+	memcpy(&header, &stHeader, sizeof(struct usbpd_header));
+
+	if (enumResult != USBPD_RESULT_SUCC)
+		return -1;
+	return header;
+#else
+
 	int bit;
 	char *msg = "---";
 	uint32_t val = 0;
@@ -700,10 +769,21 @@ packet_err:
 	else
 		CPRINTF("RXERR%d %s\n", port, msg);
 	return bit;
+#endif /*CONFIG_USB_PD_8320*/
 }
 
 static void handle_request(int port, uint16_t head)
 {
+#ifdef CONFIG_USB_PD_8320
+	int cnt = PD_HEADER_CNT(head);
+
+	if (PD_HEADER_TYPE(head) != PD_CTRL_GOOD_CRC || cnt) {
+		/*send_goodcrc(port, PD_HEADER_ID(head));*/
+	} else {
+		/* keep RX monitoring on to avoid collisions */
+		pd_rx_enable_monitoring(port);
+	}
+#else
 	int cnt = PD_HEADER_CNT(head);
 
 	if (PD_HEADER_TYPE(head) != PD_CTRL_GOOD_CRC || cnt)
@@ -711,8 +791,10 @@ static void handle_request(int port, uint16_t head)
 	else
 		/* keep RX monitoring on to avoid collisions */
 		pd_rx_enable_monitoring(port);
+#endif /*CONFIG_USB_PD_8320*/
 }
 
+#ifndef CONFIG_USB_PD_8320
 /* Convert CC voltage to CC status */
 static int cc_voltage_to_status(int port, int cc_volt)
 {
@@ -742,6 +824,7 @@ static int cc_voltage_to_status(int port, int cc_volt)
 	else
 		return 0;
 }
+#endif /*CONFIG_USB_PD_8320*/
 
 static void alert(int port, int mask)
 {
@@ -757,6 +840,74 @@ static void alert(int port, int mask)
 
 int tcpc_run(int port, int evt)
 {
+#ifdef CONFIG_USB_PD_8320
+	int cc, i, res;
+
+	/* incoming packet ? */
+	if ((evt & PD_EVENT_RX) && pd[port].rx_enabled) {
+		/* Get message and place at RX buffer head */
+		res = pd[port].rx_head[pd[port].rx_buf_head] =
+			pd_analyze_rx(port,
+				pd[port].rx_payload[pd[port].rx_buf_head]);
+		/*pd_rx_complete is accomplished in pd_analyze_rx*/
+		/*pd_rx_complete(port);*/
+		/*
+		 * If there is space in buffer, then increment head to keep
+		 * the message and send goodCRC. If this is a hard reset,
+		 * send alert regardless of rx buffer status. Else if there is
+		 * no space in buffer, then do not send goodCRC and drop
+		 * message.
+		 */
+	 /*CPRINTF("res 0x%x, rx full:0x%x\n", res, rx_buf_is_full(port));*/
+		if (res > 0 && !rx_buf_is_full(port)) {
+			rx_buf_increment(port, &pd[port].rx_buf_head);
+			handle_request(port, res);
+			alert(port, TCPC_REG_ALERT_RX_STATUS);
+		} else if (USBPD_IS_HARD_RESET_DETECT(port)) {
+			alert(port, TCPC_REG_ALERT_RX_HARD_RST);
+		}
+	}
+	/* outgoing packet ? */
+	if ((evt & PD_EVENT_TX) && pd[port].rx_enabled) {
+		switch (pd[port].tx_type) {
+		case TCPC_TX_SOP:
+			res = send_validate_message(port,
+					pd[port].tx_head,
+					pd[port].tx_data);
+			break;
+		case TCPC_TX_BIST_MODE_2:
+			bist_mode_2_tx(port);
+			res = 0;
+			break;
+		case TCPC_TX_HARD_RESET:
+			res = send_hard_reset(port);
+			break;
+		default:
+			res = PD_TX_ERR_DISABLED;
+			break;
+		}
+		/* send appropriate alert for tx completion */
+		if (res >= 0)
+			alert(port, TCPC_REG_ALERT_TX_SUCCESS);
+		else if (res == PD_TX_ERR_GOODCRC)
+			alert(port, TCPC_REG_ALERT_TX_FAILED);
+		else
+			alert(port, TCPC_REG_ALERT_TX_DISCARDED);
+	} else {
+		/* If we have nothing to transmit, then sample CC lines */
+		/* CC pull changed, wait 1ms for CC voltage to stabilize */
+		if (evt & PD_EVENT_CC)
+			usleep(MSEC);
+		/* check CC lines */
+		for (i = 0; i < 2; i++) {
+			cc = usbpd_get_cc(port, i);
+			if (pd[port].cc_status[i] != cc) {
+				pd[port].cc_status[i] = cc;
+				alert(port, TCPC_REG_ALERT_CC_STATUS);
+			}
+		}
+	}
+#else
 	int cc, i, res;
 
 	/* incoming packet ? */
@@ -830,7 +981,7 @@ int tcpc_run(int port, int evt)
 			}
 		}
 	}
-
+#endif /*CONFIG_USB_PD_8320*/
 	/* make sure PD monitoring is enabled to wake on PD RX */
 	if (pd[port].rx_enabled)
 		pd_rx_enable_monitoring(port);
@@ -923,6 +1074,17 @@ int tcpc_alert_mask_set(int port, uint16_t mask)
 
 int tcpc_set_cc(int port, int pull)
 {
+#ifdef CONFIG_USB_PD_8320
+	/* If CC pull resistor not changing, then nothing to do */
+	if (pd[port].cc_pull == pull)
+		return EC_SUCCESS;
+
+	/* Change CC pull resistor */
+	pd[port].cc_pull = pull;
+#ifdef CONFIG_USB_PD_DUAL_ROLE
+	 pd_set_host_mode(port, pull);
+#endif
+#else
 	/* If CC pull resistor not changing, then nothing to do */
 	if (pd[port].cc_pull == pull)
 		return EC_SUCCESS;
@@ -932,7 +1094,7 @@ int tcpc_set_cc(int port, int pull)
 #ifdef CONFIG_USB_PD_DUAL_ROLE
 	pd_set_host_mode(port, pull == TYPEC_CC_RP);
 #endif
-
+#endif /*CONFIG_USB_PD_8320*/
 #ifdef TCPC_LOW_POWER
 	/*
 	 * Reset the low power timestamp every time CC termination toggles,
@@ -1003,7 +1165,11 @@ int tcpc_set_power_status_mask(int port, uint8_t mask)
 int tcpc_set_vconn(int port, int enable)
 {
 #ifdef CONFIG_USBC_VCONN
+#ifdef CONFIG_USB_PD_8320
+	usbpd_enable_vconn(port, enable);
+#else
 	pd_set_vconn(port, pd[port].polarity, enable);
+#endif /*CONFIG_USB_PD_8320*/
 #endif
 	return EC_SUCCESS;
 }
@@ -1094,14 +1260,24 @@ void tcpc_init(int port)
 
 	/* make sure PD monitoring is disabled initially */
 	pd[port].rx_enabled = 0;
-
+#ifdef CONFIG_USB_PD_8320
+	/* make initial readings of CC voltages */
+	for (i = 0; i < 2; i++) {
+		pd[port].cc_status[i] = usbpd_get_cc(port, i);
+		CPRINTF("*tcpc_init>Port:%d CC%d_stat:0x%x*\n",
+			port, i, pd[port].cc_status[i]);
+	}
+#else
 	/* make initial readings of CC voltages */
 	for (i = 0; i < 2; i++) {
 		pd[port].cc_status[i] = cc_voltage_to_status(port,
 						pd_adc_read(port, i));
 	}
-
+#endif /*CONFIG_USB_PD_8320*/
 #ifdef CONFIG_USB_PD_TCPM_VBUS
+#ifdef CONFIG_USB_PD_8320
+	tcpc_set_power_status(port, usbpd_detect_vbus(port));
+#else
 #if CONFIG_USB_PD_PORT_COUNT >= 2
 	tcpc_set_power_status(port, !gpio_get_level(port ?
 			      GPIO_USB_C1_VBUS_WAKE_L :
@@ -1109,6 +1285,7 @@ void tcpc_init(int port)
 #else
 	tcpc_set_power_status(port, !gpio_get_level(GPIO_USB_C0_VBUS_WAKE_L));
 #endif /* CONFIG_USB_PD_PORT_COUNT >= 2 */
+#endif /*CONFIG_USB_PD_8320*/
 #endif /* CONFIG_USB_PD_TCPM_VBUS */
 
 	/* set default alert and power mask register values */
@@ -1122,17 +1299,29 @@ void tcpc_init(int port)
 #ifdef CONFIG_USB_PD_TCPM_VBUS
 void pd_vbus_evt_p0(enum gpio_signal signal)
 {
+#ifdef CONFIG_USB_PD_8320
 	tcpc_set_power_status(TASK_ID_TO_PD_PORT(TASK_ID_PD_C0),
-				 !gpio_get_level(GPIO_USB_C0_VBUS_WAKE_L));
+				usbpd_detect_vbus(0));
 	task_wake(TASK_ID_PD_C0);
+#else
+	tcpc_set_power_status(TASK_ID_TO_PD_PORT(TASK_ID_PD_C0),
+				!gpio_get_level(GPIO_USB_C0_VBUS_WAKE_L));
+	task_wake(TASK_ID_PD_C0);
+#endif /*CONFIG_USB_PD_8320*/
 }
 
 #if CONFIG_USB_PD_PORT_COUNT >= 2
 void pd_vbus_evt_p1(enum gpio_signal signal)
 {
+#ifdef CONFIG_USB_PD_8320
+	tcpc_set_power_status(TASK_ID_TO_PD_PORT(TASK_ID_PD_C1),
+				usbpd_detect_vbus(1));
+	task_wake(TASK_ID_PD_C1);
+#else
 	tcpc_set_power_status(TASK_ID_TO_PD_PORT(TASK_ID_PD_C1),
 				 !gpio_get_level(GPIO_USB_C1_VBUS_WAKE_L));
 	task_wake(TASK_ID_PD_C1);
+#endif /*CONFIG_USB_PD_8320*/
 }
 #endif /* PD_PORT_COUNT >= 2 */
 #endif /* CONFIG_USB_PD_TCPM_VBUS */
@@ -1343,7 +1532,16 @@ static int command_tcpc(int argc, char **argv)
 		freq = strtoi(argv[3], &e, 10);
 		if (*e)
 			return EC_ERROR_PARAM2;
+#ifdef CONFIG_USB_PD_8320
+		freq = pd_set_clock(port, freq);
+		if (freq < 0) {
+			ccprintf("set TX freq:0:48M 1:24M 2:16M 3:12M");
+			ccprintf(" 4:48/5(M) 5:8M\n");
+			return EC_ERROR_PARAM2;
+		}
+#else
 		pd_set_clock(port, freq);
+#endif /*CONFIG_USB_PD_8320*/
 		ccprintf("set TX frequency to %d Hz\n", freq);
 		return EC_SUCCESS;
 	} else if (!strncasecmp(argv[2], "state", 5)) {

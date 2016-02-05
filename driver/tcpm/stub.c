@@ -148,6 +148,9 @@ void tcpc_alert(int port)
 		 * pd_rx_event(), so we don't need to set another
 		 * event.
 		 */
+#ifdef CONFIG_USB_PD_8320
+		pd_rx_event(port);
+#endif	/*CONFIG_USB_PD_8320*/
 	}
 	if (status & TCPC_REG_ALERT_RX_HARD_RST) {
 		/* hard reset received */

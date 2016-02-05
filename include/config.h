@@ -1843,6 +1843,7 @@
 #undef CONFIG_USB_PD_TCPM_STUB
 #undef CONFIG_USB_PD_TCPM_TCPCI
 #undef CONFIG_USB_PD_TCPM_FUSB302
+#undef CONFIG_USB_PD_8320
 
 /*
  * Use this option if the TCPC port controller supports the optional register

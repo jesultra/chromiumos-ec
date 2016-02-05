@@ -137,7 +137,11 @@ enum pd_rx_errors {
 #define PD_T_SINK_WAIT_CAP    (240*MSEC) /* between 210ms and 250ms */
 #define PD_T_SINK_TRANSITION   (35*MSEC) /* between 20ms and 35ms */
 #define PD_T_SOURCE_ACTIVITY   (45*MSEC) /* between 40ms and 50ms */
+#ifndef CONFIG_USB_PD_8320
+#define PD_T_SENDER_RESPONSE   (25*MSEC) /* between 24ms and 30ms */
+#else
 #define PD_T_SENDER_RESPONSE   (30*MSEC) /* between 24ms and 30ms */
+#endif	/*CONFIG_USB_PD_8320*/
 #define PD_T_PS_TRANSITION    (500*MSEC) /* between 450ms and 550ms */
 #define PD_T_PS_SOURCE_ON     (480*MSEC) /* between 390ms and 480ms */
 #define PD_T_PS_SOURCE_OFF    (920*MSEC) /* between 750ms and 920ms */
@@ -1337,7 +1341,11 @@ void pd_dump_packet(int port, const char *msg);
  * @param port USB-C port number
  * @param freq frequency in hertz.
  */
-void pd_set_clock(int port, int freq);
+#ifdef CONFIG_USB_PD_8320
+int  pd_set_clock(int port, int freq);
+#else
+void  pd_set_clock(int port, int freq);
+#endif
 
 /* TX/RX callbacks */
 
