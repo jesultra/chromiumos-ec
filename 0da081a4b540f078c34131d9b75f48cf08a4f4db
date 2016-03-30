@@ -46,6 +46,30 @@
       "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d16549c5_c951bd0c",
+        "filename": "chip/g/uart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1112784
+      },
+      "writtenOn": "2016-03-30T22:32:51Z",
+      "side": 1,
+      "message": "Yes probably, you can take a look at the stm32 usart driver for one way to handle it.",
+      "parentUuid": "d16549c5_09cf352d",
+      "range": {
+        "startLine": 84,
+        "startChar": 13,
+        "endLine": 84,
+        "endChar": 21
+      },
+      "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
