@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d16549c5_e965a118",
+        "filename": "chip/g/uart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1112784
+      },
+      "writtenOn": "2016-03-30T22:10:00Z",
+      "side": 1,
+      "message": "Do we need interrupt handlers for the other UARTs as well?",
+      "range": {
+        "startLine": 84,
+        "startChar": 13,
+        "endLine": 84,
+        "endChar": 21
+      },
+      "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
