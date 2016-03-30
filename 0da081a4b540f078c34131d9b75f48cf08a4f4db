@@ -22,6 +22,30 @@
       "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d16549c5_09cf352d",
+        "filename": "chip/g/uart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2016-03-30T22:31:04Z",
+      "side": 1,
+      "message": "Eventually Yes. Currently I dont initialize the other two UARTs and I dont enable the interrupts so I didnt add the uart handlers. Should I wait to enable the clocks until we actually use the UARTs?",
+      "parentUuid": "d16549c5_e965a118",
+      "range": {
+        "startLine": 84,
+        "startChar": 13,
+        "endLine": 84,
+        "endChar": 21
+      },
+      "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
