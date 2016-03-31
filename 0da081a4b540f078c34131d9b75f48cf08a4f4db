@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "d16549c5_844b2755",
+        "filename": "board/cr50/board.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000058
+      },
+      "writtenOn": "2016-03-31T16:38:18Z",
+      "side": 1,
+      "message": "You can use enums if you just move them up inside the #ifndef __ASSEMBLER__ block. This header file is included by some assembly sources, so we can\u0027t use enums for values required in those files.\n\nHowever, since these values are associated with hardwired connections, #defines are better.\n\nYou can go ahead and #define the other two while you\u0027re at it.",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 63
+      },
+      "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d16549c5_c4e27f7a",
+        "filename": "chip/g/uart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000058
+      },
+      "writtenOn": "2016-03-31T16:38:18Z",
+      "side": 1,
+      "message": "You can take this out.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 6
+      },
+      "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d16549c5_84224793",
+        "filename": "chip/g/uart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000058
+      },
+      "writtenOn": "2016-03-31T16:38:18Z",
+      "side": 1,
+      "message": "Since you\u0027ve defined UART_CR50, you should use it here instead of 0. Eventually we\u0027ll disable the Cr50 console completely and the only UARTs will be those used for CCD. Using a symbol instead of a 0 will make it clearer why things aren\u0027t working correctly if we need to debug that.",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 17
+      },
+      "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d16549c5_e965a118",
         "filename": "chip/g/uart.c",
         "patchSetId": 3
@@ -66,6 +135,29 @@
         "startChar": 13,
         "endLine": 84,
         "endChar": 21
+      },
+      "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d16549c5_04ed5768",
+        "filename": "chip/g/uart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000058
+      },
+      "writtenOn": "2016-03-31T16:38:18Z",
+      "side": 1,
+      "message": "You don\u0027t need a loop here, especially if you plan to wait to enable each UART until it\u0027s needed. Just use uartn_init(UART_CR50) for now, to match everything else.\n\nThat means you can get rid of the #define UART_COUNT in board.h, too.\n\nWhen we disable UART_CR50, we\u0027ll have to call clock_enable_module() somewhere else, but that can wait, since I plan to clean up the PMU clock stuff before then.",
+      "range": {
+        "startLine": 114,
+        "startChar": 2,
+        "endLine": 115,
+        "endChar": 16
       },
       "revId": "0da081a4b540f078c34131d9b75f48cf08a4f4db",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
