@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8edc8cfe_395b332b",
+        "filename": "util/comm-dev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1146659
+      },
+      "writtenOn": "2016-04-01T20:36:58Z",
+      "side": 1,
+      "message": "ioctl returns 0 if there is no error. I don\u0027t know if that is a kernel bug or a tool bug. Should this function return \u0027bytes\u0027 in that case ?",
+      "revId": "ae1a7936ff4619a6f6e1dcf0d771d33c76f26f3f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
