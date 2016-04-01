@@ -16,6 +16,24 @@
       "revId": "ae1a7936ff4619a6f6e1dcf0d771d33c76f26f3f",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8edc8cfe_a4f61aa2",
+        "filename": "util/comm-dev.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1002053
+      },
+      "writtenOn": "2016-04-01T21:05:56Z",
+      "side": 1,
+      "message": "Looking at ec_command_dev, 0 is expected when there is no error. However looking at ec_command_dev, I should \n- return a errno-like error in case of error, \n- r \u003c 0 with r \u003d\u003d -1.\nNote that some ioctl may return \u003e\u003d 0 on success but that\u0027s not the case of CROS_EC_DEV_IOCRDMEM.",
+      "parentUuid": "8edc8cfe_395b332b",
+      "revId": "ae1a7936ff4619a6f6e1dcf0d771d33c76f26f3f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
