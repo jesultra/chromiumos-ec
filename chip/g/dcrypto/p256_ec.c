@@ -1370,7 +1370,8 @@ int DCRYPTO_p256_points_mul(p256_int *out_x, p256_int *out_y,
 
 	/* If both scalars are zero, then the result is the point at
 	 * infinity. */
-	if (p256_is_zero(n1) != 0 && p256_is_zero(n2) != 0) {
+	if ((n1 == NULL || p256_is_zero(n1) != 0) &&
+		(n2 == NULL || p256_is_zero(n2) != 0)) {
 		p256_clear(out_x);
 		p256_clear(out_y);
 		return 0;
@@ -1381,10 +1382,10 @@ int DCRYPTO_p256_points_mul(p256_int *out_x, p256_int *out_y,
 	scalar_base_mult(x1, y1, z1, n1);
 	scalar_mult(x2, y2, z2, px, py, n2);
 
-	if (p256_is_zero(n2) != 0) {
+	if (n2 == NULL || p256_is_zero(n2) != 0) {
 		/* If n2 == 0, then {x2,y2,z2} is zero and the result is just
 		 * {x1,y1,z1}. */
-	} else if (p256_is_zero(n1) != 0) {
+	} else if (n1 == NULL || p256_is_zero(n1) != 0) {
 		/* If n1 == 0, then {x1,y1,z1} is zero and the result is just
 		 * {x2,y2,z2}. */
 		memcpy(x1, x2, sizeof(x2));

@@ -56,6 +56,8 @@ int DCRYPTO_aes_block(const uint8_t *in, uint8_t *out);
 
 void DCRYPTO_aes_write_iv(const uint8_t *iv);
 void DCRYPTO_aes_read_iv(uint8_t *iv);
+int DCRYPTO_aes_ctr(uint8_t *out, const uint8_t *key, uint32_t key_bits,
+		const uint8_t *iv, const uint8_t *in, size_t in_len);
 
 /*
  * SHA implementation.  This abstraction is backed by either a
@@ -140,6 +142,16 @@ void DCRYPTO_p256_ecdsa_sign(const p256_int *d, const p256_int *digest,
 int DCRYPTO_p256_ecdsa_verify(const p256_int *key_x, const p256_int *key_y,
 			const p256_int *digest, const p256_int *r,
 			const p256_int *s);
+size_t DCRYPTO_ecies_encrypt(
+	void *out, size_t out_len, const void *in, size_t in_len,
+	const p256_int *pub_x, const p256_int *pub_y,
+	const uint8_t *salt, size_t salt_len,
+	const uint8_t *info, size_t info_len);
+size_t DCRYPTO_ecies_decrypt(
+	void *out, size_t out_len, const void *in, size_t in_len,
+	const p256_int *d,
+	const uint8_t *salt, size_t salt_len,
+	const uint8_t *info, size_t info_len);
 
 /*
  *  HKDF.

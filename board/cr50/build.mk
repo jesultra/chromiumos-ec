@@ -33,6 +33,7 @@ board-y =  board.o
 board-y += tpm2/NVMem.o
 board-y += tpm2/aes.o
 board-y += tpm2/ecc.o
+board-y += tpm2/ecies.o
 board-y += tpm2/hash.o
 board-y += tpm2/hash_data.o
 board-y += tpm2/hkdf.o
