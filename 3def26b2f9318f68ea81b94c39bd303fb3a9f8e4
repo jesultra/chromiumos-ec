@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce33e4d5_d9b17fc0",
+        "filename": "util/comm-dev.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1104704
+      },
+      "writtenOn": "2016-04-08T21:25:41Z",
+      "side": 1,
+      "message": "it is really needed? if outdata \u003d\u003d NULL, we can expect outsize to be equal to 0, and memcpy to be moot.\nIf it is for performance, you should also bring the small command code path to avoid malloc :-).",
+      "revId": "3def26b2f9318f68ea81b94c39bd303fb3a9f8e4",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
