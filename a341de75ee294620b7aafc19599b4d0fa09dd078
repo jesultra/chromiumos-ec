@@ -16,6 +16,24 @@
       "revId": "a341de75ee294620b7aafc19599b4d0fa09dd078",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ce33e4d5_6dfd3114",
+        "filename": "util/comm-dev.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1146659
+      },
+      "writtenOn": "2016-04-08T17:41:20Z",
+      "side": 1,
+      "message": "In that situation it would be v1, and any problem with the communication should cause a later failure with a more detailed error message. I did not want to have an error message here since this code is only about detecting the version.",
+      "parentUuid": "ce33e4d5_4d114d76",
+      "revId": "a341de75ee294620b7aafc19599b4d0fa09dd078",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
