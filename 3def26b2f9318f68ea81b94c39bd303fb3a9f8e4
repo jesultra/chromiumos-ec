@@ -16,6 +16,24 @@
       "revId": "3def26b2f9318f68ea81b94c39bd303fb3a9f8e4",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ce33e4d5_79a33371",
+        "filename": "util/comm-dev.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1146659
+      },
+      "writtenOn": "2016-04-08T21:29:24Z",
+      "side": 1,
+      "message": "No, this is not for optimization; it is for defensive programming. I would rather not depend on outsize \u003d\u003d 0 (or insize \u003d\u003d 0), or on the assumption that it doesn\u0027t matter in this case.",
+      "parentUuid": "ce33e4d5_d9b17fc0",
+      "revId": "3def26b2f9318f68ea81b94c39bd303fb3a9f8e4",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
