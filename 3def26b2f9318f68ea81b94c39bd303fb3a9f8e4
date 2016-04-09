@@ -34,6 +34,24 @@
       "revId": "3def26b2f9318f68ea81b94c39bd303fb3a9f8e4",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ce33e4d5_6748e508",
+        "filename": "util/comm-dev.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1104704
+      },
+      "writtenOn": "2016-04-09T17:54:56Z",
+      "side": 1,
+      "message": "We make that assumption all the time. You may instead add an ASSERT instead like:\nASSERT(outsize \u003d\u003d 0 || outdata !\u003d NULL);",
+      "parentUuid": "ce33e4d5_79a33371",
+      "revId": "3def26b2f9318f68ea81b94c39bd303fb3a9f8e4",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
