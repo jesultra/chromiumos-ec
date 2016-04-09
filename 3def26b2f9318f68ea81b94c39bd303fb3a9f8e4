@@ -52,6 +52,24 @@
       "revId": "3def26b2f9318f68ea81b94c39bd303fb3a9f8e4",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ce33e4d5_ca2358ed",
+        "filename": "util/comm-dev.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1146300
+      },
+      "writtenOn": "2016-04-09T20:03:29Z",
+      "side": 1,
+      "message": "That memcpy() accepts a NULL pointer argument if n is 0 ? I usually don\u0027t make such assumptions, but I\u0027ll keep it in mind.\n\nAnyway, no problem, ASSERT() works for me as well.",
+      "parentUuid": "ce33e4d5_6748e508",
+      "revId": "3def26b2f9318f68ea81b94c39bd303fb3a9f8e4",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
