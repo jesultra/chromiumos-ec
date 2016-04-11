@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2baab253_4bd97911",
+        "filename": "util/comm-dev.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1104704
+      },
+      "writtenOn": "2016-04-11T22:24:39Z",
+      "side": 1,
+      "message": "both works, but ASSERT is used 219 times, assert 38 times.",
+      "revId": "2045c0555e8bd4963eca1fc80b0d83533908cb93",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
