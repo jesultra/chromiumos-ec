@@ -16,6 +16,29 @@
       "revId": "2045c0555e8bd4963eca1fc80b0d83533908cb93",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2baab253_59cdd3af",
+        "filename": "util/cros_ec_dev.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1001696
+      },
+      "writtenOn": "2016-04-12T00:40:26Z",
+      "side": 1,
+      "message": "I think these structs are being optimized differently by ectool vs the kernel compiler. We need to declare them __packed on both sides.\n\nWas it working before by luck / chance?",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 2
+      },
+      "revId": "2045c0555e8bd4963eca1fc80b0d83533908cb93",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
