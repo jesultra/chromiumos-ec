@@ -63,6 +63,30 @@
       "revId": "2045c0555e8bd4963eca1fc80b0d83533908cb93",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2baab253_f43fe6b4",
+        "filename": "util/cros_ec_dev.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1146300
+      },
+      "writtenOn": "2016-04-12T01:37:09Z",
+      "side": 1,
+      "message": "On Intel the offset of \u0027result\u0027 and \u0027data\u0027 is the same for both 32 bit and 64 bit builds. Are there any arm (or, rather, arm64) systems where I can test this on ?",
+      "parentUuid": "2baab253_99734b20",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 2
+      },
+      "revId": "2045c0555e8bd4963eca1fc80b0d83533908cb93",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
