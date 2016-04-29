@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e8fc21c7_0731d8dc",
+        "filename": "board/kevin/led.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1001696
+      },
+      "writtenOn": "2016-04-29T18:38:19Z",
+      "side": 1,
+      "message": "This is done from pwm_pin_init() already, I think we can remove it if we change the hook priority below.",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 35
+      },
+      "revId": "0b6902636bebb2da237dad5c94874dc3d71f7ac1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e8fc21c7_875b881e",
+        "filename": "board/kevin/led.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1001696
+      },
+      "writtenOn": "2016-04-29T18:38:19Z",
+      "side": 1,
+      "message": "Change this to HOOK_PRIO_INIT_PWM + 2 (1 + priority of pwm_pin_init()).",
+      "range": {
+        "startLine": 126,
+        "startChar": 34,
+        "endLine": 126,
+        "endChar": 51
+      },
+      "revId": "0b6902636bebb2da237dad5c94874dc3d71f7ac1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e8fc21c7_a7a44418",
+        "filename": "board/kevin/led.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1001696
+      },
+      "writtenOn": "2016-04-29T18:38:19Z",
+      "side": 1,
+      "message": "Extra intent here, you can align led_auto_control_is_enabled() with the call to led_auto_control_is_enabled() right above.",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 10
+      },
+      "revId": "0b6902636bebb2da237dad5c94874dc3d71f7ac1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
