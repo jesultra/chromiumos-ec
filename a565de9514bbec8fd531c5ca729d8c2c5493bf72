@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c8c91d9e_fcbad8cf",
+        "filename": "board/kevin/led.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001272
+      },
+      "writtenOn": "2016-04-29T01:36:23Z",
+      "side": 1,
+      "message": "Actually not, But sometimes We need to reduce red, increase blue, ID will have influence to this.",
+      "parentUuid": "8801e53f_5a8fe433",
+      "range": {
+        "startLine": 44,
+        "startChar": 1,
+        "endLine": 44,
+        "endChar": 32
+      },
+      "revId": "a565de9514bbec8fd531c5ca729d8c2c5493bf72",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c8c91d9e_737720c5",
         "filename": "board/kevin/led.c",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2016-04-28T19:42:00Z",
       "side": 1,
       "message": "This driver is more confusing than it needs to be because of the PWM pin naming. Should we rename these PWM_CH_LED_RED / BLUE / GREEN, based on their colors (or GPIO_LED_RED / BLUE / GREEN, see comment above)? It seems CHG / PWR / FULL don\u0027t reflect the true meaning of the LED.",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 59
+      },
+      "revId": "a565de9514bbec8fd531c5ca729d8c2c5493bf72",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8c91d9e_7cc7e855",
+        "filename": "board/kevin/led.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1001272
+      },
+      "writtenOn": "2016-04-29T01:36:23Z",
+      "side": 1,
+      "message": "Yes, I just followed net-name, which is our circuit standard. also suggested HW guy to change it, let\u0027s use color name",
+      "parentUuid": "c8c91d9e_737720c5",
       "range": {
         "startLine": 57,
         "startChar": 0,
