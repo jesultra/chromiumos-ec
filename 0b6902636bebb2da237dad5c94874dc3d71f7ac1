@@ -163,6 +163,30 @@
       "revId": "0b6902636bebb2da237dad5c94874dc3d71f7ac1",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e8fc21c7_8e54bc44",
+        "filename": "board/kevin/led.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1001696
+      },
+      "writtenOn": "2016-05-01T14:53:15Z",
+      "side": 1,
+      "message": "HOOK_TICK is guaranteed to happen after HOOK_INIT, and the relative priorities have no relationship to each other. We changed led_init to handle one specific case (make sure PWM init happens before led_init). But, I\u0027m not aware of any need to change the relative priority of led_tick(). I will change it back.",
+      "parentUuid": "e8fc21c7_6b3cd21f",
+      "range": {
+        "startLine": 143,
+        "startChar": 34,
+        "endLine": 143,
+        "endChar": 51
+      },
+      "revId": "0b6902636bebb2da237dad5c94874dc3d71f7ac1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
