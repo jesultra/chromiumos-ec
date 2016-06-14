@@ -1420,8 +1420,10 @@ void pd_task(void)
 #endif
 
 	/* Initialize TCPM driver and wait for TCPC to be ready */
-	tcpm_init(port);
-	CPRINTF("[%T TCPC p%d ready]\n", port);
+	if (tcpm_init(port) != EC_SUCCESS)
+		CPRINTF("[%T TCPC p%d init failed]\n", port);
+	else
+		CPRINTF("[%T TCPC p%d ready]\n", port);
 
 	/* Disable TCPC RX until connection is established */
 	tcpm_set_rx_enable(port, 0);
@@ -1476,7 +1478,8 @@ void pd_task(void)
 		/* if TCPC has reset, then need to initialize it again */
 		if (evt & PD_EVENT_TCPC_RESET) {
 			CPRINTF("[%T TCPC p%d reset!]\n", port);
-			tcpm_init(port);
+			if (tcpm_init(port) != EC_SUCCESS)
+				CPRINTF("[%T TCPC p%d init failed]\n", port);
 
 			/* Ensure CC termination is default */
 			tcpm_set_cc(port, PD_ROLE_DEFAULT == PD_ROLE_SOURCE ?
