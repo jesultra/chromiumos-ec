@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "74e3b94a_845ce8da",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1137259
+      },
+      "writtenOn": "2016-06-16T07:22:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b47a9131_ffb3c702",
+      "range": {
+        "startLine": 11,
+        "startChar": 35,
+        "endLine": 11,
+        "endChar": 41
+      },
+      "revId": "a67c348c15102f37fb7692b67d49fd34ac4e2768",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b47a9131_bf945f4e",
         "filename": "common/charge_state_v2.c",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2016-06-15T16:53:16Z",
       "side": 1,
       "message": "I think you can simplify this logic.\n\nIf you\u0027re discharging or full --\u003e clear deadline\nelse if charging and deadline is clear --\u003e set deadline\nelse if charging and deadine expired --\u003e take timeout actions",
+      "range": {
+        "startLine": 819,
+        "startChar": 2,
+        "endLine": 819,
+        "endChar": 35
+      },
+      "revId": "a67c348c15102f37fb7692b67d49fd34ac4e2768",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "74e3b94a_e44cd42c",
+        "filename": "common/charge_state_v2.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1137259
+      },
+      "writtenOn": "2016-06-16T07:22:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b47a9131_bf945f4e",
       "range": {
         "startLine": 819,
         "startChar": 2,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "74e3b94a_4452e0ca",
+        "filename": "common/charge_state_v2.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 830,
+      "author": {
+        "id": 1137259
+      },
+      "writtenOn": "2016-06-16T07:22:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b47a9131_5f9a1b7a",
+      "range": {
+        "startLine": 830,
+        "startChar": 4,
+        "endLine": 830,
+        "endChar": 11
+      },
+      "revId": "a67c348c15102f37fb7692b67d49fd34ac4e2768",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b47a9131_14a6bad5",
         "filename": "common/charge_state_v2.c",
         "patchSetId": 1
@@ -82,6 +154,30 @@
       "writtenOn": "2016-06-15T16:53:16Z",
       "side": 1,
       "message": "This no longer has meaning \"battery was discharging\" now. I think we can remove it, see comment above.",
+      "range": {
+        "startLine": 834,
+        "startChar": 4,
+        "endLine": 834,
+        "endChar": 19
+      },
+      "revId": "a67c348c15102f37fb7692b67d49fd34ac4e2768",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "74e3b94a_244fdc1e",
+        "filename": "common/charge_state_v2.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 834,
+      "author": {
+        "id": 1137259
+      },
+      "writtenOn": "2016-06-16T07:22:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b47a9131_14a6bad5",
       "range": {
         "startLine": 834,
         "startChar": 4,
