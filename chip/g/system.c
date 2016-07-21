@@ -145,3 +145,13 @@ int system_set_vbnvcontext(const uint8_t *block)
 {
 	return 0;
 }
+
+uint32_t system_get_board_properties(void)
+{
+	uint32_t properties = 0;
+
+#ifdef BOARD_CR50
+	properties = system_get_board_specific();
+#endif
+	return properties;
+}

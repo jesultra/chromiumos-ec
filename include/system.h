@@ -443,4 +443,23 @@ uintptr_t system_get_fw_reset_vector(uintptr_t base);
  */
 int system_is_reboot_warm(void);
 
+/* Board properties options */
+#define BOARD_SLAVE_CONFIG_SPI       (1 << 0)   /* Slave SPI interface */
+#define BOARD_SLAVE_CONFIG_I2C       (1 << 1)   /* Slave I2C interface */
+/**
+ * Get board properites
+ *
+ *
+ * @return uint32_t bit field where a set bit indicates option exists
+ */
+uint32_t system_get_board_properties(void);
+
+/**
+ * API for board specific version of system_get_board_properties
+ *
+ *
+ * @return uint32_t bit field where a set bit indicates option exists
+ */
+uint32_t system_get_board_specific(void);
+
 #endif  /* __CROS_EC_SYSTEM_H */
