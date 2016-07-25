@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4a6b739b_88417f41",
+        "filename": "board/kevin/battery.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000187
+      },
+      "writtenOn": "2016-07-25T23:45:55Z",
+      "side": 1,
+      "message": "Shorter but maybe too clever: (~data[3] \u0026 (BATTERY_DISCHARGING_DISABLED | BATTERY_CHARGING_DISABLED))",
+      "range": {
+        "startLine": 90,
+        "startChar": 12,
+        "endLine": 91,
+        "endChar": 43
+      },
+      "revId": "f446a003383718b33a3e42d4d6eb35444c6d65f2",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4a6b739b_685b4b2c",
+        "filename": "board/kevin/battery.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000187
+      },
+      "writtenOn": "2016-07-25T23:45:55Z",
+      "side": 1,
+      "message": "That\u0027s done elsewhere.  All we\u0027re doing here is saying yes, it\u0027s disconnected */",
+      "range": {
+        "startLine": 110,
+        "startChar": 21,
+        "endLine": 110,
+        "endChar": 46
+      },
+      "revId": "f446a003383718b33a3e42d4d6eb35444c6d65f2",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
