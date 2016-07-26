@@ -167,6 +167,13 @@ int acpi_ap_to_ec(int is_cmd, uint8_t value, uint8_t *resultptr)
 				result = EC_ACPI_MEM_CHARGING_LIMIT_DISABLED;
 			break;
 #endif
+
+#ifdef CONFIG_DPTF_TABLE_MODE_SWITCH
+		case EC_ACPI_TABLET_MODE:
+			result = board_get_tablet_mode();
+			break;
+#endif
+
 		default:
 			result = acpi_read(acpi_addr);
 			break;
