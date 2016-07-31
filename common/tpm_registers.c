@@ -109,7 +109,7 @@ enum tpm_sts_bits {
 
 /* Used to count bytes read in version string */
 static int tpm_fw_ver_index;
-static uint8_t tpm_fw_ver[180];
+static uint8_t tpm_fw_ver[260];
 
 /*
  * We need to be able to report firmware version to the host, both RO and RW
@@ -155,6 +155,12 @@ static void set_version_string(void)
 		 " RW_B:%s %s",
 		 (active_rw == SYSTEM_IMAGE_RW_B ? "*" : ""),
 		 system_get_version(SYSTEM_IMAGE_RW_B));
+	offset = strlen(tpm_fw_ver);
+	if (offset == sizeof(tpm_fw_ver) - 1)
+		return;
+
+	snprintf(tpm_fw_ver + offset, sizeof(tpm_fw_ver) - offset,
+		 "\n%s", system_get_build_info());
 }
 
 static void set_tpm_state(enum tpm_states state)
