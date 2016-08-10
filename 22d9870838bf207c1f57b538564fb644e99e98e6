@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99414f2e_2b787988",
+        "filename": "common/btle_ll.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1117279
+      },
+      "writtenOn": "2016-08-10T23:35:10Z",
+      "side": 1,
+      "message": "Why does the radio need to be initialized here?",
+      "range": {
+        "startLine": 415,
+        "startChar": 0,
+        "endLine": 415,
+        "endChar": 57
+      },
+      "revId": "22d9870838bf207c1f57b538564fb644e99e98e6",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
