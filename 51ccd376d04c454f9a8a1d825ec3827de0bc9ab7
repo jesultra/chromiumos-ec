@@ -16,6 +16,24 @@
       "revId": "51ccd376d04c454f9a8a1d825ec3827de0bc9ab7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1988ffa3_62fe189e",
+        "filename": "chip/nrf51/bluetooth_le.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1156614
+      },
+      "writtenOn": "2016-08-10T22:15:48Z",
+      "side": 1,
+      "message": "Very true! Thanks! It\u0027s probably good to be explicit.",
+      "parentUuid": "1988ffa3_62f9b81b",
+      "revId": "51ccd376d04c454f9a8a1d825ec3827de0bc9ab7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
