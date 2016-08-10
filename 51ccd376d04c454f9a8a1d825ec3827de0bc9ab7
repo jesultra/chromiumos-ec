@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1988ffa3_62f9b81b",
+        "filename": "chip/nrf51/bluetooth_le.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1125984
+      },
+      "writtenOn": "2016-08-10T22:02:03Z",
+      "side": 1,
+      "message": "Maybe add a comment stating that advertisement and data packets share the same format. (That\u0027s true, right?)",
+      "revId": "51ccd376d04c454f9a8a1d825ec3827de0bc9ab7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
