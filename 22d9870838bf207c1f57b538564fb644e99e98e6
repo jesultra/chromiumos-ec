@@ -22,6 +22,30 @@
       "revId": "22d9870838bf207c1f57b538564fb644e99e98e6",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "99414f2e_df9ecb4b",
+        "filename": "common/btle_ll.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1156614
+      },
+      "writtenOn": "2016-08-11T17:02:00Z",
+      "side": 1,
+      "message": "You\u0027re right--that doesn\u0027t belong here. Thanks!",
+      "parentUuid": "99414f2e_2b787988",
+      "range": {
+        "startLine": 415,
+        "startChar": 0,
+        "endLine": 415,
+        "endChar": 57
+      },
+      "revId": "22d9870838bf207c1f57b538564fb644e99e98e6",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
