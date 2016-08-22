@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a80ebf7a_a6aa487f",
+        "filename": "chip/npcx/gpio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1001696
+      },
+      "writtenOn": "2016-08-22T22:08:41Z",
+      "side": 1,
+      "message": "Should this be \u003c 3?",
+      "range": {
+        "startLine": 684,
+        "startChar": 13,
+        "endLine": 684,
+        "endChar": 18
+      },
+      "revId": "89e584b7550f6cda443927626bb57b023c9d55cf",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a80ebf7a_e9ad3180",
+        "filename": "chip/npcx/gpio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1001696
+      },
+      "writtenOn": "2016-08-22T22:08:41Z",
+      "side": 1,
+      "message": "ML, how are GPIO interrupts inhibited (are they inhibited?) in the period between interrupt_disable() jump_to_image() and here on the ensuing jump?",
+      "range": {
+        "startLine": 687,
+        "startChar": 3,
+        "endLine": 687,
+        "endChar": 23
+      },
+      "revId": "89e584b7550f6cda443927626bb57b023c9d55cf",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
