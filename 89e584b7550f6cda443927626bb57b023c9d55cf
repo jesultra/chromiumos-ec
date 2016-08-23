@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "28b1eff1_97b3e4e1",
+        "filename": "chip/npcx/gpio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1121210
+      },
+      "writtenOn": "2016-08-23T02:39:46Z",
+      "side": 1,
+      "message": "\"i\u003c\u003d MIWU_TABLE_1\" is better. MIWU_TABLE_2 is belong to eSPI VW signals. We don\u0027t need it in GPIO.",
+      "parentUuid": "a80ebf7a_a6aa487f",
+      "range": {
+        "startLine": 684,
+        "startChar": 13,
+        "endLine": 684,
+        "endChar": 18
+      },
+      "revId": "89e584b7550f6cda443927626bb57b023c9d55cf",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a80ebf7a_e9ad3180",
         "filename": "chip/npcx/gpio.c",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2016-08-22T22:08:41Z",
       "side": 1,
       "message": "ML, how are GPIO interrupts inhibited (are they inhibited?) in the period between interrupt_disable() jump_to_image() and here on the ensuing jump?",
+      "range": {
+        "startLine": 687,
+        "startChar": 3,
+        "endLine": 687,
+        "endChar": 23
+      },
+      "revId": "89e584b7550f6cda443927626bb57b023c9d55cf",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "28b1eff1_b7b0e8d5",
+        "filename": "chip/npcx/gpio.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 1121210
+      },
+      "writtenOn": "2016-08-23T02:39:46Z",
+      "side": 1,
+      "message": "Use interrupt_disable() to inhibit the GPIOs\u0027 interrupts. Even one GPIO interrupt occured during sysjump, it only set pending bit of it and jump to ISR after interrupt_enable().",
+      "parentUuid": "a80ebf7a_e9ad3180",
       "range": {
         "startLine": 687,
         "startChar": 3,
