@@ -118,12 +118,7 @@ void uartn_enable(int uart)
 	/* Enable UART TX */
 	GR_UART_CTRL(uart) = 0x01;
 
-/* TODO(crosbug.com/p/56540): Remove this when UART0_RX works everywhere */
-#if defined(BOARD_CR50) && !defined(SECTION_IS_RO)
-	if (!uart && (system_get_board_properties() & BOARD_DISABLE_UART0_RX))
-		return;
-#endif
-
+	/* Enable UART RX */
 	GR_UART_CTRL(uart) |= 0x02;
 }
 

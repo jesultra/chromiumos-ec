@@ -488,12 +488,11 @@ void system_clear_retry_counter(void);
 #define BOARD_SLAVE_CONFIG_I2C       (1 << 1)   /* Slave I2C interface */
 #define BOARD_USB_AP                 (1 << 2)   /* One of the PHYs is  */
 						/* connected to the AP */
-#define BOARD_DISABLE_UART0_RX       (1 << 3)   /* Disable UART0 RX */
-#define BOARD_MARK_UPDATE_ON_USB_REQ (1 << 4)   /* update is good once the   */
+#define BOARD_MARK_UPDATE_ON_USB_REQ (1 << 3)   /* update is good once the   */
 						/* controller gets a request */
 /* TODO(crosbug.com/p/56945): Remove when sys_rst_l has an external pullup */
-#define BOARD_NEEDS_SYS_RST_PULL_UP  (1 << 5)   /* Add a pullup to sys_rst_l */
-#define BOARD_USE_PLT_RESET          (1 << 6)   /* Platform reset exists */
+#define BOARD_NEEDS_SYS_RST_PULL_UP  (1 << 4)   /* Add a pullup to sys_rst_l */
+#define BOARD_USE_PLT_RESET          (1 << 5)   /* Platform reset exists */
 
 /**
  * Get board properites
