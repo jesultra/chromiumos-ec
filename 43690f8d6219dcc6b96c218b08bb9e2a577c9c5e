@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b89037a_46248b76",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1111479
+      },
+      "writtenOn": "2016-11-10T16:54:05Z",
+      "side": 1,
+      "message": "Give it a better name? CONFIG_CMD_BATT_MFG_ACCESS?",
+      "range": {
+        "startLine": 392,
+        "startChar": 7,
+        "endLine": 392,
+        "endChar": 25
+      },
+      "revId": "43690f8d6219dcc6b96c218b08bb9e2a577c9c5e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b89037a_663aef89",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1111479
+      },
+      "writtenOn": "2016-11-10T16:54:05Z",
+      "side": 1,
+      "message": "battmfgacc?",
+      "range": {
+        "startLine": 442,
+        "startChar": 24,
+        "endLine": 442,
+        "endChar": 31
+      },
+      "revId": "43690f8d6219dcc6b96c218b08bb9e2a577c9c5e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
