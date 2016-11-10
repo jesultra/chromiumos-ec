@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8b89037a_a69c5751",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1128369
+      },
+      "writtenOn": "2016-11-10T17:03:38Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "8b89037a_46248b76",
+      "range": {
+        "startLine": 392,
+        "startChar": 7,
+        "endLine": 392,
+        "endChar": 25
+      },
+      "revId": "43690f8d6219dcc6b96c218b08bb9e2a577c9c5e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8b89037a_663aef89",
         "filename": "driver/battery/smart.c",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2016-11-10T16:54:05Z",
       "side": 1,
       "message": "battmfgacc?",
+      "range": {
+        "startLine": 442,
+        "startChar": 24,
+        "endLine": 442,
+        "endChar": 31
+      },
+      "revId": "43690f8d6219dcc6b96c218b08bb9e2a577c9c5e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b89037a_a17d2122",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1128369
+      },
+      "writtenOn": "2016-11-10T17:03:38Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "8b89037a_663aef89",
       "range": {
         "startLine": 442,
         "startChar": 24,
