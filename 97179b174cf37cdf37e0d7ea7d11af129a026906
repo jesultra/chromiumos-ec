@@ -43,6 +43,24 @@
     },
     {
       "key": {
+        "uuid": "2b773781_c8f0d279",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1128369
+      },
+      "writtenOn": "2016-11-11T23:21:46Z",
+      "side": 1,
+      "message": "length is optional. By default I put it 6 as we generally read status registers which are 4byte.\nExample Firmware Version needs 11 bytes. \nDevice Type is 2bytes.\nUser can add respective value.",
+      "parentUuid": "6b612fbb_f6c1f98f",
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b8e57b3_ab58e79c",
         "filename": "driver/battery/smart.c",
         "patchSetId": 4
@@ -54,6 +72,30 @@
       "writtenOn": "2016-11-11T22:50:27Z",
       "side": 1,
       "message": "Does it matter what base this is specified in? Maybe 0 would be more appropriate to let the user decide.",
+      "range": {
+        "startLine": 403,
+        "startChar": 27,
+        "endLine": 403,
+        "endChar": 29
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b5ca306_823ddb81",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1128369
+      },
+      "writtenOn": "2016-11-11T23:21:46Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "2b8e57b3_ab58e79c",
       "range": {
         "startLine": 403,
         "startChar": 27,
@@ -89,6 +131,30 @@
     },
     {
       "key": {
+        "uuid": "4b7aab69_07cc7974",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1128369
+      },
+      "writtenOn": "2016-11-11T23:21:46Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "2b8e57b3_0b171b6b",
+      "range": {
+        "startLine": 407,
+        "startChar": 29,
+        "endLine": 407,
+        "endChar": 31
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b8e57b3_2b1cd78a",
         "filename": "driver/battery/smart.c",
         "patchSetId": 4
@@ -100,6 +166,30 @@
       "writtenOn": "2016-11-11T22:50:27Z",
       "side": 1,
       "message": "same",
+      "range": {
+        "startLine": 412,
+        "startChar": 28,
+        "endLine": 412,
+        "endChar": 30
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b773781_08ebaa8b",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1128369
+      },
+      "writtenOn": "2016-11-11T23:21:46Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "2b8e57b3_2b1cd78a",
       "range": {
         "startLine": 412,
         "startChar": 28,
@@ -135,6 +225,30 @@
     },
     {
       "key": {
+        "uuid": "cb669bd0_ae53a128",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1128369
+      },
+      "writtenOn": "2016-11-11T23:21:46Z",
+      "side": 1,
+      "message": "TRM: in point (this may vary 11.1 for different TRM) 0x00 ManufacturerAccess() and 0x44 ManufacturerBlockAccess()",
+      "parentUuid": "2b8e57b3_2b3057b4",
+      "range": {
+        "startLine": 425,
+        "startChar": 4,
+        "endLine": 425,
+        "endChar": 46
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4b91cbcd_8a31684f",
         "filename": "driver/battery/smart.c",
         "patchSetId": 4
@@ -158,6 +272,30 @@
     },
     {
       "key": {
+        "uuid": "0b97d3c5_928b613a",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1128369
+      },
+      "writtenOn": "2016-11-11T23:21:46Z",
+      "side": 1,
+      "message": "sure I can add in line 430",
+      "parentUuid": "4b91cbcd_8a31684f",
+      "range": {
+        "startLine": 429,
+        "startChar": 14,
+        "endLine": 429,
+        "endChar": 18
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b8e57b3_8b516b4c",
         "filename": "include/config.h",
         "patchSetId": 4
@@ -169,6 +307,30 @@
       "writtenOn": "2016-11-11T23:08:46Z",
       "side": 1,
       "message": "one more space",
+      "range": {
+        "startLine": 588,
+        "startChar": 6,
+        "endLine": 588,
+        "endChar": 7
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eb935fd8_0e9baead",
+        "filename": "include/config.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1128369
+      },
+      "writtenOn": "2016-11-11T23:21:46Z",
+      "side": 1,
+      "message": "okay",
+      "parentUuid": "2b8e57b3_8b516b4c",
       "range": {
         "startLine": 588,
         "startChar": 6,
