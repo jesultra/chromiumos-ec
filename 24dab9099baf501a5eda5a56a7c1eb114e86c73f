@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b8e57b3_6988b06f",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1111479
+      },
+      "writtenOn": "2016-11-11T08:01:25Z",
+      "side": 1,
+      "message": "update help string too to match command",
+      "range": {
+        "startLine": 443,
+        "startChar": 4,
+        "endLine": 443,
+        "endChar": 11
+      },
+      "revId": "24dab9099baf501a5eda5a56a7c1eb114e86c73f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
