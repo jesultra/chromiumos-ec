@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "6b612fbb_f6c1f98f",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2016-11-11T23:08:46Z",
+      "side": 1,
+      "message": "It\u0027s a default value. The command allows \u003clen_dec\u003e to be omitted.",
+      "parentUuid": "2b8e57b3_eb7caf63",
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b8e57b3_ab58e79c",
         "filename": "driver/battery/smart.c",
         "patchSetId": 4
@@ -87,6 +105,75 @@
         "startChar": 28,
         "endLine": 412,
         "endChar": 30
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b8e57b3_2b3057b4",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2016-11-11T23:08:46Z",
+      "side": 1,
+      "message": "Where in the spec is it described?",
+      "range": {
+        "startLine": 425,
+        "startChar": 4,
+        "endLine": 425,
+        "endChar": 46
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4b91cbcd_8a31684f",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2016-11-11T23:08:46Z",
+      "side": 1,
+      "message": "Shall we validate the first two bytes match the command we sent?",
+      "range": {
+        "startLine": 429,
+        "startChar": 14,
+        "endLine": 429,
+        "endChar": 18
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b8e57b3_8b516b4c",
+        "filename": "include/config.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2016-11-11T23:08:46Z",
+      "side": 1,
+      "message": "one more space",
+      "range": {
+        "startLine": 588,
+        "startChar": 6,
+        "endLine": 588,
+        "endChar": 7
       },
       "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
