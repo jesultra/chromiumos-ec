@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "2b8e57b3_eb7caf63",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1000253
+      },
+      "writtenOn": "2016-11-11T22:56:24Z",
+      "side": 1,
+      "message": "This gets set below, so no need to assign it to 6 here.",
+      "range": {
+        "startLine": 397,
+        "startChar": 20,
+        "endLine": 397,
+        "endChar": 24
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b8e57b3_ab58e79c",
         "filename": "driver/battery/smart.c",
         "patchSetId": 4
