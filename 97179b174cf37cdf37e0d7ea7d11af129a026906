@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b8e57b3_ab58e79c",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000253
+      },
+      "writtenOn": "2016-11-11T22:50:27Z",
+      "side": 1,
+      "message": "Does it matter what base this is specified in? Maybe 0 would be more appropriate to let the user decide.",
+      "range": {
+        "startLine": 403,
+        "startChar": 27,
+        "endLine": 403,
+        "endChar": 29
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b8e57b3_0b171b6b",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1000253
+      },
+      "writtenOn": "2016-11-11T22:50:27Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 407,
+        "startChar": 29,
+        "endLine": 407,
+        "endChar": 31
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2b8e57b3_2b1cd78a",
+        "filename": "driver/battery/smart.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 1000253
+      },
+      "writtenOn": "2016-11-11T22:50:27Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 412,
+        "startChar": 28,
+        "endLine": 412,
+        "endChar": 30
+      },
+      "revId": "97179b174cf37cdf37e0d7ea7d11af129a026906",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
