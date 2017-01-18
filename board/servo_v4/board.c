@@ -379,93 +379,35 @@ static void board_init(void)
 }
 DECLARE_HOOK(HOOK_INIT, board_init, HOOK_PRIO_DEFAULT);
 
-/*
- * TODO(crosbug.com/p/60829): These defines and the function init_ccd() are
- * being kept until the console command 'ccd' is redone. Don't want to keep the
- * idea of CC state in board.c separate from that of what exists in the USB PD
- * protocol state machine.
- */
-/* State of CC lines presented to DUT */
-/* Dual Rd pulldown, classic debug device. */
-#define CCD_ID_RDRD	0
-/* RpUSB + Rp1A5, indicates a self powered dongle. */
-#define CCD_ID_RPUSB	1
-/* One Rd. Device w/o CCD */
-#define CCD_ID_NONE	4
-
-static int ccd_id = CCD_ID_NONE;
-
-/* Set CC values according to requested mode. */
-static void init_ccd(int mode)
+static void config_dut_mode(int mode)
 {
-	int cc1_rd = GPIO_INPUT;
-	int cc2_rd = GPIO_INPUT;
-	int cc1_rpusb = GPIO_INPUT;
-	int cc2_rpusb = GPIO_INPUT;
-	int cc1_rp1a5 = GPIO_INPUT;
-	int cc2_rp1a5 = GPIO_INPUT;
-	int cc1_rp3a0 = GPIO_INPUT;
-	int cc2_rp3a0 = GPIO_INPUT;
-
-	switch (mode) {
-	case CCD_ID_RDRD:
-		cc1_rd = GPIO_OUT_LOW;
-		cc2_rd = GPIO_OUT_LOW;
-		break;
-
-	case CCD_ID_RPUSB:
-		cc1_rpusb = GPIO_OUT_HIGH;
-		cc2_rp1a5 = GPIO_OUT_HIGH;
-		break;
-
-	default:
-		cc1_rd = GPIO_OUT_LOW;
-		mode = CCD_ID_NONE;
-		break;
+	if (mode == 0) {
+		/* Connect d+/d- from host to dut port */
+		/* Set fastboot vs DutHub mux to fastboot */
+		gpio_set_level(GPIO_FASTBOOT_DUTHUB_MUX_SEL, 0);
+		/* Set fastboot vs servo mux to fastboot */
+		write_ioexpander(1, 0, 1);
 	}
-
-	gpio_set_flags(GPIO_USB_DUT_CC1_RD, cc1_rd);
-	gpio_set_flags(GPIO_USB_DUT_CC2_RD, cc2_rd);
-	gpio_set_flags(GPIO_USB_DUT_CC1_RPUSB, cc1_rpusb);
-	gpio_set_flags(GPIO_USB_DUT_CC2_RPUSB, cc2_rpusb);
-	gpio_set_flags(GPIO_USB_DUT_CC1_RP1A5, cc1_rp1a5);
-	gpio_set_flags(GPIO_USB_DUT_CC2_RP1A5, cc2_rp1a5);
-	gpio_set_flags(GPIO_USB_DUT_CC1_RP3A0, cc1_rp3a0);
-	gpio_set_flags(GPIO_USB_DUT_CC2_RP3A0, cc2_rp3a0);
-
-	/* Disable CCD until we can detect orientation */
-	gpio_set_level(GPIO_SBU_MUX_EN, 0);
-	write_ioexpander(0, 0, 0);
-
-	ccd_id = mode;
 }
 
-/*
- * TODO(crosbug.com/p/60829): This console command needs to be redone as part of
- * the 60829. The current default role of the DUT port is a SRC so that it can
- * act as a DTS port and provide equivalent functionality as suzyq (triggering
- * CCD mode in the DUT).
- */
-static int command_ccd(int argc, char **argv)
+static int command_dut(int argc, char **argv)
 {
-	int mode = CCD_ID_NONE;
+	int mode = 0;
 
 	if (argc < 2)
 		return EC_ERROR_PARAM_COUNT;
 
 	/* Handle requested mode */
-	if (!strcasecmp(argv[1], "rdrd"))
-		mode = CCD_ID_RDRD;
-	else if (!strcasecmp(argv[1], "rpusb"))
-		mode = CCD_ID_RPUSB;
-	else if (!strcasecmp(argv[1], "off"))
-		mode = CCD_ID_NONE;
+	if (!strcasecmp(argv[1], "dev"))
+		mode = 0;
+	else if (!strcasecmp(argv[1], "host"))
+		mode = 1;
 	else
 		return EC_ERROR_PARAM1;
 
-	init_ccd(mode);
-	ccprintf("DUT CC lines set to %s\n", argv[1]);
+	config_dut_mode(mode);
+	ccprintf("DUT mode set to %s\n", argv[1]);
 	return EC_SUCCESS;
 }
-DECLARE_CONSOLE_COMMAND(ccd, command_ccd,
-	"[rdrd|rpusb|off]", "Set pullups or pulldowns to indicate CCD");
+DECLARE_CONSOLE_COMMAND(dut, command_dut,
+	"[dev|host|off]", "Set pullups or pulldowns to indicate CCD");
