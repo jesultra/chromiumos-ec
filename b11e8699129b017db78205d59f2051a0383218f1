@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c865c6f6_73a30790",
+        "filename": "board/kevin/battery.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2017-01-23T16:47:50Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we make the driver (bd99955.c) do this adjustment? It\u0027ll fix all boards using the same part.",
+      "range": {
+        "startLine": 21,
+        "startChar": 17,
+        "endLine": 21,
+        "endChar": 21
+      },
+      "revId": "b11e8699129b017db78205d59f2051a0383218f1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
