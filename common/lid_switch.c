@@ -11,6 +11,7 @@
 #include "hooks.h"
 #include "host_command.h"
 #include "lid_switch.h"
+#include "motion_lid.h"
 #include "timer.h"
 #include "util.h"
 
@@ -43,11 +44,45 @@ static int raw_lid_open(void)
 /**
  * Handle lid open.
  */
+int is_lid_angle_sensors_ready(void);
+
 static void lid_switch_open(void)
 {
+	/* See the notes below */
+	const int lid_angle_closed_low = 4;
+	/* Some units show large angle (e.g. 358) when lid is closed */
+	const int lid_angle_closed_high = 356;
+
 	if (debounced_lid_open) {
 		CPRINTS("lid already open");
 		return;
+	}
+
+	/*
+	 * When a device with the lid closed is stacked on top of another,
+	 * the bottom lid magnet may create magnetic field strong enough to
+	 * cancel the top lid magnetic field, thus the device wakes up
+	 * unintentionally by a false lid open event. This is
+	 * indistinguishable from a real lid open event (unless the bottom
+	 * lid magnet is so strong that it also triggers TABLET_MODE_L).
+	 *
+	 * To avoid this, we read a lid angle to check the lid is really open.
+	 *
+	 * lid_angle_closed_low has to be smaller than the angle at which
+	 * LID_OPEN triggers and larger than the angle of the closed lid.
+	 */
+	if (is_lid_angle_sensors_ready()) {
+		int lid_angle;
+		CPRINTS("Calculating lid_angle");
+		motion_lid_calc(1);
+		lid_angle = motion_lid_get_angle();
+		CPRINTS("lid_angle=%d", lid_angle);
+		if (lid_angle < lid_angle_closed_low ||
+				lid_angle_closed_high < lid_angle) {
+			/* Angles are too small. Lid doesn't look opened. */
+			CPRINTS("false lid open");
+			return;
+		}
 	}
 
 	CPRINTS("lid open");

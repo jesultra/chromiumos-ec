@@ -599,7 +599,7 @@ static inline void update_sense_data(uint8_t *lpc_status,
 }
 #endif
 
-static int motion_sense_read(struct motion_sensor_t *sensor)
+int motion_sense_read(struct motion_sensor_t *sensor)
 {
 	if (sensor->state != SENSOR_INITIALIZED)
 		return EC_ERROR_UNKNOWN;
@@ -682,6 +682,19 @@ static int motion_sense_process(struct motion_sensor_t *sensor,
 	return ret;
 }
 
+/* Assumes there is only one motion sense task */
+static uint16_t ready_status;
+
+#ifdef CONFIG_LID_ANGLE
+static const uint16_t lid_angle_sensors = ((1 << CONFIG_LID_ANGLE_SENSOR_BASE) |
+					   (1 << CONFIG_LID_ANGLE_SENSOR_LID));
+int is_lid_angle_sensors_ready(void)
+{
+	/* mutex for lid switch task? */
+	return (ready_status & lid_angle_sensors) == lid_angle_sensors;
+}
+#endif
+
 /*
  * Motion Sense Task
  * Requirement: motion_sensors[] are defined in board.c file.
@@ -694,12 +707,7 @@ void motion_sense_task(void)
 	int i, ret, wait_us;
 	timestamp_t ts_begin_task, ts_end_task;
 	uint32_t event = 0;
-	uint16_t ready_status;
 	struct motion_sensor_t *sensor;
-#ifdef CONFIG_LID_ANGLE
-	const uint16_t lid_angle_sensors = ((1 << CONFIG_LID_ANGLE_SENSOR_BASE)|
-					    (1 << CONFIG_LID_ANGLE_SENSOR_LID));
-#endif
 #ifdef CONFIG_ACCEL_FIFO
 	timestamp_t ts_last_int;
 #endif
@@ -790,13 +798,13 @@ void motion_sense_task(void)
 		 * Check to see that the sensors required for lid angle
 		 * calculation are ready.
 		 */
-		ready_status &= lid_angle_sensors;
-		if (ready_status == lid_angle_sensors)
-			motion_lid_calc();
+		if (is_lid_angle_sensors_ready())
+			motion_lid_calc(0);
 #endif
 #ifdef CONFIG_CMD_ACCEL_INFO
 		if (accel_disp) {
 			CPRINTF("[%T event 0x%08x ", event);
+			CPRINTF("a=%-4d ", motion_lid_get_angle());
 			for (i = 0; i < motion_sensor_count; ++i) {
 				sensor = &motion_sensors[i];
 				CPRINTF("%s=%-5d, %-5d, %-5d ", sensor->name,

@@ -134,9 +134,9 @@ const struct accel_orientation acc_orient = {
 /* Pointer to constant acceleration orientation data. */
 const struct accel_orientation * const p_acc_orient = &acc_orient;
 
-const struct motion_sensor_t * const accel_base =
+struct motion_sensor_t * accel_base =
 	&motion_sensors[CONFIG_LID_ANGLE_SENSOR_BASE];
-const struct motion_sensor_t * const accel_lid =
+struct motion_sensor_t * accel_lid =
 	&motion_sensors[CONFIG_LID_ANGLE_SENSOR_LID];
 
 /**
@@ -283,7 +283,8 @@ int motion_lid_get_angle(void)
 /*
  * Calculate lid angle and massage the results
  */
-void motion_lid_calc(void)
+int motion_sense_read(struct motion_sensor_t *sensor);
+void motion_lid_calc(int refresh)
 {
 #ifndef CONFIG_ACCEL_STD_REF_FRAME_OLD
 	/*
@@ -292,8 +293,20 @@ void motion_lid_calc(void)
 	 * the lid and base accelerometer data matches
 	 */
 	vector_3_t lid = { accel_lid->xyz[X],
-			   accel_lid->xyz[Y] * -1,
-			   accel_lid->xyz[Z] * -1};
+			accel_lid->xyz[Y] * -1, accel_lid->xyz[Z] * -1};
+#endif
+
+	if (refresh) {
+		motion_sense_read(accel_base);
+		motion_sense_read(accel_lid);
+		/* TODO: mutex? */
+		memcpy(accel_base->xyz, accel_base->raw_xyz,
+		       sizeof(accel_base->xyz));
+		memcpy(accel_lid->xyz, accel_lid->raw_xyz,
+		       sizeof(accel_lid->xyz));
+	}
+
+#ifndef CONFIG_ACCEL_STD_REF_FRAME_OLD
 	/* Calculate angle of lid accel. */
 	lid_angle_is_reliable = calculate_lid_angle(
 			accel_base->xyz, lid,

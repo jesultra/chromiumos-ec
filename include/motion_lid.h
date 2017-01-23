@@ -44,7 +44,13 @@ int motion_lid_get_angle(void);
 
 int host_cmd_motion_lid(struct host_cmd_handler_args *args);
 
-void motion_lid_calc(void);
+/**
+ * Calculate and update lid angle
+ *
+ * @param refresh: If true, new data will be ready from accels. Othwerwise,
+ * buffered values will be used.
+ */
+void motion_lid_calc(int refresh);
 
 #endif  /* __CROS_EC_MOTION_LID_H */
 
