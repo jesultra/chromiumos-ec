@@ -22,6 +22,29 @@
       "revId": "b11e8699129b017db78205d59f2051a0383218f1",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "289f421f_a2293a55",
+        "filename": "driver/charger/bd99955.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1001272
+      },
+      "writtenOn": "2017-01-24T05:03:20Z",
+      "side": 1,
+      "message": "we need also\n\nif (voltage \u003e bi-\u003evoltage_max)\n    voltage \u003d bi-\u003evoltage_max;",
+      "range": {
+        "startLine": 639,
+        "startChar": 0,
+        "endLine": 640,
+        "endChar": 45
+      },
+      "revId": "b11e8699129b017db78205d59f2051a0383218f1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
