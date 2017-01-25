@@ -45,6 +45,29 @@
       "revId": "5d4455a5f0cab847bdbe8f5ba893ec6ddbba16ed",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c62523a8_a0945d0b",
+        "filename": "driver/charger/bd99955.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2017-01-25T18:52:41Z",
+      "side": 1,
+      "message": "This assignment may break 16mV step enforced at line 634. Is it ok?",
+      "range": {
+        "startLine": 640,
+        "startChar": 2,
+        "endLine": 640,
+        "endChar": 28
+      },
+      "revId": "5d4455a5f0cab847bdbe8f5ba893ec6ddbba16ed",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
