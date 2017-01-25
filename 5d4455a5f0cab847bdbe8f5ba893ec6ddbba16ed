@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "398cd4ee_1628d6e5",
+        "filename": "board/kevin/battery.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2017-01-25T18:33:54Z",
+      "side": 1,
+      "message": "mV",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 32
+      },
+      "revId": "5d4455a5f0cab847bdbe8f5ba893ec6ddbba16ed",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4d5fcd37_d1867b73",
+        "filename": "board/kevin/battery.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2017-01-25T18:33:54Z",
+      "side": 1,
+      "message": "Here too.",
+      "range": {
+        "startLine": 34,
+        "startChar": 30,
+        "endLine": 34,
+        "endChar": 32
+      },
+      "revId": "5d4455a5f0cab847bdbe8f5ba893ec6ddbba16ed",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
