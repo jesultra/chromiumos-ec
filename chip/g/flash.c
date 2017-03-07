@@ -166,10 +166,12 @@ static int do_flash_op(enum flash_op op, int is_info_bank,
 	/* What are we doing? */
 	switch (op) {
 	case OP_ERASE_BLOCK:
+#ifndef CR50_DEV
 		if (is_info_bank)
 			/* Erasing the INFO bank from the RW section is
 			 * unsupported. */
 			return EC_ERROR_INVAL;
+#endif
 		opcode = 0x31415927;
 		words = 0;			/* don't care, really */
 		/* This number is based on the TSMC spec Nme=Terase/Tsme */
@@ -447,3 +449,16 @@ int flash_physical_erase(int byte_offset, int num_bytes)
 
 	return EC_SUCCESS;
 }
+
+#ifdef CR50_DEV
+
+static int command_erase_flash_info(int argc, char **argv)
+{
+	flash_info_read_enable(0, 2048);
+	flash_info_write_enable(0, 2048);
+	return do_flash_op(OP_ERASE_BLOCK, 1, 0, 512);
+}
+DECLARE_CONSOLE_COMMAND(eraseflashinfo, command_erase_flash_info,
+			"",
+			"Erase INFO1 flash space");
+#endif
