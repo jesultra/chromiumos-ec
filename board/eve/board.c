@@ -346,6 +346,11 @@ static void board_pmic_init(void)
 	if (system_jumped_to_this_image())
 		return;
 
+	if (i2c_get_line_levels(I2C_PORT_PMIC) != I2C_LINE_IDLE) {
+		CPRINTF("Skip PMIC init\n");
+		return;
+	}
+
 	/* DISCHGCNT3 - enable 100 ohm discharge on V1.00A */
 	i2c_write8(I2C_PORT_PMIC, I2C_ADDR_BD99992, 0x3e, 0x04);
 

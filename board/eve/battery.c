@@ -15,6 +15,7 @@
 #include "extpower.h"
 #include "gpio.h"
 #include "hooks.h"
+#include "i2c.h"
 #include "util.h"
 
 #define CPRINTS(format, args...) cprints(CC_CHARGER, format, ## args)
@@ -278,6 +279,9 @@ enum ec_status charger_profile_override_set_param(uint32_t param,
 
 static inline enum battery_present battery_hw_present(void)
 {
+	if (i2c_get_line_levels(I2C_PORT_BATTERY) != I2C_LINE_IDLE)
+		/* I2C stuck	*/
+		return BP_NO;
 	/* The GPIO is low when the battery is physically present */
 	return gpio_get_level(GPIO_BATTERY_PRESENT_L) ? BP_NO : BP_YES;
 }

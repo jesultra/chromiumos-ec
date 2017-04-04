@@ -672,6 +672,16 @@ int chip_i2c_xfer(int port, int slave_addr, const uint8_t *out, int out_size,
 	     (i2c_bus_busy(ctrl)
 	     || (i2c_get_line_levels(port) != I2C_LINE_IDLE))) {
 
+		/* FAIL fast/early */
+		if (i2c_get_line_levels(port)) {
+			static int fail_count;
+			if (fail_count++ < 20)
+				CPRINTS("I2C%d->%02x stuck %x\n",
+					port, slave_addr,
+					i2c_get_line_levels(port));
+			return EC_ERROR_UNKNOWN;
+
+		}
 		/* Attempt to unwedge the i2c port. */
 		i2c_unwedge(port);
 		p_status->err_code = SMB_BUS_BUSY;
