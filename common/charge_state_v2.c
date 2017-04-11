@@ -512,15 +512,15 @@ static void shutdown_on_critical_battery(void)
 	} else if (get_time().val > shutdown_warning_time.val +
 		   CRITICAL_BATTERY_SHUTDOWN_TIMEOUT_US) {
 		if (chipset_in_state(CHIPSET_STATE_ANY_OFF)) {
-#ifdef CONFIG_HIBERNATE
+#ifdef CONFIG_BATTERY_CRITICAL_SHUTDOWN_CUT_OFF
+			CPRINTS(
+			  "charge force batt cut-off : critical level");
+			board_cut_off_battery();
+#elif defined(CONFIG_HIBERNATE)
 			/* Timeout waiting for charger to provide more power */
 			CPRINTS(
 			  "charge force EC hibernate : critical batt");
 			system_hibernate(0, 0);
-#elif defined(CONFIG_BATTERY_CRITICAL_SHUTDOWN_CUT_OFF)
-			CPRINTS(
-			  "charge force batt cut-off : critical level");
-			board_cut_off_battery();
 #endif
 		} else {
 			/* Timeout waiting for AP to shut down, so kill it */
