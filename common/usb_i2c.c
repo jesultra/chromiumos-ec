@@ -38,9 +38,11 @@ static int16_t usb_i2c_map_error(int error)
 	}
 }
 
-static uint8_t usb_i2c_read_packet(struct usb_i2c_config const *config)
+static uint8_t usb_i2c_read_packet(struct usb_i2c_config const *config,
+                                   int offset)
 {
-	return QUEUE_REMOVE_UNITS(config->consumer.queue, config->buffer,
+	return QUEUE_REMOVE_UNITS(config->consumer.queue,
+                config->buffer + offset,
 		queue_count(config->consumer.queue));
 }
 

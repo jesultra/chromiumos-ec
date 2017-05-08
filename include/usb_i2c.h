@@ -23,12 +23,24 @@
  *
  *     slave address: 1 byte, i2c 7-bit bus address
  *
- *     write count:   1 byte, zero based count of bytes to write
+ *     write count:   1 byte, zero based count of bytes to write.
+ *                    Positive count refers to data in payload,
+ *                    negative count refers to data in staged buffer.
  *
- *     read count:    1 byte, zero based count of bytes to read
+ *     read count:    1 byte, zero based count of bytes to read.
+ *                    Negative read count means an operation to move payload 
+ *                    into buffer.
  *
  *     data:          write payload up to 60 bytes of data to write,
  *                    length must match write count
+ *
+ *     To execute a write transaction more than 60 bytes, three commands should
+ *     be issued consecutively. For example, the following will send 70 bytes
+ *     and try to read 4 bytes back on addr of 0x32 and port 0.
+ *
+ *       ? |   ?  |  40 | -1 | 40 bytes
+ *       ? |   ?  |  30 | -1 | 30 bytes
+ *       0 | 0x32 | -70 |  4 |  0 bytes
  *
  * Response:
  *     +-------------+---+---+-----------------------+
@@ -65,6 +77,13 @@ enum usb_i2c_error {
 
 #define USB_I2C_MAX_WRITE_COUNT 60
 #define USB_I2C_MAX_READ_COUNT  60
+
+#define USB_I2C_BUFFER_SIZE 64
+/* Zero extra bytes in buffer if not explicitly defined. */
+#ifndef USB_I2C_BUFFER_EXTRA_BYTES
+#define USB_I2C_BUFFER_EXTRA_BYTES 0
+#endif
+
 
 BUILD_ASSERT(USB_MAX_PACKET_SIZE == (1 + 1 + 1 + 1 + USB_I2C_MAX_WRITE_COUNT));
 BUILD_ASSERT(USB_MAX_PACKET_SIZE == (2 + 1 + 1 + USB_I2C_MAX_READ_COUNT));
@@ -105,7 +124,8 @@ extern struct consumer_ops const usb_i2c_consumer_ops;
 		       INTERFACE_NAME,					\
 		       ENDPOINT)					\
 	static uint16_t							\
-		CONCAT2(NAME, _buffer_)[USB_MAX_PACKET_SIZE/2];		\
+		CONCAT2(NAME, _buffer_)[                                \
+                (USB_I2C_BUFFER_SIZE + USB_I2C_BUFFER_EXTRA_BYTES)/2];  \
 	static void CONCAT2(NAME, _deferred_)(void);			\
 	DECLARE_DEFERRED(CONCAT2(NAME, _deferred_));			\
 	static struct queue const CONCAT2(NAME, _to_usb_);		\
