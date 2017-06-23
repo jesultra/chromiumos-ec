@@ -1,4 +1,4 @@
-/* Copyright (c) 2016 The Chromium OS Authors. All rights reserved.
+/* Copyright 2016 The Chromium OS Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
@@ -17,7 +17,7 @@ struct irq_data {
 
 /* Helper macros to build the IRQ handler and priority struct names */
 #define IRQ_HANDLER(irqname) CONCAT3(_irq_, irqname, _handler)
-#define IRQ_PRIORITY(irqname) CONCAT2(prio_, irqname)
+#define IRQ_PRIORITY(irqname) (__keep CONCAT2(prio_, irqname))
 /*
  * Macro to connect the interrupt handler "routine" to the irq number "irq" and
  * ensure it is enabled in the interrupt controller with the right priority.

@@ -12,7 +12,7 @@
 
 /* Helper macros to build the IRQ handler and priority struct names */
 #define IRQ_HANDLER(irqname) CONCAT3(irq_, irqname, _handler)
-#define IRQ_PRIORITY(irqname) CONCAT2(prio_, irqname)
+#define IRQ_PRIORITY(irqname) (__keep CONCAT2(prio_, irqname))
 
 /*
  * Macro to connect the interrupt handler "routine" to the irq number "irq" and
@@ -35,7 +35,7 @@
 /* No Profiling : connect directly the IRQ vector */
 #define DECLARE_IRQ_(irq, routine, priority)                    \
 	void IRQ_HANDLER(irq)(void) __attribute__((alias(STRINGIFY(routine))));\
-	const struct irq_priority __keep IRQ_PRIORITY(irq)	\
+	const struct irq_priority IRQ_PRIORITY(irq)	\
 	__attribute__((section(".rodata.irqprio")))		\
 			= {irq, priority}
 #endif /* CONFIG_TASK_PROFILING */
