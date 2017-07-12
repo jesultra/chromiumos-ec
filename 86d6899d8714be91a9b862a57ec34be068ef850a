@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "eb57669e_31d08f56",
+        "filename": "common/system.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2017-07-12T19:23:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f630684e_51c946cd",
+      "range": {
+        "startLine": 68,
+        "startChar": 2,
+        "endLine": 68,
+        "endChar": 61
+      },
+      "revId": "86d6899d8714be91a9b862a57ec34be068ef850a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cd3df310_c9bd3ce1",
         "filename": "common/system.c",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2017-07-12T18:24:32Z",
       "side": 1,
       "message": "If this is an enum, it\u0027ll consume all 8 bits.  Really only need one flag for\nSYSJUMP_BEFORE_INITS \u003d (1\u003c\u003c0)\n\nbecause we can use RESET_FLAG_SYSJUMP to tell whether a sysjump occurred at all\n\nThen system_jumped_to_this_image can return\n\nif (!RESET_FLAG_SYSJUMP) return SYSJUMP_NO\nelif (jump_data.flags \u0026 SYSJUMP_BEFORE_INITS) return SYSJUMP_BEFORE_INITS\nelse return SYSJUMP_AFTER_INITS",
+      "range": {
+        "startLine": 69,
+        "startChar": 18,
+        "endLine": 69,
+        "endChar": 41
+      },
+      "revId": "86d6899d8714be91a9b862a57ec34be068ef850a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "80c83e81_e310b193",
+        "filename": "common/system.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2017-07-12T19:23:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd3df310_c9bd3ce1",
       "range": {
         "startLine": 69,
         "startChar": 18,
@@ -114,6 +162,30 @@
       "revId": "86d6899d8714be91a9b862a57ec34be068ef850a",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7a91112_9fa100a3",
+        "filename": "common/system.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2017-07-12T19:23:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c79de15_7b4fd434",
+      "range": {
+        "startLine": 807,
+        "startChar": 1,
+        "endLine": 807,
+        "endChar": 72
+      },
+      "revId": "86d6899d8714be91a9b862a57ec34be068ef850a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
