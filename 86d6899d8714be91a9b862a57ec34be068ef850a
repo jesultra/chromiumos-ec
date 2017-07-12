@@ -48,6 +48,29 @@
     },
     {
       "key": {
+        "uuid": "0e561aba_d20c382a",
+        "filename": "common/system.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2017-07-12T18:29:34Z",
+      "side": 1,
+      "message": "I haven\u0027t verified this is expected in every single case for SYSJUMP_TYPE_PRE_INIT.",
+      "range": {
+        "startLine": 226,
+        "startChar": 8,
+        "endLine": 226,
+        "endChar": 47
+      },
+      "revId": "86d6899d8714be91a9b862a57ec34be068ef850a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7fb323da_973f8e75",
         "filename": "common/system.c",
         "patchSetId": 3
