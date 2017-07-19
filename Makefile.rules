@@ -94,6 +94,10 @@ cmd_sharedlib_elf = $(CC) $(libsharedobjs_deps) \
 	-Wl,-T,common/ec.$(SHOBJLIB).ld $(LDFLAGS) \
 	-o $(out)/$(SHOBJLIB)/$(SHOBJLIB).elf \
 	-Wl,-Map,$(out)/$(SHOBJLIB)/$(SHOBJLIB).map
+cmd_taskinfo = $(CPP) -P -DSECTION_IS_$(3) \
+	-I$(BDIR) -DBOARD_$(UC_BOARD) -D_MAKEFILE_DUMP_INFO \
+	-imacros $(PROJECT).tasklist include/task_filter.h \
+	-o $@
 
 # commands for RSA signature: rwsig does not need to sign the whole image
 # (it signs the RW part separately). usbpd1 type needs to sign the final image.
@@ -310,16 +314,16 @@ $(out)/RW/%.hex: $(out)/RW/%.elf $(out)/RW/%.smap
 	$(call quiet,elf_to_hex,OBJCOPY)
 
 ifeq ($(SIGNED_IMAGES),)
-$(out)/%.flat: $(out)/%.elf $(out)/%.smap utils-build
+$(out)/%.flat: $(out)/%.elf $(out)/%.smap $(out)/%.taskinfo utils-build
 	$(call quiet,ec_elf_to_flat,OBJCOPY)
 
 $(out)/RO/%.hex: $(out)/RO/%.elf $(out)/RO/%.smap
 	$(call quiet,elf_to_hex,OBJCOPY)
 else
-$(out)/RO/%.flat: $(out)/RO/%.elf  $(out)/RO/%.smap
+$(out)/RO/%.flat: $(out)/RO/%.elf  $(out)/RO/%.smap $(out)/RO/%.taskinfo
 	$(call quiet,elf_to_signed,RO_SIGN,$(CR50_RO_KEY))
 
-$(out)/RW/%.flat: $(out)/RW/%.elf  $(out)/RW/%.smap
+$(out)/RW/%.flat: $(out)/RW/%.elf  $(out)/RW/%.smap $(out)/RW/%.taskinfo
 	$(call quiet,elf_to_signed,RW_SIGN,$(CR50_RW_KEY))
 
 $(out)/RO/%.hex: $(out)/RO/%.flat
@@ -422,6 +426,13 @@ $(npcx-flash-fw-bin):
 		-o $(out)/$(npcx-flash-fw).elf -Wl,-T,$(npcx-flash-fw).ld \
 		-Wl,-Map,$(out)/$(npcx-flash-fw).map
 	-@ $(OBJCOPY) -O binary $(out)/$(npcx-flash-fw).elf $@
+
+# Update taskinfo when the ec.tasklist is modified.
+$(out)/RO/%.taskinfo: $(BDIR)/$(PROJECT).tasklist
+	$(call quiet,taskinfo,TSKINFO,RO)
+
+$(out)/RW/%.taskinfo: $(BDIR)/$(PROJECT).tasklist
+	$(call quiet,taskinfo,TSKINFO,RW)
 
 .PHONY: xrefs
 xrefs: $(call targ_if_prog,etags,$(out)/TAGS) \
@@ -528,6 +539,24 @@ newsizes:
 		printf "Average size change: %d bytes.\n" \
 			"$$((FILE_SIZE_CHANGE / FILES_CHANGED))"; \
 	fi
+
+# The reason why don't add elf files as dependencies, but ask users to build
+# them first is because elf dependencies will cause the elf files be rebuilt for
+# updating date, which shouldn't happen when analyzing the existing firmwares.
+.PHONY: analyzestack
+analyzestack: $(out)/RO/ec.RO.taskinfo $(out)/RW/ec.RW.taskinfo
+	@if [ "$(SECTION)" != "RO" ] && [ "$(SECTION)" != "RW" ]; then \
+		echo "Please specify SECTION=RO or RW"; \
+		exit 1; \
+	fi
+	@ELF=$(out)/$(SECTION)/ec.$(SECTION).elf; \
+	TASKLIST=$(out)/$(SECTION)/ec.$(SECTION).taskinfo; \
+	if [ ! -f "$$ELF" ]; then \
+		echo "Some files are missing.  Are they built?"; \
+		exit 1; \
+	fi; \
+	extra/stack_analyzer/stack_analyzer.py --objdump "$(OBJDUMP)" \
+	        --addr2line "$(ADDR2LINE)" "$$ELF" "$$TASKLIST"
 
 .SECONDARY:
 
