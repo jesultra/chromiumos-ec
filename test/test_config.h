@@ -145,7 +145,8 @@ int ncp15wb_calculate_temp(uint16_t adc);
 #define CONFIG_ALS_LIGHTBAR_DIMMING 0
 #endif
 
-#if defined(TEST_USB_PD) || defined(TEST_USB_PD_GIVEBACK)
+#if defined(TEST_USB_PD) || defined(TEST_USB_PD_GIVEBACK) || \
+	defined(TEST_USB_PD_REV30)
 #define CONFIG_USB_POWER_DELIVERY
 #define CONFIG_USB_PD_CUSTOM_VDM
 #define CONFIG_USB_PD_DUAL_ROLE
@@ -154,10 +155,13 @@ int ncp15wb_calculate_temp(uint16_t adc);
 #define CONFIG_USB_PD_TCPM_STUB
 #define CONFIG_SHA256
 #define CONFIG_SW_CRC
+#ifdef TEST_USB_PD_REV30
+#define CONFIG_USB_PD_REV30
+#endif
 #ifdef TEST_USB_PD_GIVEBACK
 #define CONFIG_USB_PD_GIVE_BACK
 #endif
-#endif /* TEST_USB_PD || TEST_USB_PD_GIVEBACK */
+#endif /* TEST_USB_PD || TEST_USB_PD_GIVEBACK || TEST_USB_PD_REV30 */
 
 #ifdef TEST_CHARGE_MANAGER
 #define CONFIG_CHARGE_MANAGER

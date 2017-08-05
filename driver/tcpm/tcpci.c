@@ -184,7 +184,7 @@ int tcpci_tcpm_set_vconn(int port, int enable)
 int tcpci_tcpm_set_msg_header(int port, int power_role, int data_role)
 {
 	return tcpc_write(port, TCPC_REG_MSG_HDR_INFO,
-			  TCPC_REG_MSG_HDR_INFO_SET(data_role, power_role));
+			TCPC_REG_MSG_HDR_INFO_SET(data_role, power_role));
 }
 
 static int tcpm_alert_status(int port, int *alert)
