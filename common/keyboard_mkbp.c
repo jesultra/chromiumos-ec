@@ -100,6 +100,9 @@ static int get_data_size(enum ec_mkbp_event e)
 	case EC_MKBP_EVENT_KEY_MATRIX:
 		return KEYBOARD_COLS;
 
+	case EC_MKBP_EVENT_HOST_EVENT64:
+		return sizeof(uint64_t);
+
 	case EC_MKBP_EVENT_HOST_EVENT:
 	case EC_MKBP_EVENT_BUTTON:
 	case EC_MKBP_EVENT_SWITCH:
@@ -475,8 +478,13 @@ static int mkbp_get_info(struct host_cmd_handler_args *args)
 				break;
 #endif
 			case EC_MKBP_EVENT_HOST_EVENT:
-				r->host_event = host_get_events();
+				r->host_event = (uint32_t)host_get_events();
 				args->response_size = sizeof(r->host_event);
+				break;
+
+			case EC_MKBP_EVENT_HOST_EVENT64:
+				r->host_event64 = host_get_events();
+				args->response_size = sizeof(r->host_event64);
 				break;
 
 			case EC_MKBP_EVENT_BUTTON:

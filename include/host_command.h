@@ -150,14 +150,14 @@ uint16_t host_command_process(struct host_cmd_handler_args *args);
  *
  * @param mask          Event bits to set (use EC_HOST_EVENT_MASK()).
  */
-void host_set_events(uint32_t mask);
+void host_set_events(uint64_t mask);
 
 /**
  * Set a single host event.
  *
  * @param event         Event to set (EC_HOST_EVENT_*).
  */
-static inline void host_set_single_event(int event)
+static inline void host_set_single_event(uint64_t event)
 {
 	host_set_events(EC_HOST_EVENT_MASK(event));
 }
@@ -168,12 +168,12 @@ static inline void host_set_single_event(int event)
  * @param mask          Event bits to clear (use EC_HOST_EVENT_MASK()).
  *                      Write 1 to a bit to clear it.
  */
-void host_clear_events(uint32_t mask);
+void host_clear_events(uint64_t mask);
 
 /**
  * Return the raw event state.
  */
-uint32_t host_get_events(void);
+uint64_t host_get_events(void);
 
 /**
  * Check a single host event.

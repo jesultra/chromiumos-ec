@@ -78,14 +78,14 @@ enum lpc_host_event_type {
 /**
  * Get current state of host events.
  */
-uint32_t lpc_get_host_events(void);
+uint64_t lpc_get_host_events(void);
 
 /**
  * Get host events that are set based on the type provided.
  *
  * @param type		Event type
  */
-uint32_t lpc_get_host_events_by_type(enum lpc_host_event_type type);
+uint64_t lpc_get_host_events_by_type(enum lpc_host_event_type type);
 
 /**
  * Set the event mask for the specified event type.
@@ -93,14 +93,14 @@ uint32_t lpc_get_host_events_by_type(enum lpc_host_event_type type);
  * @param type		Event type
  * @param mask		New event mask
  */
-void lpc_set_host_event_mask(enum lpc_host_event_type type, uint32_t mask);
+void lpc_set_host_event_mask(enum lpc_host_event_type type, uint64_t mask);
 
 /**
  * Get host event mask based on the type provided.
  *
  * @param type		Event type
  */
-uint32_t lpc_get_host_event_mask(enum lpc_host_event_type type);
+uint64_t lpc_get_host_event_mask(enum lpc_host_event_type type);
 
 /**
  * Clear and return the lowest host event.
@@ -147,7 +147,7 @@ void lpc_update_host_event_status(void);
  * LPC_HOST_EVENT_ALWAYS_REPORT mask. It can be implemented by boards if there
  * is a need to use custom mask.
  */
-uint32_t lpc_override_always_report_mask(void);
+uint64_t lpc_override_always_report_mask(void);
 
 /* Initialize LPC masks. */
 void lpc_init_mask(void);
