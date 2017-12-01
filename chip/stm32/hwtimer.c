@@ -376,11 +376,25 @@ int __hw_clock_source_init(uint32_t start_t)
 void __keep watchdog_check(uint32_t excep_lr, uint32_t excep_sp)
 {
 	struct timer_ctlr *timer = (struct timer_ctlr *)TIM_WD_BASE;
+	uint32_t panic_info;
 
 	/* clear status */
 	timer->sr = 0;
 
 	watchdog_trace(excep_lr, excep_sp);
+
+	/*
+	 * Log the panic PC if watchdog occurred in exception context
+	 * or the watchdog task # otherwise.
+	 */
+	panic_info = ((excep_lr & 0xf) == 1) ?
+		((uint32_t *)excep_sp)[6] : task_get_current();
+	/*
+	 * panic_reboot() will be called by software_panic(), so this
+	 * typically will not return, and panic reason will appear
+	 * as "soft".
+	 */
+	software_panic(PANIC_SW_WATCHDOG, panic_info);
 }
 
 void IRQ_HANDLER(IRQ_WD)(void) __attribute__((naked));
