@@ -15,6 +15,7 @@
 #include "update_fw.h"
 #include "util.h"
 #include "usb_hid_touchpad.h"
+#include "touchpad_passthru.h"
 
 /* Console output macros */
 #define CPUTS(outstr) cputs(CC_TOUCHPAD, outstr)
@@ -228,6 +229,9 @@ static int elan_tp_read_report(void)
 	}
 
 	set_touchpad_report(&report);
+#ifdef CONFIG_USB_TOUCHPAD_PASSTHRU
+	touchpad_passthru_generate_event();
+#endif
 
 	return 0;
 }

@@ -11,3 +11,4 @@ CHIP_FAMILY:=stm32f0
 CHIP_VARIANT:=stm32f07x
 
 board-y=board.o
+board-$(CONFIG_USB_TOUCHPAD_PASSTHRU)+=touchpad_passthru.o

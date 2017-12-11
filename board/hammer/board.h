@@ -102,13 +102,21 @@
 /* Replaced at runtime (board_read_serial) by chip unique-id-based number. */
 #define DEFAULT_SERIALNO ""
 
+#ifdef SECTION_IS_RW
+
+#define CONFIG_USB_ISOCHRONOUS
+#define CONFIG_USB_TOUCHPAD_PASSTHRU
+
+#endif  /* SECTION_IS_RW */
+
 /* USB interface indexes (use define rather than enum to expand them) */
 #ifdef SECTION_IS_RW
 #define USB_IFACE_HID_KEYBOARD	0
 #define USB_IFACE_UPDATE	1
 #define USB_IFACE_HID_TOUCHPAD	2
 #define USB_IFACE_I2C		3
-#define USB_IFACE_COUNT		4
+#define USB_IFACE_TOUCHPAD_PASSTHRU	4
+#define USB_IFACE_COUNT		5
 #else
 #define USB_IFACE_UPDATE	0
 #define USB_IFACE_COUNT		1
@@ -121,7 +129,8 @@
 #define USB_EP_HID_KEYBOARD	2
 #define USB_EP_HID_TOUCHPAD	3
 #define USB_EP_I2C		4
-#define USB_EP_COUNT		5
+#define USB_EP_TOUCHPAD_PASSTHRU	5
+#define USB_EP_COUNT		6
 #else
 #define USB_EP_COUNT		2
 #endif
