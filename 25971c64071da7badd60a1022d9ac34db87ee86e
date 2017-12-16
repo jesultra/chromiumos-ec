@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f14e60c_88107c1b",
+        "filename": "board/zoombini/board.c",
+        "patchSetId": 10
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1001696
+      },
+      "writtenOn": "2017-12-16T17:20:52Z",
+      "side": 1,
+      "message": "Is it worth adding a #define in the PMIC header file for this?",
+      "range": {
+        "startLine": 401,
+        "startChar": 46,
+        "endLine": 401,
+        "endChar": 50
+      },
+      "revId": "25971c64071da7badd60a1022d9ac34db87ee86e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
