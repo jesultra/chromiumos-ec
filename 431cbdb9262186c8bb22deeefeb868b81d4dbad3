@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "cbb85d43_64b291f8",
+        "filename": "common/ccd_config.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-01-12T00:55:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40c97403_92eac154",
+      "range": {
+        "startLine": 571,
+        "startChar": 20,
+        "endLine": 571,
+        "endChar": 32
+      },
+      "revId": "431cbdb9262186c8bb22deeefeb868b81d4dbad3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "78ee653f_8a83cbb1",
         "filename": "common/ccd_config.c",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2018-01-12T00:03:51Z",
       "side": 1,
       "message": "@param sync   Non-zero to invoke synchronously",
+      "range": {
+        "startLine": 576,
+        "startChar": 1,
+        "endLine": 576,
+        "endChar": 2
+      },
+      "revId": "431cbdb9262186c8bb22deeefeb868b81d4dbad3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "63260f91_4831859a",
+        "filename": "common/ccd_config.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-01-12T00:55:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78ee653f_8a83cbb1",
       "range": {
         "startLine": 576,
         "startChar": 1,
