@@ -778,6 +778,7 @@ int list_activities(const struct motion_sensor_t *s,
 void bmi160_interrupt(enum gpio_signal signal)
 {
 	last_interrupt_timestamp = __hw_clock_source_read();
+	CPRINTS("bmiint");
 	task_set_event(TASK_ID_MOTIONSENSE,
 		       CONFIG_ACCELGYRO_BMI160_INT_EVENT, 0);
 }
