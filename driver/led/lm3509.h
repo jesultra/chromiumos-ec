@@ -15,6 +15,12 @@
 #define LM3509_REG_BMAIN	0xA0
 #define LM3509_REG_BSUB		0xB0
 
+/* Enlarge brightness percentage */
+#define ENLARGE_DECUPLE(percentage)  ((percentage)*10)
+
+/* Round LM3590 brightness percentage */
+#define ROUND_INTEGER(percentage)  ((percentage+5)/10)
+
 /* Power on and initialize LM3509. */
 int lm3509_poweron(void);
 
