@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "34916737_6e52719d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1259838
+      },
+      "writtenOn": "2018-03-29T14:27:12Z",
+      "side": 1,
+      "message": "this may be intentional as we don\u0027t ever except customer to get into this scenario. I will let Scott comment though too",
+      "range": {
+        "startLine": 14,
+        "startChar": 5,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "909d678a7b66a080c3e55adbfa2c92686ccaf132",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
