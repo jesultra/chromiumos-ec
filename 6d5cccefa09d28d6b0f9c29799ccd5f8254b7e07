@@ -16,6 +16,29 @@
       "revId": "6d5cccefa09d28d6b0f9c29799ccd5f8254b7e07",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "488bc02a_c97872e2",
+        "filename": "chip/g/usart.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2018-04-18T01:42:58Z",
+      "side": 0,
+      "message": "There was concern about doing all of this from the interrupt context.",
+      "range": {
+        "startLine": 21,
+        "startChar": 43,
+        "endLine": 21,
+        "endChar": 59
+      },
+      "revId": "6d5cccefa09d28d6b0f9c29799ccd5f8254b7e07",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
     }
   ]
 }
