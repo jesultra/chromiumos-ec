@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d274fa4e_e1903f8b",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-04-18T01:14:18Z",
+      "side": 1,
+      "message": "not even sure this and line 183 are needed, tried this first, it helped, but not a lot.",
+      "range": {
+        "startLine": 60,
+        "startChar": 14,
+        "endLine": 60,
+        "endChar": 17
+      },
+      "revId": "74ec7e8f3d92e77e324daefc586f909e523aa23d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e33d4b3_84f67291",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-04-18T01:14:18Z",
+      "side": 1,
+      "message": "we could have a UART api function read multiple characters in a tight loop.",
+      "range": {
+        "startLine": 149,
+        "startChar": 17,
+        "endLine": 149,
+        "endChar": 32
+      },
+      "revId": "74ec7e8f3d92e77e324daefc586f909e523aa23d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b71a58c6_d167e2db",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-04-18T01:14:18Z",
+      "side": 1,
+      "message": "this function is pretty heavy, calling QUEUE_ADD_UNITS() per byte is probably more efficient for small chunks.",
+      "range": {
+        "startLine": 154,
+        "startChar": 3,
+        "endLine": 154,
+        "endChar": 18
+      },
+      "revId": "74ec7e8f3d92e77e324daefc586f909e523aa23d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}

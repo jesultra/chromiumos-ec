@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a8dbc4c3_678dc8d9",
+        "filename": "board/cr50/board.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-04-18T01:14:18Z",
+      "side": 0,
+      "message": "this cannibalizes bitbang, but it needs work anyways.",
+      "revId": "6d5cccefa09d28d6b0f9c29799ccd5f8254b7e07",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
