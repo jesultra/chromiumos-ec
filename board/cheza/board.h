@@ -63,12 +63,18 @@ enum power_signal {
 	POWER_SIGNAL_COUNT
 };
 
+/* Masks for power signals */
+#define IN_POWER_GOOD POWER_SIGNAL_MASK(SDM845_POWER_GOOD)
+
 enum adc_channel {
 	ADC_VBUS = -1,
 	ADC_CH_COUNT
 };
 
 void board_set_switchcap(int asserted);
+
+/* Confirm power lost if the POWER_GOOD signal keeps low for a while */
+uint32_t board_is_power_lost(void);
 
 #endif /* !defined(__ASSEMBLER__) */
 

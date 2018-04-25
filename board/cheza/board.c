@@ -18,9 +18,12 @@
 #include "power.h"
 #include "power_button.h"
 #include "switch.h"
+#include "system.h"
+#include "task.h"
 
 /* Forward declaration */
 static void warm_reset_request_interrupt(enum gpio_signal signal);
+static void board_power_signal_interrupt(enum gpio_signal signal);
 
 #include "gpio_list.h"
 
@@ -28,6 +31,45 @@ static void warm_reset_request_interrupt(enum gpio_signal signal);
 #define PI3USB9281_I2C_ADDR	0x4a
 #define DA9313_I2C_ADDR		0xd0
 #define CHARGER_I2C_ADDR	0x12
+
+/* Delay to confirm the power lost */
+#define POWER_LOST_CONFIRM_DELAY        (350 * MSEC)
+
+/* The timestamp of the latest power lost */
+static timestamp_t latest_power_lost_time;
+
+/* Confirm power lost if the POWER_GOOD signal keeps low for a while */
+uint32_t board_is_power_lost(void)
+{
+	/*
+	 * Current POWER_GOOD signal is lost and the latest power lost trigger
+	 * happened before the confirmation delay.
+	 */
+	return (get_time().val - latest_power_lost_time.val >=
+		POWER_LOST_CONFIRM_DELAY) && !power_has_signals(IN_POWER_GOOD);
+}
+
+/* The deferred handler to save the power signal */
+static void deferred_power_signal_handler(void)
+{
+	/* Wake the chipset task to check the power lost duration */
+	task_wake(TASK_ID_CHIPSET);
+}
+DECLARE_DEFERRED(deferred_power_signal_handler);
+
+/* Power signal interrupt to also save the deferred signals */
+static void board_power_signal_interrupt(enum gpio_signal signal)
+{
+	/* Call the default power signal interrupt */
+	power_signal_interrupt(signal);
+
+	if (!(power_get_signals() & IN_POWER_GOOD)) {
+		/* Keep the timestamp just at the power lost happens. */
+		latest_power_lost_time = get_time();
+		hook_call_deferred(&deferred_power_signal_handler_data,
+				   POWER_LOST_CONFIRM_DELAY);
+	}
+}
 
 /* GPIO Interrupt Handlers */
 static void warm_reset_request_handler(void)

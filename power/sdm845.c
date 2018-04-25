@@ -35,9 +35,6 @@
 
 #define CPRINTS(format, args...) cprints(CC_CHIPSET, format, ## args)
 
-/* Masks for power signals */
-#define IN_POWER_GOOD POWER_SIGNAL_MASK(SDM845_POWER_GOOD)
-
 /* Long power key press to force shutdown */
 #define DELAY_FORCE_SHUTDOWN		(8 * SECOND)
 
@@ -453,8 +450,8 @@ static int check_for_power_off_event(void)
 
 	power_button_was_pressed = pressed;
 
-	/* POWER_GOOD released by AP : shutdown immediately */
-	if (!power_has_signals(IN_POWER_GOOD) && !bypass_power_lost_trigger) {
+	/* Power lost: shutdown immediately */
+	if (board_is_power_lost() && !bypass_power_lost_trigger) {
 		if (power_button_was_pressed)
 			timer_cancel(TASK_ID_CHIPSET);
 
