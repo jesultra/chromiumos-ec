@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "31beaacf_1176e16c",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-16T23:53:30Z",
+      "side": 1,
+      "message": "sure, I\u0027ll make this change.",
+      "parentUuid": "540408b2_4443a706",
+      "range": {
+        "startLine": 60,
+        "startChar": 14,
+        "endLine": 60,
+        "endChar": 17
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0b7a82ef_dded89f0",
         "filename": "chip/g/usart.c",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "d92d5f10_5ceb2994",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-16T23:53:30Z",
+      "side": 1,
+      "message": "but the code in lines 157..160 runs repeatedly while less then room characters have been read, we don\u0027t want this room assignemnt/check happening once per character.",
+      "parentUuid": "0b7a82ef_dded89f0",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 8
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "53dbfa81_11ce17e1",
         "filename": "chip/g/usart.c",
         "patchSetId": 3
@@ -59,6 +107,30 @@
       "writtenOn": "2018-05-16T23:41:47Z",
       "side": 1,
       "message": "(and then this could be deleted too)",
+      "range": {
+        "startLine": 171,
+        "startChar": 1,
+        "endLine": 172,
+        "endChar": 38
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5730fdf9_b814f8fa",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-16T23:53:30Z",
+      "side": 1,
+      "message": "the while loop above could stop at any moment, so we need to check if i is non-zero.",
+      "parentUuid": "53dbfa81_11ce17e1",
       "range": {
         "startLine": 171,
         "startChar": 1,
