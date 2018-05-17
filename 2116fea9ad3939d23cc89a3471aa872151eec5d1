@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "3070cb8b_cd22736b",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000187
+      },
+      "writtenOn": "2018-05-17T00:03:22Z",
+      "side": 1,
+      "message": "Ah, right.\n\nCould do\n\n\twhile (1) {\n\t\troom \u003d MIN(sizeof(buffer), queue_space(uart_in));\n\t\ti \u003d 0;\n\n\t\twhile (i \u003c room \u0026\u0026 uartn_rx_available(uart))\n\t\t\tbuffer[i++] \u003d uartn_read_char(uart);\n\n\t\tif (!i)\n\t\t\treturn; /* No room, or no RX avail */\n\n\t\tQUEUE_ADD_UNITS(uart_in, buffer, i);\n\t}",
+      "parentUuid": "d92d5f10_5ceb2994",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 8
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "53dbfa81_11ce17e1",
         "filename": "chip/g/usart.c",
         "patchSetId": 3
