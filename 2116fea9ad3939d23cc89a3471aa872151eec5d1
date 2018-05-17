@@ -188,6 +188,29 @@
       "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "993407ec_d3e78b86",
+        "filename": "chip/g/usart.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2018-05-17T09:58:04Z",
+      "side": 1,
+      "message": "I\u0027m a bit wary of doing this change,\noverall the runtime hasn\u0027t been designed with the idea of running other interrupts with higher priorities than the timers. While likely nothing will explode instantly by doing this, this introduces subtle corner-cases (e.g. on 64-bit timer readings). Actually the chip/g priorities are already too flat, peripheral IRQs shouldn\u0027t be that high.\nIf you just want to prioritize the 2 IRQs vs each others, I would just downgrade both by one level, if there is another offender (aka a slow irq handler) please downgrade it.",
+      "range": {
+        "startLine": 31,
+        "startChar": 1,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
     }
   ]
 }
