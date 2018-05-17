@@ -120,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "e412893e_26de3e64",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-17T00:06:02Z",
+      "side": 1,
+      "message": "right, but this would require two checks per character:\n\n(i \u003c room \u0026\u0026 uartn_rx_available(uart))\n\nand two checks instead of one do make a difference, I went through this :)",
+      "parentUuid": "3070cb8b_cd22736b",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 8
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "53dbfa81_11ce17e1",
         "filename": "chip/g/usart.c",
         "patchSetId": 3
