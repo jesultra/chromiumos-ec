@@ -39,6 +39,30 @@
       "revId": "6d5cccefa09d28d6b0f9c29799ccd5f8254b7e07",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2900b40_62f5968e",
+        "filename": "chip/g/usart.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-18T04:44:31Z",
+      "side": 0,
+      "message": "tpm functions just fine, cr50 update also happen just as fast, or say without perceivable slow down.",
+      "parentUuid": "488bc02a_c97872e2",
+      "range": {
+        "startLine": 21,
+        "startChar": 43,
+        "endLine": 21,
+        "endChar": 59
+      },
+      "revId": "6d5cccefa09d28d6b0f9c29799ccd5f8254b7e07",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
     }
   ]
 }

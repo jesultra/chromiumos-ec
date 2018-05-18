@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "2c30a362_44a75cbd",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-18T04:44:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31beaacf_1176e16c",
+      "range": {
+        "startLine": 60,
+        "startChar": 14,
+        "endLine": 60,
+        "endChar": 17
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0b7a82ef_dded89f0",
         "filename": "chip/g/usart.c",
         "patchSetId": 3
@@ -168,6 +192,30 @@
     },
     {
       "key": {
+        "uuid": "f361f863_daa3553f",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-18T04:44:31Z",
+      "side": 1,
+      "message": "I ended up simplifying it even more: come to think of it, there is no need in a while (1) loop, the room in USB queue is not likely to increase while this function is running unless USB processing is happening on a higher IRQ priority, which is not the case.",
+      "parentUuid": "f392d694_25995edc",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 8
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "53dbfa81_11ce17e1",
         "filename": "chip/g/usart.c",
         "patchSetId": 3
@@ -215,6 +263,30 @@
     },
     {
       "key": {
+        "uuid": "054b8973_79ed2206",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-18T04:44:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5730fdf9_b814f8fa",
+      "range": {
+        "startLine": 171,
+        "startChar": 1,
+        "endLine": 172,
+        "endChar": 38
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "993407ec_d3e78b86",
         "filename": "chip/g/usart.h",
         "patchSetId": 3
@@ -250,6 +322,30 @@
       "side": 1,
       "message": "Let me see how much impact this has. I don\u0027t think I checked this separately.",
       "parentUuid": "993407ec_d3e78b86",
+      "range": {
+        "startLine": 31,
+        "startChar": 1,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8534e2c_c4ba409d",
+        "filename": "chip/g/usart.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-18T04:44:31Z",
+      "side": 1,
+      "message": "ok, it does not seem to make much difference, could be fine tuned later.",
+      "parentUuid": "c8e0ff28_0b26e932",
       "range": {
         "startLine": 31,
         "startChar": 1,
