@@ -144,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "f392d694_25995edc",
+        "filename": "chip/g/usart.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-18T03:31:35Z",
+      "side": 1,
+      "message": "ah, but wait, in fact I have to check both on every character in either case, it was a different scenario where I had performance degradation.\n\nLet me try this.",
+      "parentUuid": "e412893e_26de3e64",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 8
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "53dbfa81_11ce17e1",
         "filename": "chip/g/usart.c",
         "patchSetId": 3
@@ -202,6 +226,30 @@
       "writtenOn": "2018-05-17T09:58:04Z",
       "side": 1,
       "message": "I\u0027m a bit wary of doing this change,\noverall the runtime hasn\u0027t been designed with the idea of running other interrupts with higher priorities than the timers. While likely nothing will explode instantly by doing this, this introduces subtle corner-cases (e.g. on 64-bit timer readings). Actually the chip/g priorities are already too flat, peripheral IRQs shouldn\u0027t be that high.\nIf you just want to prioritize the 2 IRQs vs each others, I would just downgrade both by one level, if there is another offender (aka a slow irq handler) please downgrade it.",
+      "range": {
+        "startLine": 31,
+        "startChar": 1,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "2116fea9ad3939d23cc89a3471aa872151eec5d1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8e0ff28_0b26e932",
+        "filename": "chip/g/usart.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-18T03:31:35Z",
+      "side": 1,
+      "message": "Let me see how much impact this has. I don\u0027t think I checked this separately.",
+      "parentUuid": "993407ec_d3e78b86",
       "range": {
         "startLine": 31,
         "startChar": 1,
