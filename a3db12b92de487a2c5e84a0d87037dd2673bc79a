@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ecacfdbf_bf5560fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-21T20:52:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbbe41eb_aaf60707",
+      "range": {
+        "startLine": 7,
+        "startChar": 1,
+        "endLine": 7,
+        "endChar": 2
+      },
+      "revId": "a3db12b92de487a2c5e84a0d87037dd2673bc79a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0518722d_72cb82a4",
         "filename": "board/cr50/board.c",
         "patchSetId": 5
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "d12b811b_7912ec44",
+        "filename": "board/cr50/board.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-21T20:52:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0518722d_72cb82a4",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 0
+      },
+      "revId": "a3db12b92de487a2c5e84a0d87037dd2673bc79a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ded94f40_3a3711b2",
         "filename": "chip/g/usart.h",
         "patchSetId": 5
@@ -59,6 +107,30 @@
       "writtenOn": "2018-05-21T20:40:53Z",
       "side": 1,
       "message": "We probably care more about EC output than AP output. Do we want to prioritize EC output over AP?",
+      "range": {
+        "startLine": 31,
+        "startChar": 45,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "a3db12b92de487a2c5e84a0d87037dd2673bc79a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a78a747_3a65e60f",
+        "filename": "chip/g/usart.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-21T20:52:52Z",
+      "side": 1,
+      "message": "yes, this is not changing.",
+      "parentUuid": "ded94f40_3a3711b2",
       "range": {
         "startLine": 31,
         "startChar": 45,
