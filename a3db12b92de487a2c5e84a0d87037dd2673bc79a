@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dbbe41eb_aaf60707",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2018-05-21T20:40:53Z",
+      "side": 1,
+      "message": ":",
+      "range": {
+        "startLine": 7,
+        "startChar": 1,
+        "endLine": 7,
+        "endChar": 2
+      },
+      "revId": "a3db12b92de487a2c5e84a0d87037dd2673bc79a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0518722d_72cb82a4",
+        "filename": "board/cr50/board.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2018-05-21T20:40:53Z",
+      "side": 1,
+      "message": "Can we put some reasoning why we think it\u0027s ok to do this from the interrupt context?",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 0
+      },
+      "revId": "a3db12b92de487a2c5e84a0d87037dd2673bc79a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ded94f40_3a3711b2",
+        "filename": "chip/g/usart.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2018-05-21T20:40:53Z",
+      "side": 1,
+      "message": "We probably care more about EC output than AP output. Do we want to prioritize EC output over AP?",
+      "range": {
+        "startLine": 31,
+        "startChar": 45,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "a3db12b92de487a2c5e84a0d87037dd2673bc79a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
