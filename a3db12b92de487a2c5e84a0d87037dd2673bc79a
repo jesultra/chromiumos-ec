@@ -164,6 +164,30 @@
       "revId": "a3db12b92de487a2c5e84a0d87037dd2673bc79a",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cca7335d_d0844475",
+        "filename": "chip/g/usart.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2018-05-22T17:56:49Z",
+      "side": 1,
+      "message": "why do we care more about EC output than AP output - is EC output used more in FAFT?\n\nThis patch is by no means the last one as far as improving console processing is concerned, let\u0027s watch it and make improvements.",
+      "parentUuid": "3b7c2b20_e2dced16",
+      "range": {
+        "startLine": 31,
+        "startChar": 45,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "a3db12b92de487a2c5e84a0d87037dd2673bc79a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
     }
   ]
 }
