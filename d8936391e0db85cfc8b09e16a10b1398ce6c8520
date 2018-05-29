@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d782571e_2fb89688",
+        "filename": "board/nami/gpio.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1003000
+      },
+      "writtenOn": "2018-05-29T22:41:44Z",
+      "side": 1,
+      "message": "Maybe we should update the netname to not have the _L now.",
+      "range": {
+        "startLine": 86,
+        "startChar": 18,
+        "endLine": 86,
+        "endChar": 20
+      },
+      "revId": "d8936391e0db85cfc8b09e16a10b1398ce6c8520",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
