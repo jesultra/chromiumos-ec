@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "cc6a2c76_4cb1776e",
+        "filename": "board/nami/board.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1259885
+      },
+      "writtenOn": "2018-05-30T02:51:12Z",
+      "side": 1,
+      "message": "We may need a msleep(1) here.\nAccording vendor note, we will need 1ms delay before i2c start communicating.\nCurrent, w/o adding msleep(1), there would be an only 480us delay before i2c communication.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 1
+      },
+      "revId": "d8936391e0db85cfc8b09e16a10b1398ce6c8520",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d782571e_2fb89688",
         "filename": "board/nami/gpio.inc",
         "patchSetId": 1
