@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "11f44ef4_b5941b34",
+        "filename": "board/nami/board.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1259885
+      },
+      "writtenOn": "2018-05-30T06:19:12Z",
+      "side": 1,
+      "message": "We need remove the \"NOT\", because testR(C1_PD_RST_L) is high active, and it will keep low when working.",
+      "range": {
+        "startLine": 80,
+        "startChar": 3,
+        "endLine": 80,
+        "endChar": 4
+      },
+      "revId": "d8936391e0db85cfc8b09e16a10b1398ce6c8520",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cc6a2c76_4cb1776e",
         "filename": "board/nami/board.c",
         "patchSetId": 1
@@ -18,6 +41,29 @@
         "startChar": 0,
         "endLine": 248,
         "endChar": 1
+      },
+      "revId": "d8936391e0db85cfc8b09e16a10b1398ce6c8520",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f77deac_cc651bda",
+        "filename": "board/nami/board.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1259885
+      },
+      "writtenOn": "2018-05-30T06:19:12Z",
+      "side": 1,
+      "message": "We need add the \"NOT\", because testR(C1_PD_RST_L) is high active, and it will keep low when working.",
+      "range": {
+        "startLine": 284,
+        "startChar": 6,
+        "endLine": 284,
+        "endChar": 8
       },
       "revId": "d8936391e0db85cfc8b09e16a10b1398ce6c8520",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
