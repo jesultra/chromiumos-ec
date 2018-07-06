@@ -182,6 +182,13 @@ const struct fan_rpm fan_rpm_2 = {
 	.rpm_max = 5100,
 };
 
+/* Akali */
+const struct fan_rpm fan_rpm_3 = {
+	.rpm_min = 2700,
+	.rpm_start = 3000,
+	.rpm_max = 5500,
+};
+
 struct fan_t fans[FAN_CH_COUNT] = {
 	[FAN_CH_0] = { .conf = &fan_conf_0, .rpm = &fan_rpm_0, },
 };
@@ -308,14 +315,36 @@ uint16_t tcpc_get_alert_status(void)
 
 /*
  * F75303_Remote1 is near CPU, and F75303_Remote2 is near 5V power IC.
+ *
+ * For PROJECT_AKALI, board design is different, their placement as following:
+ * F75303_Local is near charger power choke.
+ * F75303_Remote1 is under thermal pipe.
+ * F75303_Remote2 is near CPU.
  */
 const struct temp_sensor_t temp_sensors[] = {
+	{"F75303_Local", TEMP_SENSOR_TYPE_BOARD, f75303_get_val,
+		F75303_IDX_LOCAL, 4},
 	{"F75303_Remote1", TEMP_SENSOR_TYPE_CPU, f75303_get_val,
 		F75303_IDX_REMOTE1, 4},
 	{"F75303_Remote2", TEMP_SENSOR_TYPE_BOARD, f75303_get_val,
 		F75303_IDX_REMOTE2, 4},
 };
 BUILD_ASSERT(ARRAY_SIZE(temp_sensors) == TEMP_SENSOR_COUNT);
+
+/*
+ * Thermal limits for each temp sensor.  All temps are in degrees K.  Must be in
+ * same order as enum temp_sensor_id.  To always ignore any temp, use 0.
+ */
+struct ec_thermal_config thermal_params[] = {
+	/* {Twarn, Thigh, Thalt}, <on>
+	 * {Twarn, Thigh, X    }, <off>
+	 * fan_off, fan_max
+	 */
+	{{0, 0, 0}, {0, 0, 0}, C_TO_K(35), C_TO_K(70)},	/* F75303_Local */
+	{{0, 0, 0}, {0, 0, 0}, 0, 0},	/* F75303_Remote1 */
+	{{0, 0, 0}, {0, 0, 0}, 0, 0},	/* F75303_Remote2 */
+};
+BUILD_ASSERT(ARRAY_SIZE(thermal_params) == TEMP_SENSOR_COUNT);
 
 #define I2C_PMIC_READ(reg, data) \
 		i2c_read8(I2C_PORT_PMIC, TPS650X30_I2C_ADDR1, (reg), (data))
@@ -748,6 +777,8 @@ static void setup_fans(void)
 		fans[FAN_CH_0].rpm = &fan_rpm_1;
 	else if (oem == PROJECT_PANTHEON)
 		fans[FAN_CH_0].rpm = &fan_rpm_2;
+	else if (oem == PROJECT_AKALI)
+		fans[FAN_CH_0].rpm = &fan_rpm_3;
 }
 
 /*

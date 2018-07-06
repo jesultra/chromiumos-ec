@@ -261,7 +261,7 @@ int acpi_ap_to_ec(int is_cmd, uint8_t value, uint8_t *resultptr)
 			kblight_set(data);
 			break;
 #endif
-#ifdef CONFIG_FANS
+#ifdef CONFIG_DPTF
 		case EC_ACPI_MEM_FAN_DUTY:
 			dptf_set_fan_duty_target(data);
 			break;

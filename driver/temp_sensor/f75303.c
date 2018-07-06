@@ -10,10 +10,12 @@
 #include "i2c.h"
 #include "hooks.h"
 #include "util.h"
+#include "console.h"
 
 static int temp_val_local;
 static int temp_val_remote1;
 static int temp_val_remote2;
+static int tsr0_temp = C_TO_K(30);
 
 /**
  * Read 8 bits register from temp sensor.
@@ -40,7 +42,8 @@ int f75303_get_val(int idx, int *temp_ptr)
 {
 	switch (idx) {
 	case F75303_IDX_LOCAL:
-		*temp_ptr = temp_val_local;
+//		*temp_ptr = temp_val_local;
+		*temp_ptr = tsr0_temp;
 		break;
 	case F75303_IDX_REMOTE1:
 		*temp_ptr = temp_val_remote1;
@@ -68,3 +71,22 @@ static void f75303_sensor_poll(void)
 }
 DECLARE_HOOK(HOOK_SECOND, f75303_sensor_poll, HOOK_PRIO_TEMP_SENSOR);
 
+static int tsr0_func(int argc, char **argv)
+{
+	int temp = 0;
+	char *e;
+
+	if (argc < 2)
+		return EC_ERROR_PARAM_COUNT;
+
+	temp = strtoi(argv[1], &e, 0);
+	if (*e)
+		return EC_ERROR_PARAM1;
+
+	ccprintf("Setting TSR0's temperature to %u\n", temp);
+	tsr0_temp = C_TO_K(temp);
+
+	return EC_SUCCESS;
+}
+DECLARE_CONSOLE_COMMAND(tsr0, tsr0_func,
+			"[10|20]", "set tsr0");

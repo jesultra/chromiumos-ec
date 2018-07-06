@@ -24,6 +24,14 @@ static int thermal_control_enabled[CONFIG_FANS];
 static int fan_update_counter[CONFIG_FANS];
 #endif
 
+static void set_enabled(int fan, int enable)
+{
+	fan_set_enabled(FAN_CH(fan), enable);
+
+	if (fans[fan].conf->enable_gpio >= 0)
+		gpio_set_level(fans[fan].conf->enable_gpio, enable);
+}
+
 #ifndef CONFIG_FAN_RPM_CUSTOM
 /* This is the default implementation. It's only called over [0,100].
  * Convert the percentage to a target RPM. We can't simply scale all
@@ -72,15 +80,9 @@ test_mockable void fan_set_percent_needed(int fan, int pct)
 	    new_rpm < fans[fan].rpm->rpm_start)
 		new_rpm = fans[fan].rpm->rpm_start;
 
+	/* Enable the fan when non-zero rpm. */
+	set_enabled(fan, (new_rpm > 0) ? 1 : 0);
 	fan_set_rpm_target(FAN_CH(fan), new_rpm);
-}
-
-static void set_enabled(int fan, int enable)
-{
-	fan_set_enabled(FAN_CH(fan), enable);
-
-	if (fans[fan].conf->enable_gpio >= 0)
-		gpio_set_level(fans[fan].conf->enable_gpio, enable);
 }
 
 static void set_thermal_control_enabled(int fan, int enable)
@@ -510,11 +512,10 @@ static void pwm_fan_resume(void)
 {
 	int fan;
 	for (fan = 0; fan < CONFIG_FANS; fan++) {
-#ifdef CONFIG_FAN_RPM_CUSTOM
-		set_thermal_control_enabled(fan, 1);
-#else
-		set_thermal_control_enabled(fan, 0);
-#endif
+	/* We don't enable or disable thermal control here.
+	 * It should be already enabled by pwm_fan_init on cold boot
+	 * or by pwm_fan_S3_S5 on warm reboot. If it needs
+	 * to be disabled, DPTF and host command will do so. */
 		fan_set_rpm_target(FAN_CH(fan),
 				   fan_percent_to_rpm(FAN_CH(fan),
 						      CONFIG_FAN_INIT_SPEED));
