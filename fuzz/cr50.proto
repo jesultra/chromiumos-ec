@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package fuzz;
+
+message PWResetTree {
+  uint32 bits_per_level = 1;
+  uint32 height = 2;
+}
+
+message PWInsertLeaf {
+  uint64 label = 1;
+  bytes delay_schedule = 2;
+  bytes low_entropy_secret = 3;
+  bytes high_entropy_secret = 4;
+  bytes reset_secret = 5;
+  bytes path_hashes = 6;
+}
+
+message PWRemoveLeaf {
+  uint64 label = 1;
+  bytes leaf_hmac = 2;
+  bytes path_hashes = 3;
+}
+
+message PinWeaver {
+  uint32 version = 1;
+  oneof request {
+    PWResetTree reset_tree = 2;
+    PWInsertLeaf insert_leaf = 3;
+    PWRemoveLeaf remove_leaf = 4;
+  }
+}
+
+message RandomBytes {
+  bytes value = 1;
+}
+
+message SubAction {
+  oneof sub_action {
+    RandomBytes random_bytes = 1;
+    PinWeaver pinweaver = 2;
+  }
+}
+
+message FuzzerInput {
+  repeated SubAction sub_actions = 1;
+}

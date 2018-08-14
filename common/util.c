@@ -7,86 +7,7 @@
 
 #include "util.h"
 
-size_t strlen(const char *s)
-{
-	int len = 0;
-
-	while (*s++)
-		len++;
-
-	return len;
-}
-
-
-size_t strnlen(const char *s, size_t maxlen)
-{
-	size_t len = 0;
-
-	while (len < maxlen && *s) {
-		s++;
-		len++;
-	}
-	return len;
-}
-
-
-int isspace(int c)
-{
-	return c == ' ' || c == '\t' || c == '\r' || c == '\n';
-}
-
-
-int isdigit(int c)
-{
-	return c >= '0' && c <= '9';
-}
-
-
-int isalpha(int c)
-{
-	return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
-}
-
-int isprint(int c)
-{
-	return c >= ' ' && c <= '~';
-}
-
-int tolower(int c)
-{
-	return c >= 'A' && c <= 'Z' ? c + 'a' - 'A' : c;
-}
-
-
-int strcasecmp(const char *s1, const char *s2)
-{
-	int diff;
-
-	do {
-		diff = tolower(*s1) - tolower(*s2);
-		if (diff)
-			return diff;
-	} while (*(s1++) && *(s2++));
-	return 0;
-}
-
-
-int strncasecmp(const char *s1, const char *s2, size_t size)
-{
-	int diff;
-
-	if (!size)
-		return 0;
-
-	do {
-		diff = tolower(*s1) - tolower(*s2);
-		if (diff)
-			return diff;
-	} while (*(s1++) && *(s2++) && --size);
-	return 0;
-}
-
-
+#ifndef FUZZ_BUILD
 int atoi(const char *nptr)
 {
 	int result = 0;
@@ -109,107 +30,29 @@ int atoi(const char *nptr)
 	return neg ? -result : result;
 }
 
-
-/* Like strtol(), but for integers */
-int strtoi(const char *nptr, char **endptr, int base)
+int isdigit(int c)
 {
-	int result = 0;
-	int neg = 0;
-	int c = '\0';
-
-	if (endptr)
-		*endptr = (char *)nptr;
-
-	while ((c = *nptr++) && isspace(c))
-		;
-
-	if (c == '0' && *nptr == 'x') {
-		base = 16;
-		c = nptr[1];
-		nptr += 2;
-	} else if (base == 0) {
-		base = 10;
-		if (c == '-') {
-			neg = 1;
-			c = *nptr++;
-		}
-	}
-
-	while (c) {
-		if (c >= '0' && c < '0' + MIN(base, 10))
-			result = result * base + (c - '0');
-		else if (c >= 'A' && c < 'A' + base - 10)
-			result = result * base + (c - 'A' + 10);
-		else if (c >= 'a' && c < 'a' + base - 10)
-			result = result * base + (c - 'a' + 10);
-		else
-			break;
-
-		if (endptr)
-			*endptr = (char *)nptr;
-		c = *nptr++;
-	}
-
-	return neg ? -result : result;
+	return c >= '0' && c <= '9';
 }
 
-uint64_t strtoul(const char *nptr, char **endptr, int base)
+int isspace(int c)
 {
-	uint64_t result = 0;
-	int c = '\0';
-
-	if (endptr)
-		*endptr = (char *)nptr;
-
-	while ((c = *nptr++) && isspace(c))
-		;
-
-	if (c == '0' && *nptr == 'x') {
-		base = 16;
-		c = nptr[1];
-		nptr += 2;
-	} else if (base == 0) {
-		base = 10;
-		if (c == '-')
-			return result;
-	}
-
-	while (c) {
-		if (c >= '0' && c < '0' + MIN(base, 10))
-			result = result * base + (c - '0');
-		else if (c >= 'A' && c < 'A' + base - 10)
-			result = result * base + (c - 'A' + 10);
-		else if (c >= 'a' && c < 'a' + base - 10)
-			result = result * base + (c - 'a' + 10);
-		else
-			break;
-
-		if (endptr)
-			*endptr = (char *)nptr;
-		c = *nptr++;
-	}
-
-	return result;
+	return c == ' ' || c == '\t' || c == '\r' || c == '\n';
 }
 
-int parse_bool(const char *s, int *dest)
+int isalpha(int c)
 {
-	/* off, disable, false, no */
-	if (!strcasecmp(s, "off") || !strncasecmp(s, "dis", 3) ||
-	    tolower(*s) == 'f' || tolower(*s) == 'n') {
-		*dest = 0;
-		return 1;
-	}
+	return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}
 
-	/* on, enable, true, yes */
-	if (!strcasecmp(s, "on") || !strncasecmp(s, "ena", 3) ||
-	    tolower(*s) == 't' || tolower(*s) == 'y') {
-		*dest = 1;
-		return 1;
-	}
+int isprint(int c)
+{
+	return c >= ' ' && c <= '~';
+}
 
-	/* dunno */
-	return 0;
+int tolower(int c)
+{
+	return c >= 'A' && c <= 'Z' ? c + 'a' - 'A' : c;
 }
 
 int memcmp(const void *s1, const void *s2, size_t len)
@@ -225,26 +68,6 @@ int memcmp(const void *s1, const void *s2, size_t len)
 	}
 
 	return 0;
-}
-
-/* Constant-time memory comparison */
-int safe_memcmp(const void *s1, const void *s2, size_t size)
-{
-	const uint8_t *us1 = s1;
-	const uint8_t *us2 = s2;
-	int result = 0;
-
-	if (size == 0)
-		return 0;
-
-	/*
-	 * Code snippet without data-dependent branch due to Nate Lawson
-	 * (nate@root.org) of Root Labs.
-	 */
-	while (size--)
-		result |= *us1++ ^ *us2++;
-
-	return result != 0;
 }
 
 void *memcpy(void *dest, const void *src, size_t len)
@@ -290,7 +113,6 @@ void *memcpy(void *dest, const void *src, size_t len)
 	return dest;
 }
 
-
 void *memset(void *dest, int c, size_t len)
 {
 	char *d = (char *)dest;
@@ -327,7 +149,6 @@ void *memset(void *dest, int c, size_t len)
 
 	return dest;
 }
-
 
 void *memmove(void *dest, const void *src, size_t len)
 {
@@ -380,7 +201,6 @@ void *memmove(void *dest, const void *src, size_t len)
 	}
 }
 
-
 void *memchr(const void *buffer, int c, size_t n)
 {
 	char *current = (char *)buffer;
@@ -394,35 +214,53 @@ void *memchr(const void *buffer, int c, size_t n)
 	return NULL;
 }
 
-
-void reverse(void *dest, size_t len)
+int strcasecmp(const char *s1, const char *s2)
 {
-	int i;
-	uint8_t *start = dest;
-	uint8_t *end = start + len;
+	int diff;
 
-	for (i = 0; i < len / 2; ++i) {
-		uint8_t tmp = *start;
-
-		*start++ = *--end;
-		*end = tmp;
-	}
+	do {
+		diff = tolower(*s1) - tolower(*s2);
+		if (diff)
+			return diff;
+	} while (*(s1++) && *(s2++));
+	return 0;
 }
 
-
-char *strzcpy(char *dest, const char *src, int len)
+int strncasecmp(const char *s1, const char *s2, size_t size)
 {
-	char *d = dest;
-	if (len <= 0)
-		return dest;
-	while (len > 1 && *src) {
-		*(d++) = *(src++);
-		len--;
-	}
-	*d = '\0';
-	return dest;
+	int diff;
+
+	if (!size)
+		return 0;
+
+	do {
+		diff = tolower(*s1) - tolower(*s2);
+		if (diff)
+			return diff;
+	} while (*(s1++) && *(s2++) && --size);
+	return 0;
 }
 
+size_t strlen(const char *s)
+{
+	int len = 0;
+
+	while (*s++)
+		len++;
+
+	return len;
+}
+
+size_t strnlen(const char *s, size_t maxlen)
+{
+	size_t len = 0;
+
+	while (len < maxlen && *s) {
+		s++;
+		len++;
+	}
+	return len;
+}
 
 char *strncpy(char *dest, const char *src, size_t n)
 {
@@ -436,7 +274,6 @@ char *strncpy(char *dest, const char *src, size_t n)
 		*d = '\0';
 	return dest;
 }
-
 
 int strncmp(const char *s1, const char *s2, size_t n)
 {
@@ -452,6 +289,142 @@ int strncmp(const char *s1, const char *s2, size_t n)
 	return 0;
 }
 
+uint64_t strtoul(const char *nptr, char **endptr, int base)
+{
+	uint64_t result = 0;
+	int c = '\0';
+
+	if (endptr)
+		*endptr = (char *)nptr;
+
+	while ((c = *nptr++) && isspace(c))
+		;
+
+	if (c == '0' && *nptr == 'x') {
+		base = 16;
+		c = nptr[1];
+		nptr += 2;
+	} else if (base == 0) {
+		base = 10;
+		if (c == '-')
+			return result;
+	}
+
+	while (c) {
+		if (c >= '0' && c < '0' + MIN(base, 10))
+			result = result * base + (c - '0');
+		else if (c >= 'A' && c < 'A' + base - 10)
+			result = result * base + (c - 'A' + 10);
+		else if (c >= 'a' && c < 'a' + base - 10)
+			result = result * base + (c - 'a' + 10);
+		else
+			break;
+
+		if (endptr)
+			*endptr = (char *)nptr;
+		c = *nptr++;
+	}
+
+	return result;
+}
+#endif
+
+/* Constant-time memory comparison */
+int safe_memcmp(const void *s1, const void *s2, size_t size)
+{
+	const uint8_t *us1 = s1;
+	const uint8_t *us2 = s2;
+	int result = 0;
+
+	if (size == 0)
+		return 0;
+
+	/*
+	 * Code snippet without data-dependent branch due to Nate Lawson
+	 * (nate@root.org) of Root Labs.
+	 */
+	while (size--)
+		result |= *us1++ ^ *us2++;
+
+	return result != 0;
+}
+
+/* Like strtol(), but for integers */
+int strtoi(const char *nptr, char **endptr, int base)
+{
+	int result = 0;
+	int neg = 0;
+	int c = '\0';
+
+	if (endptr)
+		*endptr = (char *)nptr;
+
+	while ((c = *nptr++) && isspace(c))
+		;
+
+	if (c == '0' && *nptr == 'x') {
+		base = 16;
+		c = nptr[1];
+		nptr += 2;
+	} else if (base == 0) {
+		base = 10;
+		if (c == '-') {
+			neg = 1;
+			c = *nptr++;
+		}
+	}
+
+	while (c) {
+		if (c >= '0' && c < '0' + MIN(base, 10))
+			result = result * base + (c - '0');
+		else if (c >= 'A' && c < 'A' + base - 10)
+			result = result * base + (c - 'A' + 10);
+		else if (c >= 'a' && c < 'a' + base - 10)
+			result = result * base + (c - 'a' + 10);
+		else
+			break;
+
+		if (endptr)
+			*endptr = (char *)nptr;
+		c = *nptr++;
+	}
+
+	return neg ? -result : result;
+}
+
+char *strzcpy(char *dest, const char *src, int len)
+{
+	char *d = dest;
+
+	if (len <= 0)
+		return dest;
+	while (len > 1 && *src) {
+		*(d++) = *(src++);
+		len--;
+	}
+	*d = '\0';
+	return dest;
+}
+
+int parse_bool(const char *s, int *dest)
+{
+	/* off, disable, false, no */
+	if (!strcasecmp(s, "off") || !strncasecmp(s, "dis", 3) ||
+	    tolower(*s) == 'f' || tolower(*s) == 'n') {
+		*dest = 0;
+		return 1;
+	}
+
+	/* on, enable, true, yes */
+	if (!strcasecmp(s, "on") || !strncasecmp(s, "ena", 3) ||
+	    tolower(*s) == 't' || tolower(*s) == 'y') {
+		*dest = 1;
+		return 1;
+	}
+
+	/* dunno */
+	return 0;
+}
 
 int uint64divmod(uint64_t *n, int d)
 {
@@ -504,6 +477,19 @@ int get_next_bit(uint32_t *mask)
 	return bit;
 }
 
+void reverse(void *dest, size_t len)
+{
+	int i;
+	uint8_t *start = dest;
+	uint8_t *end = start + len;
+
+	for (i = 0; i < len / 2; ++i) {
+		uint8_t tmp = *start;
+
+		*start++ = *--end;
+		*end = tmp;
+	}
+}
 
 /****************************************************************************/
 /* stateful conditional stuff */

@@ -12,14 +12,11 @@
 #ifndef __CROS_EC_DCRYPTO_HOST_H
 #define __CROS_EC_DCRYPTO_HOST_H
 
-#include <sha256.h>
 #include <stdint.h>
 #include <string.h>
 
 #define AES256_BLOCK_CIPHER_KEY_SIZE 32
 #define SHA256_DIGEST_SIZE 32
-
-#define HASH_CTX sha256_ctx
 
 enum dcrypto_appid {
 	RESERVED = 0,
@@ -32,6 +29,37 @@ enum dcrypto_appid {
 	/* This enum value should not exceed 7. */
 };
 
+#ifdef FUZZ_BUILD
+
+#include "chip/g/dcrypto/internal.h"
+#include "cryptoc/hmac.h"
+
+struct APPKEY_CTX {
+	uint8_t cpp_compatibility;
+};
+
+void DCRYPTO_SHA256_init(LITE_SHA256_CTX *ctx, uint32_t sw_required);
+
+void DCRYPTO_HMAC_SHA256_init(LITE_HMAC_CTX *ctx, const void *key,
+			      unsigned int len);
+const uint8_t *DCRYPTO_HMAC_final(LITE_HMAC_CTX *ctx);
+
+int DCRYPTO_aes_ctr(uint8_t *out, const uint8_t *key, uint32_t key_bits,
+		    const uint8_t *iv, const uint8_t *in, size_t in_len);
+
+int DCRYPTO_appkey_init(enum dcrypto_appid appid, struct APPKEY_CTX *ctx);
+
+void DCRYPTO_appkey_finish(struct APPKEY_CTX *ctx);
+
+int DCRYPTO_appkey_derive(enum dcrypto_appid appid, const uint32_t input[8],
+			  uint32_t output[8]);
+
+#else  /* FUZZ_BUILD */
+
+#include <sha256.h>
+
+#define HASH_CTX sha256_ctx
+
 /* Used as a replacement for declarations in cryptoc that are used by Cr50, but
  * add unnecessary complexity to the test code.
  */
@@ -40,6 +68,8 @@ struct dcrypto_mock_ctx_t {
 };
 #define LITE_HMAC_CTX struct dcrypto_mock_ctx_t
 #define LITE_SHA256_CTX struct HASH_CTX
+
+struct APPKEY_CTX {};
 
 void HASH_update(struct HASH_CTX *ctx, const void *data, size_t len);
 
@@ -54,13 +84,13 @@ const uint8_t *DCRYPTO_HMAC_final(LITE_HMAC_CTX *ctx);
 int DCRYPTO_aes_ctr(uint8_t *out, const uint8_t *key, uint32_t key_bits,
 		    const uint8_t *iv, const uint8_t *in, size_t in_len);
 
-struct APPKEY_CTX {};
-
 int DCRYPTO_appkey_init(enum dcrypto_appid appid, struct APPKEY_CTX *ctx);
 
 void DCRYPTO_appkey_finish(struct APPKEY_CTX *ctx);
 
 int DCRYPTO_appkey_derive(enum dcrypto_appid appid, const uint32_t input[8],
 			  uint32_t output[8]);
+
+#endif  /* FUZZ_BUILD */
 
 #endif  /* __CROS_EC_HOST_DCRYPTO_H */

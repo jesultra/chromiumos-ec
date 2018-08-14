@@ -1,0 +1,74 @@
+/* Copyright 2018 The Chromium OS Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+/* Per-test fuzzer flags. */
+
+#ifndef __FUZZ_FUZZ_CONFIG_H
+#define __FUZZ_FUZZ_CONFIG_H
+
+/* Config flags that only apply for fuzzer builds. */
+#ifdef FUZZ_BUILD
+
+/* Don't compile features unless they are needed specifically. */
+#undef CONFIG_VBOOT_HASH
+#undef CONFIG_USB_PD_LOGGING
+
+#ifdef FUZZ_CR50
+#define CONFIG_DCRYPTO
+#define CONFIG_PINWEAVER
+#define CONFIG_UPTO_SHA512
+
+/******************************************************************************/
+/* From chip/g/config_chip.h */
+
+#define CFG_FLASH_HALF (CONFIG_FLASH_SIZE >> 1)
+#define CFG_TOP_SIZE  0x3800
+#define CFG_TOP_A_OFF (CFG_FLASH_HALF - CFG_TOP_SIZE)
+#define CFG_TOP_B_OFF (CONFIG_FLASH_SIZE - CFG_TOP_SIZE)
+
+/******************************************************************************/
+/* From board/cr50/board.h */
+/* Non-volatile counter storage for U2F */
+#define CONFIG_FLASH_NVCOUNTER
+#define CONFIG_FLASH_NVCTR_SIZE CONFIG_FLASH_BANK_SIZE
+#define CONFIG_FLASH_NVCTR_BASE_A (CONFIG_PROGRAM_MEMORY_BASE + \
+				   CFG_TOP_A_OFF)
+#define CONFIG_FLASH_NVCTR_BASE_B (CONFIG_PROGRAM_MEMORY_BASE + \
+				   CFG_TOP_B_OFF)
+/* We're using TOP_A for partition 0, TOP_B for partition 1 */
+#define CONFIG_FLASH_NVMEM
+/* Offset to start of NvMem area from base of flash */
+#define CONFIG_FLASH_NVMEM_OFFSET_A (CFG_TOP_A_OFF + CONFIG_FLASH_NVCTR_SIZE)
+#define CONFIG_FLASH_NVMEM_OFFSET_B (CFG_TOP_B_OFF + CONFIG_FLASH_NVCTR_SIZE)
+/* Address of start of Nvmem area */
+#define CONFIG_FLASH_NVMEM_BASE_A (CONFIG_PROGRAM_MEMORY_BASE + \
+				 CONFIG_FLASH_NVMEM_OFFSET_A)
+#define CONFIG_FLASH_NVMEM_BASE_B (CONFIG_PROGRAM_MEMORY_BASE + \
+				 CONFIG_FLASH_NVMEM_OFFSET_B)
+/* Size partition in NvMem */
+#define NVMEM_PARTITION_SIZE (CFG_TOP_SIZE - CONFIG_FLASH_NVCTR_SIZE)
+/* Size in bytes of NvMem area */
+#define CONFIG_FLASH_NVMEM_SIZE (NVMEM_PARTITION_SIZE * NVMEM_NUM_PARTITIONS)
+/* Enable <key, value> variable support. */
+#define CONFIG_FLASH_NVMEM_VARS
+#define NVMEM_CR50_SIZE 272
+#define CONFIG_FLASH_NVMEM_VARS_USER_SIZE NVMEM_CR50_SIZE
+
+#ifndef __ASSEMBLER__
+enum nvmem_users {
+	NVMEM_TPM = 0,
+	NVMEM_CR50,
+	NVMEM_NUM_USERS
+};
+#endif
+#define CONFIG_FLASH_NVMEM_VARS_USER_NUM NVMEM_NUM_USERS
+
+/******************************************************************************/
+#define CONFIG_SW_CRC
+
+#endif /* FUZZ_PINWEAVER */
+
+#endif  /* FUZZ_BUILD */
+#endif  /* __FUZZ_FUZZ_CONFIG_H */

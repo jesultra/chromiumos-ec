@@ -26,9 +26,11 @@ _common_dir_create := $(foreach d,$(common_dirs),$(shell [ -d $(out)/$(d) ] || \
 _sharedlib_dir_create := $(foreach d,$(dirs),$(shell \
 	[ -d $(out)/$(SHOBJLIB)/$(d) ] || mkdir -p $(out)/$(SHOBJLIB)/$(d)))
 _dir_create := $(foreach d,$(dirs),$(shell [ -d $(out)/$(BLD)/$(d) ] || \
-	    mkdir -p $(out)/RO/$(d); mkdir -p $(out)/RW/$(d)))
+	    mkdir -p $(out)/RO/$(d); mkdir -p $(out)/RW/$(d); \
+	    mkdir -p $(out)/gen/$(d)))
 _dir_y_create := $(foreach d,$(dirs-y),$(shell [ -d $(out)/$(BLD)/$(d) ] || \
-	    mkdir -p $(out)/RO/$(d); mkdir -p $(out)/RW/$(d)))
+	    mkdir -p $(out)/RO/$(d); mkdir -p $(out)/RW/$(d); \
+	    mkdir -p $(out)/gen/$(d)))))
 
 # V unset for normal output, V=1 for verbose output, V=0 for silent build
 # (warnings/errors only). Use echo thus: $(call echo,"stuff  to  echo")
@@ -83,6 +85,10 @@ cmd_c_to_host = $(HOSTCC) $(HOST_CFLAGS) $(HOST_LDFLAGS) -MMD -MF $@.d  -o $@ \
 	         $(sort $(foreach c,$($(*F)-objs),util/$(c:%.o=%.c)) $(wildcard $*.c))
 cmd_cxx_to_host = $(HOSTCXX) -std=c++0x $(COMMON_WARN) $(HOST_CXXFLAGS)\
 	-I ./$($(notdir $@)_ROOT) -o $@ $(filter %.cc,$^) $($(notdir $@)_LIBS)
+cmd_cxx_to_o = $(HOSTCXX) -std=c++11 $(COMMON_WARN) $(HOST_CXXFLAGS)\
+	$(CFLAGS) $(CXXFLAGS) -MMD -MP -MF $@.d -c $< -o $(@D)/$(@F)
+cmd_fuzz = $(CXX) $(ro-objs) $(CXXFLAGS) $(HOST_TEST_LDFLAGS) \
+	$(LDFLAGS_EXTRA) -lFuzzingEngine -o $@
 cmd_host_test = ./util/run_host_test $* $(silent)
 # generate new version.h, compare if it changed and replace if so
 cmd_version = ./util/getversion.sh > $@.tmp && cmp -s $@.tmp $@ || mv $@.tmp $@; rm -f $@.tmp
@@ -100,6 +106,7 @@ cmd_c_to_taskinfo = $(BUILDCC) \
 	-MMD -MF $@.d -c $< -flto -o $@
 cmd_link_taskinfo = $(BUILDCC) $(BUILD_CFLAGS) --shared -fPIC $^ \
 	$(BUILD_LDFLAGS) -flto -o $@
+cmd_proto_to_cxx = $(PROTOC) -I. --cpp_out=$(out)/gen $^
 
 cmd_tp_hash = $(out)/util/gen_touchpad_hash \
 		$(if $(TOUCHPAD_FW),-f $(TOUCHPAD_FW)) -o $@
@@ -321,6 +328,19 @@ coverage: TEST_FLAG=TEST_COVERAGE=y
 coverage: $(cov-test-targets)
 	$(call quiet,report_cov,REPORT )
 
+fuzz-targets=$(foreach t,$(fuzz-list-y),fuzz-$(t))
+.PHONY: $(fuzz-targets)
+
+$(fuzz-targets): fuzz-%:
+	@set -e ; \
+	$(call echo,"  BUILD   fuzz - build/host/fuzz/$*") \
+	$(MAKE) --no-print-directory BOARD=host PROJECT=$* \
+		V=$(V) out=build/host/fuzz/$* FUZZ_BUILD=y EMU_BUILD=y \
+		$(TEST_FLAG) CROSS_COMPILE= build/host/fuzz/$*/$*.fuzz
+
+.PHONY: fuzzers
+fuzzers: $(fuzz_targets)
+
 $(out)/firmware_image.lds: common/firmware_image.lds.S
 	$(call quiet,lds,LDS    )
 $(out)/%.lds: core/$(CORE)/ec.lds.S
@@ -407,10 +427,27 @@ $(out)/%.smap: $(out)/%.elf
 $(out)/$(PROJECT).exe: $(ro-objs)
 	$(call quiet,exe,EXE    )
 
+$(out)/$(PROJECT).fuzz: $(ro-objs)
+	$(call quiet,fuzz,FUZZ   )
+
 $(out)/RO/%.o:%.c
 	$(call quiet,c_to_o,CC     )
 $(out)/RW/%.o:%.c
 	$(call quiet,c_to_o,CC     )
+
+$(out)/RO/%.o:%.cc
+	$(call quiet,cxx_to_o,CXX    )
+$(out)/RW/%.o:%.cc
+	$(call quiet,cxx_to_o,CXX    )
+
+$(out)/RO/%.pb.o:$(out)/gen/%.pb.cc
+	$(call quiet,cxx_to_o,CXX    )
+$(out)/RW/%.pb.o:$(out)/gen/%.pb.cc
+	$(call quiet,cxx_to_o,CXX    )
+$(out)/gen/%.pb.cc:%.proto
+	$(call quiet,proto_to_cxx,PROTO  )
+$(out)/gen/%.pb.h:%.proto
+	$(call quiet,proto_to_cxx,PROTO  )
 
 $(out)/$(SHOBJLIB)/%.o: override LATE_CFLAGS_DEFINE:=-DSHAREDLIB_IMAGE
 $(out)/$(SHOBJLIB)/%.o:%.c

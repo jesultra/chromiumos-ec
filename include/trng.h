@@ -25,12 +25,14 @@ void init_trng(void);
  **/
 void exit_trng(void);
 
+#ifndef FUZZ_BUILD
 /**
  * Retrieve a 32 bit random value.
  *
  * Not supported on all platforms.
  **/
 uint32_t rand(void);
+#endif
 
 /**
  * Output len random bytes into buffer.

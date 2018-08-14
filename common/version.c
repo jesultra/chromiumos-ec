@@ -18,7 +18,7 @@ const struct image_data __keep current_image_data
 	__attribute__((section(".rodata.ver"))) = {
 	.cookie1 = CROS_EC_IMAGE_DATA_COOKIE1,
 	.version = CROS_EC_VERSION32,
-#ifndef TEST_BUILD
+#if !defined(TEST_BUILD) && !defined(FUZZ_BUILD)
 	.size = (const uintptr_t)&__image_size,
 #endif
 	.rollback_version = CONFIG_ROLLBACK_VERSION,

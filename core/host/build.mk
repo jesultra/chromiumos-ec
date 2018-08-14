@@ -8,4 +8,7 @@
 
 CFLAGS_CPU=-fno-builtin
 
-core-y=main.o task.o timer.o panic.o disabled.o stack_trace.o
+core-y=task.o timer.o panic.o disabled.o stack_trace.o
+ifneq ($(FUZZ_BUILD),y)
+core-y+=main.o
+endif

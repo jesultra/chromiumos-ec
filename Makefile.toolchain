@@ -40,11 +40,12 @@ PKG_CONFIG?=pkg-config
 BUILDCC?=$(CCACHE) gcc
 HOSTCC?=$(CCACHE) $(HOST_CROSS_COMPILE)gcc
 HOSTCXX?=$(CCACHE) $(HOST_CROSS_COMPILE)g++
+PROTOC?=protoc
 
 C_WARN = -Wstrict-prototypes -Wdeclaration-after-statement -Wno-pointer-sign
 COMMON_WARN = -Wall -Werror -Wundef -Wno-trigraphs -fno-strict-aliasing \
 	-fno-common -Werror-implicit-function-declaration \
-	-Wno-format-security -fno-strict-overflow
+	-Wno-format-security -fno-strict-overflow -Wno-c++11-extensions
 ifeq ($(cc-name),clang)
 # clang is pickier when it comes to packed struct members alignment.
 C_WARN+= -Wno-address-of-packed-member
@@ -56,9 +57,12 @@ CFLAGS_DEBUG+=$(CFLAGS_DEBUG_CHIP)
 CFLAGS_INCLUDE=$(foreach i,$(includes),-I$(i) ) -I.
 CFLAGS_TEST=$(if $(TEST_BUILD),-DTEST_BUILD \
                                -DTEST_TASKFILE=$(PROJECT).tasklist,) \
+            $(if $(FUZZ_BUILD),-g -DFUZZ_BUILD \
+                               -DTEST_TASKFILE=$(PROJECT).tasklist,) \
             $(if $(CTS_MODULE), $(CFLAGS_CTS)) \
             $(if $(EMU_BUILD),-DEMU_BUILD) \
             $(if $($(PROJECT)-scale),-DTEST_TIME_SCALE=$($(PROJECT)-scale)) \
+            -DFUZZ_$(PROJECT) -DFUZZ_$(UC_PROJECT) \
             -DTEST_$(PROJECT) -DTEST_$(UC_PROJECT) \
             $(if $(TEST_ASAN),-fsanitize=address)
 CFLAGS_COVERAGE=$(if $(TEST_COVERAGE),-fprofile-arcs -ftest-coverage \
@@ -103,7 +107,11 @@ LIBFTDI_LDLIBS=$(shell $(PKG_CONFIG) --libs   lib${LIBFTDI_NAME})
 
 BUILD_CFLAGS= $(LIBFTDI_CFLAGS) $(BUILD_CPPFLAGS) -O3 $(CFLAGS_DEBUG) $(CFLAGS_WARN)
 HOST_CFLAGS=$(HOST_CPPFLAGS) -O3 $(CFLAGS_DEBUG) $(CFLAGS_WARN) -DHOST_TOOLS_BUILD
-LDFLAGS=-nostdlib -g -Wl,-X -Wl,--gc-sections -Wl,--build-id=none \
+LDFLAGS=
+ifneq ($(BOARD),host)
+LDFLAGS+=-nostdlib
+endif
+LDFLAGS+=-g -Wl,-X -Wl,--gc-sections -Wl,--build-id=none \
 	$(LDFLAGS_EXTRA) $(CFLAGS_CPU)
 BUILD_LDFLAGS=$(LIBFTDI_LDLIBS)
 HOST_TEST_LDFLAGS=-Wl,-T core/host/host_exe.lds -lrt -pthread -rdynamic -lm\

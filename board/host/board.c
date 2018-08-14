@@ -58,7 +58,7 @@ const struct i2c_port_t i2c_ports[] = {
 const unsigned int i2c_ports_used = ARRAY_SIZE(i2c_ports);
 #endif
 
-#ifdef TEST_BUILD
+#if defined(TEST_BUILD) || defined(FUZZ_BUILD)
 /* Poor source of entropy for testing purpose. */
 int board_get_entropy(void *buffer, int len)
 {

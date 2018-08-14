@@ -21,9 +21,16 @@
 
 static uint32_t *FLASH_CNT_LO = (uint32_t *)CONFIG_FLASH_NVCTR_BASE_A;
 static uint32_t *FLASH_CNT_HI = (uint32_t *)CONFIG_FLASH_NVCTR_BASE_B;
-/* Ensure the 2 flash counter areas are aligned on flash pages */
+/* Ensure the 2 flash counter areas are aligned on flash pages
+ *
+ * When building fuzzing targets on the host board, an in memory variable is
+ * used instead of a #defined memory location. The BUILD_ASSERT macro fails
+ * even when the assert shouldn't fail if you use a variable in the condition.
+ */
+#ifndef FUZZ_BUILD
 BUILD_ASSERT(CONFIG_FLASH_NVCTR_BASE_A % CONFIG_FLASH_ERASE_SIZE == 0);
 BUILD_ASSERT(CONFIG_FLASH_NVCTR_BASE_B % CONFIG_FLASH_ERASE_SIZE == 0);
+#endif
 
 /*
  * An anti-rollback, persistent flash counter. This counter requires two pages
