@@ -1572,8 +1572,11 @@ static int command_accelresolution(int argc, char **argv)
 			== EC_ERROR_INVAL)
 			return EC_ERROR_PARAM2;
 	} else {
-		ccprintf("Resolution for sensor %d: %d\n", id,
-			 sensor->drv->get_resolution(sensor));
+		if (sensor->drv->get_resolution)
+			ccprintf("Resolution for sensor %d: %d\n", id,
+				 sensor->drv->get_resolution(sensor));
+		else
+			ccprintf("Resolution for sensor %d: undefined\n", id);
 	}
 
 	return EC_SUCCESS;
