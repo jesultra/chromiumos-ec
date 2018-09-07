@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78824bc5_6a5c5401",
+        "filename": "util/iteflash.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1259838
+      },
+      "writtenOn": "2018-09-07T15:18:15Z",
+      "side": 1,
+      "message": "should we check for exit_requested in this method to fail gracefully during programming when Ctrl+C is trapped?",
+      "range": {
+        "startLine": 253,
+        "startChar": 11,
+        "endLine": 253,
+        "endChar": 32
+      },
+      "revId": "8ef07b516a4a37e4485977464df441222ca6d6c3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
