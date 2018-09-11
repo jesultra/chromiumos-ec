@@ -77,6 +77,8 @@
 #define IT83XX_USBPD_CC_VOLTAGE_DETECTOR_INDEPENDENT
 /* For IT8320BX, we have to write 0xff to clear pending bit.*/
 #define IT83XX_ESPI_VWCTRL1_WRITE_FF_CLEAR
+/* For IT8320BX, observation register of external timer latch. */
+#define IT83XX_EXT_OBSERVATION_REG_READ_BY_CPUCYCLES
 #elif defined(CHIP_VARIANT_IT8320DX)
 #define CONFIG_FLASH_SIZE  0x00080000
 /* The slave frequency is adjustable (bit[2-0] at register IT83XX_ESPI_GCAC1) */
