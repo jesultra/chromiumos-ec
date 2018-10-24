@@ -28,7 +28,8 @@ static void update_vbus_supplier(int port, int vbus_level)
 {
 	struct charge_port_info charge = {0};
 
-	if (vbus_level && !usb_charger_port_is_sourcing_vbus(port)) {
+	if (vbus_level && !usb_charger_port_is_sourcing_vbus(port) &&
+	    pd_get_role(port) == PD_ROLE_SINK) {
 		charge.voltage = USB_CHARGER_VOLTAGE_MV;
 		charge.current = USB_CHARGER_MIN_CURR_MA;
 	}
