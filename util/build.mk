@@ -18,9 +18,6 @@ uartupdatetool-objs=uut/main.o uut/cmd.o uut/opr.o uut/l_com_port.o \
 	uut/lib_crc.o
 $(out)/util/uartupdatetool: HOST_CFLAGS+=-Iutil/
 # Build on a limited subset of boards to save build time
-ifeq ($(BOARD),meowth_fp)
-build-util-bin+=ectool_servo
-endif
 
 comm-objs=$(util-lock-objs:%=lock/%) comm-host.o comm-dev.o
 comm-objs+=comm-lpc.o comm-i2c.o misc_util.o
