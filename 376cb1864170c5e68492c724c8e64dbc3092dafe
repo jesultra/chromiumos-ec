@@ -22,6 +22,30 @@
       "revId": "376cb1864170c5e68492c724c8e64dbc3092dafe",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "879878b2_3b172ead",
+        "filename": "board/atlas_ish/ec.tasklist",
+        "patchSetId": 8
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1137654
+      },
+      "writtenOn": "2018-12-04T23:48:24Z",
+      "side": 1,
+      "message": "task is only for receiving every single heci messsage.\ntransmitting heci message is done under the task calls corresponding functions.",
+      "parentUuid": "72a47e00_0696a081",
+      "range": {
+        "startLine": 23,
+        "startChar": 13,
+        "endLine": 23,
+        "endChar": 20
+      },
+      "revId": "376cb1864170c5e68492c724c8e64dbc3092dafe",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
