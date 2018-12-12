@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "49c44cd6_3af77b5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1119124
+      },
+      "writtenOn": "2018-12-12T10:28:17Z",
+      "side": 1,
+      "message": "needs CQ-DEPEND\u003d1279432",
+      "revId": "fa58d237f3b5ab954a05310ee4d16b21fc987589",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fc3ff666_6c139434",
         "filename": "board/atlas_ish/ec.tasklist",
         "patchSetId": 9
