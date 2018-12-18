@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "811624ee_63dd3cd1",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1299840
+      },
+      "writtenOn": "2018-12-18T08:37:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83ddaa29_2a9278f5",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 1,
+        "endChar": 16
+      },
+      "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0a383a26_615857bd",
         "filename": "chip/mt_scp/ec_wrapper.h",
         "patchSetId": 2
@@ -45,6 +69,30 @@
       "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01506ef8_348a1597",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1299840
+      },
+      "writtenOn": "2018-12-18T08:37:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a383a26_615857bd",
+      "range": {
+        "startLine": 6,
+        "startChar": 28,
+        "endLine": 6,
+        "endChar": 34
+      },
+      "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     },
     {
       "key": {
@@ -94,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "825126f2_d8e260ec",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1299840
+      },
+      "writtenOn": "2018-12-18T08:37:16Z",
+      "side": 1,
+      "message": "If CM4 need to access dram, we must set up the dram map in initial stage. After that, if somebody wants to know the mapping table, we need to provide these API to them .",
+      "parentUuid": "41dabb60_85083806",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 35
+      },
+      "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bcfecbbd_ea86be08",
         "filename": "chip/mt_scp/ec_wrapper.h",
         "patchSetId": 2
@@ -105,6 +177,30 @@
       "writtenOn": "2018-12-18T06:56:38Z",
       "side": 1,
       "message": "We don\u0027t have this either.\n\nYou probably need to\n\ninterrupt_disable();\n\n/* calculate the clock through get_time() or __hw_clock_source_read() */\n\nget_time();\n/* or */\n_hw_clock_source_read();\n\ninterrupt_enable();",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 32
+      },
+      "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "231f34bf_cb703d5f",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1299840
+      },
+      "writtenOn": "2018-12-18T08:37:16Z",
+      "side": 1,
+      "message": "Hi, Yilun.. could you help to check with Rong about this API we have dealt before?\n\nhttps://docs.google.com/document/d/1UBsMgaazA7AtwsKSbtXPzjgrsR88heorJo1_bRt41co/edit#\n2018/10/12\nPerf measurement\nAI(rongchang): provide API for function cycle count",
+      "parentUuid": "bcfecbbd_ea86be08",
       "range": {
         "startLine": 73,
         "startChar": 8,
