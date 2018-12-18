@@ -45,6 +45,75 @@
       "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ba5214e_15f0ecd8",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1182824
+      },
+      "writtenOn": "2018-12-18T06:56:38Z",
+      "side": 1,
+      "message": "We have ASSERT(cond). But it won\u0027t disable the interrupt.\n\n\n#ifdef CONFIG_DEBUG_ASSERT_BRIEF                                            \nextern void panic_assert_fail(const char *fname, int linenum)               \n        __attribute__((noreturn));                                          \n#define ASSERT(cond) do {                                       \\           \n                if (!(cond))                                    \\           \n                        panic_assert_fail(__FILE__, __LINE__);  \\           \n        } while (0)                                                         \n#else                                                                       \nextern void panic_assert_fail(const char *msg, const char *func,            \n                const char *fname, int linenum) __attribute__((noreturn));  \n#define ASSERT(cond) do {                                            \\      \n                if (!(cond))                                         \\      \n                        panic_assert_fail(#cond, __func__, __FILE__, \\      \n                                        __LINE__);                   \\      \n        } while (0)                                                         \n#endif",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 27
+      },
+      "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41dabb60_85083806",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1182824
+      },
+      "writtenOn": "2018-12-18T06:56:38Z",
+      "side": 1,
+      "message": "We don\u0027t have these two functions now, so there is no mapping for this.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 35
+      },
+      "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcfecbbd_ea86be08",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1182824
+      },
+      "writtenOn": "2018-12-18T06:56:38Z",
+      "side": 1,
+      "message": "We don\u0027t have this either.\n\nYou probably need to\n\ninterrupt_disable();\n\n/* calculate the clock through get_time() or __hw_clock_source_read() */\n\nget_time();\n/* or */\n_hw_clock_source_read();\n\ninterrupt_enable();",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 32
+      },
+      "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
     }
   ]
 }
