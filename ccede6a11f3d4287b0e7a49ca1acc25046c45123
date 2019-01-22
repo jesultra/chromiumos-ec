@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fd7188be_5a030c56",
+        "filename": "board/nami/board.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2019-01-22T18:35:50Z",
+      "side": 0,
+      "message": "Let\u0027s change this to 95 for all boards.",
+      "range": {
+        "startLine": 675,
+        "startChar": 25,
+        "endLine": 675,
+        "endChar": 27
+      },
+      "revId": "ccede6a11f3d4287b0e7a49ca1acc25046c45123",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}

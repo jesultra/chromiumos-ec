@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a689d167_370755eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2019-01-22T18:35:50Z",
+      "side": 1,
+      "message": "Where does this max come from? AC adapter, isl9238, or something else?",
+      "range": {
+        "startLine": 9,
+        "startChar": 55,
+        "endLine": 9,
+        "endChar": 62
+      },
+      "revId": "1c65435c311399740eb7e040c0a3485b6cfb4107",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa835fa1_76f324f3",
+        "filename": "board/nami/board.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2019-01-22T18:35:50Z",
+      "side": 1,
+      "message": "nit: it looks cleaner to me if you do:\n\n  int factor \u003d 96;\n  if (oem \u003d\u003d ... \u0026\u0026 model \u003d\u003d ...)\n    factor \u003d 95;\n  charge_ma \u003d charge_ma * factor / 100;",
+      "range": {
+        "startLine": 677,
+        "startChar": 2,
+        "endLine": 677,
+        "endChar": 35
+      },
+      "revId": "1c65435c311399740eb7e040c0a3485b6cfb4107",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
