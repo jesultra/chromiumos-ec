@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "59da8c43_686687d4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2019-01-23T19:14:57Z",
+      "side": 1,
+      "message": "With this change, we also need to verify the charge time requirements are still met: https://www.google.com/chromeos/partner/fe/docs/latest-requirements/chromebook.html#charging-time.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 4
+      },
+      "revId": "1beebfde8a208d0373c9f92a8b607204bd846b0d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
