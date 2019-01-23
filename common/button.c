@@ -366,8 +366,9 @@ static int console_command_button(int argc, char **argv)
 		if (button_mask & (1 << button_idx))
 			button_interrupt_simulate(button_idx);
 
-	/* Hold the button(s) */
-	msleep(press_ms);
+	/* Hold the button(s). If |press_ms| is set to 0 skip sleeping. */
+	if (press_ms)
+		msleep(press_ms);
 
 	/* Release the button(s) */
 	for (button_idx = 0; button_idx < BUTTON_COUNT; button_idx++)
