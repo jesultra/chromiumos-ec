@@ -22,6 +22,30 @@
       "revId": "1beebfde8a208d0373c9f92a8b607204bd846b0d",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62296962_0de49e0a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1003079
+      },
+      "writtenOn": "2019-01-28T01:13:03Z",
+      "side": 1,
+      "message": "Our power will upload result to issue when test complete.",
+      "parentUuid": "59da8c43_686687d4",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 4
+      },
+      "revId": "1beebfde8a208d0373c9f92a8b607204bd846b0d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
     }
   ]
 }
