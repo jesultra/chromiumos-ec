@@ -5525,6 +5525,19 @@ struct ec_params_charger_control {
 	uint8_t allow_charging;
 } __ec_align_size1;
 
+/*
+ * Synchronize EC MTC to host RTC
+ */
+#define EC_CMD_SYNC_RTC 0x0603
+
+/**
+ * struct ec_params_rtc_sync - RTC Sync parameters
+ * @host_epoch_sec: Host RTC time (in seconds since Unix epoch)
+ */
+struct ec_params_rtc_sync {
+	uint64_t host_epoch_sec;
+} __ec_align4;
+
 /*****************************************************************************/
 /*
  * Reserve a range of host commands for board-specific, experimental, or

@@ -16,16 +16,30 @@ static struct {
 	struct calendar_date time;
 	uint32_t sec;
 } test_case[] = {
-	{{8, 3, 1}, 1204329600},
-	{{17, 10, 1}, 1506816000},
+	{{8, 3, 1, 0, 0, 0}, 1204329600},
+	{{17, 10, 1, 0, 0, 0}, 1506816000},
+	{{19, 3, 6, 22, 18, 29}, 1551910709}, /* includes time */
+	{{0, 1, 1, 0, 0, 0}, 946684800}, /* 2000-01-01 */
+	{{4, 2, 29, 11, 12, 13}, 1078053133} /* Feb 29 */
 };
+
+static int calendar_comp(struct calendar_date time_1,
+			   struct calendar_date time_2)
+{
+	return (time_1.year == time_2.year &&
+		time_1.month == time_2.month &&
+		time_1.day == time_2.day);
+}
 
 static int calendar_time_comp(struct calendar_date time_1,
 			   struct calendar_date time_2)
 {
 	return (time_1.year == time_2.year &&
 		time_1.month == time_2.month &&
-		time_1.day == time_2.day);
+		time_1.day == time_2.day &&
+		time_1.hour == time_2.hour &&
+		time_1.minute == time_2.minute &&
+		time_1.second == time_2.second);
 }
 
 static int test_time_conversion(void)
@@ -40,6 +54,9 @@ static int test_time_conversion(void)
 	time_1.year = 0;
 	time_1.month = 1;
 	time_1.day = 1;
+	time_1.hour = 0;
+	time_1.minute = 0;
+	time_1.second = 0;
 
 	/* Test from year 2000 to 2050 */
 	for (i = 0; i <= 50; i++) {
@@ -54,13 +71,12 @@ static int test_time_conversion(void)
 
 		/* Test the day boundary between Jan. 1 and Jan. 2 */
 		time_2 = sec_to_date(sec + SECS_PER_DAY - 1);
-		TEST_ASSERT(calendar_time_comp(time_1, time_2));
-
+		TEST_ASSERT(calendar_comp(time_1, time_2));
 		time_1.day = 2;
 
 		TEST_ASSERT(date_to_sec(time_1) == sec + SECS_PER_DAY);
 		time_2 = sec_to_date(sec + SECS_PER_DAY);
-		TEST_ASSERT(calendar_time_comp(time_1, time_2));
+		TEST_ASSERT(calendar_comp(time_1, time_2));
 
 		/*
 		 * Test the month boundary and leap year:
@@ -83,7 +99,7 @@ static int test_time_conversion(void)
 
 		sec += SECS_PER_DAY;
 		time_2 = sec_to_date(sec - 1);
-		TEST_ASSERT(calendar_time_comp(time_1, time_2));
+		TEST_ASSERT(calendar_comp(time_1, time_2));
 	}
 
 	/* Verify known test cases */

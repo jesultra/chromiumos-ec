@@ -90,6 +90,7 @@
 #define CONFIG_LOW_POWER_IDLE
 #define CONFIG_DPTF
 #define CONFIG_BOARD_HAS_RTC_RESET
+#define CONFIG_HOSTCMD_RTC_SYNC
 
 /* Port80 -- allow larger buffer for port80 messages */
 #undef CONFIG_PORT80_HISTORY_LEN

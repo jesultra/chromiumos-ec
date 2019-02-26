@@ -31,6 +31,9 @@
 /* Old hardware does not support dedicated EC->AP interrupt for MKBP */
 #define CONFIG_MKBP_USE_HOST_EVENT
 
+/* Not enough space in Flash for this right now */
+#undef CONFIG_HOSTCMD_RTC_SYNC
+
 #undef CONFIG_UART_TX_BUF_SIZE
 #define CONFIG_UART_TX_BUF_SIZE 4096
 

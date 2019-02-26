@@ -791,7 +791,6 @@ DECLARE_HOST_COMMAND(EC_CMD_GET_FEATURES,
 		     host_command_get_features,
 		     EC_VER_MASK(0));
 
-
 /*****************************************************************************/
 /* Console commands */
 

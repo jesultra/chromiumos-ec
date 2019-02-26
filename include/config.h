@@ -1935,6 +1935,9 @@
 /* List of host commands whose debug output will be suppressed */
 #undef CONFIG_SUPPRESSED_HOST_COMMANDS
 
+/* Command to synchronize RTC from host to EC */
+#undef CONFIG_HOSTCMD_RTC_SYNC
+
 /*****************************************************************************/
 
 /* Enable debugging and profiling statistics for hook functions */
