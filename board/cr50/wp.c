@@ -21,13 +21,15 @@
 #define CPRINTS(format, args...) cprints(CC_RBOX, format, ## args)
 #define CPRINTF(format, args...) cprintf(CC_RBOX, format, ## args)
 
+int bp_disconnect;
+uint8_t bp_forced;
 /**
  * Return non-zero if battery is present
  */
 int board_battery_is_present(void)
 {
 	/* Invert because battery-present signal is active low */
-	return !gpio_get_level(GPIO_BATT_PRES_L);
+	return bp_forced ? !bp_disconnect : !gpio_get_level(GPIO_BATT_PRES_L);
 }
 
 /**
@@ -137,6 +139,55 @@ static enum vendor_cmd_rc vc_set_wp(enum vendor_cmd_cc code,
 }
 DECLARE_VENDOR_COMMAND(VENDOR_CC_WP, vc_set_wp);
 
+static int command_bpforce(int argc, char **argv)
+{
+	if (argc > 1) {
+		/* Make sure we're allowed to override WP settings */
+		if (!ccd_is_cap_enabled(CCD_CAP_OVERRIDE_BP))
+			return EC_ERROR_ACCESS_DENIED;
+
+		/* Update WP */
+		if (strncasecmp(argv[1], "follow_batt_pres", 16) == 0) {
+			bp_forced = 0;
+		} else if (strncasecmp(argv[1], "dis", 3) == 0) {
+			bp_disconnect = 1;
+			bp_forced = 1;
+		} else if (strncasecmp(argv[1], "con", 3) == 0) {
+			bp_disconnect = 0;
+			bp_forced = 1;
+		} else {
+			return EC_ERROR_PARAM1;
+		}
+
+
+		if (argc > 2 && !strcasecmp(argv[2], "atboot")) {
+			/* Change override at boot to match */
+			ccd_set_flag(CCD_FLAG_OVERRIDE_BP_AT_BOOT, bp_forced);
+			ccd_set_flag(CCD_FLAG_OVERRIDE_BP_STATE_DISCONNECT,
+				bp_disconnect);
+		}
+
+		/* Update the WP state based on the changes */
+		check_wp_battery_presence();
+	}
+
+	ccprintf("BATT_PRES_L %s%sconnect\n", bp_forced ? "override to " : "",
+		 board_battery_is_present() ? "" : "dis");
+
+	ccprintf(" at boot: ");
+	if (ccd_get_flag(CCD_FLAG_OVERRIDE_BP_AT_BOOT))
+		ccprintf("override to %sconnect\n",
+			 ccd_get_flag(CCD_FLAG_OVERRIDE_BP_STATE_DISCONNECT)
+			 ? "dis" : "");
+	else
+		ccprintf("follow_batt_pres\n");
+
+	return EC_SUCCESS;
+}
+DECLARE_SAFE_CONSOLE_COMMAND(bpforce, command_bpforce,
+			     "[connect|disconnect|follow_batt_pres [atboot]]",
+			     "Get/set BATT_PRES_L signal override");
+
 static int command_wp(int argc, char **argv)
 {
 	int val = 1;
@@ -182,7 +233,19 @@ DECLARE_SAFE_CONSOLE_COMMAND(wp, command_wp,
 			     "[<BOOLEAN>/follow_batt_pres [atboot]]",
 			     "Get/set the flash HW write-protect signal");
 
-void set_wp_follow_ccd_config(void)
+void set_bp_follow_ccd_config(void)
+{
+	if (ccd_get_flag(CCD_FLAG_OVERRIDE_BP_AT_BOOT)) {
+		/* Reset to at-boot state specified by CCD */
+		bp_forced = 1;
+		bp_disconnect = !!ccd_get_flag(
+			CCD_FLAG_OVERRIDE_BP_STATE_DISCONNECT);
+	} else {
+		bp_forced = 0;
+	}
+}
+
+static void set_wp_follow_ccd_config(void)
 {
 	if (ccd_get_flag(CCD_FLAG_OVERRIDE_WP_AT_BOOT)) {
 		/* Reset to at-boot state specified by CCD */
@@ -194,8 +257,26 @@ void set_wp_follow_ccd_config(void)
 	}
 }
 
+void board_wp_follow_ccd_config(void)
+{
+	/*
+	 * Battery presence can be overidden using CCD. Get that setting before
+	 * configuring write protect.
+	 */
+	set_bp_follow_ccd_config();
+
+	/* Update write protect setting based on ccd config */
+	set_wp_follow_ccd_config();
+}
+
 void init_wp_state(void)
 {
+	/*
+	 * Battery presence can be overidden using CCD. Get that setting before
+	 * configuring write protect.
+	 */
+	set_bp_follow_ccd_config();
+
 	/* Check system reset flags after CCD config is initially loaded */
 	if ((system_get_reset_flags() & RESET_FLAG_HIBERNATE) &&
 	    !system_rollback_detected()) {
