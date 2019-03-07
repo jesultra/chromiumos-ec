@@ -35,6 +35,9 @@
 /* TODO(b/123634700): This is temporary until FIFO is supported */
 #define CONFIG_ACCEL_FORCE_MODE_MASK (1 << BASE_ACCEL)
 
+/* DMA paging between SRAM and DRAM */
+#define CONFIG_DMA_PAGING
+
 /* Host command over HECI */
 #define CONFIG_HOSTCMD_HECI
 
