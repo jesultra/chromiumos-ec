@@ -71,6 +71,27 @@
 #undef CONFIG_ADC
 #undef CONFIG_SHA256
 
+/* power management definitions */
+#define CONFIG_LOW_POWER_IDLE
+
+#ifdef CONFIG_LOW_POWER_IDLE
+
+#define CONFIG_ISH_PM_D0I1
+#define CONFIG_ISH_PM_D0I2
+#define CONFIG_ISH_PM_D0I3
+#define CONFIG_ISH_PM_D3
+#define CONFIG_ISH_PM_RESET_PREP
+
+#define CONFIG_ISH_D0I2_MIN_USEC        1000000  /* 1 seconds */
+#define CONFIG_ISH_D0I3_MIN_USEC        2000000  /* 2 seconds */
+
+#if defined(CONFIG_ISH_PM_D0I2) || defined(CONFIG_ISH_PM_D0I3) || \
+    defined(CONFIG_ISH_PM_D3) || defined(CONFIG_ISH_PM_RESET_PREP)
+#define CONFIG_ISH_PM_AONTASK
+#endif
+
+#endif
+
 #ifndef __ASSEMBLER__
 
 #include "gpio_signal.h"

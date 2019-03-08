@@ -1,0 +1,48 @@
+/* Copyright 2019 The Chromium OS Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include <config_chip.h>
+
+ENTRY(ish_aon_main);
+
+MEMORY
+{
+    /* leave 256 bytes in the end of memory for stack */
+    RAM : ORIGIN = CONFIG_ISH_AON_SRAM_BASE_START, LENGTH = (CONFIG_ISH_AON_SRAM_SIZE - 248)
+}
+
+SECTIONS
+{
+    /* AON parts visible to FW are linked to the beginning of the AON area */
+    .data.aon_share : AT(CONFIG_ISH_AON_SRAM_BASE_START)
+    {
+	KEEP(*(.data.aon_share))
+    } > RAM
+
+    .data :
+    {
+	*(.data)
+	    *(.data*)
+    } > RAM
+
+    .text :
+    {
+	*(.text)
+	    *(.text*)
+    } > RAM
+
+    .bss :
+    {
+	*(.bss)
+	    *(.bss*)
+    } > RAM
+
+    .stack_tag :
+    {
+	KEEP(*(.stack_tag))
+    } > RAM
+
+
+}

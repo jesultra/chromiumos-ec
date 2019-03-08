@@ -13,6 +13,8 @@
 
 
 .global __idt
+.global __gdt
+.global __gdt_ptr
 
 # GDT is loaded by ISH ROM. The FW code retains the same GDT
 # and hence the same segment selector
@@ -305,13 +307,37 @@ __gdt:
 	.byte 0x9b	# Code E/R, Present, DPL0, Acesssed=1
 	.byte 0xcf	# Limit fxxxx, Page Gra, 32 bit
 	.byte 0x00	# Base: 00xxxxxx
-	# Entry 0: Data descriptor
+	# Entry 2: Data descriptor
 	.word 0xffff	# Limit: xffff
 	.word 0x0000	# Base: xxxx0000
 	.byte 0x00	# Base: xx00xxxx
 	.byte 0x93	# Data R/W, Present, DPL0, Acesssed=1
 	.byte 0xcf	# Limit fxxxx, Page Gra, 32 bit
 	.byte 0x00	# Base: 00xxxxxx
+
+#if defined(CONFIG_ISH_PM_AONTASK)
+	# Entry 3: TSS descriptor for context saving in aontask switching
+	.word 0x0000	# Limit: xffff
+	.word 0x0000	# Base: xxxx0000
+	.byte 0x00	# Base: xx00xxxx
+	.byte 0x00	# TSS, R/W, Present, DPL0, Acesssed=1
+	.byte 0x00	# Limit fxxxx, Page Gra, 32 bit
+	.byte 	# Base: 00xxxxxx
+	# Entry 4: placeholder TSS descriptor for aontask
+	.word 0x0000	# Limit: xffff
+	.word 0x0000	# Base: xxxx0000
+	.byte 0x00	# Base: xx00xxxx
+	.byte 0x00	# TSS, R/W, Present, DPL0, Acesssed=1
+	.byte 0x00	# Limit fxxxx, Page Gra, 32 bit
+	.byte 0x00	# Base: 00xxxxxx
+	# Entry 5: placeholder LDT descriptor for aontask
+	.word 0x0000
+	.word 0x0000
+	.byte 0x00
+	.byte 0x00
+	.byte 0x00
+	.byte 0x00
+#endif
 
 #.section .data
 __idt_ptr:
