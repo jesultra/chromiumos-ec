@@ -119,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "73dbfb0f_13b4b3c2",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1299840
+      },
+      "writtenOn": "2019-03-14T06:21:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ba5214e_15f0ecd8",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 27
+      },
+      "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "41dabb60_85083806",
         "filename": "chip/mt_scp/ec_wrapper.h",
         "patchSetId": 2
@@ -163,6 +187,30 @@
       "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db26b24c_c6883d92",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1299840
+      },
+      "writtenOn": "2019-03-14T06:21:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "825126f2_d8e260ec",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 35
+      },
+      "revId": "f64d159b16f2fd7aca80147c14e4f57dda70fd4f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     },
     {
       "key": {
