@@ -223,8 +223,17 @@ void board_set_charge_limit(int port, int supplier, int charge_ma,
 
 int board_discharge_on_ac(int enable)
 {
-	/* TODO(b:123268580): Implement POGO discharge logic. */
-	return charger_discharge_on_ac(enable);
+	int ret;
+
+	if (enable) {
+		gpio_set_level(GPIO_EN_POGO_CHARGE_L, 1);
+		ret = charger_discharge_on_ac(enable);
+	} else {
+		ret = charger_discharge_on_ac(enable);
+		pd_send_host_event(PD_EVENT_POWER_CHANGE);
+	}
+
+	return ret;
 }
 
 int extpower_is_present(void)
@@ -233,11 +242,14 @@ int extpower_is_present(void)
 	 * The charger will indicate VBUS presence if we're sourcing 5V,
 	 * so exclude such ports.
 	 */
-	/* TODO(b:127767432): Also need to check pogo_vbus_present. */
+	int usb_c_extpower_present;
+
 	if (board_vbus_source_enabled(CHARGE_PORT_USB_C))
-		return 0;
+		usb_c_extpower_present = 0;
 	else
-		return tcpm_get_vbus_level(CHARGE_PORT_USB_C);
+		usb_c_extpower_present = tcpm_get_vbus_level(CHARGE_PORT_USB_C);
+
+	return usb_c_extpower_present || gpio_get_level(GPIO_POGO_VBUS_PRESENT);
 }
 
 int pd_snk_is_vbus_provided(int port)
