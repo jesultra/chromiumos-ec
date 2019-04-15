@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2d4c69bd_f1183115",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1299840
+      },
+      "writtenOn": "2019-04-15T08:41:24Z",
+      "side": 1,
+      "message": "I think it is more used for debug.\nUnfortunately, our members want to use totally the same code in both EC/FreeRTOS environment for sync conveniently",
+      "parentUuid": "d52faea2_89ccf912",
+      "range": {
+        "startLine": 26,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 16
+      },
+      "revId": "f8b987ad8165e0e06efcaa004187de7c918bdc9a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7b9a8a48_90764fd2",
         "filename": "chip/mt_scp/ec_wrapper.h",
         "patchSetId": 7
@@ -36,6 +60,24 @@
       "writtenOn": "2019-03-19T06:10:07Z",
       "side": 1,
       "message": "TBH, I\u0027d much rather you just fix this in your sources with some sed operations...",
+      "revId": "f8b987ad8165e0e06efcaa004187de7c918bdc9a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3228b70a_265c59cc",
+        "filename": "chip/mt_scp/ec_wrapper.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1299840
+      },
+      "writtenOn": "2019-04-15T08:41:24Z",
+      "side": 1,
+      "message": "Our members want to use totally the same code in both EC/FreeRTOS environment for sync conveniently, since They need to maintain many projects.",
+      "parentUuid": "7b9a8a48_90764fd2",
       "revId": "f8b987ad8165e0e06efcaa004187de7c918bdc9a",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
