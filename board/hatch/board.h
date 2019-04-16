@@ -71,6 +71,13 @@
  */
 #define USB_PD_PORT_TCPC 1
 
+/* USB Type A Features */
+#define CONFIG_USB_PORT_POWER_SMART
+#undef CONFIG_USB_PORT_POWER_SMART_PORT_COUNT
+#define CONFIG_USB_PORT_POWER_SMART_PORT_COUNT 1
+#define CONFIG_USB_PORT_POWER_SMART_CDP_SDP_ONLY
+#define GPIO_USB1_ILIM_SEL GPIO_EN_USB_A_LOW_PWR_OD
+
 /*
  * Macros for GPIO signals used in common code that don't match the
  * schematic names. Signal names in gpio.inc match the schematic and are

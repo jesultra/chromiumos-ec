@@ -76,6 +76,13 @@ static void tcpc_alert_event(enum gpio_signal signal)
 	schedule_deferred_pd_interrupt(port);
 }
 
+static void board_tcpc_init(void)
+{
+	/* Enable HDMI HPD interrupt. */
+	gpio_enable_interrupt(GPIO_HDMI_CONN_HPD);
+}
+DECLARE_HOOK(HOOK_INIT, board_tcpc_init, HOOK_PRIO_DEFAULT);
+
 static void hdmi_hpd_interrupt(enum gpio_signal signal)
 {
 	baseboard_mst_enable_control(MST_HDMI, gpio_get_level(signal));
@@ -408,3 +415,8 @@ static void board_chipset_shutdown(void)
 }
 DECLARE_HOOK(HOOK_CHIPSET_SHUTDOWN, board_chipset_shutdown,
 	     HOOK_PRIO_DEFAULT);
+
+/* GPIO to enable/disable the USB Type-A port. */
+const int usb_port_enable[CONFIG_USB_PORT_POWER_SMART_PORT_COUNT] = {
+	GPIO_EN_USB_A_5V,
+};

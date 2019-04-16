@@ -117,7 +117,7 @@ enum power_state power_handle_state(enum power_state state)
 	 * signals are high.
 	 */
 	if ((gpio_get_level(GPIO_PP5000_A_PG_OD) &&
-	     gpio_get_level(GPIO_EN_PP5000_A)) ||
+	     gpio_get_level(GPIO_EN_PP5000)) ||
 	    gpio_get_level(GPIO_PCH_RSMRST_L))
 		common_intel_x86_handle_rsmrst(state);
 

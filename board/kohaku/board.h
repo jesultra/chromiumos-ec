@@ -84,7 +84,7 @@
 #define GPIO_RSMRST_L_PGOOD GPIO_PG_EC_RSMRST_L
 #define GPIO_PCH_SLP_S3_L GPIO_SLP_S3_L
 #define GPIO_PCH_SLP_S4_L GPIO_SLP_S4_L
-#define GPIO_EN_PP5000 GPIO_EN_PP5000_A
+#define GPIO_EN_PP5000 GPIO_EN_PP5000_A_V1
 
 #ifndef __ASSEMBLER__
 
@@ -92,7 +92,7 @@
 #include "registers.h"
 
 /* GPIO signals updated base on board version. */
-#define GPIO_EN_PP5000_A gpio_en_pp5000_a
+#define EN_PP5000_A_V1 gpio_en_pp5000_a
 extern enum gpio_signal gpio_en_pp5000_a;
 
 enum adc_channel {

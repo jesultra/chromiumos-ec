@@ -8,8 +8,7 @@
 /* Declare symbolic names for all the GPIOs that we care about.
  * Note: Those with interrupt handlers must be declared first. */
 
-/* Wake Source interrupts */
-GPIO_INT(LID_OPEN,             PIN(D, 2), GPIO_INT_BOTH | GPIO_HIB_WAKE_HIGH, lid_interrupt)
+/* Wake Source interrupts */GPIO_INT(LID_OPEN,             PIN(D, 2), GPIO_INT_BOTH | GPIO_HIB_WAKE_HIGH, lid_interrupt)
 GPIO_INT(WP_L,                 PIN(A, 1), GPIO_INT_BOTH, switch_interrupt)              /* EC_WP_ODL */
 GPIO_INT(POWER_BUTTON_L,       PIN(0, 1), GPIO_INT_BOTH, power_button_interrupt)        /* MECH_PWR_BTN_ODL */
 GPIO_INT(ACOK_OD,              PIN(0, 0), GPIO_INT_BOTH | GPIO_HIB_WAKE_HIGH, extpower_interrupt)
@@ -34,23 +33,23 @@ GPIO_INT(USB_C1_TCPC_INT_ODL,  PIN(F, 5), GPIO_INT_FALLING, tcpc_alert_event)
 GPIO_INT(USB_C0_BC12_INT_ODL,  PIN(9, 5), GPIO_INT_FALLING, bc12_interrupt)
 GPIO_INT(USB_C1_BC12_INT_ODL,  PIN(E, 4), GPIO_INT_FALLING, bc12_interrupt)
 
-GPIO_INT(HDMI_CONN_HPD,        PIN(7, 2), GPIO_INT_BOTH, hdmi_hpd_interrupt)
-
 /* Volume button interrupts */
 GPIO_INT(EC_VOLDN_BTN_ODL,     PIN(9, 3), GPIO_INT_BOTH | GPIO_PULL_UP, button_interrupt)
 GPIO_INT(EC_VOLUP_BTN_ODL,     PIN(7, 5), GPIO_INT_BOTH | GPIO_PULL_UP, button_interrupt)
 
+/* System state signals */
 GPIO(SYS_RESET_L,              PIN(0, 2), GPIO_ODR_HIGH)        /* SYS_RST_ODL */
 GPIO(ENTERING_RW,              PIN(E, 3), GPIO_OUT_LOW)         /* EC_ENTERING_RW */
 GPIO(PCH_WAKE_L,               PIN(7, 4), GPIO_ODR_HIGH)        /* EC_PCH_WAKE_ODL */
 GPIO(PCH_PWRBTN_L,             PIN(C, 1), GPIO_ODR_HIGH)        /* EC_PCH_PWR_BTN_ODL */
+GPIO(PCH_RTCRST,               PIN(7, 6), GPIO_OUT_LOW)         /* EC_PCH_RTCRST */
 
 /* Power Sequencing Signals */
 GPIO(EN_PP5000_A_V1,           PIN(A, 4), GPIO_DEFAULT)
-GPIO(EN_PP5000_A_V0,           PIN(7, 3), GPIO_DEFAULT)
 GPIO(EN_A_RAILS,               PIN(A, 3), GPIO_OUT_LOW)
 GPIO(EC_PCH_RSMRST_L,          PIN(A, 6), GPIO_OUT_LOW)
 GPIO(EC_PROCHOT_ODL,           PIN(6, 3), GPIO_ODR_HIGH)
+GPIO(EC_PROCHOT_IN_OD,         PIN(3, 4), GPIO_ODR_LOW)
 GPIO(PP5000_A_PG_OD,           PIN(D, 7), GPIO_INPUT)
 GPIO(EC_PCH_SYS_PWROK,         PIN(3, 7), GPIO_OUT_LOW)
 GPIO(CPU_C10_GATE_L,           PIN(6, 7), GPIO_INPUT)
@@ -62,19 +61,23 @@ GPIO(EC_INT_L,                 PIN(7, 0), GPIO_OUT_HIGH)
 GPIO(USB_C_OC_ODL,             PIN(B, 1), GPIO_ODR_HIGH)
 GPIO(USB_C0_TCPC_RST,          PIN(9, 7), GPIO_OUT_LOW)
 GPIO(USB_C1_TCPC_RST_ODL,      PIN(3, 2), GPIO_ODR_HIGH)
-GPIO(EN_USB_A_5V,              PIN(3, 5), GPIO_OUT_LOW)
-GPIO(EN_USB_A_LOW_PWR_OD,      PIN(9, 4), GPIO_OUT_LOW)
+GPIO(USB_C0_BC12_VBUS_ON,      PIN(9, 4), GPIO_OUT_LOW)
+GPIO(USB_C1_BC12_VBUS_ON,      PIN(C, 6), GPIO_INPUT)
+GPIO(USB_C0_BC12_CHG_DET,      PIN(D, 6), GPIO_INPUT)
+GPIO(USB_C1_BC12_CHG_DET,      PIN(3, 5), GPIO_INPUT)
 
 /* Misc Signals */
 GPIO(EC_BATT_PRES_ODL,         PIN(E, 1), GPIO_INPUT)
 GPIO(LED_1_L,                  PIN(C, 4), GPIO_OUT_HIGH)        /* Yellow (hatch) */
 GPIO(LED_2_L,                  PIN(C, 3), GPIO_OUT_HIGH)        /* White (hatch) */
 GPIO(LED_3_L,                  PIN(C, 2), GPIO_OUT_HIGH)
-GPIO(LED_4_L,                  PIN(6, 0), GPIO_OUT_HIGH)
-GPIO(EC_KB_BL_EN,              PIN(8, 6), GPIO_OUT_LOW)         /* Keyboard backlight */
-GPIO(EN_PP5000_FAN,            PIN(6, 1), GPIO_OUT_LOW)
-GPIO(EN_MST,                   PIN(9, 6), GPIO_OUT_LOW)
 
+/** GPIO60 is a test point */
+GPIO(EC_KB_BL_EN,              PIN(8, 6), GPIO_OUT_LOW)         /* Keyboard backlight */
+/** GPIO61 is a test point */
+GPIO(EN_PP5000_FAN,            PIN(6, 1), GPIO_OUT_LOW)
+/** GPIO96 is a test point */
+GPIO(EN_MST,                   PIN(9, 6), GPIO_OUT_LOW)
 
 /* I2C pins - Alternate function below configures I2C module on these pins */
 GPIO(I2C0_SCL,                 PIN(B, 5), GPIO_INPUT |
@@ -115,8 +118,6 @@ ALTERNATE(PIN_MASK(6, 0x30), 0, MODULE_UART, 0)                            /* UA
 
 /* PWM */
 ALTERNATE(PIN_MASK(8, 0x01), 0, MODULE_PWM, 0)                             /* PWM3 - Keyboard backlight */
-ALTERNATE(PIN_MASK(B, 0x80), 0, MODULE_PWM, 0)                             /* PWM5 - FAN */
-ALTERNATE(PIN_MASK(4, 0x01), 0, MODULE_PWM, 0)                             /* TA1 - Fan Tachometer */
 
 /* ADC */
 ALTERNATE(PIN_MASK(4, 0x30), 0, MODULE_ADC, 0)                             /* ADC0-1 */

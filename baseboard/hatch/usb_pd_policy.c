@@ -102,7 +102,7 @@ void pd_check_pr_role(int port, int pr_role, int flags)
 int pd_check_vconn_swap(int port)
 {
 	/* Only allow vconn swap if pp5000_A rail is enabled */
-	return gpio_get_level(GPIO_EN_PP5000_A);
+	return gpio_get_level(GPIO_EN_PP5000);
 }
 
 void pd_execute_data_swap(int port, int data_role)

@@ -201,13 +201,7 @@ const struct pi3usb2901_config_t pi3usb2901_bc12_chips[] = {
 	},
 };
 
-/* GPIO to enable/disable the USB Type-A port. */
-const int usb_port_enable[CONFIG_USB_PORT_POWER_SMART_PORT_COUNT] = {
-	GPIO_EN_USB_A_5V,
-};
-
 /* Power Delivery and charging functions */
-
 void baseboard_tcpc_init(void)
 {
 	/* Enable PPC interrupts. */
@@ -217,9 +211,6 @@ void baseboard_tcpc_init(void)
 	/* Enable TCPC interrupts. */
 	gpio_enable_interrupt(GPIO_USB_C0_TCPC_INT_ODL);
 	gpio_enable_interrupt(GPIO_USB_C1_TCPC_INT_ODL);
-
-	/* Enable HDMI HPD interrupt. */
-	gpio_enable_interrupt(GPIO_HDMI_CONN_HPD);
 
 	/* Enable BC 1.2 interrupts */
 	gpio_enable_interrupt(GPIO_USB_C0_BC12_INT_ODL);
