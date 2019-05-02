@@ -148,7 +148,7 @@ const unsigned int motion_sensor_count = ARRAY_SIZE(motion_sensors);
 static void board_init(void)
 {
 	/* Enable interrupt for LSM6DS3 sensor */
-	gpio_enable_interrupt(GPIO_ACCEL_GYRO_INT_L);
+	gpio_enable_interrupt(GPIO_BASE_SIXAXIS_INT_L);
 }
 DECLARE_HOOK(HOOK_INIT, board_init, HOOK_PRIO_DEFAULT);
 
