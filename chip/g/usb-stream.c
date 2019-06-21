@@ -4,6 +4,7 @@
  */
 
 #include "registers.h"
+#include "timer.h"
 #include "usb-stream.h"
 
 /* Let the USB HW IN-to-host FIFO transmit some bytes */
@@ -128,27 +129,42 @@ static inline int tx_fifo_is_ready(struct usb_stream_config const *config)
 }
 
 /* Try to send some bytes to the host */
-void tx_stream_handler(struct usb_stream_config const *config)
+static void tx_stream_handler(struct usb_stream_config const *config)
 {
 	size_t count;
 	struct queue const *tx_q = config->consumer.queue;
-
-	/* handle the completion of the previous transfer, if there was any. */
-	count = *(config->tx_handled);
-	if (count > 0) {
-		/*
-		 * Since tx completed, let's advance queue head  by the value of
-		 * 'count'.
-		 */
-		queue_advance_head(tx_q, count);
-		*(config->tx_handled) = 0;
-	}
 
 	/* setup to send bytes to the host */
 	count = MIN(queue_count(tx_q), config->tx_size);
 	if (count > 0) {
 		size_t head = tx_q->state->head & tx_q->buffer_units_mask;
 		int len[MAX_IN_DESC];
+
+		if (config->is_uart_console) {
+			if (!*config->kicker_running &&
+			    (count < config->tx_size)) {
+			/*
+			 * Shipping less than full chunk (64 bytes) over usb
+			 * is wasteful in case there is a lot of data coming
+			 * from the stream source. Let's try collecting more
+			 * bytes in case more is coming.
+			 *
+			 * It takes 5.6 ms to transfer 64 bytes over UART at
+			 * 115200 bps with one start and one stop bit. Let's
+			 * set the deferred function delay to 3 ms, it will
+			 * take longer in reality as background tasks will get
+			 * a chance to run.
+			 */
+				hook_call_deferred(config->tx_kicker, 3 * MSEC);
+				*config->kicker_running = 1;
+				return;
+			}
+
+			if (*config->kicker_running) {
+				*config->kicker_running = 0;
+				hook_call_deferred(config->tx_kicker, -1);
+			}
+		}
 
 		/*
 		 * If queue units are not physically continuous, then
@@ -194,11 +210,29 @@ void tx_stream_handler(struct usb_stream_config const *config)
 	}
 }
 
+void tx_stream_kicker(struct usb_stream_config const *config)
+{
+	tx_stream_handler(config);
+}
+
 /* Tx/IN interrupt handler */
 void usb_stream_tx(struct usb_stream_config const *config)
 {
+	size_t count;
+
 	/* Clear the Tx/IN interrupts */
 	GR_USB_DIEPINT(config->endpoint) = 0xffffffff;
+
+	/* handle the completion of the previous transfer, if there was any. */
+	count = *(config->tx_handled);
+	if (count > 0) {
+		/*
+		 * Since tx completed, let's advance queue head  by the value of
+		 * 'count'.
+		 */
+		queue_advance_head(config->consumer.queue, count);
+		*(config->tx_handled) = 0;
+	}
 
 	/* Call the Tx FIFO handler */
 	tx_stream_handler(config);
@@ -257,9 +291,24 @@ static void usb_written(struct consumer const *consumer, size_t count)
 		DOWNCAST(consumer, struct usb_stream_config, consumer);
 
 	/* USB TX transfer is active. No need to activate it. */
-	if (*config->tx_in_progress)
-		return;
-	*config->tx_in_progress = 1;
+	if (*config->tx_in_progress) {
+		struct queue const *tx_q;
+
+		if (!*config->kicker_running)
+			return;
+
+		/*
+		 * If kicker is running for too long and we already have a
+		 * certain amount of data accumulated in the buffer, let's
+		 * proceed even before the kicker had a chance to kick in.
+		 */
+		tx_q = config->consumer.queue;
+		if (queue_count(tx_q) < tx_q->buffer_units_mask)
+			return;
+
+		hook_call_deferred(config->deferred_rx, -1);
+		*config->kicker_running = 0;
+	}
 
 	/*
 	 * if USB Endpoint has not been initialized nor in ready status,
@@ -268,6 +317,7 @@ static void usb_written(struct consumer const *consumer, size_t count)
 	if (!tx_fifo_is_ready(config))
 		return;
 
+	*config->tx_in_progress = 1;
 	tx_stream_handler(config);
 }
 
