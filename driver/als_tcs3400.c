@@ -15,13 +15,18 @@
 #include "task.h"
 #include "util.h"
 
+#define CPRINTS(fmt, args...) cprints(CC_ACCEL, "%s "fmt, __func__, ## args)
+
+/*
+ * #define TEST_MODE  to enable test mode to generate the LUX table
+ */
+#undef TEST_MODE
+
 /*
  * 0 = use a step constant when adjusting atime
  * 1 = use the Lux atime table when determining how to adjust atime
  */
 #define TCS_USE_LUX_TABLE 1
-
-#define CPRINTS(fmt, args...) cprints(CC_ACCEL, "%s "fmt, __func__, ## args)
 
 enum alslog_level {
 	DISABLED = 0,
@@ -39,7 +44,11 @@ enum alslog_level {
 };
 
 #ifdef CONFIG_CMD_ALSLOG
+#ifdef TEST_MODE
+static int gAlsLogMask = TEST;
+#else
 static int gAlsLogMask;
+#endif
 static int32_t negative_fp(fp_t fp)
 {
 	return ((fp & BIT(31)) ? 1 : 0);
@@ -202,17 +211,17 @@ static int tcs3400_rgb_read(const struct motion_sensor_t *s, intv3_t v)
 	return EC_SUCCESS;
 }
 
+#ifndef TEST_MODE
 #if TCS_USE_LUX_TABLE
 static void
 decrement_atime(struct tcs_saturation_t *sat_p, uint16_t cur_lux, int percent)
 {
-	int atime, steps;
+	int steps;
 	int lux = MIN(cur_lux, TCS_GAIN_TABLE_MAX_LUX);
 
 	steps = percent * range_atime[sat_p->again][lux/1000] /
 			TCS_ATIME_GAIN_FACTOR;
-	atime = sat_p->atime - steps;
-	sat_p->atime = MAX(atime, TCS_MIN_ATIME);
+	sat_p->atime = MAX(sat_p->atime - steps, TCS_MIN_ATIME);
 	ALSLOG((SATURATION|GRAPH), "decrement ATIME = %d", sat_p->atime);
 }
 #else
@@ -220,13 +229,14 @@ static void decrement_atime(struct tcs_saturation_t *sat_p)
 {
 	sat_p->atime = MAX(sat_p->atime - TCS_ATIME_DEC_STEP, TCS_MIN_ATIME);
 }
-#endif
+#endif /* TCS_USE_LUX_TABLE */
 
 static void increment_atime(struct tcs_saturation_t *sat_p)
 {
 	sat_p->atime = MIN(sat_p->atime + TCS_ATIME_INC_STEP, TCS_MAX_ATIME);
 	ALSLOG((SATURATION|GRAPH), "increment ATIME = %d", sat_p->atime);
 }
+#endif /* TEST_MODE */
 
 #ifdef CONFIG_CMD_ALSLOG
 void log(uint16_t light_val, uint16_t lux, struct tcs_saturation_t *sat_p,
@@ -239,6 +249,184 @@ void log(uint16_t light_val, uint16_t lux, struct tcs_saturation_t *sat_p,
 	       raw_data[0], raw_data[1], raw_data[2], raw_data[3]);
 }
 #endif
+
+
+#ifdef TEST_MODE
+static uint16_t g_cur_percentage;
+static uint8_t  g_atime_bump_idx;
+static uint16_t g_atime_bumps[TCS_MAX_AGAIN-TCS_MIN_AGAIN+1][100];
+static uint32_t g_running_avg[TCS_MAX_AGAIN-TCS_MIN_AGAIN+1];
+static uint8_t g_test_done;
+
+/*
+ * Run through each atime setting for each gain level
+ */
+enum test_stages {
+	TCS_TEST_STAGE_S1 = 0,
+	TCS_TEST_STAGE_S2,
+	TCS_TEST_STAGE_S3,
+	TCS_TEST_STAGE_S4,
+	TCS_TEST_STAGE_S5,
+	TCS_TEST_STAGE_S6,
+};
+
+
+/****************************************************************
+ * Test Mode will walk the device through each atime setting
+ * in each again setting and calculate how many atime increments
+ * it takes to increase light intensity by 1% at that particular
+ * light level setting.  This data is then used to optimize the
+ * saturation auto-adjustment mechanism.
+ *
+ *  Stage 1) set again = 0
+ *  Stage 2) set atime = TCS_MAX_ATIME
+ *           set g_atime_bump_idx = 0
+ *  Stage 3) run cycle
+ *  Stage 4) if (atime == TCS_MAX_ATIME)
+ *              set g_cur_percentage = current percentage of saturation
+ *           else if (current percentage != g_cur_percentage)
+ *              a) g_cur_percentage = current percentage
+ *              b) g_atime_bump_idx++
+ *
+ *           if (atime > TCS_MIN_ATIME)
+ *              a) atime--
+ *              b) g_atime_bumps[g_atime_bump_idx]++
+ *              c) goto stage 3
+ *
+ *           if (again == TCS_MAX_AGAIN)
+ *              a) calculate table
+ *              b) print table
+ *              c) exit, we're done
+ *           else
+ *              a) again++
+ *              b) goto stage 2
+ *
+ ****************************************************************/
+static int g_test_stage = TCS_TEST_STAGE_S1;
+static int g_last_lux;
+static int next_test_setting(struct motion_sensor_t *s, int saturation,
+			     uint32_t percentage, int32_t lux)
+{
+	struct tcs_saturation_t *sat_p =
+			&TCS3400_RGB_DRV_DATA(s+1)->saturation;
+	int ret = EC_SUCCESS;
+	uint16_t orig_atime = sat_p->atime;
+	uint16_t orig_again = sat_p->again;
+	uint32_t running_avg_sum;
+	int x, y;
+
+	if (saturation && (g_test_done == 0))
+		g_test_stage = TCS_TEST_STAGE_S5;
+
+	do {
+		switch (g_test_stage) {
+		case TCS_TEST_STAGE_S1:
+			sat_p->again = 0;
+			/* fall thru to TCS_TEST_STAGE_S2 */
+
+		case TCS_TEST_STAGE_S2:
+			sat_p->atime = TCS_MAX_ATIME;
+			g_atime_bump_idx = 0;
+			/* fall thru to TCS_TEST_STAGE_S3 */
+
+		case TCS_TEST_STAGE_S3:
+			if (orig_again != sat_p->again) {
+				ret = tcs3400_i2c_write8(s, TCS_I2C_CONTROL,
+					(sat_p->again & TCS_I2C_CONTROL_MASK));
+				if (ret)
+					return ret;
+			}
+
+			if (orig_atime != sat_p->atime) {
+				ret = tcs3400_i2c_write8(s, TCS_I2C_ATIME,
+							 sat_p->atime);
+				if (ret)
+					return ret;
+			}
+			/* return to stage 4 */
+			g_test_stage = TCS_TEST_STAGE_S4;
+			return EC_SUCCESS; /* let next cycle run */
+
+		case TCS_TEST_STAGE_S4:
+			if (sat_p->atime == TCS_MAX_ATIME) {
+				g_cur_percentage = percentage;
+			} else if (percentage != g_cur_percentage) {
+				g_cur_percentage = percentage;
+				ALSLOG(TEST, "change after %d bumps",
+				g_atime_bumps[sat_p->again][g_atime_bump_idx]);
+				g_atime_bump_idx++;
+			}
+
+			if (sat_p->atime > TCS_MIN_ATIME) {
+				sat_p->atime--;
+				g_atime_bumps[sat_p->again][g_atime_bump_idx]++;
+				g_test_stage = TCS_TEST_STAGE_S3;
+				break;
+			}
+
+			if (sat_p->again < TCS_MAX_AGAIN) {
+				sat_p->again++;
+				g_test_stage = TCS_TEST_STAGE_S2;
+			} else {
+				g_test_stage = TCS_TEST_STAGE_S5;
+				break;
+			}
+			break;
+
+		case TCS_TEST_STAGE_S5:
+			/*
+			 * calculate average for each again level, throw
+			 * out end values if three or more valid
+			 */
+			for (x = 0; x < 4; x++) {
+				/* average bumps for this again level */
+				y = 0;
+				running_avg_sum = 0;
+				while (g_atime_bumps[x][y] != 0) {
+					running_avg_sum += (g_atime_bumps[x][y]
+							* TCS_MAX_ATIME_RANGES);
+					y++;
+				}
+				if (y >= 3) {
+					/*
+					 * remove first and last counts as they
+					 * may not represent complete percentage
+					 * leaps
+					 */
+					running_avg_sum -= ((g_atime_bumps[x][0]
+						 * TCS_MAX_ATIME_RANGES) +
+						 (g_atime_bumps[x][y-1] *
+						    TCS_MAX_ATIME_RANGES));
+					y -= 2;
+				}
+				if (y == 0)
+					g_running_avg[x] = 0;
+				else
+					g_running_avg[x] = running_avg_sum / y;
+			}
+			ALSLOG(TEST, "AGAIN BUMPS LUX %d = [ %d, %d, %d, %d ",
+			       g_last_lux, g_running_avg[0], g_running_avg[1],
+			       g_running_avg[2], g_running_avg[3]);
+
+			g_test_done = 1;
+			gAlsLogMask = DISABLED;
+			sat_p->again = TCS_MIN_AGAIN;
+			sat_p->atime = TCS_MIN_ATIME;
+			g_test_stage = TCS_TEST_STAGE_S6;
+			/* fall thru to TCS_TEST_STAGE_S6 */
+
+		case TCS_TEST_STAGE_S6:
+			return EC_SUCCESS;
+
+		default:
+			break;
+		}
+	} while (1); /* exit via direct return statements */
+
+	return ret;
+}
+
+#else
 
 /*
  * tcs3400_adjust_sensor_for_saturation() tries to keep CRGB values as
@@ -401,6 +589,7 @@ tcs3400_adjust_sensor_for_saturation(struct motion_sensor_t *s,
 
 	return ret;
 }
+#endif
 
 /**
  * normalize_channel_data - normalize the light data to remove effect of
@@ -596,7 +785,7 @@ static void tcs3400_process_raw_data(struct motion_sensor_t *s,
 		/* normalize the data for atime and again changes */
 		crgb_data[i] = normalize_channel_data(s,
 						      (uint32_t) crgb_data[i]);
-		ALSLOG(TEST, "Normalize: now %d", (uint32_t) crgb_data[i]);
+		ALSLOG(SCALING, "Normalize: now %d", (uint32_t) crgb_data[i]);
 	}
 
 	ALSLOG(SCALING, "crgb = [ %d (0x%04x), %d (0x%04x), %d (0x%04x), %d "
@@ -771,8 +960,33 @@ static int tcs3400_post_events(struct motion_sensor_t *s, uint32_t last_ts)
 	motion_sense_fifo_commit_data();
 #endif
 
+#ifdef TEST_MODE
+	{
+		int max_val = 0;
+		int saturation = 0;
+		uint32_t percentage;
+
+		for (int i = 0; i < TCS_CHANNEL_COUNT; i++)
+			max_val = MAX(max_val, raw_data[i]);
+
+		percentage = max_val * 100 / TCS_SATURATION_LEVEL;
+
+		log(max_val, xyz_data[Y],
+		    &TCS3400_RGB_DRV_DATA(s+1)->saturation, raw_data);
+;
+		if ((raw_data[0] == 0xffff) ||
+		    (raw_data[1] == 0xffff) ||
+		    (raw_data[2] == 0xffff) ||
+		    (raw_data[3] == 0xffff)) {
+			saturation = 1;
+		}
+		next_test_setting(s, saturation, percentage, g_last_lux);
+		g_last_lux = xyz_data[Y];
+	}
+#else
 	if (calibration_mode == TCS_RUN_MODE)
 		ret = tcs3400_adjust_sensor_for_saturation(s, raw_data);
+#endif
 
 	return ret;
 }
@@ -1025,7 +1239,7 @@ static int tcs3400_init(const struct motion_sensor_t *s)
 	 * Set ATIME = 0 (712 ms)
 	 * Set AGAIN = 16 (0x10)  (AGAIN is in CONTROL register)
 	 */
-	const struct reg_data {
+	struct reg_data {
 		uint8_t reg;
 		uint8_t data;
 	} defaults[] = {
@@ -1046,6 +1260,11 @@ static int tcs3400_init(const struct motion_sensor_t *s)
 	};
 	int data = 0;
 	int ret;
+
+#ifdef TEST_MODE
+	defaults[1].data = TCS_MAX_ATIME;
+	defaults[9].data = TCS_MIN_AGAIN;
+#endif
 
 	ret = tcs3400_i2c_read8(s, TCS_I2C_ID, &data);
 	if (ret) {
