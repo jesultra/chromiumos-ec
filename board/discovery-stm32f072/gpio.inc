@@ -25,6 +25,8 @@ GPIO(SPI_CS,   PIN(B, 12), GPIO_OUT_HIGH)
 GPIO(I2C1_SCL,             PIN(B, 8),  GPIO_INPUT)
 GPIO(I2C1_SDA,             PIN(B, 9),  GPIO_INPUT)
 
+GPIO(IT8801_SMB_INT,       PIN(A, 14),  GPIO_INPUT)
+
 ALTERNATE(PIN_MASK(B, 0xE000), 0, MODULE_SPI_FLASH, 0)
 
 /* Unimplemented signals which we need to emulate for now */

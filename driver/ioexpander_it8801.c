@@ -8,7 +8,6 @@
 #include "driver/ioexpander_it8801.h"
 #include "gpio.h"
 #include "hooks.h"
-#include "irq_chip.h"
 #include "i2c.h"
 #include "keyboard_raw.h"
 #include "keyboard_scan.h"
@@ -153,7 +152,7 @@ void keyboard_raw_enable_interrupt(int enable)
 void io_expander_it8801_interrupt(enum gpio_signal signal)
 {
 	/* Wake the scan task */
-	task_wake(TASK_ID_KEYSCAN);
+// 	task_wake(TASK_ID_KEYSCAN);
 }
 
 /*
