@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "67a12975_d57d7b54",
+        "filename": "common/gesture.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1260470
+      },
+      "writtenOn": "2019-07-16T16:17:40Z",
+      "side": 0,
+      "message": "This also fixes a bad indentation/braces issue I noticed while making similar changes. Woohoo.",
+      "range": {
+        "startLine": 266,
+        "startChar": 4,
+        "endLine": 266,
+        "endChar": 10
+      },
+      "revId": "519b75782a709b5efc94a36fbbfcf74c415d39ad",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
