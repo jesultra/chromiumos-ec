@@ -1029,8 +1029,12 @@ static void scan_bus(int port, const char *desc)
 			 (level & I2C_LINE_SCL_HIGH) ? 1 : 0);
 		goto scan_bus_exit;
 	}
-
-	for (addr_flags = 0; addr_flags <= 0xEF; ++addr_flags) {
+	/*
+	 * Don't scan adderess less than 0x08 since they are reserved on both
+	 * I2C and SMBus and can cause client devices to stretch the clock in
+	 * weird ways that prevent the discovery of other devices.
+	 */
+	for (addr_flags = 0x08; addr_flags < 0xF0; ++addr_flags) {
 		watchdog_reload();  /* Otherwise a full scan trips watchdog */
 		ccputs(".");
 
