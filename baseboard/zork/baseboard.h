@@ -143,6 +143,7 @@
 #undef CONFIG_PORT80_HISTORY_LEN
 #define CONFIG_PORT80_HISTORY_LEN 256
 
+#define I2C_PORT_PPC0		NPCX_I2C_PORT0_0
 #define I2C_PORT_TCPC0		NPCX_I2C_PORT0_0
 #define I2C_PORT_TCPC1		NPCX_I2C_PORT1_0
 #define I2C_PORT_BATTERY	NPCX_I2C_PORT2_0
@@ -154,6 +155,9 @@
 #define I2C_PORT_ACCEL		NPCX_I2C_PORT5_0
 #define I2C_PORT_AP_AUDIO	NPCX_I2C_PORT6_1
 #define I2C_PORT_AP_HDMI	NPCX_I2C_PORT7_0
+
+#define USB_PD_PORT_TCPC_0	0
+#define USB_PD_PORT_TCPC_1	1
 
 /* Sensors */
 #define CONFIG_MKBP_EVENT
@@ -231,6 +235,7 @@ void board_reset_pd_mcu(void);
 
 /* Common definition for the USB PD interrupt handlers. */
 void tcpc_alert_event(enum gpio_signal signal);
+void bc12_interrupt(enum gpio_signal signal);
 
 int board_is_convertible(void);
 void board_update_sensor_config_from_sku(void);
