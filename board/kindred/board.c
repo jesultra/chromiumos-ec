@@ -443,3 +443,31 @@ void board_overcurrent_event(int port, int is_overcurrented)
 	/* Note that the level is inverted because the pin is active low. */
 	gpio_set_level(GPIO_USB_C_OC_ODL, !is_overcurrented);
 }
+
+extern uint8_t get_board_sku(void);
+static int board_is_convertible(void)
+{
+	uint8_t sku_id = get_board_sku();
+	/* SKU ID of Kled: 1,2,3,4 */
+	return  sku_id && sku_id <= 4;
+}
+
+void board_has_kb_backlight(void)
+{
+	/* Enable keyboard backlight base on SKU ID */
+	board_is_convertible() ? gpio_set_level(GPIO_EC_KB_BL_EN, 1) :
+		gpio_set_level(GPIO_EC_KB_BL_EN, 0);
+}
+
+uint32_t board_override_feature_flags0(uint32_t flags0)
+{
+	if (board_is_convertible())
+		return flags0;
+	else
+		return (flags0 & ~EC_FEATURE_MASK_0(EC_FEATURE_PWM_KEYB));
+}
+
+uint32_t board_override_feature_flags1(uint32_t flags1)
+{
+	return flags1;
+}
