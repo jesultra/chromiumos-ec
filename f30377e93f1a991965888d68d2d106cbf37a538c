@@ -22,6 +22,30 @@
       "revId": "f30377e93f1a991965888d68d2d106cbf37a538c",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a401d3b_b41dc5f3",
+        "filename": "baseboard/kukui/baseboard.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1182824
+      },
+      "writtenOn": "2019-09-17T05:50:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e1a0417_42cc5e37",
+      "range": {
+        "startLine": 58,
+        "startChar": 3,
+        "endLine": 58,
+        "endChar": 26
+      },
+      "revId": "f30377e93f1a991965888d68d2d106cbf37a538c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
