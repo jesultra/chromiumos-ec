@@ -11,6 +11,13 @@
 #define CONFIG_SYSTEM_UNLOCKED
 
 /*
+ * GPIO clock configuration. Hatch FP only uses GPIO pins on port A and
+ * port B. Disabling clocks to other GPIO ports (C, D, E, F, G, H) saves
+ * power.
+ */
+#define STM32_RCC_AHB1ENR_GPIOMASK	(0x03 << 0)
+
+/*
  * Flash layout: we redefine the sections offsets and sizes as we want to
  * include a rollback region, and will use RO/RW regions of different sizes.
  */

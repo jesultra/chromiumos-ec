@@ -11,6 +11,9 @@
 /* Use external clock */
 #define CONFIG_STM32_CLOCK_HSE_HZ 24000000
 
+/* Enable clock to all GPIO ports */
+#define STM32_RCC_AHB1ENR_GPIOMASK	(0xff << 0)
+
 #define CONFIG_BOARD_POST_GPIO_INIT
 
 #define CONFIG_FLASH_WRITE_SIZE STM32_FLASH_WRITE_SIZE_3300

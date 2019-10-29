@@ -12,6 +12,8 @@
 #define CPU_CLOCK 84000000
 #define CONFIG_FLASH_WRITE_SIZE STM32_FLASH_WRITE_SIZE_3300
 
+/* Enable clock to all GPIO ports */
+#define STM32_RCC_AHB1ENR_GPIOMASK	(0xff << 0)
 
 /* the UART console is on USART2 (PA2/PA3) */
 #undef CONFIG_UART_CONSOLE
