@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d580334_58bf8290",
+        "filename": "baseboard/zork/baseboard.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2019-10-30T17:22:44Z",
+      "side": 1,
+      "message": "The charger thermistor is currently on the _A rail, so for current HW, this can change to:\n\n\t/* Charger thermistor is not powered in G3 */\n\tif (chipset_in_state(CHIPSET_STATE_HARD_OFF))\n\t\treturn EC_ERROR_NOT_POWERED;\n\nThen after the 1.6 change, the thermistor will always be powered when the EC is powered, so can remove the check entirely.",
+      "revId": "d3f2b265861619fe52a7d847614e998af2f0880f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b31765f_b6b7a3bc",
+        "filename": "baseboard/zork/baseboard.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2019-10-30T17:22:44Z",
+      "side": 1,
+      "message": "The SOC thermistor is staying on the _A rail, so off in G3 (\u003d\u003d CHIPSET_STATE_HARD_OFF), so change this one to:\n\n\t/* SOC thermistor is not powered in G3 */\n\tif (chipset_in_state(CHIPSET_STATE_HARD_OFF))\n\t\treturn EC_ERROR_NOT_POWERED;",
+      "range": {
+        "startLine": 593,
+        "startChar": 2,
+        "endLine": 595,
+        "endChar": 31
+      },
+      "revId": "d3f2b265861619fe52a7d847614e998af2f0880f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da14b99d_1281112a",
+        "filename": "baseboard/zork/baseboard.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2019-10-30T17:22:44Z",
+      "side": 1,
+      "message": "Not sure what this is protecting against?",
+      "revId": "d3f2b265861619fe52a7d847614e998af2f0880f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d860e558_9763f6da",
+        "filename": "baseboard/zork/baseboard.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2019-10-30T17:22:44Z",
+      "side": 1,
+      "message": "Could change this to TEMP_SENSOR_CHARGER to match the check in board_get_temp.",
+      "range": {
+        "startLine": 616,
+        "startChar": 9,
+        "endLine": 616,
+        "endChar": 10
+      },
+      "revId": "d3f2b265861619fe52a7d847614e998af2f0880f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "596f165c_260b0bb0",
+        "filename": "baseboard/zork/baseboard.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2019-10-30T17:22:44Z",
+      "side": 1,
+      "message": "Could change this to TEMP_SENSOR_SOC to match the check in board_get_temp.",
+      "range": {
+        "startLine": 623,
+        "startChar": 9,
+        "endLine": 623,
+        "endChar": 10
+      },
+      "revId": "d3f2b265861619fe52a7d847614e998af2f0880f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
