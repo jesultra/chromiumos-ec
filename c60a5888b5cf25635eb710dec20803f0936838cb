@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c29533bc_6c38e6c1",
+        "filename": "include/vec3.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1104704
+      },
+      "writtenOn": "2019-11-06T22:51:29Z",
+      "side": 1,
+      "message": "Following kernel dpc coding standard: [https://www.kernel.org/doc/html/v4.9/kernel-documentation.html#including-kernel-doc-comments]\n- define comments in .c file to prevent comment rot.\n- use kernel-doc syntax (Return instead of return@). \nI think the doc can be validated with ./scripts/kernel-doc.",
+      "revId": "c60a5888b5cf25635eb710dec20803f0936838cb",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
