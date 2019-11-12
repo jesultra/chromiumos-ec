@@ -16,6 +16,24 @@
       "revId": "c60a5888b5cf25635eb710dec20803f0936838cb",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6032721_6efe05b9",
+        "filename": "include/vec3.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2019-11-12T21:40:25Z",
+      "side": 1,
+      "message": "AFAIK placing function documentation in .c files isn\u0027t the standard in our code base.\n\nAlso my understanding is that we\u0027ll be migrating to Doxygen as per https://bugs.chromium.org/p/chromium/issues/detail?id\u003d991365",
+      "parentUuid": "c29533bc_6c38e6c1",
+      "revId": "c60a5888b5cf25635eb710dec20803f0936838cb",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
