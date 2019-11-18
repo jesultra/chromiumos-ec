@@ -225,8 +225,18 @@ class RMAOpen(object):
         # Return only the command output
         split_cmd = cmd + '\r'
         if output and cmd and split_cmd in output:
-            return ''.join(output.rpartition(split_cmd)[1::]).split('>')[0]
-        return output
+            output = ''.join(output.rpartition(split_cmd)[1::]).split('>')[0]
+
+        # Remove the timestamps
+        lines = output.splitlines()
+        stripped = []
+        for line in lines:
+            try:
+                stripped.append(line.split(" ", 2)[2])
+            except IndexError:
+                pass
+
+        return '\n'.join(stripped)
 
 
     def device_is_running_with_servo_ccd(self):
