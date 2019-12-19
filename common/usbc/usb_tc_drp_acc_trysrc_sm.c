@@ -715,6 +715,29 @@ void pd_prepare_sysjump(void)
 }
 #endif
 
+#ifdef CONFIG_BC12_DETECT_DATA_ROLE_TRIGGER
+static void bc12_role_change_handler(int port)
+{
+	int event;
+	int task_id = USB_CHG_PORT_TO_TASK_ID(port);
+
+	switch (pd_get_role(port)) {
+	case PD_ROLE_UFP:
+		event = USB_CHG_EVENT_DR_UFP;
+		break;
+	case PD_ROLE_DFP:
+		event = USB_CHG_EVENT_DR_DFP;
+		break;
+	case PD_ROLE_DISCONNECTED:
+		event = USB_CHG_EVENT_CC_OPEN;
+		break;
+	default:
+		return;
+	}
+	task_set_event(task_id, event, 0);
+}
+#endif
+
 #ifdef CONFIG_USB_PE_SM
 static void tc_perform_src_hard_reset(int port)
 {
@@ -974,6 +997,15 @@ void tc_set_data_role(int port, enum pd_data_role role)
 	 * to SoC).
 	 */
 	pd_execute_data_swap(port, role);
+
+	/*
+	 * For BC1.2 detection that is triggered on data role change events
+	 * instead of VBUS changes, need to set an event to wake up the USB_CHG
+	 * task and indicate the current data role.
+	 */
+#ifdef CONFIG_BC12_DETECT_DATA_ROLE_TRIGGER
+	bc12_role_change_handler(port);
+#endif
 
 	/* Notify TCPC of role update */
 	tcpm_set_msg_header(port, tc[port].power_role, tc[port].data_role);
@@ -1751,6 +1783,17 @@ static void tc_unattached_snk_entry(const int port)
 	if (get_last_state_tc(port) != TC_UNATTACHED_SRC)
 		print_current_state(port);
 
+	tc[port].data_role = PD_ROLE_DISCONNECTED;
+
+	/*
+	 * When data role set events are used to enable BC1.2, then CC
+	 * detach events are used to notify BC1.2 that it can be powered
+	 * down.
+	 */
+#ifdef CONFIG_BC12_DETECT_DATA_ROLE_TRIGGER
+	bc12_role_change_handler(port);
+#endif
+
 	/* VBus should be SafeV0, turn off auto discharge disconnect */
 	tcpm_enable_auto_discharge_disconnect(port, 0);
 
@@ -2422,6 +2465,17 @@ static void tc_unattached_src_entry(const int port)
 {
 	if (get_last_state_tc(port) != TC_UNATTACHED_SNK)
 		print_current_state(port);
+
+	tc[port].data_role = PD_ROLE_DISCONNECTED;
+
+	/*
+	 * When data role set events are used to enable BC1.2, then CC
+	 * detach events are used to notify BC1.2 that it can be powered
+	 * down.
+	 */
+#ifdef CONFIG_BC12_DETECT_DATA_ROLE_TRIGGER
+	bc12_role_change_handler(port);
+#endif
 
 	/* VBus should be SafeV0, turn off auto discharge disconnect */
 	tcpm_enable_auto_discharge_disconnect(port, 0);
