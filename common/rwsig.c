@@ -21,6 +21,7 @@
 #include "usb_pd.h"
 #include "util.h"
 #include "vb21_struct.h"
+#include "vboot.h"
 #include "version.h"
 
 /* Console output macros */

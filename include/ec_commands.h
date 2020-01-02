@@ -9,6 +9,7 @@
 #define __CROS_EC_EC_COMMANDS_H
 
 #if !defined(__ACPI__) && !defined(__KERNEL__)
+#include <stdbool.h>
 #include <stdint.h>
 #endif
 
@@ -1784,6 +1785,43 @@ struct ec_response_rand_num {
 } __ec_align4;
 
 BUILD_ASSERT(sizeof(struct ec_response_rand_num) == 0);
+
+/**
+ * Get information about the key used to sign the RW firmware.
+ * For more details on the fields, see "struct vb21_packed_key".
+ */
+#define EC_CMD_RWSIG_INFO 0x001B
+#define EC_VER_RWSIG_INFO 0
+
+#define VBOOT2_KEY_ID_BYTES 20
+
+#ifdef CHROMIUM_EC
+/* Don't force external projects to depend on the vboot headers. */
+#include "vb21_struct.h"
+BUILD_ASSERT(sizeof(struct vb2_id) == VBOOT2_KEY_ID_BYTES);
+#endif
+
+struct ec_response_rwsig_info {
+	/**
+	 * Signature algorithm used by the key
+	 * (enum vb2_signature_algorithm).
+	 */
+	uint16_t sig_alg;
+
+	/**
+	 * Hash digest algorithm used with the key
+	 * (enum vb2_hash_algorithm).
+	 */
+	uint16_t hash_alg;
+
+	/** Key version. */
+	uint32_t key_version;
+
+	/** Key ID (struct vb2_id). */
+	uint8_t key_id[VBOOT2_KEY_ID_BYTES];
+
+	bool key_is_valid;
+} __ec_align4;
 
 /*****************************************************************************/
 /* PWM commands */
