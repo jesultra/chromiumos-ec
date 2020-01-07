@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab3152d9_37243c2d",
+        "filename": "board/waddledoo/gpio.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-01-07T03:49:06Z",
+      "side": 1,
+      "message": "How can you tell from the schematic it\u0027s 1.8V?",
+      "range": {
+        "startLine": 14,
+        "startChar": 68,
+        "endLine": 14,
+        "endChar": 81
+      },
+      "revId": "8400c90fdeb3a53efdd55371d76ce89b678842c3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    }
+  ]
+}
