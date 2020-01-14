@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78a522cb_04d448be",
+        "filename": "baseboard/kukui/build.mk",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1381658
+      },
+      "writtenOn": "2020-01-14T10:30:02Z",
+      "side": 1,
+      "message": "We have two implementations of pogo_adc_interrupt() in\n  baseboard/kukui/base_detect_kukui.c\n  board/kukui/board.c\n\nIn board/kukui/board.c:\n  #if defined(BOARD_KUKUI) || defined(BOARD_KODAMA)\n  /* dummy interrupt function for kukui */\n  void pogo_adc_interrupt(enum gpio_signal signal)\n  {\n  }\n  #endif\n\nShould we config it with VARIANT_KUKUI_POGO_KEYBOARD just like kukui_pogo_extpower_present()?",
+      "range": {
+        "startLine": 19,
+        "startChar": 12,
+        "endLine": 19,
+        "endChar": 39
+      },
+      "revId": "fb041cc3ac80cbf7b3fd06a52eee465912ffa076",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
