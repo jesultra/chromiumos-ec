@@ -871,12 +871,23 @@ static int process_tbt_compat_discover_modes(int port, uint32_t *payload)
 	 * Ref: USB Type-C Cable and Connector Specification, figure F-1: TBT3
 	 * Discovery Flow and Section F.2.7 TBT3 Cable Enter Mode Command.
 	 */
-	if (is_transmit_msg_sop_prime(port)) {
+	if (is_limit_tbt_cable_speed(port)) {
+		/*
+		 * Passive cable has not responded to Discover SVID or
+		 * cable may not have Intel SVID. No need to do Discover
+		 * modes of cable. Assign the cable discovery attributes
+		 * and enter into device Thunderbolt-compatible mode.
+		 */
+		cable[port].cable_mode_resp.tbt_cable_speed =
+			(cable[port].rev == PD_REV30 ?
+			(cable[port].attr.p_rev30.ss > USB_R30_SS_U32_U40_GEN2 ?
+			TBT_SS_U32_GEN1_GEN2 : cable[port].attr.p_rev30.ss) :
+				cable[port].attr.p_rev20.ss);
+
+		rsize = enter_tbt_compat_mode(port, payload);
+	} else if (is_transmit_msg_sop_prime(port)) {
 		/* Store Discover Mode SOP' response */
 		cable[port].cable_mode_resp.raw_value = payload[1];
-		if (is_limit_tbt_cable_speed(port))
-			cable[port].cable_mode_resp.tbt_cable_speed =
-						TBT_SS_U32_GEN1_GEN2;
 
 		max_tbt_speed = board_get_max_tbt_speed(port);
 		if (cable[port].cable_mode_resp.tbt_cable_speed >
@@ -918,7 +929,6 @@ int pd_svdm(int port, int cnt, uint32_t *payload, uint32_t **rpayload,
 
 	payload[0] &= ~VDO_CMDT_MASK;
 	*rpayload = payload;
-
 	if (cmd_type == CMDT_INIT) {
 		switch (cmd) {
 		case CMD_DISCOVER_IDENT:
@@ -1158,11 +1168,33 @@ int pd_svdm(int port, int cnt, uint32_t *payload, uint32_t **rpayload,
 		}
 	} else if (cmd_type == CMDT_RSP_NAK) {
 		rsize = 0;
-		/* Send SOP' Discover Ident message, if not already received. */
-		if (IS_ENABLED(CONFIG_USB_PD_DECODE_SOP) &&
-		    !cable[port].is_identified && (cmd == CMD_DISCOVER_IDENT)) {
-			rsize = dfp_discover_ident(payload);
-			enable_transmit_sop_prime(port);
+		switch (cmd) {
+		case CMD_DISCOVER_IDENT:
+			/*
+			 * Send SOP' Discover Ident message,
+			 * if not already received.
+			 */
+			if (IS_ENABLED(CONFIG_USB_PD_DECODE_SOP) &&
+			    !cable[port].is_identified) {
+				rsize = dfp_discover_ident(payload);
+				enable_transmit_sop_prime(port);
+			}
+			break;
+
+		case CMD_DISCOVER_SVID:
+			/* Passive cable Nacked for Discover SVID */
+			if (is_tbt_compat_enabled(port) &&
+			    is_transmit_msg_sop_prime(port) &&
+			    get_usb_pd_mux_cable_type(port) ==
+				IDH_PTYPE_PCABLE) {
+				limit_tbt_cable_speed(port);
+				rsize = dfp_discover_modes(port, payload);
+				disable_transmit_sop_prime(port);
+			}
+			break;
+
+		default:
+			break;
 		}
 #endif /* CONFIG_USB_PD_ALT_MODE_DFP */
 	} else {
