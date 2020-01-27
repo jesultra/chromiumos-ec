@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3d7a3ec1_8fb868c0",
+        "filename": "board/coral/board.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1259838
+      },
+      "writtenOn": "2020-01-27T16:05:18Z",
+      "side": 1,
+      "message": "(any way is fine including what you have)\n\nYou could also just \"return 1\" here instead (or set int voltage \u003d 0 at the top) 😊",
+      "range": {
+        "startLine": 565,
+        "startChar": 2,
+        "endLine": 565,
+        "endChar": 12
+      },
+      "revId": "e62d35f14390bff9d1efed850ecf2c22d90d4dd5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f2a4d93_82d9a942",
+        "filename": "driver/charger/bd9995x.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1077,
+      "author": {
+        "id": 1259838
+      },
+      "writtenOn": "2020-01-27T16:05:18Z",
+      "side": 1,
+      "message": "nit: can just return here without using rv variable",
+      "range": {
+        "startLine": 1075,
+        "startChar": 1,
+        "endLine": 1077,
+        "endChar": 10
+      },
+      "revId": "e62d35f14390bff9d1efed850ecf2c22d90d4dd5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b814416_078cb8e6",
+        "filename": "driver/charger/isl923x.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 1259838
+      },
+      "writtenOn": "2020-01-27T16:05:18Z",
+      "side": 1,
+      "message": "can return EC_SUCESS",
+      "range": {
+        "startLine": 820,
+        "startChar": 8,
+        "endLine": 820,
+        "endChar": 10
+      },
+      "revId": "e62d35f14390bff9d1efed850ecf2c22d90d4dd5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "323e8e14_5cded7b8",
+        "filename": "driver/charger/rt946x.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1393,
+      "author": {
+        "id": 1259838
+      },
+      "writtenOn": "2020-01-27T16:05:18Z",
+      "side": 1,
+      "message": "no need for static here, let\u0027s remove",
+      "range": {
+        "startLine": 1393,
+        "startChar": 12,
+        "endLine": 1393,
+        "endChar": 19
+      },
+      "revId": "e62d35f14390bff9d1efed850ecf2c22d90d4dd5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "291d0281_311dd3bd",
+        "filename": "driver/charger/rt946x.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1536,
+      "author": {
+        "id": 1259838
+      },
+      "writtenOn": "2020-01-27T16:05:18Z",
+      "side": 1,
+      "message": "should this be CHARGER_SOLO?",
+      "range": {
+        "startLine": 1536,
+        "startChar": 28,
+        "endLine": 1536,
+        "endChar": 29
+      },
+      "revId": "e62d35f14390bff9d1efed850ecf2c22d90d4dd5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
