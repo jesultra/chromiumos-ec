@@ -22,6 +22,30 @@
       "revId": "c3d3516d224862f7b4473997022b22e202b0ec47",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6284acf1_52a17da9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1384576
+      },
+      "writtenOn": "2020-03-05T02:50:09Z",
+      "side": 1,
+      "message": "Hi Henry,\nLED colors is correct after changes.",
+      "parentUuid": "65bcac68_79b70a65",
+      "range": {
+        "startLine": 16,
+        "startChar": 5,
+        "endLine": 16,
+        "endChar": 59
+      },
+      "revId": "c3d3516d224862f7b4473997022b22e202b0ec47",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
     }
   ]
 }
