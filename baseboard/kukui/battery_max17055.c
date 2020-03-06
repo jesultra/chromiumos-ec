@@ -15,15 +15,25 @@
 
 #define TEMP_OUT_OF_RANGE TEMP_ZONE_COUNT
 
+
+
+#ifdef BOARD_KAKADU
+#define BATT_ID 1
+#else
 #define BATT_ID 0
+#endif
 
 #define BATTERY_SIMPLO_CHARGE_MIN_TEMP 0
 #define BATTERY_SIMPLO_CHARGE_MAX_TEMP 60
+
+#define BATTERY_ATL_CHARGE_MIN_TEMP -20
+#define BATTERY_ATL_CHARGE_MAX_TEMP 60
 
 #define CPRINTS(format, args...) cprints(CC_CHARGER, format, ## args)
 
 enum battery_type {
 	BATTERY_SIMPLO = 0,
+	BATTERY_ATL,
 	BATTERY_COUNT
 };
 
@@ -32,6 +42,19 @@ static const struct battery_info info[] = {
 		.voltage_max		= 4400,
 		.voltage_normal		= 3860,
 		.voltage_min		= 3000,
+		.precharge_current	= 256,
+		.start_charging_min_c	= 0,
+		.start_charging_max_c	= 45,
+		.charging_min_c		= 0,
+		.charging_max_c		= 60,
+		.discharging_min_c	= -20,
+		.discharging_max_c	= 60,
+	},
+
+	[BATTERY_ATL] = {
+		.voltage_max		= 4370,
+		.voltage_normal		= 3860,
+		.voltage_min		= 3150,
 		.precharge_current	= 256,
 		.start_charging_min_c	= 0,
 		.start_charging_max_c	= 45,
@@ -49,6 +72,13 @@ static const struct max17055_batt_profile batt_profile[] = {
 		.ichg_term		= MAX17055_ICHGTERM_REG(235),
 		.v_empty_detect		= MAX17055_VEMPTY_REG(3000, 3600),
 	},
+
+	[BATTERY_ATL] = {
+		.is_ez_config		= 1,
+		.design_cap		= MAX17055_DESIGNCAP_REG(7270),
+		.ichg_term		= MAX17055_ICHGTERM_REG(500),
+		.v_empty_detect		= MAX17055_VEMPTY_REG(3000, 3600),
+	},
 };
 
 static const struct max17055_alert_profile alert_profile[] = {
@@ -57,6 +87,15 @@ static const struct max17055_alert_profile alert_profile[] = {
 		.t_alert_mxmn = MAX17055_TALRTTH_REG(
 			BATTERY_SIMPLO_CHARGE_MAX_TEMP,
 			BATTERY_SIMPLO_CHARGE_MIN_TEMP),
+		.s_alert_mxmn = SALRT_DISABLE,
+		.i_alert_mxmn = IALRT_DISABLE,
+	},
+
+	[BATTERY_ATL] = {
+		.v_alert_mxmn = VALRT_DISABLE,
+		.t_alert_mxmn = MAX17055_TALRTTH_REG(
+			BATTERY_ATL_CHARGE_MAX_TEMP,
+			BATTERY_ATL_CHARGE_MIN_TEMP),
 		.s_alert_mxmn = SALRT_DISABLE,
 		.i_alert_mxmn = IALRT_DISABLE,
 	},
@@ -110,6 +149,15 @@ int charger_profile_override(struct charge_state_data *curr)
 		int desired_voltage; /* mV */
 	} temp_zones[BATTERY_COUNT][TEMP_ZONE_COUNT] = {
 		[BATTERY_SIMPLO] = {
+			/* TEMP_ZONE_0 */
+			{BATTERY_SIMPLO_CHARGE_MIN_TEMP * 10, 150, 1772, 4376},
+			/* TEMP_ZONE_1 */
+			{150, 450, 4020, 4376},
+			/* TEMP_ZONE_2 */
+			{450, BATTERY_SIMPLO_CHARGE_MAX_TEMP * 10, 3350, 4300},
+		},
+
+		[BATTERY_ATL] = {
 			/* TEMP_ZONE_0 */
 			{BATTERY_SIMPLO_CHARGE_MIN_TEMP * 10, 150, 1772, 4376},
 			/* TEMP_ZONE_1 */
