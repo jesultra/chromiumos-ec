@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "14de0804_c5e2330b",
+        "filename": "chip/npcx/lpc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2020-03-06T15:32:44Z",
+      "side": 0,
+      "message": "Why delete this? Does this get set somewhere else now?",
+      "revId": "c56609d7ca4fcbc16d54a866435481c890861d96",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
