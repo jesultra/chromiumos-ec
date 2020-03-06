@@ -53,7 +53,7 @@ static const struct max17055_batt_profile batt_profile[] = {
 
 static const struct max17055_alert_profile alert_profile[] = {
 	[BATTERY_SIMPLO] = {
-		.v_alert_mxmn = VALRT_DISABLE,
+		.v_alert_mxmn = VALRT_DISABLE
 		.t_alert_mxmn = MAX17055_TALRTTH_REG(
 			BATTERY_SIMPLO_CHARGE_MAX_TEMP,
 			BATTERY_SIMPLO_CHARGE_MIN_TEMP),
