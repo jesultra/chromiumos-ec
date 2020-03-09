@@ -16,6 +16,24 @@
       "revId": "c56609d7ca4fcbc16d54a866435481c890861d96",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54364718_e1aa96d9",
+        "filename": "chip/npcx/lpc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1394446
+      },
+      "writtenOn": "2020-03-09T02:26:41Z",
+      "side": 0,
+      "message": "NPCX_HIPMCTL Bit 1 is PM channel OBE interrupt enable bit. The OBE interrupt using flow must be the following: \n1.    write NPCX_HIPMDO(send data to host)\n2.    Set OBEIE bit in the NPCX_HIPMCTL register.\n3.    task_enable_irq(NPCX_IRQ_PM_CHAN_OBE)\nThere isn\u0027t any function that uses PM channel OBE interrupt(NPCX_IRQ_PM_CHAN_OBE) now. To avoid that someone who uses the PM channel OBE interrupt encounters spurious interrupt in the future, we send this patch which removes PM channel OBE interrupt enable.",
+      "parentUuid": "14de0804_c5e2330b",
+      "revId": "c56609d7ca4fcbc16d54a866435481c890861d96",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
     }
   ]
 }
