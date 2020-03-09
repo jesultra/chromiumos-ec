@@ -34,6 +34,24 @@
       "revId": "c56609d7ca4fcbc16d54a866435481c890861d96",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12737944_b72486b8",
+        "filename": "chip/npcx/lpc.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2020-03-09T18:49:54Z",
+      "side": 0,
+      "message": "Thanks for the explanation.",
+      "parentUuid": "54364718_e1aa96d9",
+      "revId": "c56609d7ca4fcbc16d54a866435481c890861d96",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
