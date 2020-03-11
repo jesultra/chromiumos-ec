@@ -69,12 +69,12 @@
 #define IT83XX_USBPD_PHY_PORT_COUNT    3
 #elif defined(CHIP_VARIANT_IT81302AX_1024) \
 || defined(CHIP_VARIANT_IT81202AX_1024)
-#define CONFIG_FLASH_SIZE           0x00100000
-#define CONFIG_RAM_BASE             0x80100000
+#define CONFIG_FLASH_SIZE           0x00080000
+#define CONFIG_RAM_BASE             0x80080000
 #define CONFIG_RAM_SIZE             0x0000f000
 
 /* Embedded flash is KGD */
-#define IT83XX_CHIP_FLASH_IS_KGD
+#undef IT83XX_CHIP_FLASH_IS_KGD
 /* Don't let internal flash go into deep power down mode. */
 #define IT83XX_CHIP_FLASH_NO_DEEP_POWER_DOWN
 /* chip id is 3 bytes */
