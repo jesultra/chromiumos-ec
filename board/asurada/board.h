@@ -195,6 +195,9 @@
 
 #define PORT_TO_HPD(port) GPIO_EC_DPBRDG_HPD_ODL
 
+/* Voltage regulator control */
+#define CONFIG_REGULATOR
+
 #ifndef __ASSEMBLER__
 
 #include "gpio_signal.h"

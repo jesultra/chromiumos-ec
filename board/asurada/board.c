@@ -12,6 +12,7 @@
 #include "chipset.h"
 #include "common.h"
 #include "console.h"
+#include "crc8.h"
 #include "driver/accel_lis2dw12.h"
 #include "driver/accelgyro_bmi_common.h"
 #include "driver/als_tcs3400.h"
@@ -34,6 +35,7 @@
 #include "power_button.h"
 #include "pwm.h"
 #include "pwm_chip.h"
+#include "regulator.h"
 #include "spi.h"
 #include "switch.h"
 #include "tablet_mode.h"
@@ -503,27 +505,59 @@ __override uint8_t board_get_usb_pd_port_count(void)
 		return CONFIG_USB_PD_PORT_MAX_COUNT - 1;
 }
 
-void ldo_write(uint8_t offset, uint8_t value) {
-	/*
-	 * TODO(pihsun): This is correct because the length == 1 -> the high 3
-	 * bits of the offset byte is 0. Consider having a general function
-	 * that can handle 1~4 bytes of data?
-	 */
-	i2c_write8(0, 0x64 | I2C_FLAG_PEC, offset, value);
-}
-
 /* SD Card */
 void board_enable_sd_card(void)
 {
 	/* Enable power to SD Card (LOD5, LDO3) */
-	ldo_write(0x0b, 0xc0);
-	ldo_write(0x05, 0xc0);
+	mt6360_ldo_enable(MT6360_LDO5, 1);
+	mt6360_ldo_enable(MT6360_LDO3, 1);
 
 	/* Set LOD5, LDO3 to 3.3V */
-	ldo_write(0x0f, 0x55);
-	ldo_write(0x09, 0xd0);
+	/*
+	 * TODO(pihsun): Code was originally writing 0x55 to 0x0F, which is
+	 * 3.35V according to data sheet, is it intended?
+	 */
+	mt6360_ldo_set_voltage(MT6360_LDO5, 3300000, 3300000);
+	mt6360_ldo_set_voltage(MT6360_LDO3, 3300000, 3300000);
 }
 DECLARE_HOOK(HOOK_CHIPSET_STARTUP, board_enable_sd_card, HOOK_PRIO_DEFAULT);
+
+int board_regulator_get_info(uint32_t index, char *name,
+			     uint32_t *num_voltages, uint32_t *voltages_uV)
+{
+	enum mt6360_ldo_id ldo_id = index;
+
+	return mt6360_ldo_get_info(ldo_id, name, num_voltages, voltages_uV);
+}
+
+int board_regulator_enable(uint32_t index, uint8_t enable)
+{
+	enum mt6360_ldo_id ldo_id = index;
+
+	return mt6360_ldo_enable(ldo_id, enable);
+}
+
+int board_regulator_is_enabled(uint32_t index, uint8_t *enabled)
+{
+	enum mt6360_ldo_id ldo_id = index;
+
+	return mt6360_ldo_is_enabled(ldo_id, enabled);
+}
+
+int board_regulator_set_voltage(uint32_t index, uint32_t min_uV,
+				uint32_t max_uV)
+{
+	enum mt6360_ldo_id ldo_id = index;
+
+	return mt6360_ldo_set_voltage(ldo_id, min_uV, max_uV);
+}
+
+int board_regulator_get_voltage(uint32_t index, uint32_t *voltage_uV)
+{
+	enum mt6360_ldo_id ldo_id = index;
+
+	return mt6360_ldo_get_voltage(ldo_id, voltage_uV);
+}
 
 /* Lid */
 #ifndef TEST_BUILD
