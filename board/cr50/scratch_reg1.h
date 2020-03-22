@@ -99,6 +99,8 @@
 #define BOARD_CCD_REC_LID_PIN_DIOA9       (2 << BOARD_CCD_REC_LID_PIN_SHIFT)
 #define BOARD_CCD_REC_LID_PIN_DIOA12      (3 << BOARD_CCD_REC_LID_PIN_SHIFT)
 
+/* The board supports dynamic GPIO_INT_AP assertion. */
+#define BOARD_DYNAMIC_INT_AP_PULSE        BIT(24)
 
 /*
  * Macro to capture all properties related to board strapping pins. This must be
@@ -111,6 +113,7 @@
 	BOARD_CLOSED_SOURCE_SET1 | \
 	BOARD_DEEP_SLEEP_DISABLED | \
 	BOARD_DETECT_AP_WITH_UART | \
+	BOARD_DYNAMIC_INT_AP_PULSE | \
 	BOARD_EC_CR50_COMM_SUPPORT | \
 	BOARD_NEEDS_SYS_RST_PULL_UP | \
 	BOARD_NO_INA_SUPPORT | \

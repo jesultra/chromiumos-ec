@@ -192,6 +192,11 @@ int board_get_ccd_rec_lid_pin(void)
 	return board_properties & BOARD_CCD_REC_LID_PIN_MASK;
 }
 
+int board_dynamic_int_ap_pulse(void)
+{
+	return !!(board_properties & BOARD_DYNAMIC_INT_AP_PULSE);
+}
+
 /* Get header address of the backup RW copy. */
 const struct SignedHeader *get_other_rw_addr(void)
 {

@@ -12,7 +12,6 @@
 #include "sps.h"
 #include "system.h"
 #include "task.h"
-#include "timer.h"
 #include "watchdog.h"
 
 /*
@@ -337,22 +336,7 @@ static void sps_rx_interrupt(uint32_t port, int cs_deasserted)
 		if (seen_data) {
 			sps_rx_handler(NULL, 0, 1);
 
-			/*
-			 * Signal the AP that this SPI frame processing is
-			 * completed.
-			 */
-			gpio_set_level(GPIO_INT_AP_L, 0);
-
-			/*
-			 * This is to meet the AP requirement of minimum 4 usec
-			 *  duration of INT_AP_L assertion.
-			 *
-			 * TODO(b/130515803): Ideally, this should be improved
-			 * to support any duration requirement in future.
-			 */
-			tick_delay(2);
-
-			gpio_set_level(GPIO_INT_AP_L, 1);
+			ap_start_ack_completion();
 			seen_data = 0;
 		}
 	}
@@ -405,6 +389,8 @@ void _sps0_interrupt(void)
 
 void _sps0_cs_deassert_interrupt(void)
 {
+	ap_stop_ack_completion();
+
 	sps_cs_deassert_interrupt(0);
 }
 DECLARE_IRQ(GC_IRQNUM_SPS0_CS_DEASSERT_INTR, _sps0_cs_deassert_interrupt, 1);

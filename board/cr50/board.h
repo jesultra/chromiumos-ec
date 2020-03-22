@@ -322,6 +322,8 @@ int board_has_ina_support(void);
 int board_tpm_mode_change_allowed(void);
 /* The board supports EC-CR50 communication. */
 int board_has_ec_cr50_comm_support(void);
+/* The board supports dynamic GPIO_INT_AP_L assertion */
+int board_dynamic_int_ap_pulse(void);
 int board_id_is_mismatched(void);
 /* Allow for deep sleep to be enabled on AP shutdown */
 int board_deep_sleep_allowed(void);
@@ -365,6 +367,11 @@ int ap_uart_is_on(void);
 int ec_is_on(void);
 int ec_is_rx_allowed(void);
 int servo_is_connected(void);
+
+/* Start (or schedule) to signal AP the completion of TPM command. */
+void ap_start_ack_completion(void);
+/* Stop to signal AP the completion of TPM command. */
+void ap_stop_ack_completion(void);
 
 /* Moving from legacy versions might require NVMEM transition. */
 int board_nvmem_legacy_check_needed(void);
@@ -491,5 +498,8 @@ enum nvmem_users {
 
 /* Total time deep sleep should not be allowed while wiping the TPM. */
 #define DISABLE_SLEEP_TIME_TPM_WIPE (TPM_PROCESSING_TIME + TPM_RESET_TIME)
+
+/* Minimum time length (in usec) of INT_AP_L assertion that AP requires */
+#define MIN_USEC_INT_AP_PULSE		100
 
 #endif /* __CROS_EC_BOARD_H */

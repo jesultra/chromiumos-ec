@@ -7,11 +7,32 @@
 #include "ec_commands.h"
 #include "gpio.h"
 #include "hooks.h"
+#include "hwtimer.h"
 #include "registers.h"
 #include "system.h"
+#include "timer.h"
 #include "tpm_registers.h"
 
 #define CPRINTS(format, args...) cprints(CC_SYSTEM, format, ## args)
+
+/* Most recent timestamp when GPIO_INT_AP_L went high. */
+static uint32_t last_time_deassert;
+
+static void deassert_gpio_int_ap(void)
+{
+	gpio_set_level(GPIO_INT_AP_L, 1);
+	last_time_deassert = __hw_clock_source_read();
+}
+DECLARE_DEFERRED(deassert_gpio_int_ap);
+
+static void assert_gpio_int_ap(void)
+{
+	gpio_set_level(GPIO_INT_AP_L, 0);
+
+	/* Schedule to set GPIO_INT_AP_L high after MIN_USEC_INT_AP_PULSE. */
+	hook_call_deferred(&deassert_gpio_int_ap_data, MIN_USEC_INT_AP_PULSE);
+}
+DECLARE_DEFERRED(assert_gpio_int_ap);
 
 static enum device_state state = DEVICE_STATE_INIT;
 
@@ -93,7 +114,7 @@ void set_ap_on(void)
 	 * high which is the default level.
 	 */
 	gpio_set_flags(GPIO_INT_AP_L, GPIO_OUT_HIGH);
-	gpio_set_level(GPIO_INT_AP_L, 1);
+	deassert_gpio_int_ap();
 
 	ccd_update_state();
 
@@ -203,3 +224,63 @@ static void init_ap_detect(void)
  * after that.
  */
 DECLARE_HOOK(HOOK_INIT, init_ap_detect, HOOK_PRIO_DEFAULT + 1);
+
+void ap_start_ack_completion(void)
+{
+	/*
+	 * Signal the AP that this SPI frame processing is
+	 * completed.
+	 */
+	if (board_dynamic_int_ap_pulse()) {
+		uint32_t diff_usec;
+
+		diff_usec = __hw_clock_source_read() - last_time_deassert;
+		if (diff_usec < MIN_USEC_INT_AP_PULSE) {
+			/* Let's deassert GPIO_INT_AP_L diff_usec later. */
+			hook_call_deferred(&assert_gpio_int_ap_data, diff_usec);
+		} else {
+			/*
+			 * If GPIO_INT_AP_L has been deasserted for
+			 * MIN_USEC_INT_AP_PULSE or longer, then let's assert
+			 * it. Before asserting it, let's cancel the deferred
+			 * call to assert_gpio_int_ap, if any scheduled.
+			 */
+			hook_call_deferred(&assert_gpio_int_ap_data, -1);
+
+			assert_gpio_int_ap();
+		}
+
+		return;
+	}
+
+	/*
+	 * If the board property does not support DYNAMIC_INT_AP_PULSE, then
+	 * let's generate a pulse for minimum 4 usec.
+	 */
+	gpio_set_level(GPIO_INT_AP_L, 0);
+	tick_delay(2);
+	gpio_set_level(GPIO_INT_AP_L, 1);
+}
+
+void ap_stop_ack_completion(void)
+{
+	/*
+	 * If the board property does not support DYNAMIC_INT_AP_PULSE,
+	 * then do nothing.
+	 */
+	if (!board_dynamic_int_ap_pulse())
+		return;
+
+	/* If GPIO_INT_AP_L is already deasserted, then do nothing. */
+	if (gpio_get_level(GPIO_INT_AP_L))
+		return;
+
+	/*
+	 * Cancel the schedule of deferred call to deassert_gpio_int_ap, if any
+	 * scheduled. Then deassert it by calling the deferred function directly
+	 * now.
+	 */
+	hook_call_deferred(&deassert_gpio_int_ap_data, -1);
+
+	deassert_gpio_int_ap();
+}
