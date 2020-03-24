@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e188cb51_524f9718",
+        "filename": "board/ezkinil/board.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2020-03-24T23:34:14Z",
+      "side": 1,
+      "message": "nit: missing newline",
+      "revId": "d2e69e83c17db7db82efb4d3720f5abc2a63a8ba",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
