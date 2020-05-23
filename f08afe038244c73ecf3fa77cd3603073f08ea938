@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c43ad037_c1eac65c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2020-05-23T00:13:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e448a994_9843d2a0",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 12
+      },
+      "revId": "f08afe038244c73ecf3fa77cd3603073f08ea938",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cd9316a7_c722ab3f",
         "filename": "chip/npcx/system.c",
         "patchSetId": 2
@@ -39,6 +63,24 @@
       "revId": "f08afe038244c73ecf3fa77cd3603073f08ea938",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55738093_2a7d1c4b",
+        "filename": "chip/npcx/system.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2020-05-23T00:13:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd9316a7_c722ab3f",
+      "revId": "f08afe038244c73ecf3fa77cd3603073f08ea938",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
