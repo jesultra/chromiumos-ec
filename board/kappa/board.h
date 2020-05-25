@@ -32,7 +32,7 @@
 #define CONFIG_EXTPOWER_DEBOUNCE_MS 200
 
 #define CONFIG_I2C_BITBANG
-#define I2C_BITBANG_PORT_COUNT 1
+#define I2C_BITBANG_PORT_COUNT 2
 #undef CONFIG_I2C_NACK_RETRY_COUNT
 #define CONFIG_I2C_NACK_RETRY_COUNT 10
 #define CONFIG_SMBUS_PEC
@@ -67,10 +67,10 @@
 #define I2C_PORT_BC12               0
 #define I2C_PORT_TCPC0              0
 #define I2C_PORT_USB_MUX            0
-#define I2C_PORT_BATTERY            2
+#define I2C_PORT_BATTERY            3
 #define I2C_PORT_CHARGER            1
 #define I2C_PORT_IO_EXPANDER_IT8801 1
-#define I2C_PORT_VIRTUAL_BATTERY    I2C_PORT_BATTERY
+#define I2C_PORT_VIRTUAL_BATTERY    2
 
 /* Enable Accel over SPI */
 #define CONFIG_SPI_ACCEL_PORT    0  /* The first SPI master port (SPI2) */
