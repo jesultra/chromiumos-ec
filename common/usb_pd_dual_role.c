@@ -307,7 +307,7 @@ void pd_build_request(int32_t vpd_vdo, uint32_t *rdo, uint32_t *ma,
 	 * power can be used for charging.
 	 */
 	if (pd_get_partner_usb_comm_capable(port)) {
-		*rdo |= RDO_COMM_CAP;
+		*rdo |= RDO_COMM_CAP;  //check
 		if (pd_get_power_role(port) == PD_ROLE_SINK)
 			*rdo |= RDO_NO_SUSPEND;
 	}
