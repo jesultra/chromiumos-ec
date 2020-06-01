@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3e4ea2f7_dca42c0b",
+        "filename": "baseboard/volteer/baseboard.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2020-06-01T22:01:17Z",
+      "side": 1,
+      "message": "let\u0027s add a _GEN2 suffix here to avoid ambiguity in\npotential places where it\u0027s not obvious that there\u0027s\nalso a GEN3 part.",
+      "range": {
+        "startLine": 277,
+        "startChar": 1,
+        "endLine": 277,
+        "endChar": 12
+      },
+      "revId": "fa9fb156466afdd67e40007444acdb008a14d2e7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
