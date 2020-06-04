@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3299543_4b20eb48",
+        "filename": "chip/npcx/system.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1316197
+      },
+      "writtenOn": "2020-06-04T20:09:12Z",
+      "side": 0,
+      "message": "I just noticed that this comment still mentions AP_OFF, and describes what AP_OFF does.\nWhat does AP_IDLE do, for comparison?",
+      "revId": "4622782bec34ef489c792d8834fb432cbcadd1c9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
