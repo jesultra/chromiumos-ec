@@ -16,6 +16,24 @@
       "revId": "4622782bec34ef489c792d8834fb432cbcadd1c9",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84739837_2792013a",
+        "filename": "chip/npcx/system.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2020-06-04T21:37:10Z",
+      "side": 0,
+      "message": "https://chromium-review.googlesource.com/c/chromiumos/platform/ec/+/2231758\n\nAP_IDLE leaves power button alone. So, whether the AP boots or not depends on the PCH.\n\nAP_OFF forces chipset to stay off.",
+      "parentUuid": "d3299543_4b20eb48",
+      "revId": "4622782bec34ef489c792d8834fb432cbcadd1c9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
     }
   ]
 }
