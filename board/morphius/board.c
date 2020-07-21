@@ -608,3 +608,15 @@ const int keyboard_factory_scan_pins_used =
 			ARRAY_SIZE(keyboard_factory_scan_pins);
 #endif
 
+/* Disable PI3HDX1204 HDMI retimer for power measurements. */
+static void pi3hdx1204_retimer_power(void)
+{
+	if (ec_config_has_hdmi_retimer_pi3hdx1204()) {
+		int enable = 0;
+
+		pi3hdx1204_enable(I2C_PORT_TCPC1,
+				  PI3HDX1204_I2C_ADDR_FLAGS,
+				  enable);
+	}
+}
+DECLARE_HOOK(HOOK_CHIPSET_RESUME, pi3hdx1204_retimer_power, HOOK_PRIO_DEFAULT);
