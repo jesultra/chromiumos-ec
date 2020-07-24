@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "32a9caae_47f498a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1265046
+      },
+      "writtenOn": "2020-07-24T11:09:40Z",
+      "side": 1,
+      "message": "Could you please split the auto gen from this patch?",
+      "revId": "6389d10eae0267b4e22daeb67e1e075a97a5dcb5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "070f8a9b_a30a67ab",
+        "filename": "baseboard/volteer/baseboard.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1265046
+      },
+      "writtenOn": "2020-07-24T11:09:40Z",
+      "side": 1,
+      "message": "It looks like you don\u0027t need to modify the baseboard. Could you please refer to this change https://chromium-review.googlesource.com/c/chromiumos/platform/ec/+/2301560",
+      "range": {
+        "startLine": 286,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 6
+      },
+      "revId": "6389d10eae0267b4e22daeb67e1e075a97a5dcb5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
