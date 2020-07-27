@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "65e25411_edb04a67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1418383
+      },
+      "writtenOn": "2020-07-27T02:17:08Z",
+      "side": 1,
+      "message": "hi,Zhuohao, the Patchset 1 is the original auto gen code, and the Patchset 2 is modified for Lindar schematics and spec",
+      "parentUuid": "32a9caae_47f498a3",
+      "revId": "6389d10eae0267b4e22daeb67e1e075a97a5dcb5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "070f8a9b_a30a67ab",
         "filename": "baseboard/volteer/baseboard.c",
         "patchSetId": 2
