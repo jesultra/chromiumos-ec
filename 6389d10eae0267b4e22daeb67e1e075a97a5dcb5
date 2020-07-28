@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "7a6d0e1a_a5a40f6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-07-28T16:35:02Z",
+      "side": 1,
+      "message": "I agree - the auto-generated CL should be submitted without any changes.  Create new CLs to make changes to the Lindar variant as Zhuohoa suggests.  Keeping each new CL related to one feature makes it easier for reviewers.",
+      "parentUuid": "aca2c1b2_550598f7",
+      "revId": "6389d10eae0267b4e22daeb67e1e075a97a5dcb5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "070f8a9b_a30a67ab",
         "filename": "baseboard/volteer/baseboard.c",
         "patchSetId": 2
