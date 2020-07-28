@@ -57,6 +57,30 @@
       "revId": "6389d10eae0267b4e22daeb67e1e075a97a5dcb5",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5dd5713b_472140c9",
+        "filename": "baseboard/volteer/baseboard.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1418383
+      },
+      "writtenOn": "2020-07-28T09:41:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "070f8a9b_a30a67ab",
+      "range": {
+        "startLine": 286,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 6
+      },
+      "revId": "6389d10eae0267b4e22daeb67e1e075a97a5dcb5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
     }
   ]
 }
