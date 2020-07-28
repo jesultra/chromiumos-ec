@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "abb98067_09795dff",
+        "filename": "baseboard/volteer/baseboard.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1265046
+      },
+      "writtenOn": "2020-07-28T12:22:19Z",
+      "side": 1,
+      "message": "remove this line",
+      "revId": "d326caa47e0a471d84267142c361c1811339be76",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}

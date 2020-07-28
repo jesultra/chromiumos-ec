@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "aca2c1b2_550598f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1265046
+      },
+      "writtenOn": "2020-07-28T12:22:19Z",
+      "side": 1,
+      "message": "I mean you need to split the different CLs for the change. for example: CL1 is for the Auto-Generated, CL2 is for change the GPIO/battery info/..., CL3 is for the USB related. You can split more if you think it is reasonable. You can also refer to the other board like Malefor.",
+      "parentUuid": "65e25411_edb04a67",
+      "revId": "6389d10eae0267b4e22daeb67e1e075a97a5dcb5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "070f8a9b_a30a67ab",
         "filename": "baseboard/volteer/baseboard.c",
         "patchSetId": 2
