@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "9f4acdff_c7447826",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1331721
+      },
+      "writtenOn": "2020-07-28T19:37:21Z",
+      "side": 1,
+      "message": "After consideration, I also agree with this approach. You should be able to cherry pick the 2 patchsets into separate commits that you can then upload as separate CLs.",
+      "parentUuid": "7a6d0e1a_a5a40f6b",
+      "revId": "6389d10eae0267b4e22daeb67e1e075a97a5dcb5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "070f8a9b_a30a67ab",
         "filename": "baseboard/volteer/baseboard.c",
         "patchSetId": 2
