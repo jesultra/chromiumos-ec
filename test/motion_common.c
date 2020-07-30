@@ -32,7 +32,7 @@ static int accel_get_range(const struct motion_sensor_t *s)
 
 static int accel_get_resolution(const struct motion_sensor_t *s)
 {
-	return 0;
+	return 16;
 }
 
 int test_data_rate[2] = { 0 };
@@ -50,6 +50,18 @@ static int accel_get_data_rate(const struct motion_sensor_t *s)
 	return test_data_rate[s - motion_sensors];
 }
 
+#ifdef CONFIG_BODY_DETECTION
+static int accel_get_rms_noise(const struct motion_sensor_t *s)
+{
+	/* Assume we use BMI160 */
+	fp_t rate = INT_TO_FP(s->drv->get_data_rate(s) / 1000);
+	fp_t noise_100Hz = INT_TO_FP(1300);
+	fp_t sqrt_rate_ratio = fp_div(fp_sqrtf(rate), INT_TO_FP(10));
+
+	return FP_TO_INT(fp_mul(noise_100Hz, sqrt_rate_ratio));
+}
+#endif
+
 const struct accelgyro_drv test_motion_sense = {
 	.init = accel_init,
 	.read = accel_read,
@@ -57,6 +69,9 @@ const struct accelgyro_drv test_motion_sense = {
 	.get_resolution = accel_get_resolution,
 	.set_data_rate = accel_set_data_rate,
 	.get_data_rate = accel_get_data_rate,
+#ifdef CONFIG_BODY_DETECTION
+	.get_rms_noise = accel_get_rms_noise,
+#endif
 };
 
 struct motion_sensor_t motion_sensors[] = {
