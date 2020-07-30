@@ -146,7 +146,8 @@
 	defined(TEST_MOTION_ANGLE) || \
 	defined(TEST_MOTION_ANGLE_TABLET) || \
 	defined(TEST_MOTION_SENSE_FIFO) || \
-	defined(CONFIG_ONLINE_CALIB)
+	defined(CONFIG_ONLINE_CALIB) || \
+	defined(TEST_BODY_DETECTION)
 enum sensor_id {
 	BASE,
 	LID,
@@ -172,6 +173,17 @@ enum sensor_id {
 #define CONFIG_ACCEL_FORCE_MODE_MASK \
 	((1 << CONFIG_LID_ANGLE_SENSOR_BASE) | \
 	 (1 << CONFIG_LID_ANGLE_SENSOR_LID))
+#endif
+
+#if defined(TEST_BODY_DETECTION)
+#define CONFIG_BODY_DETECTION
+#define CONFIG_BODY_DETECTION_SENSOR BASE
+#define CONFIG_BODY_DETECTION_MAX_WINDOW_SIZE     250 /* max sensor odr (Hz) */
+#define CONFIG_BODY_DETECTION_VAR_THRESHOLD       550 /* (mm/s^2)^2 */
+#define CONFIG_BODY_DETECTION_CONFIDENCE_DELTA    525 /* (mm/s^2)^2 */
+#define CONFIG_BODY_DETECTION_ON_BODY_CON         50  /* % */
+#define CONFIG_BODY_DETECTION_OFF_BODY_CON        10  /* % */
+#define CONFIG_BODY_DETECTION_STATIONARY_DURATION 15  /* second */
 #endif
 
 #ifdef TEST_RMA_AUTH
