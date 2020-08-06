@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e28ecb24_8f296dfc",
+        "filename": "board/voxel/board.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2020-08-06T20:38:39Z",
+      "side": 1,
+      "message": "Delete this comment.",
+      "range": {
+        "startLine": 51,
+        "startChar": 1,
+        "endLine": 56,
+        "endChar": 4
+      },
+      "revId": "34eb9373aeff04a3947193dbefc581c6a373e59c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12f432f1_4889be03",
+        "filename": "board/voxel/board.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2020-08-06T20:38:39Z",
+      "side": 1,
+      "message": "I am pretty sure you can just delete (not override) this function. The default implementation uses data from the cable\u0027s mode VDO, and that\u0027s what you\u0027ll need to do if you keep overriding it.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 1
+      },
+      "revId": "34eb9373aeff04a3947193dbefc581c6a373e59c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01092d98_81426c44",
+        "filename": "board/voxel/board.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2020-08-06T20:38:39Z",
+      "side": 1,
+      "message": "Delete this comment.",
+      "range": {
+        "startLine": 62,
+        "startChar": 1,
+        "endLine": 67,
+        "endChar": 4
+      },
+      "revId": "34eb9373aeff04a3947193dbefc581c6a373e59c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e90f8de_36f7735e",
+        "filename": "board/voxel/board.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2020-08-06T20:38:39Z",
+      "side": 1,
+      "message": "If all of your ports support TBT and USB4, you can just delete (not override) this function. The default implementation just returns true.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 1
+      },
+      "revId": "34eb9373aeff04a3947193dbefc581c6a373e59c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
