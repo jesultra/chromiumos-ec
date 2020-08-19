@@ -13,6 +13,8 @@
 #include "console.h"
 #include "ec_commands.h"
 #include "host_command.h"
+#include "task.h"
+#include "task_id.h"
 #include "tcpm.h"
 #include "usb_mux.h"
 #include "usb_pd_tcpm.h"
@@ -388,6 +390,8 @@ static enum ec_status hc_usb_pd_control(struct host_cmd_handler_args *args)
 	default:
 		return EC_RES_INVALID_PARAM;
 	}
+	CPRINTS("C%d Sending host response\n", p->port);
+
 	return EC_RES_SUCCESS;
 }
 DECLARE_HOST_COMMAND(EC_CMD_USB_PD_CONTROL,

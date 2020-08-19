@@ -5675,8 +5675,14 @@ struct ec_params_pd_control {
 /* Get info about USB-C SS muxes */
 #define EC_CMD_USB_PD_MUX_INFO 0x011A
 
+enum ec_usb_pd_mux_info_cmd {
+	USB_PD_MUX_REQUEST,
+	USB_PD_MUX_RESPONSE,
+};
+
 struct ec_params_usb_pd_mux_info {
 	uint8_t port; /* USB-C port number */
+	uint8_t subcmd;
 } __ec_align1;
 
 /* Flags representing mux state */

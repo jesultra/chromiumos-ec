@@ -316,6 +316,8 @@ static int retimer_set_state(const struct usb_mux *me, mux_state_t mux_state)
 	uint8_t dp_pin_mode;
 	int port = me->usb_port;
 
+	CPRINTS("C%d Setting retimer\n", port);
+
 	/*
 	 * Bit 0: DATA_CONNECTION_PRESENT
 	 * 0 - No connection present

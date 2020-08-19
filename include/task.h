@@ -57,6 +57,7 @@
 #define TASK_EVENT_WAKE		BIT(29)
 /* Mutex unlocking */
 #define TASK_EVENT_MUTEX	BIT(30)
+#define TASK_EVENT_MUX_DONE	BIT(31)
 /*
  * Timer expired.  For example, task_wait_event() timed out before receiving
  * another event.

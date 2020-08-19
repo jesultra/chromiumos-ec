@@ -22,6 +22,14 @@
 			USB_PD_MUX_SAFE_MODE | USB_PD_MUX_TBT_COMPAT_ENABLED | \
 			USB_PD_MUX_USB4_ENABLED)
 
+#ifdef CONFIG_COMMON_RUNTIME
+#define CPRINTS(format, args...) cprints(CC_USBCHARGE, format, ## args)
+#define CPRINTF(format, args...) cprintf(CC_USBCHARGE, format, ## args)
+#else
+#define CPRINTS(format, args...)
+#define CPRINTF(format, args...)
+#endif
+
 static mux_state_t virtual_mux_state[CONFIG_USB_PD_PORT_MAX_COUNT];
 
 static inline void virtual_mux_update_state(int port, mux_state_t mux_state)
@@ -49,6 +57,8 @@ static int virtual_set_mux(const struct usb_mux *me, mux_state_t mux_state)
 		(virtual_mux_state[port] & USB_PD_MUX_HPD_STATE);
 
 	virtual_mux_update_state(port, new_mux_state);
+
+	CPRINTS("C%d Setting mux settings", port);
 
 	return EC_SUCCESS;
 }
