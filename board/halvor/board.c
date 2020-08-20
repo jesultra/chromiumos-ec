@@ -20,6 +20,7 @@
 #include "extpower.h"
 #include "gpio.h"
 #include "hooks.h"
+#include "keyboard_scan.h"
 #include "lid_switch.h"
 #include "power.h"
 #include "power_button.h"
@@ -39,6 +40,49 @@
 
 #include "gpio_list.h" /* Must come after other header files. */
 
+/* Initialize the keyboard on halvor */
+static void keyboard_init(void)
+{
+	keyscan_config.actual_key_mask[0] = 0x14;
+	keyscan_config.actual_key_mask[1] = 0xff;
+	keyscan_config.actual_key_mask[2] = 0xff;
+	keyscan_config.actual_key_mask[3] = 0xff;
+	keyscan_config.actual_key_mask[4] = 0xff;
+	keyscan_config.actual_key_mask[5] = 0xf4;
+	keyscan_config.actual_key_mask[6] = 0xff;
+	keyscan_config.actual_key_mask[7] = 0xa0;
+	keyscan_config.actual_key_mask[8] = 0xff;
+	keyscan_config.actual_key_mask[9] = 0xfe;
+	keyscan_config.actual_key_mask[10] = 0x41;
+	keyscan_config.actual_key_mask[11] = 0xfa;
+	keyscan_config.actual_key_mask[12] = 0xc0;
+	keyscan_config.actual_key_mask[13] = 0x02;
+	keyscan_config.actual_key_mask[14] = 0x08;
+}
+DECLARE_HOOK(HOOK_INIT, keyboard_init, HOOK_PRIO_INIT_I2C + 1);
+
+static const struct ec_response_keybd_config halvor_kb = {
+	.num_top_row_keys = 10,
+	.action_keys = {
+		TK_BACK,		/* T1 */
+		TK_REFRESH,		/* T2 */
+		TK_FULLSCREEN,		/* T3 */
+		TK_OVERVIEW,		/* T4 */
+		TK_BRIGHTNESS_DOWN,	/* T5 */
+		TK_BRIGHTNESS_UP,	/* T6 */
+		TK_PLAY_PAUSE,		/* T7 */
+		TK_VOL_MUTE,		/* T8 */
+		TK_VOL_DOWN,		/* T9 */
+		TK_VOL_UP,		/* T10 */
+	},
+	.capabilities = KEYBD_CAP_SCRNLOCK_KEY,
+};
+
+__override const struct ec_response_keybd_config
+*board_vivaldi_keybd_config(void)
+{
+	return &halvor_kb;
+}
 /*
  * FW_CONFIG defaults for Halvor if the CBI data is not initialized.
  */
