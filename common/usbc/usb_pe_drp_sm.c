@@ -211,6 +211,9 @@
  */
 typedef int (*svdm_rsp_func)(int port, uint32_t *payload);
 
+/* This is true only if a sysjump has occurred */
+static bool sysjump_occurred;
+
 /* List of all Policy Engine level states */
 enum usb_pe_state {
 	/* Super States */
@@ -866,6 +869,11 @@ void pe_run(int port, int evt, int en)
 		run_state(port, &pe[port].ctx);
 		break;
 	}
+}
+
+void pe_set_sysjump(void)
+{
+	sysjump_occurred = true;
 }
 
 int pe_is_explicit_contract(int port)
@@ -2583,11 +2591,23 @@ static void pe_snk_startup_run(int port)
 	if (!prl_is_running(port))
 		return;
 
-	/*
-	 * Once the reset process completes, the Policy Engine Shall
-	 * transition to the PE_SNK_Discovery state
-	 */
-	set_state_pe(port, PE_SNK_DISCOVERY);
+
+	/* Soft reset the charger on sysjump */
+	if (sysjump_occurred) {
+		/*
+		 * The sysjump flag is no longer needed, so clear it.
+		 * After Soft Reset is sent, PE_ATTACHED_SNK state
+		 * is entered.
+		 */
+		sysjump_occurred = false;
+		pe_send_soft_reset(port, TCPC_TX_SOP);
+	} else {
+		/*
+		 * Once the reset process completes, the Policy Engine Shall
+		 * transition to the PE_SNK_Discovery state
+		 */
+		set_state_pe(port, PE_SNK_DISCOVERY);
+	}
 }
 
 /**
