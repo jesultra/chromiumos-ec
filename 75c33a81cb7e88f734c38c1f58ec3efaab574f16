@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "45beb905_c8ee2afc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2020-09-09T23:52:53Z",
+      "side": 1,
+      "message": "Why it mattes? The serial comes from the command:\n  dut_control_get \"${sn_ctl}serialname\"\n\nIt seems independent with the board.",
+      "range": {
+        "startLine": 11,
+        "startChar": 50,
+        "endLine": 15,
+        "endChar": 28
+      },
+      "revId": "75c33a81cb7e88f734c38c1f58ec3efaab574f16",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cd5049d0_d257e640",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
