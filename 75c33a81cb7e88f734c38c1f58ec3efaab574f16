@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd5049d0_d257e640",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1125984
+      },
+      "writtenOn": "2020-09-09T16:21:31Z",
+      "side": 1,
+      "message": "How would flashrom decide which servo to use? Doesn\u0027t the same problem exist?",
+      "range": {
+        "startLine": 17,
+        "startChar": 62,
+        "endLine": 18,
+        "endChar": 40
+      },
+      "revId": "75c33a81cb7e88f734c38c1f58ec3efaab574f16",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    }
+  ]
+}
