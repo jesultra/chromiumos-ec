@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "afee6733_bf266319",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2020-09-10T16:39:20Z",
+      "side": 1,
+      "message": "I see.\n\nIf \"servo_micro_for_hayato_serialname\" is \"unknown\" or \"Uninitialized\", fall back to use the \"servo_micro_serialname\". The \"servo_micro_serialname\" should be valid and \"servo_micro_for_$(board)_serialname\" is an alias to it.",
+      "parentUuid": "b3349c3e_e5b1f18d",
+      "range": {
+        "startLine": 11,
+        "startChar": 50,
+        "endLine": 15,
+        "endChar": 28
+      },
+      "revId": "75c33a81cb7e88f734c38c1f58ec3efaab574f16",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cd5049d0_d257e640",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
