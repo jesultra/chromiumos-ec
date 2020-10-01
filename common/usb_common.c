@@ -393,52 +393,123 @@ enum pd_drp_next_states drp_auto_toggle_next_state(
 	}
 }
 
-mux_state_t get_mux_mode_to_set(int port)
+void get_mux_switch_mode_to_set(int port, mux_state_t* newMux,
+		enum usb_switch* newSwitch)
 {
 	/*
 	 * If the SoC is down, then we disconnect the MUX to save power since
 	 * no one cares about the data lines.
 	 */
+	CPRINTS("PASS1");
 	if (IS_ENABLED(CONFIG_POWER_COMMON) &&
-	    chipset_in_or_transitioning_to_state(CHIPSET_STATE_ANY_OFF))
-		return USB_PD_MUX_NONE;
+	    chipset_in_or_transitioning_to_state(CHIPSET_STATE_ANY_OFF)){
+		*newMux=USB_PD_MUX_NONE;
+		*newSwitch=USB_SWITCH_DISCONNECT;
+		return;
+	}
 
+	CPRINTS("PASS2");
 	/*
 	 * When PD stack is disconnected, then mux should be disconnected, which
 	 * is also what happens in the set_state disconnection code. Once the
 	 * PD state machine progresses out of disconnect, the MUX state will
 	 * be set correctly again.
 	 */
-	if (pd_is_disconnected(port))
-		return USB_PD_MUX_NONE;
+	if (pd_is_disconnected(port)){
+		*newMux=USB_PD_MUX_NONE;
+		*newSwitch=USB_SWITCH_DISCONNECT;
+		return;
+	}
 
+	CPRINTS("PASS2.5");
+	/*
+	 * If and Only If:
+	 * (a) we're in an explicit USB-PD contract
+	 * (b) and partner device populated "USB CommCap=0"
+	 * then disconnect the USB mux.
+	 *
+	 * Noting strictly applying this option is dangerous as many devices
+	 * in the ecosystem improperly pupulate "SRC_CAP" "REQUEST" and
+	 * "SNK_CAP" fields with incorrect, non-matching CommCap values.
+	 *
+	 * This also needs to account for non-PD things, and our role as UFP
+	 * or DFP. We cannot assume a certain data role "because we're Sink".
+	 * In fact, USB-IF Compliance calls for removing "UFP terminations".
+	 *
+	 * Placement and relative order of this if() statement also matters.
+	 */
+
+	CPRINTS("=====> Debug [DR: %d] [Expl: %d] [CommCap: %d]",
+			IS_ENABLED(CONFIG_USB_PD_DUAL_ROLE),
+			pd_get_partner_explicit_contract(port),
+			pd_get_partner_usb_comm_capable(port));
+
+	if (IS_ENABLED(CONFIG_USB_PD_DUAL_ROLE) &&
+	    	pd_get_partner_explicit_contract(port) &&
+	    	!pd_get_partner_usb_comm_capable(port)) {
+		*newMux=USB_PD_MUX_NONE;
+		*newSwitch=USB_SWITCH_DISCONNECT;
+		return;
+	}
+
+	CPRINTS("PASS3");
 	/* If new data role isn't DFP & we only support DFP, also disconnect. */
 	if (IS_ENABLED(CONFIG_USB_PD_DUAL_ROLE) &&
-	    IS_ENABLED(CONFIG_USBC_SS_MUX_DFP_ONLY) &&
-	    pd_get_data_role(port) != PD_ROLE_DFP)
-		return USB_PD_MUX_NONE;
+	    	IS_ENABLED(CONFIG_USBC_SS_MUX_DFP_ONLY) &&
+	    	pd_get_data_role(port) != PD_ROLE_DFP) {
+		*newMux=USB_PD_MUX_NONE;
 
-	/*
-	 * If the power role is sink and the partner device is not capable
-	 * of USB communication then disconnect.
-	 */
+		/* Check if we support USB2 switch for current role */
+		if (pd_get_data_role(port) == PD_ROLE_UFP &&
+				IS_ENABLED(CONFIG_USBC_USB_SWITCH_UFP_SUPPORT))
+			*newSwitch=USB_SWITCH_CONNECT;
+		else
+			*newSwitch=USB_SWITCH_DISCONNECT;
+		return;
+	}
+
+	CPRINTS("PASS3.5");
+	/* If new data role isn't UFP & we only support UFP, also disconnect. */
 	if (IS_ENABLED(CONFIG_USB_PD_DUAL_ROLE) &&
-	    pd_get_power_role(port) == PD_ROLE_SINK &&
-	    !pd_get_partner_usb_comm_capable(port))
-		return USB_PD_MUX_NONE;
+	    	IS_ENABLED(CONFIG_USBC_SS_MUX_UFP_ONLY) &&
+	    	pd_get_data_role(port) != PD_ROLE_UFP) {
+		*newMux=USB_PD_MUX_NONE;
 
+		/* Check if we support USB2 switch for current role */
+		if (pd_get_data_role(port) == PD_ROLE_DFP &&
+				IS_ENABLED(CONFIG_USBC_USB_SWITCH_DFP_SUPPORT))
+			*newSwitch=USB_SWITCH_CONNECT;
+		else
+			*newSwitch=USB_SWITCH_DISCONNECT;
+		return;
+	}
+
+
+	CPRINTS("PASS5 (CLEAR!)");
 	/* Otherwise connect mux since we are in S3+ */
-	return USB_PD_MUX_USB_ENABLED;
+
+	*newMux=USB_PD_MUX_USB_ENABLED;
+	*newSwitch=USB_SWITCH_CONNECT;
+	return;
 }
 
 void set_usb_mux_with_current_data_role(int port)
 {
-	if (IS_ENABLED(CONFIG_USBC_SS_MUX)) {
-		mux_state_t mux_mode = get_mux_mode_to_set(port);
-		enum usb_switch usb_switch_mode =
-				(mux_mode == USB_PD_MUX_NONE) ?
-				USB_SWITCH_DISCONNECT : USB_SWITCH_CONNECT;
+	/*
+	TODO: This function doesn't handle "Gadget Mode" devices.
 
+	These devices may support USB3 as DFP, but USB2 as UFP. In these
+	situations, we don't want to link SSUSB mux and USB2 mux settings.
+
+	Introduce CONFIG_USBC_USB_SWITCH_UFP_SUPPORT and *_DFP_SUPPORT.
+	*/
+
+	if (IS_ENABLED(CONFIG_USBC_SS_MUX)) {
+		mux_state_t mux_mode;
+		enum usb_switch usb_switch_mode;
+		get_mux_switch_mode_to_set(port, &mux_mode, &usb_switch_mode);
+		CPRINTS("I WAS TOLD TO SET MUX [0x%x] SWITCH [0x%x]",
+				mux_mode, usb_switch_mode);
 		usb_mux_set(port, mux_mode, usb_switch_mode,
 				pd_get_polarity(port));
 	}

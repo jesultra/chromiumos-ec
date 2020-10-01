@@ -56,18 +56,21 @@
 #define CONFIG_HW_CRC
 
 /* Servo v4p1 CC configuration */
-#define CC_DETACH		BIT(0)	/* Emulate detach: both CC open */
+#define CC_DETACH_FAR	BIT(0)	/* Emulate far-side detach: both CC open */
 #define CC_DISABLE_DTS	BIT(1)	/* Apply resistors to single or both CC? */
 #define CC_ALLOW_SRC	BIT(2)	/* Allow charge through by policy? */
 #define CC_ENABLE_DRP	BIT(3)	/* Enable dual-role port */
 #define CC_SNK_WITH_PD	BIT(4)	/* Force enabling PD comm for sink role */
-								// TODO: Change this to DTS_SINK_PD
 #define CC_POLARITY		BIT(5)	/* CC polarity */
-#define CC_EMCA_SERVO	BIT(6)   /*
-				  * Emulate Electronically Marked Cable Assembly
-				  * (EMCA) servo (or non-EMCA)
-				  */
-#define CC_SRC_WITH_PD 	BIT(7)	/* Allow DUT PD comms as SRC*/
+#define CC_EMCA_SERVO	BIT(6)
+				/*
+				* Emulate Electronically Marked Cable Assembly
+				* (EMCA) servo (or non-EMCA)
+				*/
+#define CC_SRC_WITH_PD 	BIT(7)	/* Allow DUT PD comms as SRC*/ 
+#define CC_DETACH_NEAR	BIT(8)	/* Emulate near-side detach: leave cable */
+#define CC_DETACH_MASK  (CC_DETACH_NEAR | CC_DETACH_FAR)
+								/* Detach mask for logic statements */
 
 /* Servo v4 DP alt-mode configuration */
 #define ALT_DP_ENABLE		BIT(0)   /* Enable DP alt-mode or not */

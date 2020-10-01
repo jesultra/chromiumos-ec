@@ -22,6 +22,7 @@ board-y+=pi3usb9201.o
 board-y+=tusb1064.o
 
 # These files are compiled into RO only
+# driver-ro+=usb_mux/usb_mux.o
 board-ro+=ccd_measure_sbu.o
 board-ro+=pathsel.o
 board-ro+=chg_control.o

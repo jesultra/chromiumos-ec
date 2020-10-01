@@ -19,7 +19,7 @@ GPIO_INT(BC12_INT_ODL,		PIN(F, 1),  GPIO_INT_FALLING, bc12_evt)
 GPIO(HOST_USB_HUB_RESET_L,	PIN(D, 2),  GPIO_ODR_HIGH)
 GPIO(FASTBOOT_DUTHUB_MUX_SEL,	PIN(B, 5),  GPIO_OUT_HIGH)
 GPIO(SBU_MUX_EN,		PIN(B, 6),  GPIO_OUT_LOW)
-GPIO(FASTBOOT_DUTHUB_MUX_EN_L,	PIN(B, 7),  GPIO_OUT_LOW)
+GPIO(FASTBOOT_DUTHUB_MUX_EN_L,	PIN(B, 7),  GPIO_OUT_HIGH)
 /* Power on init has reset asserted, we will pull the hub out of reset
  * in the board init to help avoid brownout.
  */

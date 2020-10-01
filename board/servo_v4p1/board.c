@@ -378,6 +378,11 @@ const struct usb_mux usb_muxes[CONFIG_USB_PD_PORT_MAX_COUNT] = {
 	{
 		/* CAUTION: This is an UFP/RX/SINK redriver mux */
 		/* Functions may be called backwards/DFP in TCPMv1 */
+		
+		/*
+		* TODO: Yep, they are. This is fatal for UFP.
+		* Can use framework; not #define CONFIG_USBC_SS_MUX
+		*/
 
 		/* DUT Pigtail port */
 		.usb_port = 1,
@@ -436,6 +441,7 @@ static void board_init(void)
 	default:
 		break;
 	}
+	CPRINTS("Board ID is %d",board_id_det());
 	vbus_dischrg_en(0);
 
 #ifdef SECTION_IS_RO
@@ -445,7 +451,9 @@ static void board_init(void)
 	init_fusb302b(1);
 
 	/* Enable DUT USB2.0 pair. */
-	gpio_set_level(GPIO_FASTBOOT_DUTHUB_MUX_EN_L, 0);
+	gpio_set_level(GPIO_FASTBOOT_DUTHUB_MUX_EN_L, 1);
+	//TODO: USB-C this only should be enabled on CONNECT!
+	//TODO: USB-A this needs to be overrided for Type-A servo!
 
 	/* Enable VBUS detection to wake PD tasks fast enough */
 	gpio_enable_interrupt(GPIO_USB_DET_PP_CHG);

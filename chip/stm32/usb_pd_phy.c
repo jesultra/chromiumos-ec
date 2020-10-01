@@ -414,6 +414,8 @@ void pd_rx_complete(int port)
 	pd_phy[port].tim_rx->cr1 &= ~1;
 	/* stop DMA */
 	dma_disable(DMAC_TIM_RX(port));
+
+	//TODO: Add tInterFrameGap delay here
 }
 
 int pd_rx_started(int port)

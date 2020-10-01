@@ -191,6 +191,7 @@
 #define CONFIG_USB_PD_ALT_MODE
 
 #define CONFIG_USB_PD_DEBUG_LEVEL 3
+#define CONFIG_I2C_DEBUG
 
 /* Don't automatically change roles */
 #undef CONFIG_USB_PD_INITIAL_DRP_STATE
@@ -198,12 +199,27 @@
 /* This is the proper way to include a generic Driver */
 #if 0
 #define CONFIG_USB_MUX_TUSB1064 /*C0*/
+
 #endif
+
+#if 1
 /* Enable SSUSB Mux Driver */
+/* TODO: NEGATIVE! This actually kills ourselves due to HOOK due to "DFP logic" */
 #define CONFIG_USBC_SS_MUX
+#undef CONFIG_USBC_SS_MUX_DFP_ONLY
+#define CONFIG_USBC_SS_MUX_UFP_ONLY
+/*
+CONFIG_USBC_USB_SWITCH_UFP_SUPPORT is implied, let's test that config.h code
+*/
+#define CONFIG_USBC_USB_SWITCH_DFP_SUPPORT
+#endif
+
+#define SERVO_DEFAULT_CONFIG  CONF_SRCDTS(0)
+/*
 #define SERVO_DEFAULT_CONFIG CONF_SET_CLEAR(0, \
 		CC_ALLOW_SRC | CC_POLARITY | CC_DISABLE_DTS | CC_EMCA_SERVO | CC_SNK_WITH_PD | CC_SRC_WITH_PD, \
 		CC_DETACH  )
+*/
 
 
 
@@ -215,11 +231,31 @@
  * TODO(crosbug.com/p/60792): The delay values are currently just place holders
  * and the delay will need to be relative to the circuitry that allows VBUS to
  * be supplied to the DUT port from the CHG port.
+ *
+ * TODO(V4P1): These values are now set towards maximum spec limit, to give CHG
+ * maximum time to respond. (Even though we don't pay any heed to its PS_RDY.)
+ * 
+ * Suggest adding 15ms to allow max tSenderResponse for CHG (crbug.com/925618)
+ * (Note we send ACCEPT within 1ms, without waiting for MITM reply.)
  */
-#define PD_POWER_SUPPLY_TURN_ON_DELAY 100*MSEC /* us */
-/* Select: 100000 (PD_T_PS_SOURCE_ON/2) */ /* us */
-#define PD_POWER_SUPPLY_TURN_OFF_DELAY 50*MSEC /* us */
-/* Select 50000  (PD_T_PS_SOURCE_OFF/2) */ /* us */
+#define PD_POWER_SUPPLY_TURN_ON_DELAY (161*MSEC) /* us */
+/*
+* ServoV4p1 REV1: tuned with Apple 96w adapter
+* 100000 us gets converted to 379ms => 285-(379-100) => 6ms
+*                <-- causes issue with PR_SWAP
+*                    450-(379-100) => 171ms limit
+* (PD_T_SRC_READY 285ms max)
+* (PD_T_PS_TRANSITION  450-550ms limit)
+*/
+#define PD_POWER_SUPPLY_TURN_OFF_DELAY (461*MSEC) /* us */
+/*
+* ServoV4p1 REV1: tuned with Apple 96w adapter
+* 50000 us gets converted to (???) => 675-(379-100?) => 396ms
+*                 <-- causes issue with PR_SWAP
+*                     750-(379-100?) => 471ms limit
+* (PD_T_PS_HARD_RESET[25-35ms]+PD_T_SAFE_0V[650ms max])
+* (PD_T_PS_SOURCE_OFF 750-920ms limit)
+*/
 
 /* Define typical operating power and max power */
 #define PD_OPERATING_POWER_MW 15000

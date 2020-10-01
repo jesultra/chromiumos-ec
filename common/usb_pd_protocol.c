@@ -415,6 +415,15 @@ bool pd_get_partner_usb_comm_capable(int port)
 	return !!(pd[port].flags & PD_FLAGS_PARTNER_USB_COMM);
 }
 
+/*
+ * Return true if partner port has negotiated a Explicit Contract
+ */
+bool pd_get_partner_explicit_contract(int port)
+{
+	return !!(pd[port].flags & PD_FLAGS_EXPLICIT_CONTRACT);
+}
+
+
 #ifdef CONFIG_USB_PD_DUAL_ROLE
 void pd_vbus_low(int port)
 {
@@ -829,7 +838,35 @@ static inline void set_state(int port, enum pd_states next_state)
 		 * DFP as SoCs have special signals when they are the UFP ports
 		 * (e.g. OTG signals)
 		 */
+
+		/*
+		* The above logic is incorrect and maintained only for legacy
+		* compatibility purposes. It does not function on many DUT that
+		* rely on proper PD_ROLE declaration. Falsifying a DR_SWAP (when
+		* none has actually occured) can desync system state.
+		* 
+		* To maintain legacy function (for whatevevr reason CL was written),
+		* instead gate logic off "CONFIG_USBC_USB_SWITCH_UFP_SUPPORT". This
+		* should result in "No Change" for most platforms, but fix new ones
+		* with proper "CONFIG_USBC_USB_SWITCH_UFP_SUPPORT" defined.
+		*
+		* TODO(crrev/c/1865984): Fix all chipset driver code to properly add
+		* "DISCONNECTED" state handling, or more properly, move data role
+		* falsification to board-specific hook/override code.
+		*/
+
+		/*
+		* TODO: pd[port].flags |= PD_FLAGS_PARTNER_USB_COMM;
+		* It seems we do not update this base on REQUEST.
+		* Only update it from SRC_CAP.
+		*/
+
+	#ifndef CONFIG_USBC_USB_SWITCH_UFP_SUPPORT
 		pd_execute_data_swap(port, PD_ROLE_DFP);
+	#else
+		pd_execute_data_swap(port, PD_ROLE_DISCONNECTED);
+	#endif
+
 #ifdef CONFIG_USBC_SS_MUX
 		usb_mux_set(port, USB_PD_MUX_NONE, USB_SWITCH_DISCONNECT,
 			    pd[port].polarity);
@@ -1599,6 +1636,13 @@ static void handle_data_request(int port, uint32_t head,
 
 				/* explicit contract is now in place */
 				pd[port].flags |= PD_FLAGS_EXPLICIT_CONTRACT;
+
+				CPRINTS("REQUEST PAYLOAD IS 0x%x",payload[0]);
+				/* Update CommCap flag based on REQUEST */
+				if (payload[0] & RDO_COMM_CAP)
+					pd[port].flags |= PD_FLAGS_PARTNER_USB_COMM;
+				else
+					pd[port].flags &= ~PD_FLAGS_PARTNER_USB_COMM;
 #ifdef CONFIG_USB_PD_DUAL_ROLE
 				pd_update_saved_port_flags(
 					port, PD_BBRMFLG_EXPLICIT_CONTRACT, 1);
@@ -3399,9 +3443,15 @@ void pd_task(void *u)
 							  PD_ROLE_VCONN_OFF);
 #endif /* CONFIG_USBC_VCONN */
 #ifdef CONFIG_USBC_SS_MUX
-					usb_mux_set(port, USB_PD_MUX_NONE,
-						    USB_SWITCH_DISCONNECT,
-						    pd[port].polarity);
+					set_usb_mux_with_current_data_role(port);
+				#if 0
+					usb_mux_set(port,
+						IS_ENABLED(CONFIG_USBC_SS_MUX_UFP_ONLY)?
+							USB_PD_MUX_NONE:USB_PD_MUX_USB_ENABLED,
+						IS_ENABLED(CONFIG_USBC_USB_SWITCH_DFP_SUPPORT)?
+							USB_SWITCH_CONNECT:USB_SWITCH_DISCONNECT,
+						pd[port].polarity);
+				#endif
 #endif /* CONFIG_USBC_SS_MUX */
 					break;
 				}

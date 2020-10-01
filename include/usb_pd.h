@@ -210,6 +210,7 @@ enum pd_rx_errors {
 #define PD_T_SRC_RECOVER           (760*MSEC) /* between 660ms and 1000ms */
 #define PD_T_SRC_RECOVER_MAX      (1000*MSEC) /* 1000ms */
 #define PD_T_SRC_TURN_ON           (275*MSEC) /* 275ms */
+#define PD_T_SRC_READY	           (285*MSEC) /* 285ms */
 #define PD_T_SAFE_0V               (650*MSEC) /* 650ms */
 #define PD_T_NO_RESPONSE          (5500*MSEC) /* between 4.5s and 5.5s */
 #define PD_T_BIST_TRANSMIT          (50*MSEC) /* 50ms (for task_wait arg) */
@@ -2737,6 +2738,13 @@ void pd_set_src_caps(int port, int cnt, uint32_t *src_caps);
  * @param port USB-C port number
  */
 bool pd_get_partner_usb_comm_capable(int port);
+
+/**
+ * Return true if partner port is in explicit USB-PD contract.
+ *
+ * @param port USB-C port number
+ */
+bool pd_get_partner_explicit_contract(int port);
 
 /**
  * Return true if PD is in disconnect state

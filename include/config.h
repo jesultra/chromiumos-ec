@@ -4340,6 +4340,38 @@
  */
 #undef CONFIG_USBC_SS_MUX_DFP_ONLY
 
+/*
+ * Only configure USB type-c superspeed mux when UFP (for chipsets that
+ * don't support being a DFP)
+ */
+#undef CONFIG_USBC_SS_MUX_UFP_ONLY
+
+/*
+ * Device supports "Gadget Mode" or "ADB" target as USB UFP. This only
+ * governs UFP USB_SWITCH_* for USB2. See UFP SS_MUX_* for USB3.
+ *
+ * Implied if CONFIG_USBC_SS_MUX_UFP_* is defined.
+ */
+#if defined(CONFIG_USBC_SS_MUX_UFP_ONLY)
+#define CONFIG_USBC_USB_SWITCH_UFP_SUPPORT
+#else
+#undef CONFIG_USBC_USB_SWITCH_UFP_SUPPORT
+#endif
+
+/*
+ * Device supports "Control Mode" as a host USB DFP. This only governs
+ * DFP USB_SWITCH_* for USB2. See UFP SS_MUX_* for USB3.
+ *
+ * Implied if CONFIG_USBC_SS_MUX_DFP_* is defined. For DFP-centeric
+ * legacy reasons, also implied if *_USBC_SS_MUX is defined.
+ */
+#if defined(CONFIG_USBC_SS_MUX_DFP_ONLY) || defined(CONFIG_USBC_SS_MUX)
+#define CONFIG_USBC_USB_SWITCH_DFP_SUPPORT
+#else
+#undef CONFIG_USBC_USB_SWITCH_DFP_SUPPORT
+#endif
+
+
 /* Support v1.1 type-C connection state machine */
 #undef CONFIG_USBC_BACKWARDS_COMPATIBLE_DFP
 

@@ -14,6 +14,20 @@
 /* Generic driver init function */
 static int tusb1064_init(const struct usb_mux *me)
 {
+	/* Disconnect USB3.1 and DP */
+	int reg;
+	int val;
+
+	reg =( (0 & REG_GENERAL_DP_EN_CTRL)	|
+		 REG_GENERAL_CTLSEL_DISABLE |
+		 REG_GENERAL_EQ_OVERRIDE);
+	val=tusb1064_write_byte(me->i2c_port, TUSB1064_REG_GENERAL, reg);
+	if (val)
+		return val;
+
+	return EC_SUCCESS;
+
+
 	return init_tusb1064(me->i2c_port);
 }
 
@@ -21,7 +35,7 @@ static int tusb1064_init(const struct usb_mux *me)
 static int tusb1064_set_mux(const struct usb_mux *me, mux_state_t mux_state)
 {
 	int reg;
-	// CPRINTS("tusb1064_set_mux 0x%X",mux_state);
+	CPRINTS("tusb1064_set_mux 0x%X",mux_state);
 
 	reg =( (0 & REG_GENERAL_DP_EN_CTRL)
 		| REG_GENERAL_CTLSEL_DISABLE );
@@ -55,7 +69,7 @@ static int tusb1064_get_mux(const struct usb_mux *me, mux_state_t *mux_state)
 		*mux_state |= USB_PD_MUX_POLARITY_INVERTED;
 
 	// TODO: Incorporate AUX Override bits too.
-	// CPRINTS("tusb1064_get_mux 0x%X", *mux_state);
+	CPRINTS("tusb1064_get_mux 0x%X", *mux_state);
 	return EC_SUCCESS;
 }
 
@@ -63,10 +77,14 @@ int init_tusb1064(int port)
 {
 	int val, reg;
 
-	// CPRINTS("init_tusb1064 boardid_cached 0x%X", board_id_cached());
-	reg =( (0 & REG_GENERAL_DP_EN_CTRL)
-		| REG_GENERAL_CTLSEL_DISABLE );
-
+	/* Disconnect USB3.1 and DP */
+	reg =( (0 & REG_GENERAL_DP_EN_CTRL) |
+		REG_GENERAL_CTLSEL_DISABLE |
+		REG_GENERAL_EQ_OVERRIDE );
+	val=tusb1064_write_byte(port, TUSB1064_REG_GENERAL, reg);
+	if (val)
+		return val;
+	
 	/* Default to "Floating Pin" DP Equalization */
 	reg=TUSB1064_DP1EQ(TUSB1064_DP_EQ_RX_10_0_DB) |
 			TUSB1064_DP3EQ(TUSB1064_DP_EQ_RX_10_0_DB);
@@ -80,7 +98,7 @@ int init_tusb1064(int port)
 	if (val)
 		return val;
 
-	/* Disconnect USB3.1 and DP */
+	#if 0
 	val=tusb1064_read_byte(port, TUSB1064_REG_GENERAL, &reg);
 	if (val)
 		return val;
@@ -90,6 +108,7 @@ int init_tusb1064(int port)
 	val=tusb1064_write_byte(port, TUSB1064_REG_GENERAL, reg);
 	if(val)
 		return val;
+	#endif
 
 	/* Disable AUX mux override */
 	reg=((~TUSB1064_AUXDPCTRL_AUX_SNOOP_DISABLE & 0) |
