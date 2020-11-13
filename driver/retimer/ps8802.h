@@ -16,6 +16,11 @@
 #define PS8802_I2C_ADDR_FLAGS	0x08
 
 /*
+ * PS8802 uses 7-bit I2C addresses 0x28 to 0x37.
+ */
+#define PS8802_I2C_ADDR_FLAGS_CUSTOM	0x28
+
+/*
  * PAGE 0 Register Definitions
  */
 #define PS8802_REG_PAGE0	0x00
