@@ -172,4 +172,3 @@ const struct accelgyro_drv bh1730_drv = {
 	.set_data_rate = bh1730_set_data_rate,
 	.get_data_rate = bh1730_get_data_rate,
 };
-
