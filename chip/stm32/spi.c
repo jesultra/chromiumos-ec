@@ -315,6 +315,11 @@ static void setup_for_transaction(void)
 	/* clear this as soon as possible */
 	setup_transaction_later = 0;
 
+	/* Stop sending response, if any */
+	dma_get_channel(STM32_DMAC_SPI1_TX)->cndtr = 0;
+
+	dma_disable(STM32_DMAC_SPI1_TX);
+
 #ifndef CHIP_FAMILY_STM32H7 /* H7 is not ready to set status here */
 	/* Not ready to receive yet */
 	tx_status(EC_SPI_NOT_READY);
@@ -322,9 +327,6 @@ static void setup_for_transaction(void)
 
 	/* We are no longer actively processing a transaction */
 	state = SPI_STATE_PREPARE_RX;
-
-	/* Stop sending response, if any */
-	dma_disable(STM32_DMAC_SPI1_TX);
 
 	/*
 	 * Read dummy bytes in case there are some pending; this prevents the
@@ -407,6 +409,16 @@ static void spi_send_response(struct host_cmd_handler_args *args)
 }
 #endif /* defined(CONFIG_SPI_PROTOCOL_V2) */
 
+void spi_dma_tx_done(void *data)
+{
+	stm32_spi_regs_t *spi __attribute__((unused)) = STM32_SPI1_REGS;
+
+	/* while (spi->sr & STM32_SPI_SR_FTLVL) */
+		; /* wait for TX FIFO empty */
+	/* while (spi->sr & STM32_SPI_SR_BSY) */
+		; /* wait for BSY == 0 */
+}
+
 /**
  * Called to send a response back to the host.
  *
@@ -442,6 +454,9 @@ static void spi_send_response_packet(struct host_packet *pkt)
 	txdma = dma_get_channel(STM32_DMAC_SPI1_TX);
 	dma_prepare_tx(&dma_tx_option, sizeof(out_preamble) + pkt->response_size
 		+ EC_SPI_PAST_END_LENGTH, out_msg);
+	dma_enable_tc_interrupt_callback(STM32_DMAC_SPI1_TX,
+					 &spi_dma_tx_done,
+					 NULL);
 	dma_go(txdma);
 #ifdef CHIP_FAMILY_STM32H7
 	/* clear any previous underrun */
@@ -468,6 +483,7 @@ void spi_event(enum gpio_signal signal)
 {
 	dma_chan_t *rxdma;
 	uint16_t i;
+	stm32_spi_regs_t *spi __attribute__((unused)) = STM32_SPI1_REGS;
 
 	/* If not enabled, ignore glitches on NSS */
 	if (!enabled)
@@ -476,6 +492,15 @@ void spi_event(enum gpio_signal signal)
 	/* Check chip select.  If it's high, the AP ended a transaction. */
 	if (gpio_get_level(GPIO_SPI1_NSS)) {
 		enable_sleep(SLEEP_MASK_SPI);
+
+		/*
+		 * NSS is high (CS is deasserted), which means we can't
+		 * do TX, disable it anyway.
+		 */
+		/* rewind DMA buffer */
+		dma_get_channel(STM32_DMAC_SPI1_TX)->cndtr = 0;
+		/* disable DMA */
+		dma_disable(STM32_DMAC_SPI1_TX);
 
 		/*
 		 * If the buffer is still used by the host command, postpone
@@ -668,6 +693,12 @@ static void spi_init(void)
 	/* Fix for bug chrome-os-partner:31390 */
 	enabled = 0;
 	state = SPI_STATE_DISABLED;
+
+	/* rewind DMA buffer */
+	dma_get_channel(STM32_DMAC_SPI1_TX)->cndtr = 0;
+	/* disable DMA */
+	dma_disable(STM32_DMAC_SPI1_TX);
+
 	STM32_RCC_APB2RSTR |= STM32_RCC_PB2_SPI1;
 	STM32_RCC_APB2RSTR &= ~STM32_RCC_PB2_SPI1;
 
