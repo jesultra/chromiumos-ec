@@ -18,6 +18,23 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f94dc9d_dbc9eb6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1116125
+      },
+      "writtenOn": "2020-12-17T17:44:06Z",
+      "side": 1,
+      "message": "Tested on Voxel both ports and Volteer port 1. We do get SVID SOP\u0027 response. And speed is negotiated at total 40G.",
+      "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54f36304_ca0b7e19",
