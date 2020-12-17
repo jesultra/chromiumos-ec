@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "850eca1e_22153bdb",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-17T19:18:25Z",
+      "side": 1,
+      "message": "Looking closer at the spec, this state should be PE_VCS_CBL_Send_Soft_Reset and should be guarded by CONFIG_USBC_VCONN.\nWe could enter this state for any protocol errors send on SOP\u0027/SOP\u0027\u0027.  For this particular dock, we would send soft reset after getting no response from DiscSVID SOP\u0027.",
+      "range": {
+        "startLine": 419,
+        "startChar": 31,
+        "endLine": 419,
+        "endChar": 55
+      },
+      "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54f36304_ca0b7e19",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 1
@@ -71,6 +94,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b5cc2d1d_a01b464b",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1739,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-17T19:18:25Z",
+      "side": 1,
+      "message": "For this proof of concept, sending DiscId SOP\u0027 before soft reset is working as intended. This was done so that DiscId SOP\u0027 handles the retries for a no response correctly, especially in the case of no emarked cable.",
+      "parentUuid": "118f7cf7_26c56545",
+      "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54162cbb_638c0e5f",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 1
@@ -82,6 +123,24 @@
       "writtenOn": "2020-12-17T17:30:22Z",
       "side": 1,
       "message": "I\u0027m assuming you\u0027re using this because soft reset state is broken for cables right now? (b/171823328)",
+      "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13fb46b5_c3b8b590",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6276,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-17T19:18:25Z",
+      "side": 1,
+      "message": "See b:172364575 for a full discussion.  In summary this was a proof of concept to see if preemptively sending an SOP\u0027 soft reset would avoid an issue seen where the dock fails to respond to DiscSVID SOP\u0027.",
+      "parentUuid": "54162cbb_638c0e5f",
       "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
