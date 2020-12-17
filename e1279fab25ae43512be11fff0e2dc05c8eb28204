@@ -16,6 +16,40 @@
       "message": "This CL is for testing only.  This does not represent anything close to a final solution.",
       "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54f36304_ca0b7e19",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1739,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-17T17:30:22Z",
+      "side": 1,
+      "message": "Could we alternatively have a DPM request to soft reset the cable which takes priority over discovery?  That would serve my own selfish purposes for b/152058087 (which you are welcome to take, should you feel so inspired :) )",
+      "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54162cbb_638c0e5f",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 6276,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-17T17:30:22Z",
+      "side": 1,
+      "message": "I\u0027m assuming you\u0027re using this because soft reset state is broken for cables right now? (b/171823328)",
+      "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
