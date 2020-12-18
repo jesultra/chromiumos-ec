@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "98173ad9_7d7bb3db",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-18T00:10:14Z",
+      "side": 1,
+      "message": "You\u0027re correct - a response timeout doesn\u0027t appear to be a protocol error\n\nI\u0027ve seen monitors automatically issue soft resets on connect as well.  I\u0027ll have to check what the monitor does in the cause of a non-emarked cable to see how it manages retries.\n\nFor the dock in the linked bug, SOP\u0027 soft reset does seem to fix it.  It\u0027s unusual to issue DiscID first, then soft reset, but there\u0027s nothing the in spec to prevent this.  What do you think of this as a policy, or should we work towards always doing an SOP\u0027 soft reset before sending anything to the cable?",
+      "parentUuid": "887a5238_0274fe7c",
+      "range": {
+        "startLine": 419,
+        "startChar": 31,
+        "endLine": 419,
+        "endChar": 55
+      },
+      "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54f36304_ca0b7e19",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 1
