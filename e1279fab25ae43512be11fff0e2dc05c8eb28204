@@ -108,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f73606d1_0dff0bfd",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-21T16:23:06Z",
+      "side": 1,
+      "message": "I lean towards doing the SOP\u0027 soft reset only from the READY states to avoid potential buggy paths our explicit contract negotiation, but I could be persuaded otherwise.  I think most peripherals I\u0027ve seen which soft reset do so before initial cable probing.\n\nI\u0027ve seen at least one monitor do this soft reset at startup poorly (ex. if Soft Reset process doesn\u0027t work, they forget to send Source Caps and the contract negotiation falls apart), so if we go that route I want to make sure we\u0027re coding it very robustly.  If we go the ready route, since we\u0027ve split our DiscoverIdentity retries over startup and ready, then we can at least ensure we\u0027ve tried the soft reset before our discover identity counter is reached and given the partner a fair shot.",
+      "parentUuid": "98173ad9_7d7bb3db",
+      "range": {
+        "startLine": 419,
+        "startChar": 31,
+        "endLine": 419,
+        "endChar": 55
+      },
+      "revId": "e1279fab25ae43512be11fff0e2dc05c8eb28204",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54f36304_ca0b7e19",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 1
