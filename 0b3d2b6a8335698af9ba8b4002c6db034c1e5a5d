@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61b8d847_22cc328b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-21T16:51:49Z",
+      "side": 1,
+      "message": "YH - are there config.star or program.star changes needed to enable SSFC?",
+      "revId": "0b3d2b6a8335698af9ba8b4002c6db034c1e5a5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29012786_bf8061a3",
+        "filename": "baseboard/volteer/build.mk",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-21T16:51:49Z",
+      "side": 1,
+      "message": "Put this on it\u0027s own line.",
+      "range": {
+        "startLine": 9,
+        "startChar": 24,
+        "endLine": 9,
+        "endChar": 34
+      },
+      "revId": "0b3d2b6a8335698af9ba8b4002c6db034c1e5a5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3cc0afc_23ecb958",
+        "filename": "baseboard/volteer/cbi_ssfc.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-21T16:51:49Z",
+      "side": 1,
+      "message": "Update for Volteer.",
+      "range": {
+        "startLine": 6,
+        "startChar": 8,
+        "endLine": 6,
+        "endChar": 29
+      },
+      "revId": "0b3d2b6a8335698af9ba8b4002c6db034c1e5a5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
