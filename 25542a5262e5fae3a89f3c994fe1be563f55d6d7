@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5558fb5_2a63445a",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1700,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-23T22:11:00Z",
+      "side": 1,
+      "message": "I guess I\u0027m not comfortable making that change at this point.",
+      "parentUuid": "477cb211_f497696b",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "89d27550_9bb45dc6",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 3
@@ -66,6 +84,24 @@
       "writtenOn": "2020-12-23T19:02:53Z",
       "side": 1,
       "message": "The sink non-swap startup would always be going through the vconn swap path, right?  So this wouldn\u0027t be necessary here?",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "566632e1_8a0f6fa5",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2843,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-23T22:11:00Z",
+      "side": 1,
+      "message": "You\u0027re correct, I verified this connecting to a monitor when we started as SNK. VCONN swap handles setting the DPM request.",
+      "parentUuid": "89d27550_9bb45dc6",
       "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
@@ -87,6 +123,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72300d3f_496ae649",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6296,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-23T22:11:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00c38860_e2a14777",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4cd4bf82_369d96e9",
@@ -100,6 +154,30 @@
       "writtenOn": "2020-12-23T19:02:53Z",
       "side": 1,
       "message": "Probably a good time to use pe_set_ready_state() in case we start using this function elsewhere (ex. when we get unexpected SOP\u0027 messages during a non-interruptible AMS)",
+      "range": {
+        "startLine": 6299,
+        "startChar": 21,
+        "endLine": 6299,
+        "endChar": 44
+      },
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fd4c773_2c7c5c36",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6299,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-23T22:11:00Z",
+      "side": 1,
+      "message": "Should this also check if we\u0027re in a contract?",
+      "parentUuid": "4cd4bf82_369d96e9",
       "range": {
         "startLine": 6299,
         "startChar": 21,
@@ -133,6 +211,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69aab0dc_c0c11f1d",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6303,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-23T22:11:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cea84ae4_1a5da83a",
+      "range": {
+        "startLine": 6303,
+        "startChar": 20,
+        "endLine": 6303,
+        "endChar": 37
+      },
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ff0f8f7_7dc1086d",
@@ -146,6 +248,24 @@
       "writtenOn": "2020-12-23T21:36:47Z",
       "side": 1,
       "message": "What are we waiting for with this timeout? Barring some sort of internal TCPC problem, we should either receive a GoodCRC (and reset the timer) or fail to receive one (and get a protocol error) long before this expires.\n\nI\u0027m not necessarily opposed to this state having this as an escape hatch, but we don\u0027t have one in (for instance) PE_SRC_Transition_Supply or PE_SNK_Get_Source_Cap. We have a setup vaguely similar to this in pe_send_soft_reset_run, but in that case, we never check for PE_FLAGS_TX_COMPLETE, so we\u0027re effectively starting SenderResponseTimer too early, and it makes sense to bail out when it ends.\n\nIt\u0027s not obvious to me that we need this, but if we do use it, PD_T_SENDER_RESPONSE would be an arbitrary timeout choice. We don\u0027t have a constant for tReceive (in the PE), and it\u0027s short enough that we probably wouldn\u0027t want to use it if we did. I don\u0027t have an obvious choice here, but it might be good to have some indication that the timeout is fairly arbitrary.",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daf7ad3b_8c2e1637",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6309,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-23T22:11:00Z",
+      "side": 1,
+      "message": "The cable is expected to send an Accept following the GoodCRC. The spec explicitly calls out checking setting SenderResponseTimer from this state.",
+      "parentUuid": "5ff0f8f7_7dc1086d",
       "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
@@ -167,6 +287,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42f7fe72_b157bcfc",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6330,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-23T22:11:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "919c55c7_2ac3214c",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69b4af6c_47a68279",
@@ -180,6 +318,30 @@
       "writtenOn": "2020-12-23T19:02:53Z",
       "side": 1,
       "message": "Assuming we change SOP\u0027 soft resets in general to always use this, then if not in a contract, we could need to return to SRC_Send_Capabilities (this would be for an unexpected SOP\u0027 message while trying to create our initial contract)",
+      "range": {
+        "startLine": 6336,
+        "startChar": 2,
+        "endLine": 6337,
+        "endChar": 46
+      },
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffeedb10_7e6f5871",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6337,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-23T22:11:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69b4af6c_47a68279",
       "range": {
         "startLine": 6336,
         "startChar": 2,
@@ -220,6 +382,24 @@
       "writtenOn": "2020-12-23T21:36:47Z",
       "side": 1,
       "message": "At least for compliance tests, PROC.PD.E3 serves that purpose. If we wanted to use it outside compliance tests, we might want to make the function even more shared.\n\nWe are doing something similar to this after step a) of PD.TD.LL.E3 and PD.TD.LL.E4, and that seems reasonable, but the test spec doesn\u0027t say to do it, so *shrug*.",
+      "parentUuid": "74e254c6_24d4f7b5",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b3d0130_cf8d41ee",
+        "filename": "test/usb_tcpmv2_compliance_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-23T22:11:00Z",
+      "side": 1,
+      "message": "I agree - I\u0027ll open a bug and assign to Denis initially.",
       "parentUuid": "74e254c6_24d4f7b5",
       "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
