@@ -16,6 +16,160 @@
       "message": "Unit tests are now passing.",
       "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "477cb211_f497696b",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1700,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-23T19:02:53Z",
+      "side": 1,
+      "message": "nit: probably should be a part of common_src_snk_dpm_requests() in case we need to use it after our VDM setup is done.  Though then that changes the ordering we\u0027d want on servicing DPM requests versus running discovery",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89d27550_9bb45dc6",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 2843,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-23T19:02:53Z",
+      "side": 1,
+      "message": "The sink non-swap startup would always be going through the vconn swap path, right?  So this wouldn\u0027t be necessary here?",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00c38860_e2a14777",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6296,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-23T19:02:53Z",
+      "side": 1,
+      "message": "Comment isn\u0027t relevant since this state doesn\u0027t have a parent",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cd4bf82_369d96e9",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6299,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-23T19:02:53Z",
+      "side": 1,
+      "message": "Probably a good time to use pe_set_ready_state() in case we start using this function elsewhere (ex. when we get unexpected SOP\u0027 messages during a non-interruptible AMS)",
+      "range": {
+        "startLine": 6299,
+        "startChar": 21,
+        "endLine": 6299,
+        "endChar": 44
+      },
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cea84ae4_1a5da83a",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6303,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-23T19:02:53Z",
+      "side": 1,
+      "message": "Hardcode to SOP\u0027?",
+      "range": {
+        "startLine": 6303,
+        "startChar": 20,
+        "endLine": 6303,
+        "endChar": 37
+      },
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "919c55c7_2ac3214c",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6330,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-23T19:02:53Z",
+      "side": 1,
+      "message": "Add a TODO for b/171823328 here, since we\u0027ll need to cable reset if we previously had contact with it (which I\u0027m guessing we\u0027d decide based on whether we have its identity)",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69b4af6c_47a68279",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6337,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-23T19:02:53Z",
+      "side": 1,
+      "message": "Assuming we change SOP\u0027 soft resets in general to always use this, then if not in a contract, we could need to return to SRC_Send_Capabilities (this would be for an unexpected SOP\u0027 message while trying to create our initial contract)",
+      "range": {
+        "startLine": 6336,
+        "startChar": 2,
+        "endLine": 6337,
+        "endChar": 46
+      },
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74e254c6_24d4f7b5",
+        "filename": "test/usb_tcpmv2_compliance_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2020-12-23T19:02:53Z",
+      "side": 1,
+      "message": "nit: should there be a shared function for \"deal with all our standard traffic after ready\"?",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
