@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "477cf3a9_8111e671",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1700,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2020-12-23T21:36:47Z",
+      "side": 1,
+      "message": "Servicing DPM requests before attempting discovery would pave the way to moving the above policy decisions as well.",
+      "parentUuid": "477cb211_f497696b",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "89d27550_9bb45dc6",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 3
@@ -117,6 +135,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ff0f8f7_7dc1086d",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6309,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2020-12-23T21:36:47Z",
+      "side": 1,
+      "message": "What are we waiting for with this timeout? Barring some sort of internal TCPC problem, we should either receive a GoodCRC (and reset the timer) or fail to receive one (and get a protocol error) long before this expires.\n\nI\u0027m not necessarily opposed to this state having this as an escape hatch, but we don\u0027t have one in (for instance) PE_SRC_Transition_Supply or PE_SNK_Get_Source_Cap. We have a setup vaguely similar to this in pe_send_soft_reset_run, but in that case, we never check for PE_FLAGS_TX_COMPLETE, so we\u0027re effectively starting SenderResponseTimer too early, and it makes sense to bail out when it ends.\n\nIt\u0027s not obvious to me that we need this, but if we do use it, PD_T_SENDER_RESPONSE would be an arbitrary timeout choice. We don\u0027t have a constant for tReceive (in the PE), and it\u0027s short enough that we probably wouldn\u0027t want to use it if we did. I don\u0027t have an obvious choice here, but it might be good to have some indication that the timeout is fairly arbitrary.",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "919c55c7_2ac3214c",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 3
@@ -168,6 +203,24 @@
       "writtenOn": "2020-12-23T19:02:53Z",
       "side": 1,
       "message": "nit: should there be a shared function for \"deal with all our standard traffic after ready\"?",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15c46c5f_c3f06318",
+        "filename": "test/usb_tcpmv2_compliance_common.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2020-12-23T21:36:47Z",
+      "side": 1,
+      "message": "At least for compliance tests, PROC.PD.E3 serves that purpose. If we wanted to use it outside compliance tests, we might want to make the function even more shared.\n\nWe are doing something similar to this after step a) of PD.TD.LL.E3 and PD.TD.LL.E4, and that seems reasonable, but the test spec doesn\u0027t say to do it, so *shrug*.",
+      "parentUuid": "74e254c6_24d4f7b5",
       "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
