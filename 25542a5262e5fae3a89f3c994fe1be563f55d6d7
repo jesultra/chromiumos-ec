@@ -272,6 +272,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6f676699_89eaa22d",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6309,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2020-12-24T00:14:39Z",
+      "side": 1,
+      "message": "SenderResponse timer is set at the beginning of pe_vcs_cbl_send_soft_reset_run, after seeing PE_FLAGS_TX_COMPLETE/GoodCRC. This line sets SenderResponseTimer before receiving GoodCRC.",
+      "parentUuid": "daf7ad3b_8c2e1637",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "919c55c7_2ac3214c",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 3
