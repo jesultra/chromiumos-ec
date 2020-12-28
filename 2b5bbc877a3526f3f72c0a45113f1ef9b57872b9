@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "304a31ed_76fe933a",
+        "filename": "baseboard/volteer/cbi_ssfc.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-28T16:10:11Z",
+      "side": 1,
+      "message": "Delete, this is not needed as the function is declared and used only on cbi_ssfc.c",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "2b5bbc877a3526f3f72c0a45113f1ef9b57872b9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
