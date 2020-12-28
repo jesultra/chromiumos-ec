@@ -16,6 +16,24 @@
       "message": "OK, after playing around with this a bit here\u0027s what I\u0027ve come up with (https://crrev.com/c/2603458).\n\nThe gist is that the namespace conflict is really the kicker. I\u0027m not seeing any good reason for having a special test task. So I would suggest rebasing this change ontop of what I have and renaming your task header to the shimmed_test_tasks.h. Everything seems to work as intended there. You might need to define the test task macro used in the platform ec to the plain task macro if running zephyr.",
       "revId": "87e1798311ac3205a292bd978026a859465bbcc4",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca392b44_69a34222",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1331721
+      },
+      "writtenOn": "2020-12-28T19:21:34Z",
+      "side": 1,
+      "message": "It builds now, but won\u0027t run under Zephyr, so that\u0027s progress.\n\nI\u0027ve got some debugging to do, and I think it should probably also get split into two CLs, one to move stuff around in test_util etc. and the other to port the mutex unit test.",
+      "parentUuid": "4a5c9962_a269c8d7",
+      "revId": "87e1798311ac3205a292bd978026a859465bbcc4",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
