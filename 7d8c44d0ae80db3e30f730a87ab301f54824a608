@@ -70,6 +70,30 @@
       },
       "revId": "7d8c44d0ae80db3e30f730a87ab301f54824a608",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aeb78221_72cfd75d",
+        "filename": "baseboard/volteer/cbi_ssfc.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2020-12-28T16:10:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e394827_c5ed24dc",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 0
+      },
+      "revId": "7d8c44d0ae80db3e30f730a87ab301f54824a608",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
