@@ -22,6 +22,30 @@
       },
       "revId": "f47006b8c4910da5dfcc12849dca896750ba3ddc",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6da72f63_cd34eb3a",
+        "filename": "test/mutex.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1331721
+      },
+      "writtenOn": "2021-01-04T02:55:11Z",
+      "side": 1,
+      "message": "Because EC_SUCCESS is defined to empty when CONFIG_ZTEST is defined.",
+      "parentUuid": "ae9815d9_2becf3a3",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 40,
+        "endChar": 18
+      },
+      "revId": "f47006b8c4910da5dfcc12849dca896750ba3ddc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
