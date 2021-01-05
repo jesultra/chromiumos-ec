@@ -350,6 +350,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d167189_6104bcee",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6309,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2021-01-05T17:00:50Z",
+      "side": 1,
+      "message": "I believe it would.",
+      "parentUuid": "3cbd4e5f_a55cd8ce",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "919c55c7_2ac3214c",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 3
