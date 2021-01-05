@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4097c317_db8ae9fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2021-01-05T19:58:00Z",
+      "side": 1,
+      "message": "there seem to be still some usb_pd tests running, could also be eliminated from ./test",
+      "revId": "3f327eb9b896066f6e9a88a68c1995a6488ceeae",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
