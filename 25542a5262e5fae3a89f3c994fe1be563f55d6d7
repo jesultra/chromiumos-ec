@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "108f9376_b13153cb",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1700,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-01-05T16:19:17Z",
+      "side": 1,
+      "message": "Okay, it can be a TODO with a follow up then",
+      "parentUuid": "a5558fb5_2a63445a",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "89d27550_9bb45dc6",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 3
@@ -190,6 +208,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "614172d6_fe76cc7f",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6299,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-01-05T16:19:17Z",
+      "side": 1,
+      "message": "That would be the most defensive way to code it.  Would we return to the calling state in that case if we\u0027re the sink and there\u0027s no explicit contract?  Though I\u0027m not sure why we\u0027d be soft resetting on SOP\u0027 in that case since I\u0027d assume our SOP\u0027 reception would be turned off.",
+      "parentUuid": "8fd4c773_2c7c5c36",
+      "range": {
+        "startLine": 6299,
+        "startChar": 21,
+        "endLine": 6299,
+        "endChar": 44
+      },
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cea84ae4_1a5da83a",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 3
@@ -284,6 +326,24 @@
       "side": 1,
       "message": "SenderResponse timer is set at the beginning of pe_vcs_cbl_send_soft_reset_run, after seeing PE_FLAGS_TX_COMPLETE/GoodCRC. This line sets SenderResponseTimer before receiving GoodCRC.",
       "parentUuid": "daf7ad3b_8c2e1637",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cbd4e5f_a55cd8ce",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6309,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-01-05T16:19:17Z",
+      "side": 1,
+      "message": "I\u0027m assuming the set is to avoid immediately tripping the \"if\" condition on 6333.  Though would TIMER_DISABLED accomplish the same behavior?",
+      "parentUuid": "6f676699_89eaa22d",
       "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
