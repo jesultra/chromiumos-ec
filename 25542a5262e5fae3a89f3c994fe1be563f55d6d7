@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b6a4605f_efc7f1a1",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1700,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2021-01-06T22:48:56Z",
+      "side": 1,
+      "message": "Let me know if you want a bug a TODO for this.",
+      "parentUuid": "108f9376_b13153cb",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "89d27550_9bb45dc6",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 3
@@ -220,6 +238,30 @@
       "side": 1,
       "message": "That would be the most defensive way to code it.  Would we return to the calling state in that case if we\u0027re the sink and there\u0027s no explicit contract?  Though I\u0027m not sure why we\u0027d be soft resetting on SOP\u0027 in that case since I\u0027d assume our SOP\u0027 reception would be turned off.",
       "parentUuid": "8fd4c773_2c7c5c36",
+      "range": {
+        "startLine": 6299,
+        "startChar": 21,
+        "endLine": 6299,
+        "endChar": 44
+      },
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccb76926_b30bb782",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6299,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2021-01-06T22:48:56Z",
+      "side": 1,
+      "message": "Latest patchset skips the explicit contract here and just uses pe_set_ready_state().",
+      "parentUuid": "614172d6_fe76cc7f",
       "range": {
         "startLine": 6299,
         "startChar": 21,
@@ -362,6 +404,24 @@
       "side": 1,
       "message": "I believe it would.",
       "parentUuid": "3cbd4e5f_a55cd8ce",
+      "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbd5ce7f_a9bc21f0",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 6309,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2021-01-06T22:48:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d167189_6104bcee",
       "revId": "25542a5262e5fae3a89f3c994fe1be563f55d6d7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
