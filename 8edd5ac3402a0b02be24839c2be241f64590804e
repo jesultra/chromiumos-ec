@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "593e8243_5d10ac64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-01-06T23:45:13Z",
+      "side": 1,
+      "message": "Looking good!  Though I believe you\u0027ll have a merge conflict to resolve as the DPM request for BIST RX is now gone ",
+      "revId": "8edd5ac3402a0b02be24839c2be241f64590804e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69823874_19fe8d3c",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6300,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-01-06T23:45:13Z",
+      "side": 1,
+      "message": "I believe we\u0027ll now always enter it, correct?  Because we\u0027re always setting this DPM request on startup, regardless of whether we can send SOP\u0027? \n\nI think that should be okay as long as we\u0027re setting the DPM flag again after Vconn swaps.  The comment just needs updated to reflect this behavior",
+      "revId": "8edd5ac3402a0b02be24839c2be241f64590804e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e210837_c796c1a2",
+        "filename": "test/usb_tcpmv2_compliance_common.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-01-06T23:45:13Z",
+      "side": 1,
+      "message": "I don\u0027t think not supported is a valid response to a soft reset?  Though I suppose it\u0027s also not valid for a cable to send it for Discover Identity below either",
+      "range": {
+        "startLine": 366,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 9
+      },
+      "revId": "8edd5ac3402a0b02be24839c2be241f64590804e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
