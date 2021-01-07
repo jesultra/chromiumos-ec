@@ -35,6 +35,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec303e8d_ffe42f57",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 6300,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2021-01-07T00:37:48Z",
+      "side": 1,
+      "message": "Updated comment and added explicit contract check.  Note, it\u0027s not possible in the current code to enter PE_VCS_CBL_SEND_SOFT_RESET outside a contract, so this is future proofing (hopefully).",
+      "parentUuid": "69823874_19fe8d3c",
+      "revId": "8edd5ac3402a0b02be24839c2be241f64590804e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e210837_c796c1a2",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-01-06T23:45:13Z",
       "side": 1,
       "message": "I don\u0027t think not supported is a valid response to a soft reset?  Though I suppose it\u0027s also not valid for a cable to send it for Discover Identity below either",
+      "range": {
+        "startLine": 366,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 9
+      },
+      "revId": "8edd5ac3402a0b02be24839c2be241f64590804e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "340d7313_5b969a94",
+        "filename": "test/usb_tcpmv2_compliance_common.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2021-01-07T00:37:48Z",
+      "side": 1,
+      "message": "Ack - just following the existing convention.",
+      "parentUuid": "1e210837_c796c1a2",
       "range": {
         "startLine": 366,
         "startChar": 0,
