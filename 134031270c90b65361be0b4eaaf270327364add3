@@ -22,6 +22,30 @@
       },
       "revId": "134031270c90b65361be0b4eaaf270327364add3",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d70ac981_d399f547",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1695,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2021-01-07T20:52:32Z",
+      "side": 1,
+      "message": "I\u0027ll create a bug and TODO to move this into dpm_requests_common().  It seemed too risky to change the precedence and discovery and DPM requests right now.",
+      "parentUuid": "66a49bc3_c7434a3f",
+      "range": {
+        "startLine": 1689,
+        "startChar": 0,
+        "endLine": 1695,
+        "endChar": 2
+      },
+      "revId": "134031270c90b65361be0b4eaaf270327364add3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }

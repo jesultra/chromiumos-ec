@@ -16,6 +16,24 @@
       "message": "Why is this being removed?",
       "revId": "bc4f7d8e5e3cc8dbf954b0f9288427a8272b1c1e",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3b72b6d_04bf42b9",
+        "filename": "test/usb_tcpmv2_compliance_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2021-01-07T20:52:32Z",
+      "side": 0,
+      "message": "With this delay included the PE sends the SOP\u0027 soft reset before this test finishes.  Downstream, this caused proc_pd_e3() and handle_attach_expected_msgs() to fail because the TCPC transmit queue already had something in it.",
+      "parentUuid": "ad89758f_aa1067f4",
+      "revId": "bc4f7d8e5e3cc8dbf954b0f9288427a8272b1c1e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
