@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66a49bc3_c7434a3f",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1695,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2021-01-07T19:26:59Z",
+      "side": 1,
+      "message": "Should this also be part of dpm_requests_common, or are you waiting to do that until we switch the precedence of discovery and handling DPM requests?",
+      "range": {
+        "startLine": 1689,
+        "startChar": 0,
+        "endLine": 1695,
+        "endChar": 2
+      },
+      "revId": "134031270c90b65361be0b4eaaf270327364add3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}

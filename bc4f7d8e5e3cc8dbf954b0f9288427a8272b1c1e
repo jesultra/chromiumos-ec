@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad89758f_aa1067f4",
+        "filename": "test/usb_tcpmv2_compliance_common.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2021-01-07T19:26:59Z",
+      "side": 0,
+      "message": "Why is this being removed?",
+      "revId": "bc4f7d8e5e3cc8dbf954b0f9288427a8272b1c1e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
