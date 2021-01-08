@@ -13,7 +13,7 @@
 
 /* Burnside Bridge I2C Configuration Space */
 #define BB_RETIMER_REG_VENDOR_ID	0
-#define BB_RETIMER_VENDOR_ID		0x8086
+#define BB_RETIMER_VENDOR_ID		0x8087
 
 #define BB_RETIMER_REG_DEVICE_ID	1
 #define BB_RETIMER_DEVICE_ID		0x15EE
