@@ -896,7 +896,7 @@ void pd_transmit_complete(int port, int status)
 static int pd_transmit(int port, enum tcpm_transmit_type type,
 		       uint16_t header, const uint32_t *data, enum ams_seq ams)
 {
-	int evt;
+	uint32_t evt;
 	int res;
 #ifdef CONFIG_USB_PD_REV30
 	int sink_ng = 0;
@@ -959,16 +959,39 @@ static int pd_transmit(int port, enum tcpm_transmit_type type,
 		}
 	}
 #endif
+	//SERVOV4P1 HACKHACKHACK
+	//(port==CHG || 1)?CPRINTS("C%d: <AXE>",port):0;
 	tcpm_transmit(port, type, header, data);
 
-	/* Wait until TX is complete */
-	evt = task_wait_event_mask(PD_EVENT_TX, PD_T_TCPC_TX_TIMEOUT);
+	//do {
+		/* Wait until TX is complete */
+		evt = task_wait_event_mask(PD_EVENT_TX, PD_T_TCPC_TX_TIMEOUT);
+	//} while
 
-	if (evt & TASK_EVENT_TIMER)
+	if (evt & TASK_EVENT_TIMER){
+	//	(port==CHG || 1)?CPRINTS("C%d: <TIM> %d",port, pd[port].tx_status):0;
 		return -1;
+	}
 
-	/* TODO: give different error condition for failed vs discarded */
-	res = pd[port].tx_status == TCPC_TX_COMPLETE_SUCCESS ? 1 : -1;
+	/*
+	* TODO: give different error condition for failed vs discarded
+	*
+	* enum tcpc_transmit_complete {
+	* TCPC_TX_UNSET = -1,
+	* TCPC_TX_COMPLETE_SUCCESS =   0,
+	* TCPC_TX_COMPLETE_DISCARDED = 1,
+	* TCPC_TX_COMPLETE_FAILED =    2,
+	*/
+
+	//ServoV4p1 debug
+	if (pd[port].tx_status == TCPC_TX_COMPLETE_SUCCESS) {
+		res=1;
+	//	(port==CHG || 1)?CPRINTS("C%d: <ACK> %d",port, pd[port].tx_status):0;
+	}
+	else {
+		res=-1;
+	//	(port==CHG || 1)?CPRINTS("C%d: <NAK> %d",port, pd[port].tx_status):0;
+	}
 
 #ifdef CONFIG_USB_PD_REV30
 	/* If the AMS transaction failed to start, reset CC to OK */
@@ -3937,6 +3960,7 @@ void pd_task(void *u)
 
 			/* Source connection monitoring */
 			if (!cc_is_open(cc1, cc2)) {
+				//ServoV4p1 debug
 				pd[port].cc_state = PD_CC_NONE;
 				hard_reset_count = 0;
 				new_cc_state = PD_CC_NONE;
@@ -3994,6 +4018,10 @@ void pd_task(void *u)
 
 		case PD_STATE_SNK_DISCONNECTED_DEBOUNCE:
 			tcpm_get_cc(port, &cc1, &cc2);
+
+			// HACKHACKHACK: Debug print
+		//	if(port==DUT)
+		//		CPRINTS("C%d: ADC read cc1 [%d] cc2 [%d]",port,cc1,cc2);
 
 			if (cc_is_rp(cc1) && cc_is_rp(cc2)) {
 				/* Debug accessory */
@@ -4585,6 +4613,7 @@ void pd_task(void *u)
 			if (hard_reset_sent)
 				break;
 
+			//ServoV4p1: This pd_transmit() is failing in PDSNKDTS
 			if (pd_transmit(port, TCPC_TX_HARD_RESET, 0, NULL,
 				AMS_START) < 0) {
 				/*

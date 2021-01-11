@@ -36,6 +36,8 @@ static int tusb1064_set_mux(const struct usb_mux *me, mux_state_t mux_state)
 {
 	int reg = REG_GENERAL_STATIC_BITS;
 
+	CPRINTS("tusb1064_set_mux 0x%X",mux_state);
+
 	if (mux_state & USB_PD_MUX_USB_ENABLED)
 		reg |= REG_GENERAL_CTLSEL_USB3;
 	if (mux_state & USB_PD_MUX_DP_ENABLED)
@@ -64,6 +66,7 @@ static int tusb1064_get_mux(const struct usb_mux *me, mux_state_t *mux_state)
 	if (reg & REG_GENERAL_FLIPSEL)
 		*mux_state |= USB_PD_MUX_POLARITY_INVERTED;
 
+	CPRINTS("tusb1064_get_mux 0x%X", *mux_state);
 	return EC_SUCCESS;
 }
 

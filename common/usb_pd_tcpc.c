@@ -36,7 +36,8 @@
  * Note that higher log level causes timing changes and thus may affect
  * performance.
  */
-static int debug_level;
+//static int debug_level=2;
+static int debug_level=0;
 
 static struct mutex pd_crc_lock;
 #else
@@ -372,6 +373,7 @@ static int send_hard_reset(int port)
 	/* Ensure that we have a final edge */
 	off = pd_write_last_edge(port, off);
 	/* Transmit the packet */
+	// ServoV4p1 Debug
 	if (pd_start_tx(port, pd[port].polarity, off) < 0)
 		return PD_TX_ERR_COLLISION;
 	pd_tx_done(port, pd[port].polarity);
@@ -383,6 +385,7 @@ static int send_hard_reset(int port)
 static int send_validate_message(int port, uint16_t header,
 				 const uint32_t *data)
 {
+	//TWINKIE ServoV4p1 phy
 	int r;
 	static uint32_t payload[7];
 	uint8_t expected_msg_id = PD_HEADER_ID(header);
@@ -444,6 +447,8 @@ static int send_validate_message(int port, uint16_t header,
 				/* got the GoodCRC we were expecting */
 				/* do not catch last edges as a new packet */
 				udelay(20);
+				// SERVOV4P1 THIS DELAY IS TOO MUCH!
+				// Try tEnddriveBMC 23 -> tInterFrameGap 
 				return bit_len;
 			} else {
 				/*
@@ -907,6 +912,7 @@ int tcpc_run(int port, int evt)
 		if (evt & PD_EVENT_CC)
 			usleep(MSEC);
 
+		// THIS IS WHERE ANALOG CONVERSION HAPPENS
 		/* check CC lines */
 		for (i = 0; i < 2; i++) {
 			/* read CC voltage */

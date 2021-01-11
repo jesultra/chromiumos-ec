@@ -963,14 +963,38 @@ enum pd_states {
 enum pd_dual_role_states {
 	/* While disconnected, toggle between src and sink */
 	PD_DRP_TOGGLE_ON,
-	/* Stay in src until disconnect, then stay in sink forever */
+	/*
+	* Stay in src until disconnect, then stay in sink forever
+	*
+	* TODO: This is a historically mis-named behavior better titled
+	* DRP_TOGGLE_TO_SINK. It conflates a true DRP with "no power
+	* role preference" with a DRP with "explicit policy".
+	*
+	* Leaving as-is for legacy support purposes.
+	*/
 	PD_DRP_TOGGLE_OFF,
-	/* Stay in current power role, don't switch. No auto-toggle support */
+	/*
+	* Stay in current power role, don't switch. No auto-toggle support
+	*
+	* TODO: If DRP_TOGGLE_OFF were correctly named, FREEZE should also
+	* cause ports to REJECT PR_SWAPs. As-coded, this is instead the sole
+	* role allowing a "no preference" device to operate correctly and
+	* PR_SWAP without any TCPMv1-induced line error.
+	*
+	* Leaving as-is for legacy support purposes.
+	*/
 	PD_DRP_FREEZE,
-	/* Switch to sink */
+	/* Switch to sink, and reject any SNK->SRC PR_SWAPs */
 	PD_DRP_FORCE_SINK,
-	/* Switch to source */
+	/* Switch to source, and reject any SRC->SNK PR_SWAPs */
 	PD_DRP_FORCE_SOURCE,
+	/*
+	* TODO: Rename PD_DRP_TOGGLE_OFF to PD_DRP_TOGGLE_TO_SINK
+	* TODO: Add true PD_DRP_TOGGLE_OFF "no-preference" state
+	* TODO: Ensure true DRP_FREEZE state rejects PR_SWAPs
+	* TODO: Add code ensuring FORCE_* cannot /initiate/ PR_SWAP
+	*       This results in line-open state on TCPMv1 at PS_RDY#2
+	*/
 };
 
 /*

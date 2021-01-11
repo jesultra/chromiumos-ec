@@ -22,7 +22,9 @@
 #define CPRINTF(format, args...)
 #endif
 
-static int enable_debug_prints;
+//ServoV4p1
+//static int enable_debug_prints=1;
+static int enable_debug_prints=0;
 
 /*
  * Flags will reset to 0 after sysjump; This works for current flags as LPM will
@@ -220,6 +222,12 @@ void usb_mux_set(int port, mux_state_t mux_mode,
 		CPRINTS(
 		     "usb/dp mux: port(%d) typec_mux(%d) usb2(%d) polarity(%d)",
 		     port, mux_mode, usb_mode, polarity);
+
+	// enum usb_switch {
+	// USB_SWITCH_CONNECT,
+	// USB_SWITCH_DISCONNECT,
+	// USB_SWITCH_RESTORE,
+	// };
 
 	/*
 	 * If we are completely disconnecting the mux, then we should put it in

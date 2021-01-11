@@ -159,6 +159,7 @@ static void set_resistor(int pol, enum inj_res res)
 
 static enum inj_pol guess_polarity(enum inj_pol pol)
 {
+	// SERVOv4p1
 	int cc1_volt, cc2_volt;
 	/* polarity forced by the user */
 	if (pol == INJ_POL_CC1 || pol == INJ_POL_CC2)

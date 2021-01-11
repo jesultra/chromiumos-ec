@@ -141,6 +141,29 @@ static const uint8_t ref_gpio[2 /* port */][2 /* polarity */] = {
 static inline void pd_tx_enable(int port, int polarity)
 {
 
+/*
+* WARNING:
+* Unlike Twinkie, which is hard-coded to transmit on both CC lines,
+* this board attempts to derive polarity. Due to some dubious code
+* commits, polarity is undefined in SNK.DTS.Unoriented state.
+*
+* Copy and paste Twinkie's logic here for reliability and function.
+* Refer to "enum tcpc_cc_polarity" in usb_pd_tcpm.h
+*
+* TODO: Refactor crrev/c/2022914
+*/
+
+#if 0
+	/* Transmit on both CC lines */
+	gpio_set_level(GPIO_CC2_TX_EN, 1);
+	gpio_set_level(GPIO_CC1_TX_EN, 1);
+	/* TX_DATA on PA6 is now connected to SPI1 */
+	gpio_set_alternate_function(GPIO_A, 0x0040, 0);
+	/* TX_DATA on PB4 is now connected to SPI1 */
+	gpio_set_alternate_function(GPIO_B, 0x0010, 0);
+#endif
+
+
 #ifndef VIF_BUILD /* genvif doesn't like tricks with GPIO macros */
 	const struct gpio_info *tx, *tx_alt;
 	const struct gpio_info *ref, *ref_alt;
