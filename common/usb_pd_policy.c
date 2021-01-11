@@ -661,7 +661,8 @@ int pd_svdm(int port, int cnt, uint32_t *payload, uint32_t **rpayload,
 			func = svdm_rsp.svids;
 			break;
 		case CMD_DISCOVER_MODES:
-			func = svdm_rsp.modes;
+			func = svdm_rsp.modes; //<--- HERE SVDM MODES
+			//defined/hooked in servov4p1/usb_pd_policy.c L1650
 			break;
 		case CMD_ENTER_MODE:
 			func = svdm_rsp.enter_mode;

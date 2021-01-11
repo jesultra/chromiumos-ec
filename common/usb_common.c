@@ -187,6 +187,19 @@ typec_current_t usb_get_typec_current_limit(enum tcpc_cc_polarity polarity,
 	return charge;
 }
 
+
+#if 0
+/* Detected resistor values of port partner */
+enum tcpc_cc_voltage_status {
+	TYPEC_CC_VOLT_OPEN = 0,
+	TYPEC_CC_VOLT_RA = 1,	  /* Port partner is applying Ra */
+	TYPEC_CC_VOLT_RD = 2,	  /* Port partner is applying Rd */
+	TYPEC_CC_VOLT_RP_DEF = 5, /* Port partner is applying Rp (0.5A) */
+	TYPEC_CC_VOLT_RP_1_5 = 6, /* Port partner is applying Rp (1.5A) */
+	TYPEC_CC_VOLT_RP_3_0 = 7, /* Port partner is applying Rp (3.0A) */
+};
+#endif
+
 enum tcpc_cc_polarity get_snk_polarity(enum tcpc_cc_voltage_status cc1,
 	enum tcpc_cc_voltage_status cc2)
 {

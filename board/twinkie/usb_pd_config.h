@@ -78,6 +78,7 @@ static inline void pd_tx_spi_reset(int port)
 /* Drive the CC line from the TX block */
 static inline void pd_tx_enable(int port, int polarity)
 {
+// ServoV4p1 debug
 #if 0 /* Transmit only on the active CC line */
 	if (polarity) {
 		gpio_set_level(GPIO_CC2_TX_EN, 1);

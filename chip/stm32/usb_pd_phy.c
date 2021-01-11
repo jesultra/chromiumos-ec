@@ -356,6 +356,8 @@ int pd_start_tx(int port, int polarity, int bit_len)
 	 * Call this last before enabling timer in order to meet spec on
 	 * timing between enabling TX and clocking out bits.
 	 */
+	// ServoV4p1 debug
+	// [THIS BREAKS UNORIENTED, COPY TWINKIE]
 	pd_tx_enable(port, polarity);
 
 	/* Start counting at 300Khz*/
@@ -414,6 +416,8 @@ void pd_rx_complete(int port)
 	pd_phy[port].tim_rx->cr1 &= ~1;
 	/* stop DMA */
 	dma_disable(DMAC_TIM_RX(port));
+
+	//TODO: Add tInterFrameGap delay here
 }
 
 int pd_rx_started(int port)
