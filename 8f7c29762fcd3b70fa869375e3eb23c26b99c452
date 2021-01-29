@@ -16,6 +16,24 @@
       "message": "#include usb_mux.h?",
       "revId": "8f7c29762fcd3b70fa869375e3eb23c26b99c452",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61ac442f_a62a57e3",
+        "filename": "include/driver/retimer/bb_retimer_public.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2021-01-29T01:38:49Z",
+      "side": 1,
+      "message": "usb_mux.h includes many other unrelated headers which i think defeats\nthe intent of this file.\nsimple forward declaration is sufficient here.",
+      "parentUuid": "82fc8c57_336d1b02",
+      "revId": "8f7c29762fcd3b70fa869375e3eb23c26b99c452",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
