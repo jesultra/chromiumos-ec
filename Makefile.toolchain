@@ -41,11 +41,13 @@ NM=$(CROSS_COMPILE)nm
 OBJCOPY=$(CROSS_COMPILE)objcopy
 OBJDUMP=$(CROSS_COMPILE)objdump
 ADDR2LINE=$(CROSS_COMPILE)addr2line
-PKG_CONFIG?=pkg-config
+
 BUILDCC?=$(CCACHE) gcc
+BUILD_PKG_CONFIG?=pkg-config
+
+HOST_PKG_CONFIG?=$(HOST_CROSS_COMPILE)pkg-config
 HOSTCC?=$(CCACHE) $(HOST_CROSS_COMPILE)gcc
 HOSTCXX?=$(CCACHE) $(HOST_CROSS_COMPILE)g++
-HOST_PKG_CONFIG?=$(HOST_CROSS_COMPILE)pkg-config
 PROTOC?=protoc
 
 C_WARN = -Wstrict-prototypes -Wdeclaration-after-statement -Wno-pointer-sign
@@ -111,15 +113,12 @@ CFLAGS+= -fconserve-stack
 endif
 CXXFLAGS+=-DPROTOBUF_INLINE_NOT_IN_HEADERS=0
 
-FTDIVERSION:=$(shell $(PKG_CONFIG) --modversion libftdi1 2>/dev/null)
-ifneq ($(FTDIVERSION),)
-  LIBFTDI_NAME=ftdi1
-else
-  LIBFTDI_NAME=ftdi
-endif
-
-LIBFTDIUSB_CFLAGS:=$(shell $(PKG_CONFIG) --cflags lib${LIBFTDI_NAME} libusb-1.0)
-LIBFTDIUSB_LDLIBS:=$(shell $(PKG_CONFIG) --libs   lib${LIBFTDI_NAME} libusb-1.0)
+BUILD_LIBFTDI_NAME=$(shell $(BUILD_PKG_CONFIG) --exists libftdi1 && echo ftdi1 || echo ftdi)
+HOST_LIBFTDI_NAME =$(shell $(HOST_PKG_CONFIG)  --exists libftdi1 && echo ftdi1 || echo ftdi)
+BUILD_LIBFTDIUSB_CFLAGS=$(shell $(BUILD_PKG_CONFIG) --cflags lib$(BUILD_LIBFTDI_NAME) libusb-1.0)
+BUILD_LIBFTDIUSB_LDLIBS=$(shell $(BUILD_PKG_CONFIG) --libs   lib$(BUILD_LIBFTDI_NAME) libusb-1.0)
+HOST_LIBFTDIUSB_CFLAGS =$(shell $(HOST_PKG_CONFIG)  --cflags lib$(HOST_LIBFTDI_NAME)  libusb-1.0)
+HOST_LIBFTDIUSB_LDLIBS =$(shell $(HOST_PKG_CONFIG)  --libs   lib$(HOST_LIBFTDI_NAME)  libusb-1.0)
 
 ifeq ($(TEST_FUZZ),y)
 LIBPROTOBUF_CFLAGS:=$(shell $(PKG_CONFIG) --cflags protobuf)
@@ -131,20 +130,20 @@ LIBPROTOBUF_MUTATOR_LDLIBS:=$(shell $(PKG_CONFIG) --libs libprotobuf-mutator) \
 	${LIBPROTOBUF_LDLIBS}
 endif
 
-BUILD_CFLAGS=$(LIBFTDIUSB_CFLAGS) $(BUILD_CPPFLAGS) -O3 $(CFLAGS_DEBUG)
+BUILD_CFLAGS=$(BUILD_LIBFTDIUSB_CFLAGS) $(BUILD_CPPFLAGS) -O3 $(CFLAGS_DEBUG)
 BUILD_CFLAGS+=$(CFLAGS_WARN)
 BUILD_CFLAGS+=-DCHROMIUM_EC=$(EMPTY)
 HOST_CFLAGS=$(HOST_CPPFLAGS) -O3 $(CFLAGS_DEBUG) $(CFLAGS_WARN) \
 	    -DHOST_TOOLS_BUILD=$(EMPTY)
-HOST_CFLAGS+=$(LIBFTDIUSB_CFLAGS)
+HOST_CFLAGS+=$(HOST_LIBFTDIUSB_CFLAGS)
 HOST_CFLAGS+=-DCHROMIUM_EC=$(EMPTY)
 ifneq (${SYSROOT},)
   LDFLAGS_EXTRA+=--sysroot=${SYSROOT}
 endif
 LDFLAGS=-nostdlib -g -Wl,-X -Wl,--gc-sections -Wl,--build-id=none \
 	$(LDFLAGS_EXTRA) $(CFLAGS_CPU)
-BUILD_LDFLAGS=$(LIBFTDIUSB_LDLIBS)
-HOST_LDFLAGS=$(LIBFTDIUSB_LDLIBS)
+BUILD_LDFLAGS=$(BUILD_LIBFTDIUSB_LDLIBS)
+HOST_LDFLAGS=$(HOST_LIBFTDIUSB_LDLIBS)
 HOST_TEST_LDFLAGS=-Wl,-T core/host/host_exe.lds -lrt -pthread -rdynamic -lm\
 		  -fuse-ld=bfd \
 		  $(if $(TEST_COVERAGE), --coverage,) \
