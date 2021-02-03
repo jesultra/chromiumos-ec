@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78376d1e_ce0e32ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1334530
+      },
+      "writtenOn": "2021-02-03T19:40:58Z",
+      "side": 1,
+      "message": "This simple enough for now, but it is debatable whether it is the test handler\u0027s issue OR the unit test\u0027s issue to exempt uart on dartmonkey.\nUnless I\u0027m missing something, I\u0027m not convinced that adding exceptions to the unit test itself is the precedent we want to set, but definitely could be wrong.",
+      "revId": "e4c15f82b1bedf238b8a96a5f29a0dea0ada8e9e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
