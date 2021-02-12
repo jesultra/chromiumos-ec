@@ -1,0 +1,14 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+include: base.yaml
+
+properties:
+    status:
+        required: true
+    i2c-spi-addr-flags:
+        type: string
+        required: false
+        description: i2c address or SPI slave logic GPIO
+        enum:
+            - "TCS3400_I2C_ADDR_FLAGS"

@@ -1,0 +1,14 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+description: Motion sense rotation reference parent node
+
+compatible: "cros-ec,motionsense-rotation-ref"
+
+child-binding:
+  description: Motion sense rotation reference which will be used by motion sensors
+  properties:
+    mat33:
+      required: true
+      type: array
+      description: 3x3 matrix to rotate x, y, and z axes.

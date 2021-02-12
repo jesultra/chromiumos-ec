@@ -18,6 +18,13 @@
 
 #define CPRINTS(fmt, args...) cprints(CC_ACCEL, "%s "fmt, __func__, ## args)
 
+#if defined(CONFIG_ZEPHYR) && defined(CONFIG_ACCEL_INTERRUPTS)
+/* Get corresponding sensor id from device tree */
+#define CONFIG_ALS_TCS3400_INT_EVENT		\
+	TASK_EVENT_MOTION_SENSOR_INTERRUPT(	\
+		SENSOR_ID(DT_PARENT(DT_NODELABEL(tcs3400_int))))
+#endif
+
 STATIC_IF(CONFIG_ACCEL_FIFO) volatile uint32_t last_interrupt_timestamp;
 
 #ifdef CONFIG_TCS_USE_LUX_TABLE

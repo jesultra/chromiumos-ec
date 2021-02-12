@@ -28,6 +28,13 @@
 #define CPRINTF(format, args...) cprintf(CC_ACCEL, format, ## args)
 #define CPRINTS(format, args...) cprints(CC_ACCEL, format, ## args)
 
+#if defined(CONFIG_ZEPHYR) && defined(CONFIG_ACCEL_INTERRUPTS)
+/* Get corresponding sensor id from device tree */
+#define CONFIG_ACCELGYRO_BMI260_INT_EVENT	\
+        TASK_EVENT_MOTION_SENSOR_INTERRUPT(	\
+		SENSOR_ID(DT_PARENT(DT_NODELABEL(bmi260_int))))
+#endif
+
 STATIC_IF(CONFIG_ACCEL_FIFO) volatile uint32_t last_interrupt_timestamp;
 
 /*

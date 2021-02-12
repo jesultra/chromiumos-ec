@@ -1,0 +1,23 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+description: TCS3400 RGB driver data
+
+compatible: "cros-ec,drvdata-tcs3400-rgb"
+
+include: base.yaml
+
+properties:
+    status:
+        required: true
+child-binding:
+    description: saturation auto-adjustment
+    properties:
+        again:
+            type: int
+            required: false
+            description: Gain Scaling; must be value between 0 and 3
+        atime:
+            type: int
+            required: false
+            description: Acquisition Time, controlled by the ATIME register

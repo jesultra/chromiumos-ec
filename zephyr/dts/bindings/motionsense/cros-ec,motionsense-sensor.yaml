@@ -1,0 +1,50 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+description: sensor information to create motion_sensor_t entry
+
+compatible: "cros-ec,motionsense-sensor"
+
+properties:
+    label:
+        type: string
+        required: true
+        description: Human readable string describing the device (used as device_get_binding() argument)
+    active-mask:
+        type: string
+        required: true
+        description: indicates system power state for sensor to be active
+        enum:
+            - "SENSOR_ACTIVE_S5"
+            - "SENSOR_ACTIVE_S3"
+            - "SENSOR_ACTIVE_S0"
+            - "SENSOR_ACTIVE_S0_S3"
+            - "SENSOR_ACTIVE_S0_S3_S5"
+    location:
+        type: string
+        required: true
+        description: location of the motion sensor
+        enum:
+            - "MOTIONSENSE_LOC_BASE"
+            - "MOTIONSENSE_LOC_LID"
+            - "MOTIONSENSE_LOC_CAMERA"
+    mutex:
+        type: phandle
+        required: false
+        description: mutex used by chip driver
+    port:
+        type: phandle
+        required: false
+        description: named i2c port
+    rot-standard-ref:
+        type: phandle
+        required: false
+        description: 3x3 rotation matrix
+    default-range:
+        type: int
+        required: false
+        description: default range
+    drv-data:
+        type: phandle
+        required: false
+        description: driver data

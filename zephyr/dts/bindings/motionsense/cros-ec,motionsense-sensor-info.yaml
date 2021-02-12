@@ -1,0 +1,20 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+description: ALS sensor information
+
+compatible: "cros-ec,motionsense-sensor-info"
+
+properties:
+    als-sensors:
+        type: phandles
+        required: false
+        description: list of ALS sensors.
+    sensor-irqs:
+        type: phandles
+        required: false
+        description: list of gpio interrupts from sensors to be enabled.
+    accel-force-mode-sensors:
+        type: phandles
+        required: false
+        description: list of sensors should be handled in force mode.

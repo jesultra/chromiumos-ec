@@ -1,0 +1,12 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+description: BMA255 driver data node
+
+compatible: "cros-ec,drvdata-bma255"
+
+include: base.yaml
+
+properties:
+    status:
+      required: true

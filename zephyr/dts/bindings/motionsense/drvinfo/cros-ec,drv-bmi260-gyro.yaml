@@ -1,0 +1,8 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+description: BMI260 gyro driver node
+
+compatible: "cros-ec,drv-bmi260-gyro"
+
+include: drv-bmi260.yaml

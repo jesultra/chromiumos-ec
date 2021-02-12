@@ -1,0 +1,12 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+description: TCS3400 CLEAR driver data
+
+compatible: "cros-ec,drvdata-tcs3400-clear"
+
+include: base.yaml
+
+properties:
+    status:
+        required: true

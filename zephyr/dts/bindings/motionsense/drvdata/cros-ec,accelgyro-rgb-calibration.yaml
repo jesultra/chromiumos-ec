@@ -1,0 +1,24 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+description: bindings for rgb_calibration_t in accelgyro.h
+
+compatible: "cros-ec,accelgyro-rgb-calibration"
+
+properties:
+    irt:
+        type: int
+        required: true
+        description: incandecent scaling factor
+
+child-binding:
+    description: RGB ALS Calibration Data
+    properties:
+        offset:
+            type: int
+            required: true
+            description: Any offset to add to raw channel data
+        coeff:
+            type: array
+            required: true
+            description: Clear, R, G, and B coefficients for this channel

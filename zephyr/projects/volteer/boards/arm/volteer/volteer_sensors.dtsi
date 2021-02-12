@@ -1,0 +1,242 @@
+/*
+ * Copyright (c) 2020 The Chromium OS Authors
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <dt-bindings/utils.h>
+
+/ {
+	motionsense-mutex {
+		compatible = "cros-ec,motionsense-mutex";
+		mutex1: bma255-mutex {
+			label = "BMA255 Mutex";
+		};
+
+		mutex2: bmi260-mutex {
+			label = "BMI260 Mutex";
+		};
+	};
+
+	motionsense-rotation-ref {
+		compatible = "cros-ec,motionsense-rotation-ref";
+		lid_rot_ref: lid-rotation-ref {
+			mat33 = <1 0 0
+				 0 (-1) 0
+				 0 0 (-1)>;
+		};
+		base_rot_ref: base-rotation-ref {
+			mat33 = <0 1 0
+				 (-1) 0 0
+				 0 0 1>;
+		};
+	};
+
+	motionsense-sensor-data {
+		bma255_data: bma255-drv-data {
+			compatible = "cros-ec,drvdata-bma255";
+			status = "okay";
+		};
+
+		bmi260_data: bmi260-drv-data {
+			compatible = "cros-ec,drvdata-bmi260";
+			status = "okay";
+		};
+
+		tcs_clear_data: tcs3400-clear-drv-data {
+			compatible = "cros-ec,drvdata-tcs3400-clear";
+			status = "okay";
+
+			als-drv-data {
+				compatible = "cros-ec,accelgyro-als-drv-data";
+				als-cal {
+					scale = <1>;
+					uscale = <0>;
+					offset = <0>;
+					als-channel-scale {
+					compatible =
+					"cros-ec,accelgyro-als-channel-scale";
+						k-channel-scale = <1>;
+						cover-scale = <1>;
+					};
+				};
+			};
+		};
+
+		tcs_rgb_data: tcs3400-rgb-drv-data {
+			compatible = "cros-ec,drvdata-tcs3400-rgb";
+			status = "okay";
+
+			rgb_calibration {
+				compatible =
+					"cros-ec,accelgyro-rgb-calibration";
+
+				irt = <1>;
+
+				rgb-cal-x {
+					offset = <0>;
+					coeff = <0 0 0 0>;
+					als-channel-scale {
+					compatible =
+					"cros-ec,accelgyro-als-channel-scale";
+						k-channel-scale = <1>;
+						cover-scale = <1>;
+					};
+				};
+				rgb-cal-y {
+					offset = <0>;
+					coeff = <0 0 0 0>;
+					als-channel-scale {
+					compatible =
+					"cros-ec,accelgyro-als-channel-scale";
+						k-channel-scale = <1>;
+						cover-scale = <1>;
+					};
+				};
+				rgb-cal-z {
+					offset = <0>;
+					coeff = <0 0 0 0>;
+					als-channel-scale {
+					compatible =
+					"cros-ec,accelgyro-als-channel-scale";
+						k-channel-scale = <1>;
+						cover-scale = <1>;
+					};
+				};
+			};
+		};
+	};
+
+	motionsense-sensor {
+		lid_accel: lid-accel {
+			compatible = "cros-ec,motionsense-sensor";
+
+			label = "Lid Accel";
+			active-mask = "SENSOR_ACTIVE_S0_S3";
+			location = "MOTIONSENSE_LOC_LID";
+			mutex = <&mutex1>;
+			port = <&sensor_i2c>;
+			rot-standard-ref = <&lid_rot_ref>;
+			default-range = <2>;
+			drv-data = <&bma255_data>;
+			drv-info {
+				compatible = "cros-ec,drv-bma255";
+				status = "okay";
+
+				i2c-spi-addr-flags = "BMA2x2_I2C_ADDR1_FLAGS";
+			};
+			configs {
+				compatible = "cros-ec,motionsense-sensor-config";
+
+				ec-s0 {
+					label = "SENSOR_CONFIG_EC_S0";
+					odr = <(10000 | ROUND_UP_FLAG)>;
+				};
+				ec-s3 {
+					label = "SENSOR_CONFIG_EC_S3";
+					odr = <(10000 | ROUND_UP_FLAG)>;
+				};
+			};
+		};
+
+		base_accel: base-accel {
+			compatible = "cros-ec,motionsense-sensor";
+
+			label = "Base Accel";
+			active-mask = "SENSOR_ACTIVE_S0_S3";
+			location = "MOTIONSENSE_LOC_BASE";
+			mutex = <&mutex2>;
+			port = <&sensor_i2c>;
+			rot-standard-ref = <&base_rot_ref>;
+			default-range = <4>;
+			drv-data = <&bmi260_data>;
+			bmi260_int: drv-info {
+				compatible = "cros-ec,drv-bmi260-accel";
+				status = "okay";
+
+				i2c-spi-addr-flags = "BMI260_ADDR0_FLAGS";
+			};
+			configs {
+				compatible = "cros-ec,motionsense-sensor-config";
+
+				ec-s0 {
+					label = "SENSOR_CONFIG_EC_S0";
+					odr = <(10000 | ROUND_UP_FLAG)>;
+					ec-rate = <(100 * MSEC)>;
+				};
+				ec-s3 {
+					label = "SENSOR_CONFIG_EC_S3";
+					odr = <(10000 | ROUND_UP_FLAG)>;
+					ec-rate = <(100 * MSEC)>;
+				};
+			};
+		};
+
+		base-gyro {
+			compatible = "cros-ec,motionsense-sensor";
+
+			label = "Base Gyro";
+			active-mask = "SENSOR_ACTIVE_S0_S3";
+			location = "MOTIONSENSE_LOC_BASE";
+			mutex = <&mutex2>;
+			port = <&sensor_i2c>;
+			rot-standard-ref = <&base_rot_ref>;
+			default-range = <1000>; /* dps */
+			drv-data = <&bmi260_data>;
+			drv-info {
+				compatible = "cros-ec,drv-bmi260-gyro";
+				status = "okay";
+
+				i2c-spi-addr-flags = "BMI260_ADDR0_FLAGS";
+			};
+		};
+
+		als_clear: base-als-clear {
+			compatible = "cros-ec,motionsense-sensor";
+
+			label = "Clear Light";
+			active-mask = "SENSOR_ACTIVE_S0_S3";
+			location = "MOTIONSENSE_LOC_BASE";
+			port = <&sensor_i2c>;
+			default-range = <0x10000>;
+			drv-data = <&tcs_clear_data>;
+			tcs3400_int: drv-info {
+				compatible = "cros-ec,drv-tcs3400-clear";
+				status = "okay";
+
+				i2c-spi-addr-flags = "TCS3400_I2C_ADDR_FLAGS";
+			};
+			configs {
+				compatible = "cros-ec,motionsense-sensor-config";
+
+				ec-s0 {
+					/* Run ALS sensor in S0 */
+					label = "SENSOR_CONFIG_EC_S0";
+					odr = <1000>;
+				};
+			};
+		};
+
+		base-als-rgb {
+			compatible = "cros-ec,motionsense-sensor";
+
+			label = "RGB Light";
+			active-mask = "SENSOR_ACTIVE_S0_S3";
+			location = "MOTIONSENSE_LOC_BASE";
+			default-range = <0x10000>; /* scale = 1x, uscale = 0 */
+			drv-data = <&tcs_rgb_data>;
+			drv-info {
+				compatible = "cros-ec,drv-tcs3400-rgb";
+				status = "okay";
+			};
+		};
+	};
+
+	motionsense-sensor-info {
+		compatible = "cros-ec,motionsense-sensor-info";
+
+		als-sensors = <&als_clear>;
+		sensor-irqs = <&imu_int_l &als_rgb_int_l>;
+		accel-force-mode-sensors = <&lid_accel &als_clear>;
+	};
+};

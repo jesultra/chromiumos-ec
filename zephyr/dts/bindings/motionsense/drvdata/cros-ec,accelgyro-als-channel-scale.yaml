@@ -1,0 +1,17 @@
+# Copyright (c) 2021 The Chromium OS Authors
+# SPDX-License-Identifier: Apache-2.0
+
+description: Bindings for als_channel_scale_t in accelgyro.h
+             Each channel has scaling factor for normalization & cover
+
+compatible: cros-ec,accelgyro-als-channel-scale
+
+properties:
+    k-channel-scale:
+        type: int
+        required: true
+        description: Channel scale factor
+    cover-scale:
+        type: int
+        required: true
+        description: Cover compensation scale factor
