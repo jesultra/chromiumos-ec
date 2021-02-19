@@ -13,3 +13,6 @@ board-y=board.o
 board-y+=dram_test.o
 board-$(HAS_TASK_VDEC_SERVICE)+=vdec.o
 board-$(HAS_TASK_VENC_SERVICE)+=venc.o
+
+# MDP3
+board-$(HAS_TASK_MDP_SERVICE)+=mdp_ipi_message.o
