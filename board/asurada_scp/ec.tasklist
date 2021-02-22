@@ -13,5 +13,6 @@
 	TASK_ALWAYS(CONSOLE, console_task, NULL, LARGER_TASK_STACK_SIZE) \
 	TASK_ALWAYS(VDEC_SERVICE, vdec_service_task, NULL, 4096) \
 	TASK_ALWAYS(VDEC_CORE_SERVICE, vdec_core_service_task, NULL, 4096) \
-	TASK_ALWAYS(VENC_SERVICE, venc_service_task, NULL, 2048)
+	TASK_ALWAYS(VENC_SERVICE, venc_service_task, NULL, 2048) \
+    TASK_ALWAYS(MDP_SERVICE, mdp_service_task, NULL, 65535)
 
