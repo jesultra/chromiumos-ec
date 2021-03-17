@@ -51,6 +51,24 @@
       "parentUuid": "340ca4b6_1a0ba47d",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74f20df6_47eaa7a0",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1125984
+      },
+      "writtenOn": "2021-03-17T19:33:15Z",
+      "side": 1,
+      "message": "Yikes, that is quite the hack.\n\nI think the problem is this wasn\u0027t designed to work with an asymmetrical RO/RW. I don\u0027t have a solution off the top of my head besides introducing another config_* option that indicates that RO doesn\u0027t support the flag carryover.",
+      "parentUuid": "e04a51fe_b77850d4",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
