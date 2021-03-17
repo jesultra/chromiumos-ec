@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba32152d_da468961",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1407950
+      },
+      "writtenOn": "2021-03-17T16:37:56Z",
+      "side": 1,
+      "message": "Hi!\n\nThis is fix for octopus brown out when battery is not present.",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
