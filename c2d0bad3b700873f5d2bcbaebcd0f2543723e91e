@@ -22,6 +22,30 @@
       },
       "revId": "c2d0bad3b700873f5d2bcbaebcd0f2543723e91e",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff406bf3_9697bff8",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1531,
+      "author": {
+        "id": 1441652
+      },
+      "writtenOn": "2021-03-17T17:12:09Z",
+      "side": 0,
+      "message": "Yes, EC RO doesn\u0027t keep power-on flag when Cr50 reboots it. Please check log with that fix applied https://buganizer.corp.google.com/action/issues/161775827/attachments/32736972?download\u003dtrue",
+      "parentUuid": "0164c251_b79d134f",
+      "range": {
+        "startLine": 1531,
+        "startChar": 31,
+        "endLine": 1531,
+        "endChar": 53
+      },
+      "revId": "c2d0bad3b700873f5d2bcbaebcd0f2543723e91e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
