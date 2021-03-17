@@ -33,6 +33,24 @@
       "message": "Some of the design behind these initialization states was meant to re-set the connection through setting CC\u0027s open, so then when the EC comes back after brown out it has source caps to consume and can fully start a fresh connection with the port partner.  \n\nThis design generally works well for EFS2 systems where the RO-\u003eRW jump happens very quickly and no PD runs in RO.  Is there a condition we could narrow down here to keep the initialization states as they are for EFS2 devices and devices which correctly report the power on flag?",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e04a51fe_b77850d4",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1407950
+      },
+      "writtenOn": "2021-03-17T17:57:46Z",
+      "side": 1,
+      "message": "So I can\u0027t just put a check for battery presence here because it will disturb flow in other devices (EFS2?).\n\nI\u0027m afraid there is no such condition. I can check battery presence in octopus board init code and then set eg. EC_RESET_FLAG_BROWNOUT, before it is checked by TCPMv2. This is some kind of hack, but there will be no changes in TCPMv2",
+      "parentUuid": "340ca4b6_1a0ba47d",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
