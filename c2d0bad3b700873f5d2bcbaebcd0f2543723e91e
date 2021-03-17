@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0164c251_b79d134f",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1531,
+      "author": {
+        "id": 1125984
+      },
+      "writtenOn": "2021-03-17T16:44:47Z",
+      "side": 0,
+      "message": "So is the power-on flag not working on fleex?",
+      "range": {
+        "startLine": 1531,
+        "startChar": 31,
+        "endLine": 1531,
+        "endChar": 53
+      },
+      "revId": "c2d0bad3b700873f5d2bcbaebcd0f2543723e91e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
