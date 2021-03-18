@@ -123,6 +123,24 @@
       "parentUuid": "25a693c3_9e515993",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31928eb4_3a3db8d8",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1125984
+      },
+      "writtenOn": "2021-03-18T23:09:15Z",
+      "side": 1,
+      "message": "I think EFS2 would be perfect! That\u0027s one config option that would have to be defined both in RO and RW.",
+      "parentUuid": "0f1ad4c5_24199816",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
