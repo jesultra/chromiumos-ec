@@ -105,6 +105,24 @@
       "parentUuid": "38b1dc37_3228be14",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f1ad4c5_24199816",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-03-18T23:07:05Z",
+      "side": 1,
+      "message": "Would EFS2 serve as a good indicator?  Or is there any situation where it could be set in RW while RO is definitely older and not carrying forth our expected flags?",
+      "parentUuid": "25a693c3_9e515993",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
