@@ -69,6 +69,24 @@
       "parentUuid": "e04a51fe_b77850d4",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38b1dc37_3228be14",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-03-18T21:18:54Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m drawing a similar blank.  Do we know how many boards porting to TCPMv2 will have this issue?  Can/should we assume they\u0027re all non-EFS2 boards?",
+      "parentUuid": "74f20df6_47eaa7a0",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
