@@ -32,6 +32,7 @@
 #include "usb_tc_sm.h"
 #include "usb_emsg.h"
 #include "usb_sm.h"
+#include "usbc_pd_policy.h"
 #include "usbc_ppc.h"
 
 /*
@@ -674,6 +675,24 @@ int pd_get_vdo_ver(int port, enum tcpm_transmit_type type)
 		return vdo_ver[rev];
 	else
 		return VDM_VER20;
+}
+
+void pe_transition_to_pe_drs_send_swap(int port)
+{
+	/* This should only be called from the PD task */
+	assert(port == TASK_ID_TO_PD_PORT(task_get_current()));
+
+	PE_SET_FLAG(port, PE_FLAGS_LOCALLY_INITIATED_AMS);
+	set_state_pe(port, PE_DRS_SEND_SWAP);
+}
+
+void pe_transition_to_pe_vcs_send_swap(int port)
+{
+	/* This should only be called from the PD task */
+	assert(port == TASK_ID_TO_PD_PORT(task_get_current()));
+
+	PE_SET_FLAG(port, PE_FLAGS_LOCALLY_INITIATED_AMS);
+	set_state_pe(port, PE_VCS_SEND_SWAP);
 }
 
 static void pe_set_ready_state(int port)
@@ -1793,30 +1812,11 @@ __maybe_unused static bool pe_attempt_port_discovery(int port)
 	if (PE_CHK_FLAG(port, PE_FLAGS_VDM_SETUP_DONE))
 		return false;
 
-	/*
-	 * TODO: POLICY decision: move policy functionality out to a separate
-	 * file.  For now, try once to become DFP/Vconn source
-	 */
-	if (PE_CHK_FLAG(port, PE_FLAGS_DR_SWAP_TO_DFP)) {
-		PE_CLR_FLAG(port, PE_FLAGS_DR_SWAP_TO_DFP);
-
-		if (pe[port].data_role == PD_ROLE_UFP) {
-			PE_SET_FLAG(port, PE_FLAGS_LOCALLY_INITIATED_AMS);
-			set_state_pe(port, PE_DRS_SEND_SWAP);
-			return true;
-		}
-	}
-
-	if (IS_ENABLED(CONFIG_USBC_VCONN) &&
-			PE_CHK_FLAG(port, PE_FLAGS_VCONN_SWAP_TO_ON)) {
-		PE_CLR_FLAG(port, PE_FLAGS_VCONN_SWAP_TO_ON);
-
-		if (!tc_is_vconn_src(port)) {
-			PE_SET_FLAG(port, PE_FLAGS_LOCALLY_INITIATED_AMS);
-			set_state_pe(port, PE_VCS_SEND_SWAP);
-			return true;
-		}
-	}
+	/* Apply Port Discovery Swap Policy */
+	if (port_discovery_swap_policy(port, pe[port].data_role,
+			&pe[port].flags, PE_FLAGS_DR_SWAP_TO_DFP,
+			PE_FLAGS_VCONN_SWAP_TO_ON))
+		return true;
 
 	/* If mode entry was successful, disable the timer */
 	if (PE_CHK_FLAG(port, PE_FLAGS_VDM_SETUP_DONE)) {

@@ -29,6 +29,16 @@ enum pe_error {
 void pe_run(int port, int evt, int en);
 
 /**
+ * Instruct Policy Engine to transition to PE_DRS_SEND_SWAP state
+ */
+void pe_transition_to_pe_drs_send_swap(int port);
+
+/**
+ * Instruct Policy Engine to transition to PE_VCS_SEND_SWAP state
+ */
+void pe_transition_to_pe_vcs_send_swap(int port);
+
+/**
  * Sets the debug level for the PRL layer
  *
  * @param level debug level

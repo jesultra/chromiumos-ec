@@ -7,10 +7,41 @@
 #include "console.h"
 #include "driver/tcpm/tcpci.h"
 #include "usb_pd.h"
+#include "usb_pe_sm.h"
 #include "usbc_ppc.h"
 
 #define CPRINTF(format, args...) cprintf(CC_USBPD, format, ## args)
 #define CPRINTS(format, args...) cprints(CC_USBPD, format, ## args)
+
+/*
+ * Port Discovery Swap Policy.
+ * This function overrides the default functionality in usbc_pd_policy.c
+ *
+ * 1) If port == 0 and dr_swap_to_dfp_flag == true and port data role is DFP,
+ *    transition to pe_drs_send_swap
+ * 2) If port == 1 and dr_swap_to_dfp_flag == true and port data role is UFP,
+ *    transition to pe_drs_send_swap
+ */
+__override bool port_discovery_swap_policy(int port, enum pd_data_role dr,
+	uint32_t *flags, uint32_t dr_swap_flag, uint32_t vconn_swap_on_flag)
+{
+	/*
+	 * Port0: test if role is DFP
+	 * Port1: test if role is UFP
+	 */
+	enum pd_data_role role_test = (port) ? PD_ROLE_UFP : PD_ROLE_DFP;
+
+	if ((*flags & dr_swap_flag) && dr == role_test) {
+		/* Clear the dr_swap_flag bit */
+		*flags &= ~dr_swap_flag;
+		/* Transition to pe_drs_send_swap */
+		pe_transition_to_pe_drs_send_swap(port);
+		return true;
+	}
+
+	/* Transition did not occur */
+	return false;
+}
 
 /*
  * TODO(b/167711550): These 4 functions need to be implemented for honeybuns
