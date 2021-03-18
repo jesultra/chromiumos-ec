@@ -87,6 +87,24 @@
       "parentUuid": "74f20df6_47eaa7a0",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25a693c3_9e515993",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1125984
+      },
+      "writtenOn": "2021-03-18T23:04:32Z",
+      "side": 1,
+      "message": "I think every old board. They\u0027ll all be non-EFS2 boards.",
+      "parentUuid": "38b1dc37_3228be14",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
