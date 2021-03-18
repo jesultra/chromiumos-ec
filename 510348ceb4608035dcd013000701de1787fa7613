@@ -141,6 +141,24 @@
       "parentUuid": "0f1ad4c5_24199816",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c8b8ea2_1e0eabdc",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-03-18T23:12:16Z",
+      "side": 1,
+      "message": "I suppose that\u0027s about equivalent to what we ended up needing for pd_comm_allowed_by_policy(), though it\u0027s a slightly less obvious causation. \n\nWhat do you think, Patryk?",
+      "parentUuid": "31928eb4_3a3db8d8",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
