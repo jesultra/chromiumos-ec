@@ -159,6 +159,24 @@
       "parentUuid": "31928eb4_3a3db8d8",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff24a4c1_7d31bcc0",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1407950
+      },
+      "writtenOn": "2021-03-19T16:51:49Z",
+      "side": 1,
+      "message": "I think CONFIG_VBOOT_EFS2 flag is useful in this case. I uploaded patch which uses this flag. What about non-EFS2 boards that can pass power-on flag properly? Initially I thought that CONFIG_BOARD_RESET_AFTER_POWER_ON could be used, but this provides information if this is enabled now, not in old EC RO, on the other side this flag is relevant only in RO, so we can assume that if this is enabled now it will be enabled also in EC RO. What do you think?",
+      "parentUuid": "8c8b8ea2_1e0eabdc",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
