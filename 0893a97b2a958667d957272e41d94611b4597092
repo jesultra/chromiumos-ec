@@ -18,6 +18,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "670ae3fb_4fbb922f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1245946
+      },
+      "writtenOn": "2021-03-23T07:58:40Z",
+      "side": 1,
+      "message": "\u003cchip\u003e-drvinfo.inc has two macros. one is for creating sensor data and other one is for creating motion sensor instance that ends up using this sensor. this is what driver developer should provides and add into sensor_drv_list.inc\n\nsensor_drv_list.inc is just collection of \u003cchip\u003e-drvinfo.inc files. This file is included in motionsense_sensors.c two times. the first is to create sensor data and the second include is to create motion sensor entries.\n\nI\u0027ve put more comments in motionsense_sensors.c for this.",
+      "parentUuid": "57fddbaa_b4491057",
+      "revId": "0893a97b2a958667d957272e41d94611b4597092",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b55bd67_7e67d6ce",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-03-22T18:02:24Z",
       "side": 1,
       "message": "Is it possible to put this code at the bottom of the driver itself, rather than needing a separate file?",
+      "revId": "0893a97b2a958667d957272e41d94611b4597092",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e9787e_67ec23f9",
+        "filename": "zephyr/shim/src/motionsense_driver/sensor_drv_list.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1245946
+      },
+      "writtenOn": "2021-03-23T07:58:40Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s possible due to motion sensor entry creation. We can have sensor data creation macro in sensor driver. but for this, the data should be global so that it can be referenced by motion sensor entry in motion_sensor_t array. But problem is the macro for creating motion sensor entry cannot be in the driver file since the macro is nothing but creating one entry in an array(motion_sensor_t array).\n\nOf course, technically it\u0027s possible if we have special macro which split driver implementation and entry creation but it looks very weird.",
+      "parentUuid": "5b55bd67_7e67d6ce",
       "revId": "0893a97b2a958667d957272e41d94611b4597092",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
