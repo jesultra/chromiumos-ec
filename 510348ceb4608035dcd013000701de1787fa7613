@@ -177,6 +177,24 @@
       "parentUuid": "8c8b8ea2_1e0eabdc",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1a0a49d_49304cab",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1125984
+      },
+      "writtenOn": "2021-03-23T03:07:19Z",
+      "side": 1,
+      "message": "I would have expected CONFIG_BOARD_RESET_AFTER_POWER_ON to be set by default for all boards. Seems like it\u0027s easy to forget if that\u0027s not the case and I don\u0027t really see a reason why we _wouldn\u0027t_ that set due to Cr50 being present. If that then becomes the case, then it wouldn\u0027t be guaranteed that the RO has that config option.\n\nHowever, we could restrict that CONFIG_* option to be set only if SECTION_IS_RO.\n\nBut I think as of now, if it\u0027s enabled, we can assume it was enabled in RO.",
+      "parentUuid": "ff24a4c1_7d31bcc0",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
