@@ -195,6 +195,24 @@
       "parentUuid": "ff24a4c1_7d31bcc0",
       "revId": "510348ceb4608035dcd013000701de1787fa7613",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "964cd916_0d2aa802",
+        "filename": "common/usbc/usb_tc_drp_acc_trysrc_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1407950
+      },
+      "writtenOn": "2021-03-23T09:52:15Z",
+      "side": 1,
+      "message": "Ok. Added CONFIG_BOARD_RESET_AFTER_POWER_ON to condition and updated comment. Marking this as resolved.",
+      "parentUuid": "b1a0a49d_49304cab",
+      "revId": "510348ceb4608035dcd013000701de1787fa7613",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
