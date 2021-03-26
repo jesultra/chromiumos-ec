@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e46d2b6d_658edfdd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2021-03-26T19:55:51Z",
+      "side": 1,
+      "message": "nit: add brief description about the change",
+      "revId": "f4ebb91c2e693b5c96c74023d6c2e70bdcf8bfea",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e3d8a77_0b1ae2be",
+        "filename": "chip/mchp/lfw/gpio_common.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2021-03-26T19:55:51Z",
+      "side": 1,
+      "message": "add the UART conif too based on CONFIG_UART_CONSOLE",
+      "revId": "f4ebb91c2e693b5c96c74023d6c2e70bdcf8bfea",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
