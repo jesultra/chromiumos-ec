@@ -51,6 +51,24 @@
       "parentUuid": "9e3d8a77_0b1ae2be",
       "revId": "f4ebb91c2e693b5c96c74023d6c2e70bdcf8bfea",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4bc4ecf_bfb4f1de",
+        "filename": "chip/mchp/lfw/gpio_common.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2021-03-26T20:25:03Z",
+      "side": 1,
+      "message": "but you still have UART configs in lfw/gpio.inc in board file, not needed anymore?",
+      "parentUuid": "affe9017_d8e59d3d",
+      "revId": "f4ebb91c2e693b5c96c74023d6c2e70bdcf8bfea",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
