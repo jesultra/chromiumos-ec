@@ -33,6 +33,24 @@
       "message": "add the UART conif too based on CONFIG_UART_CONSOLE",
       "revId": "f4ebb91c2e693b5c96c74023d6c2e70bdcf8bfea",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "affe9017_d8e59d3d",
+        "filename": "chip/mchp/lfw/gpio_common.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1255298
+      },
+      "writtenOn": "2021-03-26T20:17:03Z",
+      "side": 1,
+      "message": "UART GPIO pins config still keeps in board/sklrvp_mchp172x/lfw/gpio.inc\ngpio_common.inc only holds the common contents for both lfw \u0026 main FW, to prevent copy \u0026 paste mistake per your comments. and both gpio.inc \u0026 lfw/gpio.inc under board will include it per my comments.",
+      "parentUuid": "9e3d8a77_0b1ae2be",
+      "revId": "f4ebb91c2e693b5c96c74023d6c2e70bdcf8bfea",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
