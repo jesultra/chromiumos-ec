@@ -105,6 +105,24 @@
       "parentUuid": "e4bc4ecf_bfb4f1de",
       "revId": "f4ebb91c2e693b5c96c74023d6c2e70bdcf8bfea",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28e7cbe5_0555a524",
+        "filename": "chip/mchp/lfw/gpio_common.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2021-03-29T19:56:39Z",
+      "side": 1,
+      "message": "3 chips \u0026 3 UARTs: 9 ifdef should cover it",
+      "parentUuid": "f54d4723_2852fba9",
+      "revId": "f4ebb91c2e693b5c96c74023d6c2e70bdcf8bfea",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
