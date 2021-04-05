@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea81c345_2dca7835",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1296031
+      },
+      "writtenOn": "2021-04-05T19:08:58Z",
+      "side": 1,
+      "message": "I probably missed the final goal in the previous episodes I approved.\nOverall it\u0027s usually a not-so-good idea to re-use the embedded code for host when a standard library function exists (e.g. zlib crc32 here) because it always has all kind of compilation options and warnings quirks.\n\nstill putting the +2 if it is needed to unblock the project.",
+      "revId": "7f26a10515057319b823b9ca2dc397a640f6cb17",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
