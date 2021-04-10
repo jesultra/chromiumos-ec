@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc882476_f756258c",
+        "filename": "test/build.mk",
+        "patchSetId": 1
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1296031
+      },
+      "writtenOn": "2021-04-10T07:11:52Z",
+      "side": 1,
+      "message": "one half interesting question:\ndo we need to add a dependency to sys-libs/zlib on the ebuilds to ensure it is present when running the test ?",
+      "revId": "d36edbc769e3294b76ea0994d2f94d3a08506ac5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "924b2d77_702fdc92",
+        "filename": "util/ectool.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9430,
+      "author": {
+        "id": 1296031
+      },
+      "writtenOn": "2021-04-10T07:11:52Z",
+      "side": 1,
+      "message": "rather than using zlib specific type re-definition, I would just use the standard \u0027unsigned long\u0027 here.",
+      "revId": "d36edbc769e3294b76ea0994d2f94d3a08506ac5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
