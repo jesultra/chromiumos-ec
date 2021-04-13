@@ -33,6 +33,24 @@
       "message": "rather than using zlib specific type re-definition, I would just use the standard \u0027unsigned long\u0027 here.",
       "revId": "d36edbc769e3294b76ea0994d2f94d3a08506ac5",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eed98f15_d34747d6",
+        "filename": "util/ectool.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 9430,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2021-04-13T15:47:12Z",
+      "side": 1,
+      "message": "I\u0027m not sure if the two types match now and future on all archs. Can you elaborate the advantage of using unsigned long?",
+      "parentUuid": "924b2d77_702fdc92",
+      "revId": "d36edbc769e3294b76ea0994d2f94d3a08506ac5",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
