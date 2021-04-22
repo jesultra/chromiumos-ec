@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd67760a_746ceea2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2021-04-22T00:11:51Z",
+      "side": 1,
+      "message": "I think this makes sense as a quick fix.\n\nSome ideas perhaps for a later CL:\n1) I\u0027m curious why we end up going through pe_invalidate_explicit_contract while disconnected. Would it make sense to avoid making that call?\n2) Alternatively, could tweak typec_update_cc to be smarter and do the right thing based on connected/disconnected (since we already cache values to apply later)?\n3) Add a unit test?\n",
+      "revId": "a622de783225de0567a37d89da22c81b202abe5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39f7d789_01550096",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2021-04-22T00:11:51Z",
+      "side": 1,
+      "message": "Is pd_is_connected() the best check here, vs PE_FLAGS_EXPLICIT_CONTRACT?",
+      "revId": "a622de783225de0567a37d89da22c81b202abe5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
