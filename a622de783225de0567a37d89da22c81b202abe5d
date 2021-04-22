@@ -54,6 +54,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1a8d6d3_f0e9d08d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-04-22T22:44:36Z",
+      "side": 1,
+      "message": "So we do keep track of current limit and collision avoidance, and calling typec_update_cc() does update it to the cached values (though in this bug\u0027s case, cached is 0 and therefore Ra).  The instances we need to do that from the PE or PRL are for changing between collision avoidance and current limit Rps.  Changing current limit Rp on a port with no PD connected is done via a flag to the TC layer (TC_FLAGS_UPDATE_CURRENT).  \n\nWe could implement something similar to typec_select_src_current_limit_rp(), where it just takes place if we\u0027re attached and the TC is in charge of the actual CC set.  For timing to work out well here, we\u0027d need to enforce that we keep the TC state machine running last in the task ordering.",
+      "parentUuid": "d2a6ebf0_aff15afe",
+      "revId": "a622de783225de0567a37d89da22c81b202abe5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39f7d789_01550096",
