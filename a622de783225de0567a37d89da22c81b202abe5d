@@ -36,6 +36,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2a6ebf0_aff15afe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2021-04-22T22:22:35Z",
+      "side": 1,
+      "message": "I\u0027m thinking something like instead of typec_update_cc(), instead keep track of current-limit and collision-avoidance, then set Rp correctly on all the events that might change it (set/clr connected, set/clr contract, ...).",
+      "parentUuid": "ba64fe82_568bb8d3",
+      "revId": "a622de783225de0567a37d89da22c81b202abe5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39f7d789_01550096",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Do you mean checking before the clear?  I think the ordering of calling after the clear is important for the Rp selection. \n\nMy general thinking was that pd_is_connected() represents Attached.SRC/Attached.SNK, which is the time when the domain of CC control goes to higher levels for collision avoidance.  Anytime we\u0027re not Attached.Whatever the CC lines should be purely in the domain of the TC layer",
       "parentUuid": "39f7d789_01550096",
+      "revId": "a622de783225de0567a37d89da22c81b202abe5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "156ec9e9_77a41468",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 1212794
+      },
+      "writtenOn": "2021-04-22T22:22:35Z",
+      "side": 1,
+      "message": "I was confused about which edge we were looking for (PE_FLAGS_EXPLICIT_CONTRACT 1-\u003e0 vs pd_is_connected 1-\u003e0), which I think ends up being the same discussion above about replacing typec_update_cc.",
+      "parentUuid": "2d8b5e0f_1f0a4976",
       "revId": "a622de783225de0567a37d89da22c81b202abe5d",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
