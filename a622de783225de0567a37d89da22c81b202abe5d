@@ -18,6 +18,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba64fe82_568bb8d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-04-22T21:04:55Z",
+      "side": 1,
+      "message": "1.  We\u0027ve made pe_invalidate_explicit_contract part of our PD_DISCONNECTED hook, so I think we need it to cover ourselves both in the event of an unplug and in case of a forced role change (ex. going from sourcing to sink-only).  The flag clear isn\u0027t super important for disconnect because we\u0027ll be clearing out all flags anyway next connection, but disabling FRS is important. \n\n2.  Currently, typec_update_cc() is used both outside the TC and within the TC whenever we want to update the CC lines.  So it we wanted to gate it on connected, then I think we\u0027d need to make the PE and PRL their own API to call, which is a doable option.\n\n3.  Yup, I probably could/should write a unit test...",
+      "parentUuid": "fd67760a_746ceea2",
+      "revId": "a622de783225de0567a37d89da22c81b202abe5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39f7d789_01550096",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-04-22T00:11:51Z",
       "side": 1,
       "message": "Is pd_is_connected() the best check here, vs PE_FLAGS_EXPLICIT_CONTRACT?",
+      "revId": "a622de783225de0567a37d89da22c81b202abe5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d8b5e0f_1f0a4976",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 959,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-04-22T21:04:55Z",
+      "side": 1,
+      "message": "Do you mean checking before the clear?  I think the ordering of calling after the clear is important for the Rp selection. \n\nMy general thinking was that pd_is_connected() represents Attached.SRC/Attached.SNK, which is the time when the domain of CC control goes to higher levels for collision avoidance.  Anytime we\u0027re not Attached.Whatever the CC lines should be purely in the domain of the TC layer",
+      "parentUuid": "39f7d789_01550096",
       "revId": "a622de783225de0567a37d89da22c81b202abe5d",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
