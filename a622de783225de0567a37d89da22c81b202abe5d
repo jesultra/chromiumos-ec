@@ -72,6 +72,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdb57116_6c07fd04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-04-29T22:58:34Z",
+      "side": 1,
+      "message": "I think I\u0027ll get this committed for now and we can circle back later.  There could be more elegant interface to ensure the PE and PRL aren\u0027t setting CC\u0027s when they have no business doing as such, but this is the only place that can be called outside an established connection.",
+      "parentUuid": "f1a8d6d3_f0e9d08d",
+      "revId": "a622de783225de0567a37d89da22c81b202abe5d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39f7d789_01550096",
