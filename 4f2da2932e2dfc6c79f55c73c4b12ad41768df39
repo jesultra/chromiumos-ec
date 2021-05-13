@@ -16,6 +16,52 @@
       "message": "hi Diana, this CL test TD.PD.VNDI3.E3 VDM Identity pass,",
       "revId": "4f2da2932e2dfc6c79f55c73c4b12ad41768df39",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4781e77b_d565f9f3",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5992,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2021-05-13T21:28:39Z",
+      "side": 1,
+      "message": "Nit: I think this is \"must.\" The bullet point for this in PD 2.0 contains a Shall.",
+      "range": {
+        "startLine": 5992,
+        "startChar": 61,
+        "endLine": 5992,
+        "endChar": 64
+      },
+      "revId": "4f2da2932e2dfc6c79f55c73c4b12ad41768df39",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3e00315_b8308be0",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5994,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2021-05-13T21:28:39Z",
+      "side": 1,
+      "message": "Nit: Incorporating the ECNs through 2020-12-10 (which is what the editors had done as of March), this is table 6-64.",
+      "range": {
+        "startLine": 5993,
+        "startChar": 58,
+        "endLine": 5994,
+        "endChar": 51
+      },
+      "revId": "4f2da2932e2dfc6c79f55c73c4b12ad41768df39",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
