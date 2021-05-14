@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d71d5b9b_1f440cef",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5992,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-05-14T04:57:47Z",
+      "side": 1,
+      "message": "True, though the \"shalls\" for that spec translates to two options as far as compliance is concerned (TD.PD.VNDI.E1. VDM Identity).  The message applicability table in PD 2.0 states to ignore the VDMs when \"structured VDMs aren\u0027t supported\", but to be honest I like the clarity of returning a NAK as long as we\u0027re allowed.  I assume the two options stem from the ambiguity of whether you \"support SVDMs\" when you can init but not receive them.",
+      "parentUuid": "4781e77b_d565f9f3",
+      "range": {
+        "startLine": 5992,
+        "startChar": 61,
+        "endLine": 5992,
+        "endChar": 64
+      },
+      "revId": "4f2da2932e2dfc6c79f55c73c4b12ad41768df39",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3e00315_b8308be0",
         "filename": "common/usbc/usb_pe_drp_sm.c",
         "patchSetId": 3
@@ -54,6 +78,30 @@
       "writtenOn": "2021-05-13T21:28:39Z",
       "side": 1,
       "message": "Nit: Incorporating the ECNs through 2020-12-10 (which is what the editors had done as of March), this is table 6-64.",
+      "range": {
+        "startLine": 5993,
+        "startChar": 58,
+        "endLine": 5994,
+        "endChar": 51
+      },
+      "revId": "4f2da2932e2dfc6c79f55c73c4b12ad41768df39",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "657039cb_08745e47",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5994,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2021-05-14T04:57:47Z",
+      "side": 1,
+      "message": "Oh dear, I\u0027ve fallen behind on the times",
+      "parentUuid": "f3e00315_b8308be0",
       "range": {
         "startLine": 5993,
         "startChar": 58,
