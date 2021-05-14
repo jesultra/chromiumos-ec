@@ -182,6 +182,30 @@
       },
       "revId": "4f2da2932e2dfc6c79f55c73c4b12ad41768df39",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b0b7a59_b1c716b5",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5994,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2021-05-14T16:46:14Z",
+      "side": 1,
+      "message": "Life\u0027s a song you don\u0027t get to rehearse.",
+      "parentUuid": "a8af4e27_6b125e1c",
+      "range": {
+        "startLine": 5993,
+        "startChar": 58,
+        "endLine": 5994,
+        "endChar": 51
+      },
+      "revId": "4f2da2932e2dfc6c79f55c73c4b12ad41768df39",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
