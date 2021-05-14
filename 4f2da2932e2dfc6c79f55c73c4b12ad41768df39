@@ -65,6 +65,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d832336_78c6f317",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5992,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2021-05-14T16:10:55Z",
+      "side": 1,
+      "message": "I took the \"if structured VDMs are not supported\" language to mean that they Shall be ignored by products with zero knowledge of VDMs, but if the product can do anything useful with any VDMs, then it Shall NAK. I\u0027ll note that we do support receiving SVDM ACKs. But I agree that it\u0027s not worded as clearly as it could be.",
+      "parentUuid": "d71d5b9b_1f440cef",
+      "range": {
+        "startLine": 5992,
+        "startChar": 61,
+        "endLine": 5992,
+        "endChar": 64
+      },
+      "revId": "4f2da2932e2dfc6c79f55c73c4b12ad41768df39",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3e00315_b8308be0",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "Oh dear, I\u0027ve fallen behind on the times",
       "parentUuid": "f3e00315_b8308be0",
+      "range": {
+        "startLine": 5993,
+        "startChar": 58,
+        "endLine": 5994,
+        "endChar": 51
+      },
+      "revId": "4f2da2932e2dfc6c79f55c73c4b12ad41768df39",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "852c9b41_f3c69d58",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5994,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2021-05-14T16:10:55Z",
+      "side": 1,
+      "message": "You changed the spec citation but not the table number.",
+      "parentUuid": "657039cb_08745e47",
       "range": {
         "startLine": 5993,
         "startChar": 58,
