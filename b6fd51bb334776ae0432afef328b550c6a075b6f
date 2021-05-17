@@ -16,6 +16,24 @@
       "message": "Hi keith,\n\nI run zmake -lDEBUG configure -B zephyr/build -b zephyr/projects/volteer/volteer without any change,\nit shows error:\n2021-05-17 16:38:26,755 - Zmake/DEBUG: [318/318] Linking C executable zephyr/zephyr.elf\n2021-05-17 16:38:26,756 - Zmake/DEBUG: Memory region         Used Size  Region Size  %age Used\n2021-05-17 16:38:26,756 - Zmake/DEBUG: FLASH:      240180 B       512 KB     45.81%\n2021-05-17 16:38:26,756 - Zmake/DEBUG: SRAM:       54384 B        62 KB     85.66%\n2021-05-17 16:38:26,756 - Zmake/DEBUG: IDT_LIST:          0 GB         2 KB      0.00%\n2021-05-17 16:38:26,757 - Zmake/DEBUG: ******************************\n2021-05-17 16:38:26,757 - Zmake/DEBUG: ***        SUCCESS         ***\n2021-05-17 16:38:26,757 - Zmake/DEBUG: ******************************\n2021-05-17 16:38:26,985 - Zmake/DEBUG: [318/318] Linking C executable zephyr/zephyr.elf\n2021-05-17 16:38:26,986 - Zmake/DEBUG: Memory region         Used Size  Region Size  %age Used\n2021-05-17 16:38:26,986 - Zmake/DEBUG: FLASH:      240180 B       512 KB     45.81%\n2021-05-17 16:38:26,987 - Zmake/DEBUG: SRAM:       54384 B        62 KB     85.66%\n2021-05-17 16:38:26,987 - Zmake/DEBUG: IDT_LIST:          0 GB         2 KB      0.00%\n\n2021-05-17 16:38:27,416 - NpcxPacker/ERROR: Error: /tmp/binman.sdcwpubd/source.dts:10.21-22 syntax error\n2021-05-17 16:38:27,418 - NpcxPacker/DEBUG: Using input directories None\n2021-05-17 16:38:27,418 - NpcxPacker/ERROR: FATAL ERROR: Unable to parse input tree\n2021-05-17 16:38:27,418 - NpcxPacker/ERROR: binman: Error running \u0027dtc -I dts -o /tmp/binman.sdcwpubd/source.dtb -O dtb -W no-unit_address_vs_reg -i /mnt/host/source/src/platform/ec/include /tmp/binman.sdcwpubd/source.dts\u0027\n2021-05-17 16:38:27,441 - NpcxPacker/DEBUG: Using temporary directory \u0027/tmp/binman.sdcwpubd\u0027\n2021-05-17 16:38:27,442 - NpcxPacker/DEBUG: Deleted temporary directory \u0027/tmp/binman.sdcwpubd\u0027\nTraceback (most recent call last):\n  File \"/usr/lib/python-exec/python3.6/zmake\", line 11, in \u003cmodule\u003e\n    load_entry_point(\u0027zephyr-chrome-utils\u003d\u003d0.1\u0027, \u0027console_scripts\u0027, \u0027zmake\u0027)()\n  File \"/usr/lib64/python3.6/site-packages/zmake/__main__.py\", line 123, in main\n    result \u003d call_with_namespace(subcommand_method, opts)\n  File \"/usr/lib64/python3.6/site-packages/zmake/__main__.py\", line 33, in call_with_namespace\n    return func(**kwds)\n  File \"/usr/lib64/python3.6/site-packages/zmake/zmake.py\", line 186, in configure\n    return self.build(build_dir\u003dbuild_dir)\n  File \"/usr/lib64/python3.6/site-packages/zmake/zmake.py\", line 230, in build\n    packer_work_dir, self.jobserver, **dirs):\n  File \"/usr/lib64/python3.6/site-packages/zmake/output_packers.py\", line 165, in pack_firmware\n    raise OSError(\u0027Failed to run binman\u0027)\nOSError: Failed to run binman\n\nI\u0027m not sure if this error takes effect to merge this CL.",
       "revId": "b6fd51bb334776ae0432afef328b550c6a075b6f",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7be382b_11cec6f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2021-05-17T18:06:25Z",
+      "side": 1,
+      "message": "Hi Rubin - \nThe Volteer build is working for me.  Is the third_party/zephyr/main/v2.5 repo up to date?  That is a common source of build problems.",
+      "parentUuid": "c9027a28_99a583af",
+      "revId": "b6fd51bb334776ae0432afef328b550c6a075b6f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
