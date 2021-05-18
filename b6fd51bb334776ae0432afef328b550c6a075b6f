@@ -34,6 +34,24 @@
       "parentUuid": "c9027a28_99a583af",
       "revId": "b6fd51bb334776ae0432afef328b550c6a075b6f",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e0a0d60_4615afc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1288462
+      },
+      "writtenOn": "2021-05-18T08:05:15Z",
+      "side": 1,
+      "message": "After update chroot, volteer build is working. Thanks~",
+      "parentUuid": "a7be382b_11cec6f4",
+      "revId": "b6fd51bb334776ae0432afef328b550c6a075b6f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
