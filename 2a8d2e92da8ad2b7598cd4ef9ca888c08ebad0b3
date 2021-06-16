@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82d875f7_6725b5bf",
+        "filename": "test/crc.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2021-06-16T20:44:37Z",
+      "side": 1,
+      "message": "This change makes test/crc.o fail to be compiled because of missing zlib.h. I think the reference values should be hardcoded. They don\u0027t need to be computed on target boards.",
+      "revId": "2a8d2e92da8ad2b7598cd4ef9ca888c08ebad0b3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
