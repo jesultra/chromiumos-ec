@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad941f2a_d8651e0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2021-06-18T14:53:01Z",
+      "side": 1,
+      "message": "I think we should make all Dedede boards behave like Storo (instead of the other way). What do you think Aseda?",
+      "revId": "c5f93f4f30f5a153ee6ff68a30470c7bc0d6fd37",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
