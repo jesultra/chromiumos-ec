@@ -220,6 +220,7 @@ void usb_mux_set(int port, mux_state_t mux_mode,
 	if (IS_ENABLED(CONFIG_USB_CHARGER))
 		usb_charger_set_switches(port, usb_mode);
 
+
 	/*
 	 * Don't wake device up just to put it back to sleep. Low power mode
 	 * flag is only set if the mux set() operation succeeded previously for
@@ -238,11 +239,19 @@ void usb_mux_set(int port, mux_state_t mux_mode,
 	if (configure_mux(port, USB_MUX_SET_MODE, &mux_state))
 		return;
 
-	if (enable_debug_prints)
 		CPRINTS(
 		     "usb/dp mux: port(%d) typec_mux(%d) usb2(%d) polarity(%d)",
 		     port, mux_mode, usb_mode, polarity);
 
+	if (port == 1) /* Only for DUT port */ {
+		if (usb_mode == USB_SWITCH_DISCONNECT) {
+			gpio_set_level(GPIO_DUT_HUB_USB_RESET_L, 0);
+			ccprintf("JSD: disabling DUTHUB!\n");
+		} else {
+			gpio_set_level(GPIO_DUT_HUB_USB_RESET_L, 1);
+			ccprintf("JSD: enabling DUTHUB!\n");
+		}
+	}
 	/*
 	 * If we are completely disconnecting the mux, then we should put it in
 	 * its lowest power state.
