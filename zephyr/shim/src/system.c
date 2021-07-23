@@ -12,7 +12,9 @@
 #include "common.h"
 #include "console.h"
 #include "cros_version.h"
+#include "gpio.h"
 #include "system.h"
+#include "util.h"
 #include "watchdog.h"
 
 #define BBRAM_REGION_PD0	DT_PATH(named_bbram_regions, pd0)
@@ -320,3 +322,91 @@ static int system_preinitialize(const struct device *unused)
 
 SYS_INIT(system_preinitialize, PRE_KERNEL_1,
 	 CONFIG_PLATFORM_EC_SYSTEM_PRE_INIT_PRIORITY);
+
+__override uint32_t board_get_sku_id(void)
+{
+	static uint32_t sku_id = (uint32_t)-1;
+
+	if (sku_id == (uint32_t)-1) {
+		int bits[] = {
+#if DT_NODE_EXISTS(DT_PATH(named_gpios, sku_id0))
+			gpio_get_ternary(DT_ENUM_TOKEN(
+					DT_PATH(named_gpios, sku_id0),
+					enum_name)),
+#endif
+#if DT_NODE_EXISTS(DT_PATH(named_gpios, sku_id1))
+			gpio_get_ternary(DT_ENUM_TOKEN(
+					DT_PATH(named_gpios, sku_id1),
+					enum_name)),
+#endif
+#if DT_NODE_EXISTS(DT_PATH(named_gpios, sku_id2))
+			gpio_get_ternary(DT_ENUM_TOKEN(
+					DT_PATH(named_gpios, sku_id2),
+					enum_name)),
+#endif
+
+		};
+
+		if (sizeof(bits) == 0)
+			return (uint32_t)-1;
+
+		sku_id = binary_first_base3_from_bits(bits, ARRAY_SIZE(bits));
+	}
+
+	return sku_id;
+}
+
+int command_sku(int argc, char *argv[])
+{
+	uint32_t sku_id = system_get_sku_id();
+
+	ccprintf("SKU ID: %d\n", (int)sku_id);
+	return 0;
+}
+DECLARE_CONSOLE_COMMAND(sku, command_sku, "", "");
+
+__override int board_get_version(void)
+{
+	static int board_version;
+
+	if (board_version == -1) {
+		int bits[] = {
+#if DT_NODE_EXISTS(DT_PATH(named_gpios, brd_id0))
+			gpio_get_ternary(DT_ENUM_TOKEN(
+					DT_PATH(named_gpios, brd_id0),
+					enum_name)),
+#endif
+#if DT_NODE_EXISTS(DT_PATH(named_gpios, brd_id1))
+			gpio_get_ternary(DT_ENUM_TOKEN(
+					DT_PATH(named_gpios, brd_id1),
+					enum_name)),
+#endif
+#if DT_NODE_EXISTS(DT_PATH(named_gpios, brd_id2))
+			gpio_get_ternary(DT_ENUM_TOKEN(
+					DT_PATH(named_gpios, brd_id2),
+					enum_name)),
+#endif
+
+		};
+
+		if (sizeof(bits) == 0)
+			return -1;
+
+		board_version = binary_first_base3_from_bits(
+					bits,
+					ARRAY_SIZE(bits)
+				);
+	}
+
+	return board_version;
+}
+
+int command_board(int argc, char *argv[])
+{
+	int board_id = system_get_board_version();
+
+	ccprintf("Board ID: %d\n", board_id);
+	return 0;
+}
+DECLARE_CONSOLE_COMMAND(board, command_board, "", "");
+
