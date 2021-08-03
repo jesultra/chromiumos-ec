@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70994573_0ba733d4",
+        "filename": "board/primus/board.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2021-08-03T17:04:16Z",
+      "side": 1,
+      "message": "you can probably remove this line since it\u0027s the default.",
+      "revId": "af4721f5ff60c71a15af2dc947bbc90b2ee266a3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc465db_692473ac",
+        "filename": "board/primus/keyboard.c",
+        "patchSetId": 13
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2021-08-03T17:04:16Z",
+      "side": 1,
+      "message": "i\u0027m not sure how we ended up with this formatting in all\nthe files, but please split the line using a more conventional style:\n\n__override const struct ec_response_keybd_config *\nboard_vivaldi_keybd_config(void)",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 33
+      },
+      "revId": "af4721f5ff60c71a15af2dc947bbc90b2ee266a3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
