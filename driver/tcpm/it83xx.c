@@ -22,19 +22,20 @@
 
 #ifdef CONFIG_USB_PD_TCPMV1
 #if defined(CONFIG_USB_PD_DUAL_ROLE_AUTO_TOGGLE) || \
-	defined(CONFIG_USB_PD_VBUS_DETECT_TCPC) || \
+//	defined(CONFIG_USB_PD_VBUS_DETECT_TCPC) || \
 	defined(CONFIG_USB_PD_TCPC_LOW_POWER) || \
 	defined(CONFIG_USB_PD_DISCHARGE_TCPC)
+	defined(CONFIG_USB_PD_TCPC_LOW_POWER)
 #error "Unsupported config options of IT83xx PD driver"
 #endif
 #endif
 
-#ifdef CONFIG_USB_PD_TCPMV2
-#if defined(CONFIG_USB_PD_VBUS_DETECT_TCPC) || \
+//#ifdef CONFIG_USB_PD_TCPMV2
+//#if defined(CONFIG_USB_PD_VBUS_DETECT_TCPC) || \
 	defined(CONFIG_USB_PD_DISCHARGE_TCPC)
-#error "Unsupported config options of IT83xx PD driver"
-#endif
-#endif
+//#error "Unsupported config options of IT83xx PD driver"
+//#endif
+//#endif
 
 int rx_en[IT83XX_USBPD_PHY_PORT_COUNT];
 STATIC_IF(CONFIG_USB_PD_DECODE_SOP)

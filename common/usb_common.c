@@ -830,11 +830,15 @@ void pd_set_vbus_discharge(int port, int enable)
 	mutex_lock(&discharge_lock[port]);
 	enable &= !board_vbus_source_enabled(port);
 
-	if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE_GPIO))
+	enum ec_ssfc_usb_pd_discharge discharge = get_cbi_ssfc_usb_pd_discharge();
+//	if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE_GPIO))
+	if (discharge == SSFC_USB_PD_DISCHARGE_GPIO)
 		gpio_discharge_vbus(port, enable);
-	else if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE_TCPC))
+//	else if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE_TCPC))
+	else if (discharge == SSFC_USB_PD_DISCHARGE_TCPC)
 		tcpc_discharge_vbus(port, enable);
-	else if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE_PPC))
+	else if (discharge == SSFC_USB_PD_DISCHARGE_PPC)
+//	else if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE_PPC))
 		ppc_discharge_vbus(port, enable);
 
 	mutex_unlock(&discharge_lock[port]);
@@ -872,7 +876,8 @@ void pd_deferred_resume(int port)
  */
 __overridable bool pd_check_vbus_level(int port, enum vbus_level level)
 {
-	if (IS_ENABLED(CONFIG_USB_PD_VBUS_DETECT_TCPC))
+	//if (IS_ENABLED(CONFIG_USB_PD_VBUS_DETECT_TCPC))
+	if (get_cbi_ssfc_vbus_detect() == SSFC_USB_PD_VBUS_DETECT_TCPC)
 		return tcpm_check_vbus_level(port, level);
 	else if (level == VBUS_PRESENT)
 		return pd_snk_is_vbus_provided(port);

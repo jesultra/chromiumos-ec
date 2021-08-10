@@ -35,7 +35,8 @@ void pd_power_supply_reset(int port)
 	ppc_vbus_source_enable(port, 0);
 
 	/* Enable discharge if we were previously sourcing 5V */
-	if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE))
+	//if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE))
+	if (get_cbi_ssfc_usb_pd_discharge() != SSFC_USB_PD_DISCHARGE_NONE)
 		pd_set_vbus_discharge(port, 1);
 
 	/* Notify host of power info change. */
@@ -51,7 +52,8 @@ int pd_set_power_supply_ready(int port)
 	if (rv)
 		return rv;
 
-	if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE))
+	//if (IS_ENABLED(CONFIG_USB_PD_DISCHARGE))
+	if (get_cbi_ssfc_usb_pd_discharge() != SSFC_USB_PD_DISCHARGE_NONE)
 		pd_set_vbus_discharge(port, 0);
 
 	/* Provide Vbus. */

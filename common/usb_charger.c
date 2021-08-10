@@ -12,6 +12,7 @@
  * is necessary to update charge_manager with detected charger attributes.
  */
 
+#include "cbi_ssfc.h"
 #include "charge_manager.h"
 #include "charger.h"
 #include "common.h"
@@ -81,11 +82,13 @@ void usb_charger_vbus_change(int port, int vbus_level)
 		usb_charger_reset_charge(port);
 #endif
 
-#if (defined(CONFIG_USB_PD_VBUS_DETECT_CHARGER) \
-	|| defined(CONFIG_USB_PD_VBUS_DETECT_PPC))
-	/* USB PD task */
-	task_wake(PD_PORT_TO_TASK_ID(port));
-#endif
+/*#if (defined(CONFIG_USB_PD_VBUS_DETECT_CHARGER) \
+	|| defined(CONFIG_USB_PD_VBUS_DETECT_PPC))*/
+	if ((get_cbi_ssfc_vbus_detect() == SSFC_USB_PD_VBUS_DETECT_CHARGER) ||
+		(get_cbi_ssfc_vbus_detect() == SSFC_USB_PD_VBUS_DETECT_PPC))
+		/* USB PD task */
+		task_wake(PD_PORT_TO_TASK_ID(port));
+//#endif
 }
 
 void usb_charger_reset_charge(int port)

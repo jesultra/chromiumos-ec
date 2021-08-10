@@ -39,3 +39,18 @@ enum ec_ssfc_lightbar get_cbi_ssfc_lightbar(void)
 {
 	return cached_ssfc.lightbar;
 }
+
+enum ec_ssfc_usb_pd_vbus_detect get_cbi_ssfc_vbus_detect(void)
+{
+	return cached_ssfc.vbus_detect;
+}
+
+enum ec_ssfc_usb_pd_discharge get_cbi_ssfc_usb_pd_discharge(void)
+{
+	return cached_ssfc.discharge;
+}
+
+enum ec_ssfc_charger_otg get_cbi_ssfc_charger_otg(void)
+{
+	return cached_ssfc.charger_otg;
+}
