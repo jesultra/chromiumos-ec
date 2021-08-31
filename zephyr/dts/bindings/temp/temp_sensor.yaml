@@ -7,6 +7,11 @@
 # be ignored
 
 properties:
+    thermistor:
+      required: true
+      type: phandle
+      description: Underlying thermistor where we get temperature readings.
+
     label:
       required: true
       type: string

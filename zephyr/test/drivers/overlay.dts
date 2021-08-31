@@ -129,6 +129,7 @@
 
 	named-temp-sensors {
 		charger {
+			thermistor = <&thermy>;
 			compatible = "temp-3v3-13k7-47k-4050b";
 			label = "TEMP_SENSOR_CHARGER";
 			enum-name = "TEMP_SENSOR_CHARGER";
@@ -140,6 +141,7 @@
 			adc = <&adc_charger>;
 		};
 		pp3300-regulator {
+			thermistor = <&thermy>;
 			compatible = "temp-3v3-30k9-47k-4050b";
 			label = "TEMP_SENSOR_PP3300_REGULATOR";
 			enum-name = "TEMP_SENSOR_PP3300_REGULATOR";
@@ -151,6 +153,7 @@
 			adc = <&adc_pp3300_regulator>;
 		};
 		ddr-soc {
+			thermistor = <&thermy>;
 			compatible = "temp-3v3-51k1-47k-4050b";
 			label = "TEMP_SENSOR_DDR_SOC";
 			enum-name = "TEMP_SENSOR_DDR_SOC";
@@ -162,6 +165,7 @@
 			adc = <&adc_ddr_soc>;
 		};
 		fan {
+			thermistor = <&thermy>;
 			compatible = "temp-3v0-22k6-47k-4050b";
 			label = "TEMP_SENSOR_FAN";
 			enum-name = "TEMP_SENSOR_FAN";
@@ -172,12 +176,24 @@
 			temp_host_release_high = <65>;
 			adc = <&adc_fan>;
 		};
-	};
+		
 
+	};
+	// Working with 3v3_30k9_47k_4050b for now
+	// Making specific thermistors after I get poc
+	thermy: thermistor {
+		   compatible = "thermistor";
+		   adc = <&adc0>;
+		   scaling-factor = <11>;
+		   num-pairs = <9>;
+		   temp-c = <0 10 20 30 50 60 70 80 90 100>;
+		   scale-mv = <(2753/11) (2487/11) (2165/11) (1813/11)
+		   (1145/11) (878/11) (665/11) (500/11) (375/11) (282/11)>;
+	};
 	/*
-	 * Declare mutexes used by sensor drivers.
-	 * A mutex node is used to create an instance of mutex_t.
-	 * A mutex node is referenced by a sensor node if the
+	 * Demutexes used by sensor drivers.
+	 * A node is used to create an instance of mutex_t.
+	 * A node is referenced by a sensor node if the
 	 * corresponding sensor driver needs to use the
 	 * instance of the mutex.
 	 */

@@ -2,7 +2,9 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-# Common properties for thermistors
+description: Common properties for thermistors
+
+compatible: thermistor
 
 properties:
   adc:
@@ -10,20 +12,40 @@ properties:
     type: phandle
     description: named-adc child node connected to the thermistor
 
-  get-temp-func:
-    type: string
+  scaling-factor:
     required: false
-    description: >
-      Name of the board-provided function which reads the temperature. If you
-      have different values and need to add a new function, you can add that
-      here.
+    type: int
+    description: "Scaling factor for voltage pairs"
 
-      The name is get_temp_<v>_<rs>_<rn>_<b>:
+  num-pairs:
+    required: false
+    type: int
+    description: "Number of associated pairs between temp-c and scale-mv"
 
-      v: voltage of resistor-divider circuit
-      rs: value of the resistor that is in series with the thermistor
-      rn: nominal resistance of thermistor at 25C
-      b: B value for temperature range 25C to 100C
+  temp-c:
+    required: false
+    type: array
+    description: "Number of associated pairs between temp-c and scale-mv"
 
-      See https://www.electronics-tutorials.ws/io/thermistors.html for more
-      information.
+  scale-mv:
+     required: false
+     type: array
+     description: "Number of associated pairs between temp-c and scale-mv"
+
+  get-temp-func:
+      type: string
+      required: false
+      description: >
+        Name of the board-provided function which reads the temperature. If you
+        have different values and need to add a new function, you can add that
+        here.
+
+        The name is get_temp_<v>_<rs>_<rn>_<b>:
+
+          v: voltage of resistor-divider circuit
+          rs: value of the resistor that is in series with the thermistor
+          rn: nominal resistance of thermistor at 25C
+          b: B value for temperature range 25C to 100C
+
+          See https://www.electronics-tutorials.ws/io/thermistors.html for more
+           information.

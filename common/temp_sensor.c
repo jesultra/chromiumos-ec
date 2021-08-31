@@ -27,7 +27,7 @@ int temp_sensor_read(enum temp_sensor_id id, int *temp_ptr)
 		return EC_ERROR_INVAL;
 	sensor = temp_sensors + id;
 
-	return sensor->read(sensor->idx, temp_ptr);
+	return sensor->read(sensor, temp_ptr);
 }
 
 static void update_mapped_memory(void)
