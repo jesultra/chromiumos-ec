@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0530295d_596b1a1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1444467
+      },
+      "writtenOn": "2021-09-06T11:43:51Z",
+      "side": 1,
+      "message": "I have tested by make BOARD \u003d \"lazor\", \"homestar\", \"pompom\", \"mrbland\", \"wormdingler\", \"marzipan\", \"coachz\", \"pazquel\", \"trogdor\".\n\nShould we remove those added board/baseboard which are not on this branch?",
+      "revId": "6d35415bcedb445a86acde37b5c94f484fc59f81",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
