@@ -494,6 +494,10 @@ int board_set_active_charge_port(int port)
 		raa489000_enable_asgate(i, false);
 	}
 
+	/* If the port is not changing, we should do nothing */
+	if (old_port == port)
+		return EC_SUCCESS;
+
 	/*
 	 * Stop the charger IC from switching while changing ports.  Otherwise,
 	 * we can overcurrent the adapter we're switching to. (crbug.com/926056)
