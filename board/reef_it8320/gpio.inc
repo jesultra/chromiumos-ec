@@ -25,7 +25,7 @@ GPIO_INT(PCH_PLTRST_L,   	PIN(E, 3), GPIO_INT_BOTH | GPIO_PULL_UP,  lpcrst_inter
 #endif
 GPIO_INT(POWER_BUTTON_L,	PIN(E, 4), GPIO_INT_BOTH, power_button_interrupt)	/* MECH_PWR_BTN_ODL */
 GPIO_INT(ALL_SYS_PGOOD,		PIN(F, 0), GPIO_INT_BOTH, power_signal_interrupt)	/* PMIC_EC_PWROK_OD */
-GPIO_INT(RSMRST_L_PGOOD,	PIN(F, 1), GPIO_INT_BOTH, power_signal_interrupt)	/* PMIC_EC_RSMRST_ODL */
+GPIO_INT(PG_EC_RSMRST_ODL,	PIN(F, 1), GPIO_INT_BOTH, power_signal_interrupt)	/* PMIC_EC_RSMRST_ODL */
 GPIO_INT(PCH_SLP_S3_L,		PIN(F, 2), GPIO_INT_BOTH, power_signal_interrupt)	/* SLP_S3_L */
 GPIO_INT(PCH_SLP_S4_L,		PIN(F, 3), GPIO_INT_BOTH, power_signal_interrupt)	/* SLP_S4_L */
 GPIO_INT(WP_L,			PIN(I, 4), GPIO_INT_BOTH | GPIO_SEL_1P8V, switch_interrupt)	/* EC_WP_ODL_R */

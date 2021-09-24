@@ -28,7 +28,7 @@ GPIO_INT(PCH_SLP_S0_L,	 PIN(A, 4), GPIO_INT_BOTH, power_signal_interrupt)	/* SLP
 GPIO_INT(PCH_SLP_S4_L,	 PIN(A, 3), GPIO_INT_BOTH, power_signal_interrupt)	/* SLP_S4_L */
 GPIO_INT(PCH_SLP_S3_L,	 PIN(A, 6), GPIO_INT_BOTH, power_signal_interrupt)	/* SLP_S3_L */
 GPIO_INT(SUSPWRDNACK,	 PIN(D, 5), GPIO_INT_BOTH, power_signal_interrupt)	/* SUSPWRDNACK */
-GPIO_INT(RSMRST_L_PGOOD, PIN(E, 2), GPIO_INT_BOTH, power_signal_interrupt)	/* PMIC_EC_RSMRST_ODL */
+GPIO_INT(PG_EC_RSMRST_ODL, PIN(E, 2), GPIO_INT_BOTH, power_signal_interrupt)	/* PMIC_EC_RSMRST_ODL */
 GPIO_INT(ALL_SYS_PGOOD,	 PIN(F, 4), GPIO_INT_BOTH, power_signal_interrupt)	/* PMIC_EC_PWROK_OD */
 
 /* Other interrupts */

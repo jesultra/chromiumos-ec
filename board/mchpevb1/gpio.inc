@@ -47,7 +47,7 @@ GPIO_INT(POWER_BUTTON_L, PIN(023), GPIO_INT_BOTH, power_button_interrupt)
 
 /* RSMRST from PMIC */
 /* MEC1701H GPIO_0057/VCC_PWRGD OK */
-GPIO_INT(RSMRST_L_PGOOD, PIN(0126), GPIO_INT_BOTH, power_signal_interrupt)
+GPIO_INT(PG_EC_RSMRST_ODL, PIN(0126), GPIO_INT_BOTH, power_signal_interrupt)
 
 /* Remove. SLP_S3,S4 are eSPI virtual wires
 GPIO_INT(PCH_SLP_S4_L, PIN(0200), GPIO_INT_BOTH, power_signal_interrupt)
