@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f28222c7_547b2389",
+        "filename": "util/ectool_i2c.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1479762
+      },
+      "writtenOn": "2021-09-24T23:45:56Z",
+      "side": 1,
+      "message": "This is not validated here",
+      "range": {
+        "startLine": 428,
+        "startChar": 29,
+        "endLine": 428,
+        "endChar": 56
+      },
+      "revId": "8fc94d5f01c3a17c9dfbbce959bb18f7e2d9b0b3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
