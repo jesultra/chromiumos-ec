@@ -24,6 +24,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "187c1188_cf2c635e",
+        "filename": "util/ectool_i2c.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2021-09-28T04:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb98de2d_df14a226",
+      "range": {
+        "startLine": 125,
+        "startChar": 28,
+        "endLine": 125,
+        "endChar": 35
+      },
+      "revId": "b73e011eea043ba148a7068f0464519afec56e29",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34f352dc_03b40e05",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-09-27T18:03:49Z",
       "side": 1,
       "message": "\u003cspeed\u003e with a unit?",
+      "revId": "b73e011eea043ba148a7068f0464519afec56e29",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b9a6c2b_6556fe56",
+        "filename": "util/ectool_i2c.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2021-09-28T04:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34f352dc_03b40e05",
       "revId": "b73e011eea043ba148a7068f0464519afec56e29",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }

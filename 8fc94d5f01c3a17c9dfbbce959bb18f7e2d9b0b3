@@ -22,6 +22,30 @@
       },
       "revId": "8fc94d5f01c3a17c9dfbbce959bb18f7e2d9b0b3",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "400bf1f2_cc61c4e8",
+        "filename": "util/ectool_i2c.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2021-09-28T04:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f28222c7_547b2389",
+      "range": {
+        "startLine": 428,
+        "startChar": 29,
+        "endLine": 428,
+        "endChar": 56
+      },
+      "revId": "8fc94d5f01c3a17c9dfbbce959bb18f7e2d9b0b3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
