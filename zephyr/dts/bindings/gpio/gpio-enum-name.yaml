@@ -159,6 +159,7 @@ properties:
       - GPIO_USB_C0_PPC_INT_ODL
       - GPIO_USB_C0_SWCTL_INT_ODL
       - GPIO_USB_C0_TCPC_INT_ODL
+      - GPIO_USB_C0_INT_ODL
       - GPIO_USB_C1_BC12_INT_L
       - GPIO_USB_C1_BC12_INT_ODL
       - GPIO_USB_C1_FRS_EN
@@ -171,6 +172,11 @@ properties:
       - GPIO_USB_C1_RT_RST_ODL
       - GPIO_USB_C1_SWCTL_INT_ODL
       - GPIO_USB_C1_TCPC_INT_ODL
+      - GPIO_USB_C1_RST_ODL
+      - GPIO_USB_C1_RT_RST_R_ODL
+      - GPIO_USB_C2_PPC_INT_ODL
+      - GPIO_USB_C2_BC12_INT_ODL
+      - GPIO_USB_C2_INT_ODL
       - GPIO_VBOB_EN
       - GPIO_VOLUME_DOWN_L
       - GPIO_VOLUME_UP_L
@@ -178,3 +184,9 @@ properties:
       - GPIO_WP
       - GPIO_WP_L
       - GPIO_X_EC_GPIO2
+      - GPIO_SEQ_EC_DSW_PWROK
+      - GPIO_USB_C0_C2_TCPC_INT_ODL
+      - GPIO_USB_C0_C2_TCPC_RST_ODL
+      - GPIO_ID_1_USB_C0_C2_TCPC_RST_ODL
+      - GPIO_USB_C0_LS_EN
+      - GPIO_USB_C2_LS_EN

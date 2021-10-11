@@ -62,6 +62,103 @@
 			enum-name = "GPIO_EC_INT_L";
 			label = "EC_PCH_INT_ODL";
 		};
+		seq_ec_dsw_pwrok {
+			gpios = <&gpioc 7 GPIO_INPUT>;
+			enum-name = "GPIO_SEQ_EC_DSW_PWROK";
+			label = "SEQ_EC_DSW_PWROK";
+		};
+
+		usb_c0_c2_tcpc_int_odl {
+			gpios = <&gpioe 0 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_C2_TCPC_INT_ODL";
+			label = "USB_C0_c2_TCPC_INT_ODL";
+		};
+		usb_c1_tcpc_int_odl {
+			gpios = <&gpioa 2 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C1_TCPC_INT_ODL";
+			label = "USB_C1_TCPC_INT_ODL";
+		};
+		usb_c0_ppc_int_odl {
+			gpios = <&gpio6 2 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_PPC_INT_ODL";
+			label = "USB_C0_PPC_INT_ODL";
+		};
+		usb_c1_ppc_int_odl {
+			gpios = <&gpiof 5 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C1_PPC_INT_ODL";
+			label = "USB_C1_PPC_INT_ODL";
+		};
+		usb_c2_ppc_int_odl {
+			gpios = <&gpio7 0 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C2_PPC_INT_ODL";
+			label = "USB_C2_PPC_INT_ODL";
+		};
+		usb_c0_bc12_int_odl {
+			gpios = <&gpioc 6 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_BC12_INT_ODL";
+			label = "USB_C0_BC12_INT_ODL";
+		};
+		usb_c1_bc12_int_odl {
+			gpios = <&gpio5 0 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C1_BC12_INT_ODL";
+			label = "USB_C1_BC12_INT_ODL";
+		};
+		usb_c2_bc12_int_odl {
+			gpios = <&gpio8 3 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C2_BC12_INT_ODL";
+			label = "USB_C2_BC12_INT_ODL";
+		};
+//		gpio_usb_c1_mix_int_odl: usb_c1_mix_int_odl {
+//			#gpio-cells = <0>;
+//			gpios = <&gpio0 3 GPIO_INPUT>;
+//			enum-name = "GPIO_USB_C1_MIX_INT_ODL";
+//			label = "USB_C1_MIX_INT_ODL";
+//		};
+		usb_c1_rt_rst_r_odl {
+			gpios = <&gpio0 2 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C1_RT_RST_R_ODL";
+			label = "USB_C1_RT_RST_R_ODL";
+		};
+		usb_c1_rst_odl {
+			gpios = <&gpio9 6 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C1_RST_ODL";
+			label = "USB_C1_RST_ODL";
+		};
+		usb_c0_c2_tcpc_rst_odl {
+			gpios = <&gpioa 7 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_C2_TCPC_RST_ODL";
+			label = "USB_C0_C2_TCPC_RST_ODL";
+		};
+		id_1_usb_c0_c2_tcpc_rst_odl {
+			gpios = <&gpio3 4 GPIO_INPUT>;
+			enum-name = "GPIO_ID_1_USB_C0_C2_TCPC_RST_ODL";
+			label = "ID_1_USB_C0_C2_TCPC_RST_ODL";
+		};
+		gpio_usb_c0_int_odl: usb_c0_int_odl {
+                        #gpio-cells = <0>;
+			gpios = <&gpiob 1 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_INT_ODL";
+			label = "USB_C0_INT_ODL";
+		};
+		gpio_usb_c2_int_odl: usb_c2_int_odl {
+                        #gpio-cells = <0>;
+			gpios = <&gpio4 1 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C2_INT_ODL";
+			label = "USB_C2_INT_ODL";
+		};
+		gpio_unused_gpiod6: unused_gpiod6 {
+                        #gpio-cells = <0>;
+                        gpios = <&gpiod 6 GPIO_INPUT>;
+                        enum-name = "GPIO_USB_C0_LS_EN";
+                        label = "UNUSED_GPIOD6";
+                };
+		gpio_unused_gpio32: unused_gpio32 {
+                        #gpio-cells = <0>;
+                        gpios = <&gpio3 2 GPIO_INPUT>;
+                        enum-name = "GPIO_USB_C2_LS_EN";
+                        label = "UNUSED_GPIO32";
+                };
+
 	};
 
 	hibernate-wake-pins {

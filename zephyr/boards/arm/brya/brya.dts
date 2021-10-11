@@ -66,6 +66,16 @@
 			enum-name = "I2C_PORT_CHARGER";
 			label = "EEPROM";
 		};
+		c1_bc12 {
+			i2c-port = <&i2c6_1>;
+			enum-name = "I2C_PORT_USB_C1_BC12";
+			label = "C1_BC12";
+		};
+		c0_c2_bc12 {
+			i2c-port = <&i2c2_0>;
+			enum-name = "I2C_PORT_USB_C0_C2_BC12";
+			label = "C0_C2_BC12";
+		};
 	};
 
 	named-pwms {
@@ -78,6 +88,18 @@
 
 	def-lvol-io-list {
 		compatible = "nuvoton,npcx-lvolctrl-def";
+	};
+
+	named-batteries {
+		compatible = "named-batteries";
+
+		lgc011 {
+			enum-name = "lgc011";
+		};
+
+		power_tech {
+			enum-name = "power_tech";
+		};
 	};
 };
 
