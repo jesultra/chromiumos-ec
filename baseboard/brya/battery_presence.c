@@ -11,8 +11,23 @@
 #include "battery.h"
 #include "battery_smart.h"
 #include "common.h"
+#include "cbi.h"
+#include "gpio.h"
 
 static enum battery_present batt_pres_prev = BP_NOT_SURE;
+
+enum battery_present battery_hw_present(void)
+{
+	enum gpio_signal batt_pres;
+
+	if (get_board_id() == 1)
+		batt_pres = GPIO_ID_1_EC_BATT_PRES_ODL;
+	else
+		batt_pres = GPIO_EC_BATT_PRES_ODL;
+
+	/* The GPIO is low when the battery is physically present */
+	return gpio_get_level(batt_pres) ? BP_NO : BP_YES;
+}
 
 __overridable bool board_battery_is_initialized(void)
 {

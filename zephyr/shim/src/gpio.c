@@ -15,6 +15,42 @@
 
 LOG_MODULE_REGISTER(gpio_shim, LOG_LEVEL_ERR);
 
+
+/* IO expander signal list. */
+const struct ioex_info ioex_list[] = {
+/* Board ID 1 IO expander configuration */
+
+IOEX(ID_1_USB_C0_RT_RST_ODL, IOEX_ID_1_C0_NCT38XX, 0, 2, GPIO_ODR_LOW)
+/* GPIO03_P1 to PU */
+IOEX(ID_1_USB_C0_FRS_EN,     IOEX_ID_1_C0_NCT38XX, 0, 4, GPIO_LOW)
+IOEX(ID_1_USB_C0_OC_ODL,     IOEX_ID_1_C0_NCT38XX, 0, 6, GPIO_ODR_HIGH)
+/* GPIO07_P1 to PU */
+
+IOEX(ID_1_USB_C2_RT_RST_ODL, IOEX_ID_1_C2_NCT38XX, 0, 2, GPIO_ODR_LOW)
+/* GPIO03_P2 to PU */
+IOEX(ID_1_USB_C2_FRS_EN,     IOEX_ID_1_C2_NCT38XX, 0, 4, GPIO_LOW)
+IOEX(ID_1_USB_C1_OC_ODL,     IOEX_ID_1_C2_NCT38XX, 0, 6, GPIO_ODR_HIGH)
+IOEX(ID_1_USB_C2_OC_ODL,     IOEX_ID_1_C2_NCT38XX, 0, 7, GPIO_ODR_HIGH)
+
+/* Board ID 2 IO expander configuration */
+
+/* GPIO02_P2 to PU */
+/* GPIO03_P2 to PU */
+IOEX(USB_C0_OC_ODL,          IOEX_C0_NCT38XX, 0, 4, GPIO_ODR_HIGH)
+IOEX(USB_C0_FRS_EN,          IOEX_C0_NCT38XX, 0, 6, GPIO_LOW)
+IOEX(USB_C0_RT_RST_ODL,      IOEX_C0_NCT38XX, 0, 7, GPIO_ODR_LOW)
+
+IOEX(USB_C2_RT_RST_ODL,      IOEX_C2_NCT38XX, 0, 2, GPIO_ODR_LOW)
+IOEX(USB_C1_OC_ODL,          IOEX_C2_NCT38XX, 0, 3, GPIO_ODR_HIGH)
+IOEX(USB_C2_OC_ODL,          IOEX_C2_NCT38XX, 0, 4, GPIO_ODR_HIGH)
+IOEX(USB_C2_FRS_EN,          IOEX_C2_NCT38XX, 0, 6, GPIO_LOW)
+/* GPIO07_P2 to PU */
+};
+
+/* IO Expander Interrupt Handlers */
+void (* const ioex_irq_handlers[])(enum ioex_signal signal) = { };
+const int ioex_ih_count = ARRAY_SIZE(ioex_irq_handlers);
+
 /*
  * Static information about each GPIO that is configured in the named_gpios
  * device tree node.

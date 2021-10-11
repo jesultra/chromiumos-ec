@@ -42,6 +42,13 @@ BUILD_ASSERT(GPIO_COUNT < GPIO_LIMIT);
 #define NAMED_GPIO_NODELABEL(label, prop) \
 	GPIO_SIGNAL(DT_PHANDLE(DT_NODELABEL(label), prop))
 
+enum ioex_port {
+	IOEX_C0_NCT38XX = 0,
+	IOEX_C2_NCT38XX,
+	IOEX_ID_1_C0_NCT38XX,
+	IOEX_ID_1_C2_NCT38XX,
+	IOEX_PORT_COUNT
+};
 /*
  * While we don't support IO expanders at the moment, multiple
  * platform/ec headers (e.g., espi.h) require some of these constants
@@ -49,9 +56,39 @@ BUILD_ASSERT(GPIO_COUNT < GPIO_LIMIT);
  */
 enum ioex_signal {
 	IOEX_SIGNAL_START = GPIO_LIMIT + 1,
-	IOEX_SIGNAL_END = IOEX_SIGNAL_START,
+	__IOEX_PLACEHOLDER = GPIO_LIMIT,
+	IOEX_ID_1_USB_C0_RT_RST_ODL,
+	IOEX_ID_1_USB_C0_FRS_EN,
+	IOEX_ID_1_USB_C0_OC_ODL,
+	IOEX_ID_1_USB_C2_RT_RST_ODL,
+	IOEX_ID_1_USB_C2_FRS_EN,
+	IOEX_ID_1_USB_C1_OC_ODL,
+	IOEX_ID_1_USB_C2_OC_ODL,
+	IOEX_USB_C0_OC_ODL,
+	IOEX_USB_C0_FRS_EN,
+	IOEX_USB_C0_RT_RST_ODL,
+	IOEX_USB_C2_RT_RST_ODL,
+	IOEX_USB_C1_OC_ODL,
+	IOEX_USB_C2_OC_ODL,
+	IOEX_USB_C2_FRS_EN,
+	IOEX_SIGNAL_END,
 	IOEX_LIMIT = 0x1FFF,
 };
 BUILD_ASSERT(IOEX_SIGNAL_END < IOEX_LIMIT);
 
 #define IOEX_COUNT (IOEX_SIGNAL_END - IOEX_SIGNAL_START)
+
+#include "ioexpander.h"
+/*
+ *  Define the IO expander IO in gpio.inc by the format:
+ *    IOEX(name, ioex_port, port, offset, flags)
+ *      - name: the name of this IO pin
+ *      - ioex: the IO expander port (defined in board.c) this IO
+ *                 pin belongs to.
+ *      - port: the port number in the IO expander chip.
+ *      - offset: the bit offset in the port above.
+ *      - flags: the same as the flags of GPIO.
+ *
+ */
+#define IOEX(name, ioex, port, index, flags) \
+			{#name, ioex, port, BIT(index), flags},

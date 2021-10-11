@@ -8,7 +8,14 @@
 #ifndef __CROS_EC_USBC_CONFIG_H
 #define __CROS_EC_USBC_CONFIG_H
 
+#ifndef CONFIG_ZEPHYR
 #define CONFIG_USB_PD_PORT_MAX_COUNT	3
+#endif
+
+#ifdef CONFIG_ZEPHYR
+#define USBC_PORT_C0_BB_RETIMER_I2C_ADDR 0x56
+#define USBC_PORT_C2_BB_RETIMER_I2C_ADDR 0x57
+#endif
 
 enum usbc_port {
 	USBC_PORT_C0 = 0,

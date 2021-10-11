@@ -4,6 +4,7 @@
  */
 
 #include "common.h"
+#include "cbi.h"
 #include "compile_time_macros.h"
 #include "console.h"
 #include "cros_board_info.h"

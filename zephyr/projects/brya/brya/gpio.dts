@@ -19,6 +19,25 @@
 			label = "GSC_EC_PWR_BTN_ODL";
 		};
 
+		gpio_ec_wp_l: ec_wp_l {
+			#gpio-cells = <0>;
+			gpios = <&gpioa 1 GPIO_INPUT>;
+			enum-name = "GPIO_EC_WP_L";
+			label = "EC_WP_L";
+		};
+
+		ec_batt_pres_odl {
+			gpios = <&gpioa 3 GPIO_INPUT>;
+			enum-name = "GPIO_BATT_PRES_ODL";
+			label = "EC_BATT_PRES_ODL";
+		};
+
+		id_1_ec_batt_pres_odl {
+			gpios = <&gpioe 1 GPIO_INPUT>;
+			enum-name = "GPIO_ID_1_EC_BATT_PRES_ODL";
+			label = "ID_1_EC_BATT_PRES_ODL";
+		};
+
 		wp_l {
 			gpios = <&gpioa 1 GPIO_INPUT>;
 			enum-name = "GPIO_WP_L";
@@ -42,25 +61,137 @@
 			enum-name = "GPIO_PACKET_MODE_EN";
 			label = "EC_GSC_PACKET_MODE";
 		};
+
 		acok_od: acok_od {
 			gpios = <&gpio0 0 GPIO_INPUT>;
 			enum-name = "GPIO_AC_PRESENT";
 			label = "ACOK_OD";
 		};
+
 		ec_kso_02_inv {
 			gpios = <&gpio1 7 GPIO_OUT_LOW>;
 			enum-name = "GPIO_KBD_KSO2";
 			label = "EC_KSO_02_INV";
 		};
+
 		pch_wake_odl {
 			gpios = <&gpiob 0 GPIO_ODR_HIGH>;
 			enum-name = "GPIO_EC_PCH_WAKE_ODL";
 			label = "EC_PCH_WAKE_R_ODL";
 		};
+
 		pch_int_odl {
 			gpios = <&gpiob 0 GPIO_ODR_HIGH>;
 			enum-name = "GPIO_EC_INT_L";
 			label = "EC_PCH_INT_ODL";
+		};
+
+		seq_ec_dsw_pwrok {
+			gpios = <&gpioc 7 GPIO_INPUT>;
+			enum-name = "GPIO_SEQ_EC_DSW_PWROK";
+			label = "SEQ_EC_DSW_PWROK";
+		};
+
+		usb_c0_c2_tcpc_int_odl {
+			gpios = <&gpioe 0 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_C2_TCPC_INT_ODL";
+			label = "USB_C0_C2_TCPC_INT_ODL";
+		};
+
+		usb_c1_tcpc_int_odl {
+			gpios = <&gpioa 2 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C1_TCPC_INT_ODL";
+			label = "USB_C1_TCPC_INT_ODL";
+		};
+
+		usb_c0_ppc_int_odl {
+			gpios = <&gpio6 2 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_PPC_INT_ODL";
+			label = "USB_C0_PPC_INT_ODL";
+		};
+
+		usb_c1_ppc_int_odl {
+			gpios = <&gpiof 5 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C1_PPC_INT_ODL";
+			label = "USB_C1_PPC_INT_ODL";
+		};
+
+		usb_c2_ppc_int_odl {
+			gpios = <&gpio7 0 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C2_PPC_INT_ODL";
+			label = "USB_C2_PPC_INT_ODL";
+		};
+
+		usb_c0_bc12_int_odl {
+			gpios = <&gpioc 6 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_BC12_INT_ODL";
+			label = "USB_C0_BC12_INT_ODL";
+		};
+
+		usb_c1_bc12_int_odl {
+			gpios = <&gpio5 0 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C1_BC12_INT_ODL";
+			label = "USB_C1_BC12_INT_ODL";
+		};
+
+		usb_c2_bc12_int_odl {
+			gpios = <&gpio8 3 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C2_BC12_INT_ODL";
+			label = "USB_C2_BC12_INT_ODL";
+		};
+
+		en_pp5000_usba_r {
+			gpios = <&gpiod 7 GPIO_OUT_LOW>;
+			enum-name = "GPIO_EN_PP5000_USBA_R";
+			label = "EN_PP5000_USBA_R";
+		};
+
+		usb_c1_rt_rst_r_odl {
+			gpios = <&gpio0 2 GPIO_ODR_LOW>;
+			enum-name = "GPIO_USB_C1_RT_RST_R_ODL";
+			label = "USB_C1_RT_RST_R_ODL";
+		};
+
+		usb_c1_rst_odl {
+			gpios = <&gpio9 6 GPIO_ODR_LOW>;
+			enum-name = "GPIO_USB_C1_RST_ODL";
+			label = "USB_C1_RST_ODL";
+		};
+
+		usb_c0_c2_tcpc_rst_odl {
+			gpios = <&gpioa 7 GPIO_ODR_LOW>;
+			enum-name = "GPIO_USB_C0_C2_TCPC_RST_ODL";
+			label = "USB_C0_C2_TCPC_RST_ODL";
+		};
+
+		id_1_usb_c0_c2_tcpc_rst_odl {
+			gpios = <&gpio3 4 GPIO_ODR_LOW>;
+			enum-name = "GPIO_ID_1_USB_C0_C2_TCPC_RST_ODL";
+			label = "ID_1_USB_C0_C2_TCPC_RST_ODL";
+		};
+
+		usb_c0_int_odl {
+			gpios = <&gpiob 1 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_INT_ODL";
+			label = "USB_C0_INT_ODL";
+		};
+
+		usb_c2_int_odl {
+			gpios = <&gpio4 1 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C2_INT_ODL";
+			label = "USB_C2_INT_ODL";
+		};
+
+		usb_c0_rt_int_odl {
+			gpios = <&gpiob 1 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C0_RT_INT_ODL";
+			label = "USB_C0_RT_INT_ODL";
+		};
+
+		usb_c2_rt_int_odl {
+			gpios = <&gpio4 1 GPIO_INPUT>;
+			enum-name = "GPIO_USB_C2_RT_INT_ODL";
+			label = "USB_C2_RT_INT_ODL";
 		};
 	};
 

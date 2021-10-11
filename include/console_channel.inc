@@ -23,9 +23,9 @@ CONSOLE_CHANNEL(CC_BLUETOOTH_HCI,"bluetooth_hci")
 CONSOLE_CHANNEL(CC_CEC, "cec")
 #endif
 CONSOLE_CHANNEL(CC_CHARGER,      "charger")
-#ifdef HAS_TASK_CHIPSET
+//#ifdef HAS_TASK_CHIPSET
 CONSOLE_CHANNEL(CC_CHIPSET,      "chipset")
-#endif
+//#endif
 CONSOLE_CHANNEL(CC_CLOCK,        "clock")
 #ifdef CONFIG_DMA
 CONSOLE_CHANNEL(CC_DMA,          "dma")
