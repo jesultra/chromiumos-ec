@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3955d1de_46a91c1e",
+        "filename": "zephyr/test/drivers/src/tcpci_test_common.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2021-10-25T16:45:20Z",
+      "side": 1,
+      "message": "Nit: Odd line break location",
+      "revId": "5c0d02ccca977fc12cb4bf47edbe067fcbbe3a81",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
