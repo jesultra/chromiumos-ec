@@ -329,6 +329,7 @@
 #undef CONFIG_CMD_I2C_XFER
 
 /* free flash space */
+#undef CONFIG_USB_PD_HOST_CMD
 #undef CONFIG_USB_PD_DEBUG_LEVEL
 #define CONFIG_USB_PD_DEBUG_LEVEL 0
 #undef CONFIG_USB_PD_LOGGING
