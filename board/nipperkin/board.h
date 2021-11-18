@@ -35,6 +35,9 @@
 #define CONFIG_LED_COMMON
 #define CONFIG_LED_ONOFF_STATES
 
+#undef CONFIG_TEMP_SENSOR_TMP112
+#define CONFIG_TEMP_SENSOR_PCT2075
+
 #ifndef __ASSEMBLER__
 
 #include "gpio_signal.h"
@@ -66,6 +69,13 @@ enum temp_sensor_id {
 	TEMP_SENSOR_CPU,
 	TEMP_SENSOR_AMBIENT,
 	TEMP_SENSOR_COUNT
+};
+
+/* PCT2075 sensors */
+enum pct2075_sensor {
+	PCT2075_SOC,
+	PCT2075_AMB,
+	PCT2075_COUNT,
 };
 
 #endif /* !__ASSEMBLER__ */
