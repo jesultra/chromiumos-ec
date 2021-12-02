@@ -71,6 +71,11 @@ const struct power_signal_info power_signal_list[] = {
 		"DEPRECATED_AP_RST_REQ",
 	},
 #endif /* defined(CONFIG_CHIPSET_SC7180) */
+	[SC7X80_TEST_AP_RST_ASSERTED] = {
+		GPIO_TEST_AP_RST_L,
+		POWER_SIGNAL_ACTIVE_LOW | POWER_SIGNAL_DISABLE_AT_BOOT,
+		"TEST_AP_RST_ASSERTED",
+	},
 };
 BUILD_ASSERT(ARRAY_SIZE(power_signal_list) == POWER_SIGNAL_COUNT);
 
@@ -227,7 +232,8 @@ void chipset_ap_rst_interrupt(enum gpio_signal signal)
 	 * Only care the raising edge and AP in S0/S3. The single raising edge
 	 * of AP power-on during S5S3 is ignored.
 	 */
-	if (gpio_get_level(GPIO_AP_RST_L) &&
+	if ((gpio_get_level(GPIO_AP_RST_L) ||
+	     gpio_get_level(GPIO_TEST_AP_RST_L)) &&
 	    chipset_in_state(CHIPSET_STATE_ON | CHIPSET_STATE_SUSPEND)) {
 		ap_rst_transitions++;
 		if (ap_rst_transitions >= EXPECTED_AP_RST_TRANSITIONS) {
@@ -284,6 +290,8 @@ void chipset_warm_reset_interrupt(enum gpio_signal signal)
 				       GPIO_SEL_1P8V | GPIO_OUT_HIGH);
 			gpio_set_flags(GPIO_AP_RST_L, GPIO_INT_BOTH |
 				       GPIO_SEL_1P8V | GPIO_OUT_LOW);
+			gpio_set_flags(GPIO_TEST_AP_RST_L, GPIO_INT_BOTH |
+				       GPIO_OUT_LOW);
 		}
 		/* Ignore the else clause, the pull-up rail drops. */
 	} else {
@@ -316,6 +324,7 @@ void chipset_power_good_interrupt(enum gpio_signal signal)
 		 */
 		gpio_set_flags(GPIO_AP_RST_L, GPIO_INT_BOTH |
 			       GPIO_SEL_1P8V);
+		gpio_set_flags(GPIO_TEST_AP_RST_L, GPIO_INT_BOTH);
 		gpio_set_flags(GPIO_PS_HOLD, GPIO_INT_BOTH |
 			       GPIO_SEL_1P8V);
 		ap_rst_overdriven = 0;
@@ -569,6 +578,7 @@ enum power_state power_chipset_init(void)
 			 * it back to default, disabled.
 			 */
 			power_signal_enable_interrupt(GPIO_AP_RST_L);
+			power_signal_enable_interrupt(GPIO_TEST_AP_RST_L);
 
 			/* Disable idle task deep sleep when in S0 */
 			disable_sleep(SLEEP_MASK_AP_RUN);
@@ -625,6 +635,7 @@ static void power_off(void)
 		 * switchcap off.
 		 */
 		power_signal_disable_interrupt(GPIO_AP_RST_L);
+		power_signal_disable_interrupt(GPIO_TEST_AP_RST_L);
 	}
 
 	/* Check the switchcap status */
@@ -674,6 +685,7 @@ static int power_on(void)
 
 	/* Enable signal interrupts */
 	power_signal_enable_interrupt(GPIO_AP_RST_L);
+	power_signal_enable_interrupt(GPIO_TEST_AP_RST_L);
 
 	ret = set_pmic_pwron(1);
 	if (ret != EC_SUCCESS) {

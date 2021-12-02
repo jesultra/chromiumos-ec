@@ -26,6 +26,7 @@ GPIO_INT(EC_VOLUP_BTN_ODL,  PIN(F, 2), GPIO_INT_BOTH | GPIO_PULL_UP, button_inte
 GPIO_INT(EC_WP_ODL,         PIN(A, 1), GPIO_INT_BOTH, switch_interrupt)  /* Write protection */
 GPIO_INT(LID_OPEN_EC,       PIN(D, 2), GPIO_INT_BOTH, lid_interrupt)  /* Lid open */
 GPIO_INT(AP_RST_L,          PIN(C, 1), GPIO_INT_BOTH | GPIO_SEL_1P8V, chipset_ap_rst_interrupt)  /* PMIC to signal AP reset */
+GPIO_INT(TEST_AP_RST_L,     PIN(3, 7), GPIO_INT_BOTH, chipset_ap_rst_interrupt)
 GPIO_INT(PS_HOLD,           PIN(A, 4), GPIO_INT_BOTH | GPIO_PULL_DOWN, power_signal_interrupt)  /* Indicate when AP triggers reset/shutdown */
 GPIO_INT(AP_SUSPEND,        PIN(5, 7), GPIO_INT_BOTH, power_signal_interrupt)  /* Suspend signal from PMIC */
 GPIO_INT(DEPRECATED_AP_RST_REQ, PIN(C, 2), GPIO_INT_BOTH | GPIO_PULL_DOWN | GPIO_SEL_1P8V, power_signal_interrupt) /* Deprecated AP initiated reset indicator */
@@ -144,7 +145,6 @@ UNUSED(PIN(C, 0))
 UNUSED(PIN(A, 7))
 UNUSED(PIN(8, 3))
 UNUSED(PIN(8, 1))
-UNUSED(PIN(3, 7))
 UNUSED(PIN(7, 6))
 UNUSED(PIN(3, 4))
 UNUSED(PIN(C, 5))
