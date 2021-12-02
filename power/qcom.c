@@ -283,7 +283,7 @@ void chipset_warm_reset_interrupt(enum gpio_signal signal)
 			gpio_set_flags(GPIO_PS_HOLD, GPIO_INT_BOTH |
 				       GPIO_SEL_1P8V | GPIO_OUT_HIGH);
 			gpio_set_flags(GPIO_AP_RST_L, GPIO_INT_BOTH |
-				       GPIO_SEL_1P8V | GPIO_OUT_LOW);
+				       GPIO_OUT_LOW);
 		}
 		/* Ignore the else clause, the pull-up rail drops. */
 	} else {
@@ -314,8 +314,7 @@ void chipset_power_good_interrupt(enum gpio_signal signal)
 		 * When POWER_GOOD drops, high-Z both AP_RST_L and PS_HOLD
 		 * to restore their states.
 		 */
-		gpio_set_flags(GPIO_AP_RST_L, GPIO_INT_BOTH |
-			       GPIO_SEL_1P8V);
+		gpio_set_flags(GPIO_AP_RST_L, GPIO_INT_BOTH);
 		gpio_set_flags(GPIO_PS_HOLD, GPIO_INT_BOTH |
 			       GPIO_SEL_1P8V);
 		ap_rst_overdriven = 0;
