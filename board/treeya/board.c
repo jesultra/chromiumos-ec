@@ -196,4 +196,11 @@ void board_bmi160_lsm6dsm_interrupt(enum gpio_signal signal)
 		bmi160_interrupt(signal);
 }
 
+<<<<<<< HEAD   (2a110e treeya: add skuid 0xbe, 0xbf for treeya360)
 #endif
+=======
+void board_hibernate_late(void)
+{
+	NPCX_KBSINPU = 0x0A;
+}
+>>>>>>> CHANGE (d6ab3b treeya: undef hibernate psl and keep KSI1/3 high in deep sle)
