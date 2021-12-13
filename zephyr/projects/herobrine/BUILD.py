@@ -11,14 +11,10 @@ def register_variant(project_name, extra_dts_overlays=(), extra_kconfig_files=()
             # Common to all projects.
             here / "adc.dts",
             here / "battery.dts",
-            here / "gpio.dts",
             here / "common.dts",
             here / "i2c.dts",
             here / "interrupts.dts",
-            here / "motionsense.dts",
             here / "pwm.dts",
-            here / "switchcap.dts",
-            here / "usbc.dts",
             # Project-specific DTS customization.
             *extra_dts_overlays,
         ],
@@ -33,10 +29,22 @@ def register_variant(project_name, extra_dts_overlays=(), extra_kconfig_files=()
 
 register_variant(
     project_name="herobrine_npcx9",
+    extra_dts_overlays=[
+        here / "gpio_herobrine_npcx9.dts",
+        here / "motionsense_herobrine_npcx9.dts",
+        here / "switchcap_herobrine_npcx9.dts",
+        here / "usbc_herobrine_npcx9.dts",
+    ],
 )
 
 
 register_variant(
     project_name="hoglin",
     extra_kconfig_files=[here / "prj_hoglin.conf"],
+    extra_dts_overlays=[
+        here / "gpio_hoglin.dts",
+        here / "motionsense_hoglin.dts",
+        here / "switchcap_hoglin.dts",
+        here / "usbc_hoglin.dts",
+    ],
 )

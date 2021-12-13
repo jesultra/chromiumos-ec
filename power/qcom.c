@@ -389,7 +389,12 @@ static int wait_switchcap_power_good(int enable)
  */
 static int is_system_powered(void)
 {
+#ifdef CONFIG_BOARD_HOGLIN
+	return !board_is_switchcap_enabled();
+#else
 	return board_is_switchcap_enabled();
+#endif
+
 }
 
 /**
@@ -452,7 +457,12 @@ static int wait_pmic_pwron(int enable, unsigned int timeout)
  */
 static void set_system_power_no_check(int enable)
 {
+#ifdef CONFIG_BOARD_HOGLIN
+	board_set_switchcap_power(!enable);
+#else
 	board_set_switchcap_power(enable);
+#endif
+
 }
 
 /**

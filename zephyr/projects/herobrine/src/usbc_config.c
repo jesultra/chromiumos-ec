@@ -5,6 +5,7 @@
 
 /* Herobrine board-specific USB-C configuration */
 
+#include "adc.h"
 #include "charger.h"
 #include "charger/isl923x_public.h"
 #include "charge_manager.h"
@@ -131,7 +132,11 @@ const struct tcpc_config_t tcpc_config[CONFIG_USB_PD_PORT_MAX_COUNT] = {
 		.bus_type = EC_BUS_TYPE_I2C,
 		.i2c_info = {
 			.port = I2C_PORT_TCPC0,
+			#ifdef CONFIG_BOARD_HOGLIN
+			.addr_flags = PS8751_I2C_ADDR2_FLAGS,
+			#else
 			.addr_flags = PS8751_I2C_ADDR1_FLAGS,
+			#endif
 		},
 		.drv = &ps8xxx_tcpm_drv,
 	},
@@ -139,7 +144,11 @@ const struct tcpc_config_t tcpc_config[CONFIG_USB_PD_PORT_MAX_COUNT] = {
 		.bus_type = EC_BUS_TYPE_I2C,
 		.i2c_info = {
 			.port = I2C_PORT_TCPC1,
+			#ifdef CONFIG_BOARD_HOGLIN
+			.addr_flags = PS8751_I2C_ADDR2_FLAGS,
+			#else
 			.addr_flags = PS8751_I2C_ADDR1_FLAGS,
+			#endif
 		},
 		.drv = &ps8xxx_tcpm_drv,
 	},
@@ -329,3 +338,13 @@ uint16_t tcpc_get_alert_status(void)
 
 	return status;
 }
+
+#ifdef CONFIG_USB_PD_VBUS_MEASURE_ADC_EACH_PORT
+enum adc_channel board_get_vbus_adc(int port)
+{
+	/* Currently there is no option to select Joint ADC in zephyr config
+	 * Hence using this workaround. TODO: Fix zephyr Kconfig.usbc.
+	 */
+	return ADC_VBUS;
+}
+#endif /* CONFIG_USB_PD_VBUS_MEASURE_ADC_EACH_PORT */
