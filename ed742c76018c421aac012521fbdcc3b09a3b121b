@@ -22,6 +22,29 @@
       },
       "revId": "ed742c76018c421aac012521fbdcc3b09a3b121b",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d0e330d_327ebd7d",
+        "filename": "board/draco/charger.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1479762
+      },
+      "writtenOn": "2021-12-30T23:01:16Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be SUCCESS?",
+      "range": {
+        "startLine": 58,
+        "startChar": 9,
+        "endLine": 58,
+        "endChar": 23
+      },
+      "revId": "ed742c76018c421aac012521fbdcc3b09a3b121b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
