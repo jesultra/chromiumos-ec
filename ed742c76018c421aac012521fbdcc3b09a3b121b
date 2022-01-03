@@ -69,6 +69,30 @@
       },
       "revId": "ed742c76018c421aac012521fbdcc3b09a3b121b",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d59830b_4c846f3f",
+        "filename": "board/draco/charger.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1294793
+      },
+      "writtenOn": "2022-01-03T01:50:41Z",
+      "side": 1,
+      "message": "Looks like board_set_active_charge_port() is use to check if board can be sink,\nif ppc is sourcing vbus then we can\u0027t switch to sink, should return EC_ERROR_INVAL.",
+      "parentUuid": "6d0e330d_327ebd7d",
+      "range": {
+        "startLine": 58,
+        "startChar": 9,
+        "endLine": 58,
+        "endChar": 23
+      },
+      "revId": "ed742c76018c421aac012521fbdcc3b09a3b121b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
