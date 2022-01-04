@@ -37,7 +37,7 @@ struct cros_kb_raw_wuc_map_cfg {
 
 struct cros_kb_raw_ite_config {
 	/* keyboard scan controller base address */
-	uintptr_t base;
+	struct kscan_it8xxx2_regs *base;
 	/* Keyboard scan input (KSI) wake-up irq */
 	int irq;
 	/* KSI[7:0] wake-up input source configuration list */
@@ -79,8 +79,7 @@ static int cros_kb_raw_ite_enable_interrupt(const struct device *dev,
 static int cros_kb_raw_ite_read_row(const struct device *dev)
 {
 	const struct cros_kb_raw_ite_config *config = dev->config;
-	struct kscan_it8xxx2_regs *const inst =
-				(struct kscan_it8xxx2_regs *) config->base;
+	struct kscan_it8xxx2_regs *const inst = config->base;
 
 	/* Bits are active-low, so invert returned levels */
 	return ((inst->KBS_KSI) ^ 0xff);
@@ -91,8 +90,7 @@ static int cros_kb_raw_ite_drive_column(const struct device *dev, int col)
 	int mask;
 	unsigned int key;
 	const struct cros_kb_raw_ite_config *config = dev->config;
-	struct kscan_it8xxx2_regs *const inst =
-				(struct kscan_it8xxx2_regs *) config->base;
+	struct kscan_it8xxx2_regs *const inst = config->base;
 
 	/* Tri-state all outputs */
 	if (col == KEYBOARD_COLUMN_NONE)
@@ -149,8 +147,7 @@ static int cros_kb_raw_ite_init(const struct device *dev)
 {
 	unsigned int key;
 	const struct cros_kb_raw_ite_config *config = dev->config;
-	struct kscan_it8xxx2_regs *const inst =
-				(struct kscan_it8xxx2_regs *) config->base;
+	struct kscan_it8xxx2_regs *const inst = config->base;
 
 	/* Ensure top-level interrupt is disabled */
 	cros_kb_raw_ite_enable_interrupt(dev, 0);
@@ -220,7 +217,7 @@ static const struct cros_kb_raw_wuc_map_cfg
 		IT8XXX2_DT_WUC_ITEMS_LIST(0);
 
 static const struct cros_kb_raw_ite_config cros_kb_raw_cfg = {
-	.base = DT_INST_REG_ADDR(0),
+	.base = (struct kscan_it8xxx2_regs *)DT_INST_REG_ADDR(0),
 	.irq = DT_INST_IRQN(0),
 	.wuc_map_list = cros_kb_raw_wuc_0,
 };
