@@ -93,6 +93,30 @@
       },
       "revId": "ed742c76018c421aac012521fbdcc3b09a3b121b",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef5c90ef_42f635f1",
+        "filename": "board/draco/charger.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1479762
+      },
+      "writtenOn": "2022-01-05T05:23:12Z",
+      "side": 1,
+      "message": "This function is not only checking, it will set port to sink. But I agree, form the definition \n```\n * @param charge_port\tCharge port to be enabled.\n * @return\t\tEC_SUCCESS if the charge port is accepted,\n *\t\t\tother ec_error_list status otherwise.\n```\nit should be an error, because port wasn\u0027t accepted.",
+      "parentUuid": "5d59830b_4c846f3f",
+      "range": {
+        "startLine": 58,
+        "startChar": 9,
+        "endLine": 58,
+        "endChar": 23
+      },
+      "revId": "ed742c76018c421aac012521fbdcc3b09a3b121b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
