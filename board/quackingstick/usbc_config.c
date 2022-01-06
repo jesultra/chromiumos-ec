@@ -30,10 +30,8 @@ struct temp_chg_step {
 };
 
 static const struct temp_chg_step temp_chg_table[] = {
-	{.low =  0, .high = 50, .current = 3000},	/* Lv0: normal charge */
-	{.low = 48, .high = 53, .current = 1500},
-	{.low = 51, .high = 56, .current = 1000},
-	{.low = 54, .high = 100, .current = 800},
+	{.low =  0, .high = 56, .current = 3000},	/* Lv0: normal charge */
+	{.low = 49, .high = 100, .current = 0},
 };
 #define NUM_TEMP_CHG_LEVELS ARRAY_SIZE(temp_chg_table)
 
