@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78fb72a2_101d601f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1294793
+      },
+      "writtenOn": "2022-01-06T08:51:48Z",
+      "side": 1,
+      "message": "Seems we could not CQ even rebase original CL,\nI rename charger.c to charger_isl9241.c, \nmake BOARD\u003ddraco passed.",
+      "revId": "13e110a3349eebdbae87776c68d22150603e3953",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
