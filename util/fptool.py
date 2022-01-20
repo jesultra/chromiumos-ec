@@ -36,8 +36,14 @@ def gpiofind(name: str) -> [int, str]:
 class FPGpios:
     """Common GPIOs structure to be initiated per platform"""
 
+    n_reset = None
+    boot_0 = None
+    power_enable = None
+
     class Gpio:
         """Single GPIO control class"""
+
+        _gpio = None
 
         def _get_gpio_by_index(self, ranges: List[dict], idx: int) -> int:
             """Convert gpio index to its absolute location in the device.
@@ -85,6 +91,15 @@ class FPGpios:
             #
             # Gpio location is: 22 + bases['gpiochip0']
             return int(gpio[1]) + int(bases[gpio[0]])
+
+        def _get_gpio(self, ranges: List[dict], bases: dict, gpio) -> int:
+            if isinstance(gpio, int):
+                return self._get_gpio_by_index(ranges, gpio)
+            return self._get_gpio_by_name(bases, gpio)
+
+        def __init__(self, ranges: List[dict], bases: dict, gpio):
+            _gpio = self._get_gpio(ranges, bases, gpio)
+            self._gpio = str(_gpio) if _gpio > -1 else None
 
     def _read_gpio_ranges(self) -> List[dict]:
         """Parse the GPIO ranges from "/sys/kernel/debug/pinctrl/*/gpio-ranges"
@@ -239,6 +254,137 @@ class FPGpios:
             bases[detect[label]] = base
 
         return bases
+
+    def __init__(self, n_reset, boot_0, power_enable=-1):
+        self.bases = self._parse_gpiochips()
+        self.ranges = self._read_gpio_ranges()
+
+        self.n_reset = self.Gpio(self.ranges, self.bases, n_reset)
+        self.boot_0 = self.Gpio(self.ranges, self.bases, boot_0)
+        self.power_enable = self.Gpio(self.ranges, self.bases, power_enable)
+
+
+class ConfigPlatform:
+    """Board specific configuration functions
+
+    Holds the following:
+        Transport, Transport Device, FPGpios
+    """
+    # Board specific configuration functions
+    # Returns the following:
+    # Transport, Transport Device, FPGpios(n_reset, boot_0, power_enable)
+
+    def _config_hatch(self) -> dict:
+        # See
+        # third_party/coreboot/src/soc/intel/cannonlake/include/soc/
+        #   gpio_soc_defs.h
+        # for pin name to number mapping.
+        return {'TRANSPORT': 'SPI',
+                'DEVICE':    '/dev/spidev1.1',
+                'GPIOS':     FPGpios(n_reset=12, boot_0=22,
+                                     power_enable=192)}
+
+    def _config_herobrine(self) -> dict:
+        return {'TRANSPORT': 'SPI',
+                'DEVICE':    '/dev/spidev11.0',
+                'GPIOS':     FPGpios(n_reset='FP_RST_L', boot_0='FPMCU_BOOT0',
+                                     power_enable='EN_FP_RAILS')}
+
+    def _config_nami(self) -> dict:
+        return {'TRANSPORT': 'SPI',
+                'DEVICE':    '/dev/spidev32765.0',
+                'GPIOS':     FPGpios(n_reset=57, boot_0=77, power_enable=35)}
+
+    def _config_nami_kernelnext(self) -> dict:
+        return {'TRANSPORT': 'SPI',
+                'DEVICE':    '/dev/spidev1.0',
+                'GPIOS':     FPGpios(n_reset=57, boot_0=77, power_enable=35)}
+
+    def _config_nocturne(self) -> dict:
+        return {'TRANSPORT': 'SPI',
+                'DEVICE':    '/dev/spidev32765.0',
+                'GPIOS':     FPGpios(n_reset=58, boot_0=56, power_enable=11)}
+
+    def _config_nocturne_kernelnext(self) -> dict:
+        return {'TRANSPORT': 'SPI',
+                'DEVICE':    '/dev/spidev1.0',
+                'GPIOS':     FPGpios(n_reset=58, boot_0=56, power_enable=11)}
+
+    def _config_strongbad(self) -> dict:
+        return {'TRANSPORT': 'SPI',
+                'DEVICE':    '/dev/spidev10.0',
+                'GPIOS':     FPGpios(n_reset='FP_RST_L', boot_0='FPMCU_BOOT0',
+                                     power_enable=-1)}
+
+    def _config_volteer(self) -> dict:
+        # See kernel/v5.4/drivers/pinctrl/intel/pinctrl-tigerlake.c
+        # for pin name and pin number.
+        # Examine `cat /sys/kernel/debug/pinctrl/INT34C5:00/gpio-ranges`
+        # on a volteer device to determine gpio number from pin number.
+        # For example: GPP_C23 is UART2_CTS which can be queried from EDS
+        # the pin number is 194. From the gpio-ranges, the gpio value is
+        # 408 + (194-171) = 431
+        return {'TRANSPORT': 'SPI',
+                'DEVICE':    '/dev/spidev1.0',
+                'GPIOS':     FPGpios(n_reset=194, boot_0=193, power_enable=63)}
+
+    def _config_brya(self) -> dict:
+        # See kernel/v5.10/drivers/pinctrl/intel/pinctrl-tigerlake.c
+        # for pin name and pin number.
+        # Examine `cat /sys/kernel/debug/pinctrl/INTC1055:00/gpio-ranges`
+        # on a brya device to determine gpio number from pin number.
+        # For example: GPP_D1 is ISH_GP_1 which can be queried from EDS
+        # the pin number is 100 from the pinctrl-tigerlake.c.
+        # From the gpio-ranges, the gpio value is 312 + (100-99) = 313
+        return {'TRANSPORT': 'SPI',
+                'DEVICE':    '/dev/spidev0.0',
+                'GPIOS':     FPGpios(n_reset=100, boot_0=99, power_enable=101)}
+
+    def _config_brask(self) -> dict:
+        # Let's call the config_brya since brask follows the brya HW design
+        return self.config_brya()
+
+    def _config_zork(self) -> dict:
+        return {'TRANSPORT': 'UART',
+                'DEVICE':    '/dev/ttyS1',
+                'GPIOS':     FPGpios(n_reset=11, boot_0=69, power_enable=-1)}
+
+    def _config_guybrush(self) -> dict:
+        return {'TRANSPORT': 'UART',
+                'DEVICE':    '/dev/ttyS1',
+                'GPIOS':     FPGpios(n_reset=11, boot_0=144, power_enable=-1)}
+
+    _config_funcs = {
+        'hatch':                _config_hatch,
+        'herobrine':            _config_herobrine,
+        'nami':                 _config_nami,
+        'nami-kernelnext':      _config_nami_kernelnext,
+        'nocturne':             _config_nocturne,
+        'nocturne-kernelnext':  _config_nocturne_kernelnext,
+        'strongbad':            _config_strongbad,
+        'volteer':              _config_volteer,
+        'brya':                 _config_brya,
+        'brask':                _config_brask,
+        'zork':                 _config_zork,
+        'guybrush':             _config_guybrush,
+    }
+
+    def transport(self) -> str:
+        return self._config['TRANSPORT']
+
+    def device(self) -> str:
+        return self._config['DEVICE']
+
+    def gpios(self) -> FPGpios:
+        return self._config['GPIOS']
+
+    def __new__(cls, platform: str):
+        if platform not in ConfigPlatform._config_funcs:
+            return None
+        return super().__new__(cls)
+
+    def __init__(self, platform: str):
+        self._config = self._config_funcs[platform](self)
 
 
 def readline(file_name: str) -> str:
