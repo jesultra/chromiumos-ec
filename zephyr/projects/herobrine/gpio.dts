@@ -91,7 +91,6 @@
 			enum-name = "GPIO_ACCEL_GYRO_INT_L";
 		};
 		gpio_rtc_ec_wake_odl: rtc_ec_wake_odl {
-			#gpio-cells = <0>;
 			gpios = <&gpio0 2 GPIO_INPUT>;
 			enum-name = "GPIO_EC_RST_ODL";
 		};

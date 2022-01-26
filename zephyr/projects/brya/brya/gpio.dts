@@ -16,7 +16,6 @@
 			enum-name = "GPIO_POWER_BUTTON_L";
 		};
 		gpio_ec_wp_l: ec_wp_odl {
-			#gpio-cells = <0>;
 			gpios = <&gpioa 1 GPIO_INPUT>;
 			enum-name = "GPIO_WP_L";
 		};
@@ -285,12 +284,10 @@
 			enum-name = "GPIO_USB_C2_INT_ODL";
 		};
 		usb_c0_rt_int_odl: usb_c0_rt_int_odl {
-			#gpio-cells = <0>;
 			gpios = <&gpiob 1 GPIO_INPUT>;
 			enum-name = "GPIO_USB_C0_RT_INT_ODL";
 		};
 		usb_c2_rt_int_odl: usb_c2_rt_int_odl {
-			#gpio-cells = <0>;
 			gpios = <&gpio4 1 GPIO_INPUT>;
 			enum-name = "GPIO_USB_C2_RT_INT_ODL";
 		};
@@ -319,13 +316,11 @@
 			label = "IOEX_USB_C0_FRS_EN";
 		};
 		usb_c0_rt_rst_odl: usb_c0_rt_rst_odl {
-			#gpio-cells = <0>;
 			gpios = <&ioex_port1 7 GPIO_ODR_HIGH>;
 			enum-name = "IOEX_USB_C0_RT_RST_ODL";
 			label = "IOEX_USB_C0_RT_RST_ODL";
 		};
 		usb_c2_rt_rst_odl: usb_c2_rt_rst_odl {
-			#gpio-cells = <0>;
 			gpios = <&ioex_port2 2 GPIO_ODR_HIGH>;
 			enum-name = "IOEX_USB_C2_RT_RST_ODL";
 			label = "IOEX_USB_C2_RT_RST_ODL";
