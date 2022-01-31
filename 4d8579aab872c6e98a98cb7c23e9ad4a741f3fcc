@@ -16,6 +16,167 @@
       "message": "Please take a look at new hoglin changes. Currently few GPIO changes will make herobrine uncomfortable. I will resolve them so that both boards can coexists without duplicating much files.",
       "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5d4f935_bbbff4a5",
+        "filename": "power/qcom.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-01-31T19:36:13Z",
+      "side": 1,
+      "message": "The prefix of `board_` in the `board_is_switchcap_enabled()` means the function can be customized by the board level. You can override the function in the board level. Don\u0027t change this common code.\n\nI think you can add a `polarity` attribute in the `switchcap-gpio` dts node. Check `shim/src/switchcap_gpio.c`.",
+      "range": {
+        "startLine": 393,
+        "startChar": 8,
+        "endLine": 393,
+        "endChar": 38
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed4cb73f_1d9c9587",
+        "filename": "zephyr/CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-01-31T19:36:13Z",
+      "side": 1,
+      "message": "Separate this new sensor driver to an individual CL. Make this CL clear to only related to the Hoglin board.",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 87
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7785a713_850cbb4d",
+        "filename": "zephyr/projects/herobrine/CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-01-31T19:36:13Z",
+      "side": 1,
+      "message": "The hoglin project won\u0027t have the same rule as herobrine_npcx9 for alt-device replacement. Duplicate a hoglin directory for it.",
+      "range": {
+        "startLine": 27,
+        "startChar": 8,
+        "endLine": 27,
+        "endChar": 23
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d0511e4_6dee8be4",
+        "filename": "zephyr/projects/herobrine/motionsense.dts",
+        "patchSetId": 11
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-01-31T19:36:13Z",
+      "side": 1,
+      "message": "This change will break the `herobrine_npcx9` project. They share the same file but may use different rotation matrix. In this case, you can simply fork the `motionsense.dts` into two: `motionsense_herobrine_npcx9.dts` and `motionsense_hoglin.dts`.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 12
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13f6e530_b110efca",
+        "filename": "zephyr/projects/herobrine/prj.conf",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-01-31T19:36:13Z",
+      "side": 1,
+      "message": "Change it in the `prj_hoglin.conf`.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 31
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eef7bce_521901ea",
+        "filename": "zephyr/projects/herobrine/src/usbc_config.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-01-31T19:36:13Z",
+      "side": 1,
+      "message": "Sam is working on abstracting this USB topology to the dts, check b/194432779. The BC1.2 and the PPC are done. Sam, what is the progress of the TCPC?",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 9
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ca5481d_ba3ced4e",
+        "filename": "zephyr/projects/herobrine/usbc.dts",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-01-31T19:36:13Z",
+      "side": 1,
+      "message": "Split this `usbc.dts` into 2.",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 4
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }

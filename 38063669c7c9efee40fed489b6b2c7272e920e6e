@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6a0ea40_9c132f14",
+        "filename": "zephyr/projects/herobrine/switchcap.dts",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-01-31T19:36:13Z",
+      "side": 0,
+      "message": "Split this `switchcap.dts` into 2.",
+      "range": {
+        "startLine": 10,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "38063669c7c9efee40fed489b6b2c7272e920e6e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
