@@ -112,6 +112,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "454b7088_e5104a9f",
+        "filename": "zephyr/CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-02T13:15:39Z",
+      "side": 1,
+      "message": "https://chromium-review.googlesource.com/c/chromiumos/platform/ec/+/3429384",
+      "parentUuid": "4347619d_cdd8a683",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 87
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7785a713_850cbb4d",
