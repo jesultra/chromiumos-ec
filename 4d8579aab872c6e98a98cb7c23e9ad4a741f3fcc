@@ -159,6 +159,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63d356fa_37eb6a03",
+        "filename": "zephyr/projects/herobrine/CMakeLists.txt",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-02T13:16:51Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "7785a713_850cbb4d",
+      "range": {
+        "startLine": 27,
+        "startChar": 8,
+        "endLine": 27,
+        "endChar": 23
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d0511e4_6dee8be4",
@@ -172,6 +196,30 @@
       "writtenOn": "2022-01-31T19:36:13Z",
       "side": 1,
       "message": "This change will break the `herobrine_npcx9` project. They share the same file but may use different rotation matrix. In this case, you can simply fork the `motionsense.dts` into two: `motionsense_herobrine_npcx9.dts` and `motionsense_hoglin.dts`.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 12
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c30044e_60663079",
+        "filename": "zephyr/projects/herobrine/motionsense.dts",
+        "patchSetId": 11
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-02T13:16:51Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "4d0511e4_6dee8be4",
       "range": {
         "startLine": 41,
         "startChar": 0,
@@ -289,6 +337,30 @@
       "writtenOn": "2022-01-31T19:36:13Z",
       "side": 1,
       "message": "Split this `usbc.dts` into 2.",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 4
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed84d97a_538e8499",
+        "filename": "zephyr/projects/herobrine/usbc.dts",
+        "patchSetId": 11
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-02T13:16:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ca5481d_ba3ced4e",
       "range": {
         "startLine": 53,
         "startChar": 0,
