@@ -22,6 +22,30 @@
       },
       "revId": "38063669c7c9efee40fed489b6b2c7272e920e6e",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4eda1d9_d1366a01",
+        "filename": "zephyr/projects/herobrine/switchcap.dts",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-02T12:23:50Z",
+      "side": 0,
+      "message": "Done.",
+      "parentUuid": "b6a0ea40_9c132f14",
+      "range": {
+        "startLine": 10,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "38063669c7c9efee40fed489b6b2c7272e920e6e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }

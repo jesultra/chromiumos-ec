@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d52ca46_306c941f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-02T12:23:50Z",
+      "side": 1,
+      "message": "Thanks for review Tom, I will split sensors into separate commit. Even though gpio.dts has only one gpio change but I couldn\u0027t fine a way to replace dt node from hoglin dt node so splitting it into two files. Split other DT files as well.",
+      "revId": "81f6319d41b0e335765cd8737aba7337dda93c18",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
