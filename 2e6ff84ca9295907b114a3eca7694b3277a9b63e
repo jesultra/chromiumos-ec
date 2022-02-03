@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17e43607_6b8d1f39",
+        "filename": "zephyr/shim/src/gpio_int.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1330845
+      },
+      "writtenOn": "2022-02-03T15:29:09Z",
+      "side": 1,
+      "message": "nit: INT_ENUM_COUNT would be a more common styling for this name.",
+      "range": {
+        "startLine": 57,
+        "startChar": 2,
+        "endLine": 57,
+        "endChar": 16
+      },
+      "revId": "2e6ff84ca9295907b114a3eca7694b3277a9b63e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
