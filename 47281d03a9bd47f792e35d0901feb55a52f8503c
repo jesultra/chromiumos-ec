@@ -34,6 +34,24 @@
       "parentUuid": "6edf9b8d_146e6fb5",
       "revId": "47281d03a9bd47f792e35d0901feb55a52f8503c",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc4828d8_c865950c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1483403
+      },
+      "writtenOn": "2022-02-07T19:44:39Z",
+      "side": 1,
+      "message": "Yes, it is. It seems that gcc is smart enough to know that gpio_int_data[] is empty, so any use of it will fail.  But clang either doesn\u0027t check or is smart enough to know that gpio_cb_handler is never called, and removes it. Sigh.",
+      "parentUuid": "09342712_cb11ee2a",
+      "revId": "47281d03a9bd47f792e35d0901feb55a52f8503c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
