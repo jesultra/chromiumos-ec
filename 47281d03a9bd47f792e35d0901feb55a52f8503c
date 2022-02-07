@@ -16,6 +16,24 @@
       "message": "This broke the native_posix build:\n\n```\nzmake configure -b posix-ec\n\n/builds/zephyr-ec/ec/zephyr/shim/src/gpio_int.c: In function ‘gpio_cb_handler’:\n/builds/zephyr-ec/ec/zephyr/shim/src/gpio_int.c:143:17: error: array subscript 0 is above array bounds of ‘const struct gpio_int_config[0]’ [-Werror\u003darray-bounds]\n  143 |   \u0026gpio_int_data[cbdata - \u0026int_cb_data[0]];\n      |    ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~\n/builds/zephyr-ec/ec/zephyr/shim/src/gpio_int.c:143:17: error: array subscript 0 is above array bounds of ‘const struct gpio_int_config[0]’ [-Werror\u003darray-bounds]\n/builds/zephyr-ec/ec/zephyr/shim/src/gpio_int.c: In function ‘gpio_enable_dt_interrupt’:\n/builds/zephyr-ec/ec/zephyr/shim/src/gpio_int.c:159:49: error: array subscript 0 is above array bounds of ‘const struct gpio_int_config[0]’ [-Werror\u003darray-bounds]\n  159 |  struct gpio_callback *cb \u003d \u0026int_cb_data[conf - \u0026gpio_int_data[0]];\n      |                                                 ^~~~~~~~~~~~~~~~~\n/builds/zephyr-ec/ec/zephyr/shim/src/gpio_int.c:100:37: note: while referencing ‘gpio_int_data’\n  100 | static const struct gpio_int_config gpio_int_data[] \u003d {\n      |                                     ^~~~~~~~~~~~~\n```",
       "revId": "47281d03a9bd47f792e35d0901feb55a52f8503c",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09342712_cb11ee2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1330845
+      },
+      "writtenOn": "2022-02-07T17:08:08Z",
+      "side": 1,
+      "message": "Is it just a gitlab thing? Postsubmit seems green: https://ci.chromium.org/p/chromeos/builders/postsubmit/firmware-zephyr-postsubmit",
+      "parentUuid": "6edf9b8d_146e6fb5",
+      "revId": "47281d03a9bd47f792e35d0901feb55a52f8503c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
