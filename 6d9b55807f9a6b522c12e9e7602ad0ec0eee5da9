@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74ad492c_6253b9cf",
+        "filename": "zephyr/shim/src/flash.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2022-02-08T17:56:05Z",
+      "side": 1,
+      "message": "Move to a separate CL, this file isn\u0027t related to switchcap support.",
+      "revId": "6d9b55807f9a6b522c12e9e7602ad0ec0eee5da9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1500c81_4e839491",
+        "filename": "zephyr/shim/src/switchcap_ln9310.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2022-02-08T17:56:05Z",
+      "side": 1,
+      "message": "The boards using this driver should specify the GPIO_ACTIVE_LOW flag.\n\nIt also looks like the 2 switchcap drivers can possibly be combined?",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 43
+      },
+      "revId": "6d9b55807f9a6b522c12e9e7602ad0ec0eee5da9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
