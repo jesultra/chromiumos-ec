@@ -39,6 +39,30 @@
       },
       "revId": "6d9b55807f9a6b522c12e9e7602ad0ec0eee5da9",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dd16b63_b03d17cc",
+        "filename": "zephyr/shim/src/switchcap_ln9310.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1281040
+      },
+      "writtenOn": "2022-02-09T08:40:00Z",
+      "side": 1,
+      "message": "Fixed to use active low.\n\nThere does look as though there is some room for refactoring.\nLazor has the old EC-OS copy of this, but it has more checks\nfor variants. The refactoring may be a little more involved but I\u0027ll\nput a TODO in.",
+      "parentUuid": "d1500c81_4e839491",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 43
+      },
+      "revId": "6d9b55807f9a6b522c12e9e7602ad0ec0eee5da9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
