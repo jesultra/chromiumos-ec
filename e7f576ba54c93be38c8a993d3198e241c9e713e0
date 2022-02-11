@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9c47d9f_a24cf1d3",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-02-11T05:30:52Z",
+      "side": 1,
+      "message": "I\u0027m not sure what this is testing, can you add a comment explaining this? I assume that the shell commands will exercise different parts of the code and then print some values, but since we\u0027re not asserting on these values we\u0027re really just testing that the shell command returns 0?",
+      "range": {
+        "startLine": 202,
+        "startChar": 1,
+        "endLine": 208,
+        "endChar": 70
+      },
+      "revId": "e7f576ba54c93be38c8a993d3198e241c9e713e0",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96eb03e8_0e554ee1",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-02-11T05:30:52Z",
+      "side": 1,
+      "message": "While we\u0027ve done this in the past (and I know it\u0027s everywhere) I hope we can move away from this pattern as it\u0027s really brittle. Would you mind splitting this up and having the calls to `i2c_common_emul_set_read_fail_reg(i2c_emul, I2C_COMMON_EMUL_NO_FAIL_REG)` be a part of the `after` phase of the test? If a test here fails an assert above this line, you\u0027ll never reach it and the emulator will not reset. This could affect following tests. Ideally, add a ZTEST_RULE to the `emul_isl923x.c` that does the reset, you should be able to find some examples in the emulator directory.",
+      "range": {
+        "startLine": 220,
+        "startChar": 1,
+        "endLine": 236,
+        "endChar": 36
+      },
+      "revId": "e7f576ba54c93be38c8a993d3198e241c9e713e0",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3281735e_19f5a1d8",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-02-11T05:30:52Z",
+      "side": 1,
+      "message": "nit: add `{}` even for single lines. I believe Jack fixed the presubmit check for this.",
+      "range": {
+        "startLine": 711,
+        "startChar": 0,
+        "endLine": 718,
+        "endChar": 24
+      },
+      "revId": "e7f576ba54c93be38c8a993d3198e241c9e713e0",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
