@@ -331,26 +331,36 @@ static int check_hdmi_hpd_status(void)
 		return true;
 }
 
+static void board_hdmi_on(void)
+{
+	ioex_set_level(IOEX_HDMI_DATA_EN, 1);
+	msleep(PI3HDX1204_POWER_ON_DELAY_MS);
+	pi3hdx1204_enable(I2C_PORT_TCPC1,
+		PI3HDX1204_I2C_ADDR_FLAGS, 1);
+}
+
+static void board_hdmi_off(void)
+{
+	pi3hdx1204_enable(I2C_PORT_TCPC1,
+		PI3HDX1204_I2C_ADDR_FLAGS, 0);
+	ioex_set_level(IOEX_HDMI_DATA_EN, 0);
+}
+
 /* Called on AP resume to S0 */
 static void board_chipset_resume(void)
 {
 	ioex_set_level(IOEX_USB_A1_PD_R_L, 1);
-	ioex_set_level(IOEX_HDMI_DATA_EN, 1);
 	ioex_set_level(IOEX_EN_PWR_HDMI, 1);
-	msleep(PI3HDX1204_POWER_ON_DELAY_MS);
-	pi3hdx1204_enable(I2C_PORT_TCPC1,
-		PI3HDX1204_I2C_ADDR_FLAGS,
-		check_hdmi_hpd_status());
+	if (check_hdmi_hpd_status())
+		board_hdmi_on();
 }
 DECLARE_HOOK(HOOK_CHIPSET_RESUME, board_chipset_resume, HOOK_PRIO_DEFAULT);
 
 /* Called on AP suspend */
 static void board_chipset_suspend(void)
 {
-	pi3hdx1204_enable(I2C_PORT_TCPC1,
-		PI3HDX1204_I2C_ADDR_FLAGS, 0);
+	board_hdmi_off();
 	ioex_set_level(IOEX_EN_PWR_HDMI, 0);
-	ioex_set_level(IOEX_HDMI_DATA_EN, 0);
 	ioex_set_level(IOEX_USB_A1_PD_R_L, 0);
 }
 DECLARE_HOOK(HOOK_CHIPSET_SUSPEND, board_chipset_suspend, HOOK_PRIO_DEFAULT);
@@ -472,10 +482,13 @@ static void hdmi_hpd_handler(void)
 	int hpd = check_hdmi_hpd_status();
 
 	ccprints("HDMI HPD %d", hpd);
-	pi3hdx1204_enable(I2C_PORT_TCPC1,
-			  PI3HDX1204_I2C_ADDR_FLAGS,
-			  chipset_in_or_transitioning_to_state(CHIPSET_STATE_ON)
-			  && hpd);
+
+	if (hpd &&
+	chipset_in_or_transitioning_to_state(CHIPSET_STATE_ON)) {
+		board_hdmi_on();
+	} else {
+		board_hdmi_off();
+	}
 }
 DECLARE_DEFERRED(hdmi_hpd_handler);
 
