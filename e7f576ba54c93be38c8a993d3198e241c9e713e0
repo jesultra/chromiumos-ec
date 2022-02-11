@@ -24,6 +24,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c43a58cb_80022732",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1530058
+      },
+      "writtenOn": "2022-02-11T19:03:57Z",
+      "side": 1,
+      "message": "Yeah, we\u0027re validating the different code paths for the shell command.",
+      "parentUuid": "d9c47d9f_a24cf1d3",
+      "range": {
+        "startLine": 202,
+        "startChar": 1,
+        "endLine": 208,
+        "endChar": 70
+      },
+      "revId": "e7f576ba54c93be38c8a993d3198e241c9e713e0",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96eb03e8_0e554ee1",
@@ -47,6 +71,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29e62f5a_e3a8142f",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1530058
+      },
+      "writtenOn": "2022-02-11T19:03:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96eb03e8_0e554ee1",
+      "range": {
+        "startLine": 220,
+        "startChar": 1,
+        "endLine": 236,
+        "endChar": 36
+      },
+      "revId": "e7f576ba54c93be38c8a993d3198e241c9e713e0",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3281735e_19f5a1d8",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-02-11T05:30:52Z",
       "side": 1,
       "message": "nit: add `{}` even for single lines. I believe Jack fixed the presubmit check for this.",
+      "range": {
+        "startLine": 711,
+        "startChar": 0,
+        "endLine": 718,
+        "endChar": 24
+      },
+      "revId": "e7f576ba54c93be38c8a993d3198e241c9e713e0",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4b07849_d5b6e8e7",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 1530058
+      },
+      "writtenOn": "2022-02-11T19:03:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3281735e_19f5a1d8",
       "range": {
         "startLine": 711,
         "startChar": 0,
