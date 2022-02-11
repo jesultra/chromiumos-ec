@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1828226c_1bf07b38",
+        "filename": "zephyr/emul/emul_isl923x.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-02-11T20:01:33Z",
+      "side": 1,
+      "message": "This says `_BEFORE` but the rule is using it in the `after` method.",
+      "range": {
+        "startLine": 455,
+        "startChar": 8,
+        "endLine": 455,
+        "endChar": 38
+      },
+      "revId": "df9886cebfdaee839f8db51466513cdb49df4f1f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96fb0e2b_f5c09f21",
+        "filename": "zephyr/emul/emul_isl923x.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-02-11T20:01:33Z",
+      "side": 1,
+      "message": "I\u0027m not sure we want this here. The I2C emulator is its own entity. Can you do this part as a separate CL and add Tomasz as a reviewer also?",
+      "range": {
+        "startLine": 456,
+        "startChar": 1,
+        "endLine": 460,
+        "endChar": 39
+      },
+      "revId": "df9886cebfdaee839f8db51466513cdb49df4f1f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e195285_022bf7bb",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-02-11T20:01:33Z",
+      "side": 1,
+      "message": "Can we set up the test to assert the actual current? I assume you\u0027ll need a bit more before this call to set things up",
+      "range": {
+        "startLine": 218,
+        "startChar": 8,
+        "endLine": 218,
+        "endChar": 26
+      },
+      "revId": "df9886cebfdaee839f8db51466513cdb49df4f1f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
