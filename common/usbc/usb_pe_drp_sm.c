@@ -4500,9 +4500,13 @@ static void pe_prs_src_snk_transition_to_off_run(int port)
 	}
 
 	/* Give time for supply to power off */
+#if 0
 	if (pd_timer_is_expired(port, PE_TIMER_PS_SOURCE) &&
 	    pd_check_vbus_level(port, VBUS_SAFE0V))
-		set_state_pe(port, PE_PRS_SRC_SNK_ASSERT_RD);
+#else
+	pd_timer_disable(port, PE_TIMER_PS_SOURCE);
+	set_state_pe(port, PE_PRS_SRC_SNK_ASSERT_RD);
+#endif
 }
 
 static void pe_prs_src_snk_transition_to_off_exit(int port)
