@@ -24,6 +24,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bde6781_e3ed4158",
+        "filename": "zephyr/emul/emul_isl923x.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1530058
+      },
+      "writtenOn": "2022-02-14T19:55:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1828226c_1bf07b38",
+      "range": {
+        "startLine": 455,
+        "startChar": 8,
+        "endLine": 455,
+        "endChar": 38
+      },
+      "revId": "df9886cebfdaee839f8db51466513cdb49df4f1f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96fb0e2b_f5c09f21",
@@ -47,6 +71,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1045d45_8eac6b6b",
+        "filename": "zephyr/emul/emul_isl923x.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 1530058
+      },
+      "writtenOn": "2022-02-14T19:55:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96fb0e2b_f5c09f21",
+      "range": {
+        "startLine": 456,
+        "startChar": 1,
+        "endLine": 460,
+        "endChar": 39
+      },
+      "revId": "df9886cebfdaee839f8db51466513cdb49df4f1f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e195285_022bf7bb",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-02-11T20:01:33Z",
       "side": 1,
       "message": "Can we set up the test to assert the actual current? I assume you\u0027ll need a bit more before this call to set things up",
+      "range": {
+        "startLine": 218,
+        "startChar": 8,
+        "endLine": 218,
+        "endChar": 26
+      },
+      "revId": "df9886cebfdaee839f8db51466513cdb49df4f1f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb0c1dc1_4b393c86",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1530058
+      },
+      "writtenOn": "2022-02-14T19:55:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e195285_022bf7bb",
       "range": {
         "startLine": 218,
         "startChar": 8,
