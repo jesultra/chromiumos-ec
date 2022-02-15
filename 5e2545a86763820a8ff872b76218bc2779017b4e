@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02599c0a_1e5d7045",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-02-15T17:14:29Z",
+      "side": 1,
+      "message": "I think you need to swap the order of this CL and the ztest rule above it. Committing in the wrong order may break things.",
+      "revId": "5e2545a86763820a8ff872b76218bc2779017b4e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
