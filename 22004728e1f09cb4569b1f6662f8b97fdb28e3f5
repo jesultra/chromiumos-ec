@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "3d950611_a7fcfb3f",
         "filename": "Makefile.rules",
@@ -20,8 +21,8 @@
         "endChar": 71
       },
       "revId": "22004728e1f09cb4569b1f6662f8b97fdb28e3f5",
-      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba",
-      "unresolved": true
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
-  ]
+  ],
+  "submitRequirementResults": []
 }
