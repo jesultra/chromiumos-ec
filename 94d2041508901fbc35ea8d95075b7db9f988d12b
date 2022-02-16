@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89cc0e7d_c532147c",
+        "filename": "zephyr/projects/herobrine/prj.conf",
+        "patchSetId": 14
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-02-16T00:08:05Z",
+      "side": 1,
+      "message": "Curious why need this ADC for each port config?",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 54
+      },
+      "revId": "94d2041508901fbc35ea8d95075b7db9f988d12b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94abca06_dc25515d",
+        "filename": "zephyr/projects/herobrine/src/usbc_config.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-02-16T00:08:05Z",
+      "side": 1,
+      "message": "This TCPC config has been moved to `usbc.dts`. You can define it in the `usbc_hoglin.dts`",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 9
+      },
+      "revId": "94d2041508901fbc35ea8d95075b7db9f988d12b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}

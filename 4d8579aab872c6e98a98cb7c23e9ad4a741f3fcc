@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04873a04_223b51ad",
+        "filename": "power/qcom.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-02-16T00:08:05Z",
+      "side": 1,
+      "message": "Got it.",
+      "parentUuid": "1c07550e_bf84fe16",
+      "range": {
+        "startLine": 393,
+        "startChar": 8,
+        "endLine": 393,
+        "endChar": 38
+      },
+      "revId": "4d8579aab872c6e98a98cb7c23e9ad4a741f3fcc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ed4cb73f_1d9c9587",
         "filename": "zephyr/CMakeLists.txt",
         "patchSetId": 11
