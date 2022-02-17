@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27caa0d5_bdb9f172",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-17T11:24:38Z",
+      "side": 1,
+      "message": "Currently it seems that \nDT_FOREACH_CHILD(DT_PATH(usba_port_enable_list), GPIO_SIGNAL_WITH_COMMA)\nis not working as expected even though usba_port_enable_list is defined in dt file. Which cause USB A to not function unless gpio is toggled manually. Hardcoding gpio for time being, will revert once I find a way to properly read DT file. Thanks.",
+      "revId": "c5750286e66a180d273f3498b97250430bc8a904",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}

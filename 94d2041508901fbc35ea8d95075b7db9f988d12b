@@ -141,6 +141,30 @@
       },
       "revId": "94d2041508901fbc35ea8d95075b7db9f988d12b",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5a930cc_9c4cae18",
+        "filename": "zephyr/projects/herobrine/src/usbc_config.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-17T11:24:38Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "d5ba5ff9_bca43f81",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 9
+      },
+      "revId": "94d2041508901fbc35ea8d95075b7db9f988d12b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
