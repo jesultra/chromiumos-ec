@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "20c6ae21_26518d3e",
+        "filename": "zephyr/projects/herobrine/prj.conf",
+        "patchSetId": 14
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-17T01:16:35Z",
+      "side": 1,
+      "message": "In Kconfig.usbc, If we don\u0027t select from choices of \u0027choice \"Measuring VBUS voltage\"\u0027, it will by default select first choice. In code of charge_manager.c, get_vbus_voltage, we do have else case where we read value from ADC but that case cannot be achieved as Kconfig.usbc will always ensure one case but what we really want is else case in above function. This was the one way where with localized changes, I could achieve the desired method.",
+      "parentUuid": "89cc0e7d_c532147c",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 54
+      },
+      "revId": "94d2041508901fbc35ea8d95075b7db9f988d12b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94abca06_dc25515d",
         "filename": "zephyr/projects/herobrine/src/usbc_config.c",
         "patchSetId": 14
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-16T00:08:05Z",
       "side": 1,
       "message": "This TCPC config has been moved to `usbc.dts`. You can define it in the `usbc_hoglin.dts`",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 139,
+        "endChar": 9
+      },
+      "revId": "94d2041508901fbc35ea8d95075b7db9f988d12b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e035cf2_48730968",
+        "filename": "zephyr/projects/herobrine/src/usbc_config.c",
+        "patchSetId": 14
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-17T01:16:35Z",
+      "side": 1,
+      "message": "I will rebase and will make the change tomorrow. Also, is the renaming to _herobrine is fine or should I only create _hoglin files while keeping original files names same?",
+      "parentUuid": "94abca06_dc25515d",
       "range": {
         "startLine": 135,
         "startChar": 0,
