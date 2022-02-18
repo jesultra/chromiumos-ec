@@ -34,6 +34,24 @@
       "parentUuid": "27caa0d5_bdb9f172",
       "revId": "c5750286e66a180d273f3498b97250430bc8a904",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37949ad2_95f91326",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-02-18T01:45:15Z",
+      "side": 1,
+      "message": "Sure, will try to figure out if anything is incorrect from my side and will raise bug. I tried preprocessed file and the array was empty. Thanks.",
+      "parentUuid": "4a844e40_48b674bf",
+      "revId": "c5750286e66a180d273f3498b97250430bc8a904",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
