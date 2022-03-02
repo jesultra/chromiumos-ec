@@ -114,6 +114,17 @@ int board_power_signal_get(enum power_signal signal)
 			return 0;
 		}
 		return 1;
+
+#ifdef CONFIG_BOARD_NEREID
+	/*
+	 * Temporary signals for Nereid
+	 */
+	case PWR_DSW_PWROK:
+		return 1;
+
+	case PWR_PG_PP1P05:
+		return 1;
+#endif
 	}
 }
 
