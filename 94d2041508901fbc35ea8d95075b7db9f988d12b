@@ -72,6 +72,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3038957f_5105d3ca",
+        "filename": "zephyr/projects/herobrine/prj.conf",
+        "patchSetId": 14
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-03-02T07:02:04Z",
+      "side": 1,
+      "message": "The change from Sam already merged.",
+      "parentUuid": "c52098ef_1d285d87",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 54
+      },
+      "revId": "94d2041508901fbc35ea8d95075b7db9f988d12b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94abca06_dc25515d",
