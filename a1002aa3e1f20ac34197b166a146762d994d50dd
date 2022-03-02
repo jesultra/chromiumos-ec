@@ -16,6 +16,46 @@
       "message": "I think now patch is in good shape for merging. I am still waiting for internal approvals to merge in EC repo. Please review this, I don\u0027t intend to make any other change. Thanks.",
       "revId": "a1002aa3e1f20ac34197b166a146762d994d50dd",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3f12386_dd26f6d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-02T17:40:37Z",
+      "side": 1,
+      "message": "Thanks for the effort of addressing the comments. It just has a nit.",
+      "revId": "a1002aa3e1f20ac34197b166a146762d994d50dd",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "953cb0b8_431bb132",
+        "filename": "zephyr/projects/herobrine/BUILD.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-02T17:40:37Z",
+      "side": 1,
+      "message": "Nit: Can you change this name to `gpio_herobrine.dts` and the following too? Having the suffix increases awareness that this configuration is not shared across boards, thought we put `gpio_herobrine.dts` to the `villager` board.",
+      "range": {
+        "startLine": 34,
+        "startChar": 20,
+        "endLine": 34,
+        "endChar": 21
+      },
+      "revId": "a1002aa3e1f20ac34197b166a146762d994d50dd",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
