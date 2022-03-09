@@ -52,6 +52,41 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "175d46bc_8b592dde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-03-09T16:13:39Z",
+      "side": 1,
+      "message": "Sure, I will update the review and merge it tomorrow.",
+      "parentUuid": "35e589b3_814f4d7d",
+      "revId": "a1002aa3e1f20ac34197b166a146762d994d50dd",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "226affce_485806c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-03-09T16:13:39Z",
+      "side": 1,
+      "message": "Sure, we will merge it tomorrow. Thanks for reminder.",
+      "revId": "a1002aa3e1f20ac34197b166a146762d994d50dd",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "953cb0b8_431bb132",
@@ -65,6 +100,30 @@
       "writtenOn": "2022-03-02T17:40:37Z",
       "side": 1,
       "message": "Nit: Can you change this name to `gpio_herobrine.dts` and the following too? Having the suffix increases awareness that this configuration is not shared across boards, thought we put `gpio_herobrine.dts` to the `villager` board.",
+      "range": {
+        "startLine": 34,
+        "startChar": 20,
+        "endLine": 34,
+        "endChar": 21
+      },
+      "revId": "a1002aa3e1f20ac34197b166a146762d994d50dd",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cb67ceb_7340758b",
+        "filename": "zephyr/projects/herobrine/BUILD.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-03-09T16:13:39Z",
+      "side": 1,
+      "message": "Now that the projects evolving, we already got three. Is is not better to keep one common name which all projects can use. If any project want to modify, then it can copy and put modifications as and when needed instead of each project having same separate copy?",
+      "parentUuid": "953cb0b8_431bb132",
       "range": {
         "startLine": 34,
         "startChar": 20,
