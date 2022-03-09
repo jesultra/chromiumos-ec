@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5729483c_e4c03423",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-03-09T23:40:58Z",
+      "side": 1,
+      "message": "This (and below) are great candidates for a change I\u0027ve been wanting to add. We have the ability to conditionally include a source file in CMakeLists.txt using the various `zephyr_library` and `zephyr_library_add_sources_ifdef`\n\nBasically, these long `#if` blocks are hard to read and see. Instead... move this file into a new directory under `test/drivers/isl923x/src`. You\u0027ll include the `isl923x` directory from the main CMakeLists.txt using the `include_subdir`. There you\u0027ll create a `zephyr_library()` and add the main test file to the sources list. You will then conditionally add tests in cmake instead of blocking them off. So here you\u0027d have `isl923x/src/console_adc_amon_bmon.c`.",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 65
+      },
+      "revId": "3e6421f4020e52a25b8cb96e97c4c1117530b4ed",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
