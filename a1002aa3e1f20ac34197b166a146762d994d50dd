@@ -132,6 +132,30 @@
       },
       "revId": "a1002aa3e1f20ac34197b166a146762d994d50dd",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98b6551b_d0eb42b8",
+        "filename": "zephyr/projects/herobrine/BUILD.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-09T17:31:00Z",
+      "side": 1,
+      "message": "Agree. I thought of this idea but I didn\u0027t start doing it due to the difficulty to predict what GPIOs are common across boards. When more variants are added and they reach some maturity, will be a good time to refactor the dts files and merge the common GPIOs into a common file, like `gpio_common.dts`.",
+      "parentUuid": "7cb67ceb_7340758b",
+      "range": {
+        "startLine": 34,
+        "startChar": 20,
+        "endLine": 34,
+        "endChar": 21
+      },
+      "revId": "a1002aa3e1f20ac34197b166a146762d994d50dd",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
