@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8de9b07_3b516083",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1511957
+      },
+      "writtenOn": "2022-03-10T17:41:41Z",
+      "side": 1,
+      "message": "I think keeping one set of dts file without suffix is good so that any new board, if required, can use it like herobrine and villager both can use these now. If required later, it can be duplicated for new board. Thanks.",
+      "revId": "336fca69ce1e48fd5930a7ac98955348fb47aa85",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
