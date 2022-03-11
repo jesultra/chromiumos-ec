@@ -10,10 +10,13 @@
 #include "panic.h"
 #include "registers.h"
 #include "watchdog.h"
+#include "console.h"
 
 void watchdog_reload(void)
 {
 	SCP_WDT_RELOAD = SCP_WDT_RELOAD_VALUE;
+	ccprintf("*");
+	cflush();
 }
 DECLARE_HOOK(HOOK_TICK, watchdog_reload, HOOK_PRIO_DEFAULT);
 

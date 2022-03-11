@@ -90,8 +90,14 @@ static void clock_ulposc_config_cali(struct opp_ulposc_cfg *opp,
 
 static unsigned int clock_ulposc_measure_freq(int osc)
 {
-	unsigned int result = 0;
+	unsigned int clk_dbg_cfg, clk_misc_cfg_0, clk26cali_0, clk26cali_1, result = 0;
 	int cnt;
+
+	/* backup */
+	clk_dbg_cfg = AP_CLK_DBG_CFG;
+	clk_misc_cfg_0 = AP_CLK_MISC_CFG_0;
+	clk26cali_0 = AP_SCP_CFG_0;
+	clk26cali_1 = AP_SCP_CFG_1;
 
 	/* Before select meter clock input, bit[1:0] = b00 */
 	AP_CLK_DBG_CFG = (AP_CLK_DBG_CFG & ~DBG_MODE_MASK) |
@@ -129,6 +135,13 @@ static unsigned int clock_ulposc_measure_freq(int osc)
 
 	/* Disable freq meter */
 	AP_SCP_CFG_0 &= ~CFG_FREQ_METER_ENABLE;
+
+	/* restore */
+	AP_CLK_DBG_CFG = clk_dbg_cfg;
+	AP_CLK_MISC_CFG_0 = clk_misc_cfg_0;
+	AP_SCP_CFG_0 = clk26cali_0;
+	AP_SCP_CFG_1 = clk26cali_1;
+
 	return result;
 }
 
@@ -265,7 +278,7 @@ void clock_init(void)
 	/* VREQ */
 	SCP_CPU_VREQ = VREQ_SEL | VREQ_DVFS_SEL;
 	SCP_SECURE_CTRL |= ENABLE_SPM_MASK_VREQ;
-	SCP_CLK_CTRL_GENERAL_CTRL &= ~VREQ_PMIC_WRAP_SEL;
+	SCP_CLK_CTRL_GENERAL_CTRL |= VREQ_SEL | VREQ_EXT_SEL;
 
 	/* DDREN auto mode */
 	SCP_SYS_CTRL |= AUTO_DDREN;

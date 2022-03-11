@@ -30,7 +30,7 @@
  * RW only, no flash
  * +-------------------- 0x0
  * | ROM vectortable, .text, .rodata, .data LMA
- * +-------------------- 0x10000
+ * +-------------------- 0x58000
  * | RAM .bss, .data
  * +-------------------- 0x7BDB0
  * | IPI shared buffer with AP (288 + 8) * 2
@@ -40,11 +40,21 @@
  * | 8KB D-CACHE
  * +-------------------- 0x80000
  */
-#ifdef CHIP_VARIANT_MT8186
-#define ICACHE_BASE 0x3E000
-#else
-#define ICACHE_BASE 0x7C000
-#endif
+
+/*
+ * RW only, no flash
+ * +-------------------- 0x0
+ * | ROM vectortable, .text, .rodata, .data LMA
+ * +-------------------- 0x2C000
+ * | RAM .bss, .data
+ * +-------------------- 0x3BDB0
+ * | IPI shared buffer with AP (288 + 8) * 2 => 0x250
+ * +-------------------- 0x3C000
+ * | 8KB I-CACHE
+ * +-------------------- 0x3E000
+ * | 8KB D-CACHE
+ * +-------------------- 0x40000
+ */
 
 #define CONFIG_ROM_BASE 0x0
 
@@ -52,6 +62,12 @@
 #define CONFIG_RAM_BASE 0x2C000
 #else
 #define CONFIG_RAM_BASE 0x58000
+#endif
+
+#ifdef CHIP_VARIANT_MT8186
+#define ICACHE_BASE 0x3C000
+#else
+#define ICACHE_BASE 0x7C000
 #endif
 
 #define CONFIG_ROM_SIZE (CONFIG_RAM_BASE - CONFIG_ROM_BASE)

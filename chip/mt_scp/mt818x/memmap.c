@@ -190,6 +190,7 @@ static int command_cacheinfo(int argc, char **argv)
 {
 	const char cache_name[] = {'I', 'D'};
 	int c;
+	uintptr_t test = strtoull(argv[1], 0, 16);
 
 	for (c = 0; c < 2; c++) {
 		uint64_t hit = ((uint64_t)SCP_CACHE_HCNT0U(c) << 32) |
@@ -200,6 +201,9 @@ static int command_cacheinfo(int argc, char **argv)
 		ccprintf("%ccache hit count:    %llu\n", cache_name[c], hit);
 		ccprintf("%ccache access count: %llu\n", cache_name[c], access);
 	}
+
+
+	ccprintf("prt: 0x%x -> 0x%x \n", test, REG32(test));
 
 	return EC_SUCCESS;
 }
