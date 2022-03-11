@@ -16,6 +16,24 @@
       "message": "I think keeping one set of dts file without suffix is good so that any new board, if required, can use it like herobrine and villager both can use these now. If required later, it can be duplicated for new board. Thanks.",
       "revId": "336fca69ce1e48fd5930a7ac98955348fb47aa85",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa62da73_1c4cbc7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000407
+      },
+      "writtenOn": "2022-03-11T00:11:15Z",
+      "side": 1,
+      "message": "OK. They are just names. Let\u0027s see how it works later.",
+      "parentUuid": "a8de9b07_3b516083",
+      "revId": "336fca69ce1e48fd5930a7ac98955348fb47aa85",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
