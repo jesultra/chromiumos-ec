@@ -22,6 +22,30 @@
       },
       "revId": "3e6421f4020e52a25b8cb96e97c4c1117530b4ed",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bc79279_225ab814",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-03-17T19:29:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5729483c_e4c03423",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 288,
+        "endChar": 65
+      },
+      "revId": "3e6421f4020e52a25b8cb96e97c4c1117530b4ed",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }

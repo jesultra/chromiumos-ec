@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aedece1_9350f584",
+        "filename": "zephyr/test/drivers/src/isl923x.c",
+        "patchSetId": 11
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1333748
+      },
+      "writtenOn": "2022-03-17T19:29:33Z",
+      "side": 1,
+      "message": "This should be done the same way.",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 238,
+        "endChar": 46
+      },
+      "revId": "15cc6000fd53e55c720b4d8738920cf6ee700c6c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
