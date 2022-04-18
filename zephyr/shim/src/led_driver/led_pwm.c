@@ -17,8 +17,6 @@
 
 LOG_MODULE_REGISTER(pwm_led, LOG_LEVEL_ERR);
 
-#define LED_PIN_COUNT		(LED_COLOR_COUNT - 1)
-
 /*
  * Struct defining LED PWM pin and duty cycle to set.
  */
@@ -47,7 +45,10 @@ struct led_pins_node_t {
 	enum ec_led_colors br_color;
 
 	/* Array of PWM pins to set to enable particular color */
-	struct pwm_pin_t pwm_pins[LED_PIN_COUNT];
+	struct pwm_pin_t *pwm_pins;
+
+	/* Number of pins per color */
+	uint8_t pins_count;
 };
 
 /*
@@ -63,6 +64,8 @@ struct led_pins_node_t {
 const uint32_t period_us =
 		(USEC_PER_SEC / DT_PROP(PWM_LED_PINS_NODE, pwm_frequency));
 
+#define PWM_PINS_ARRAY(id)	DT_CAT(PINS_ARRAY_, id)
+
 #define SET_PIN(node_id, prop, i)					\
 {									\
 	.pwm = DEVICE_DT_GET(						\
@@ -71,19 +74,26 @@ const uint32_t period_us =
 			DT_PHANDLE_BY_IDX(node_id, prop, i)),		\
 	.flags = DT_PWMS_FLAGS(DT_PHANDLE_BY_IDX(node_id, prop, i)),	\
 	.pulse_us = DIV_ROUND_NEAREST(					\
-	   period_us * DT_PHA_BY_IDX(node_id, prop, i, value), 100),	\
+	   period_us * DT_PHA_BY_IDX(node_id, prop, i, value), 100)	\
 },
 
 #define SET_PWM_PIN(node_id)						\
 {									\
 	DT_FOREACH_PROP_ELEM(node_id, led_pins, SET_PIN)		\
-}
+};
+
+#define GEN_PINS_ARRAY(id)						\
+struct pwm_pin_t PWM_PINS_ARRAY(id)[] = SET_PWM_PIN(id)			\
+
+DT_FOREACH_CHILD(PWM_LED_PINS_NODE, GEN_PINS_ARRAY)
 
 #define SET_PIN_NODE(node_id)						\
 {									\
 	.led_color = GET_PROP(node_id, led_color),			\
-	.br_color = GET_BR_COLOR(node_id, br_color),			\
-	.pwm_pins = SET_PWM_PIN(node_id)				\
+	.led_id = GET_PROP(node_id, led_id),				\
+	.br_color = GET_PROP_NVE(node_id, br_color),			\
+	.pwm_pins = PWM_PINS_ARRAY(node_id),				\
+	.pins_array_len = DT_PROP_LEN(node_id, led_pins)		\
 },
 
 struct led_pins_node_t pins_node[] = {
@@ -96,11 +106,12 @@ struct led_pins_node_t pins_node[] = {
  * to enable the color. Defined value is duty cycle in percentage
  * converted to duty cycle in us (pulse_us)
  */
-void led_set_color(enum led_color color)
+void led_set_color(enum ec_led_color color, enum ec_led_id id)
 {
-	for (int i = 0; i < LED_COLOR_COUNT; i++) {
-		if (pins_node[i].led_color == color) {
-			for (int j = 0; j < LED_PIN_COUNT; j++) {
+	for (int i = 0; i < ARRAY_SIZE(pins_node); i++) {
+		if ((pins_node[i].led_color == color) &&
+		    (pins_node[i].led_id == id)) {
+			for (int j = 0; j < pins_node[i].pins_count; j++) {
 				pwm_pin_set_usec(
 					pins_node[i].pwm_pins[j].pwm,
 					pins_node[i].pwm_pins[j].channel,
@@ -132,13 +143,13 @@ int led_set_brightness(enum ec_led_id led_id, const uint8_t *brightness)
 
 		if ((br_color != -1) && (brightness[br_color] != 0)) {
 			color_set = true;
-			led_set_color(pins_node[i].led_color);
+			led_set_color(pins_node[i].led_color, led_id);
 		}
 	}
 
 	/* If no color was set, turn off the LED */
 	if (!color_set)
-		led_set_color(LED_OFF);
+		led_set_color(LED_OFF, led_id);
 
 	return EC_SUCCESS;
 }

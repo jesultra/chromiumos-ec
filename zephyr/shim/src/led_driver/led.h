@@ -11,12 +11,14 @@
 #define COMPAT_GPIO_LED cros_ec_gpio_led_pins
 #define COMPAT_PWM_LED  cros_ec_pwm_led_pins
 
+/* Return property value if it exists otherwise return 0 */
 #define GET_PROP(id, prop)						\
 	COND_CODE_1(DT_NODE_HAS_PROP(id, prop),				\
 		    (DT_STRING_UPPER_TOKEN(id, prop)),			\
 		    (0))
 
-#define GET_BR_COLOR(id, prop)						\
+/* Return property value if it exists otherwise return -1 */
+#define GET_PROP_NVE(id, prop)						\
 	COND_CODE_1(DT_NODE_HAS_PROP(id, prop),				\
 		    (DT_STRING_UPPER_TOKEN(id, prop)),			\
 		    (-1))
@@ -29,7 +31,8 @@
 #define GPIO_LED_PINS_NODE DT_PATH(gpio_led_pins)
 #define PWM_LED_PINS_NODE  DT_PATH(pwm_led_pins)
 
-enum led_color {
+enum ec_led_color {
+/*
 #if DT_NODE_EXISTS(GPIO_LED_PINS_NODE)
 	DT_FOREACH_CHILD_VARGS(GPIO_LED_PINS_NODE,
 			LED_ENUM_WITH_COMMA, led_color)
@@ -37,6 +40,10 @@ enum led_color {
 	DT_FOREACH_CHILD_VARGS(PWM_LED_PINS_NODE,
 			LED_ENUM_WITH_COMMA, led_color)
 #endif
+*/
+	LED_OFF,
+	LED_AMBER,
+	LED_BLUE,
 	LED_COLOR_COUNT  /* Number of colors, not a color itself */
 };
 
@@ -45,6 +52,6 @@ enum led_color {
  *
  * @param color LED Color to enable
  */
-void led_set_color(enum led_color color);
+void led_set_color(enum ec_led_color color, enum ec_led_id id);
 
 #endif /* __CROS_EC_LED_H__ */

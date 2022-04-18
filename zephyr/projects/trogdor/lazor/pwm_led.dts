@@ -22,27 +22,30 @@
 		compatible = "cros-ec,pwm-led-pins";
 		pwm-frequency = <324>;
 
-		color-off {
+		color-off-left {
 			led-color = "LED_OFF";
-			led-id = "EC_LED_ID_BATTERY_LED";
-			led-pins = <&pwm_y 0>,
-				   <&pwm_b 0>;
+			led-id = "EC_LED_ID_LEFT_LED";
+			led-pins = <&pwm_y 0>;
 		};
 
-		color-amber {
+		color-off-right {
+			led-color = "LED_OFF";
+			led-id = "EC_LED_ID_RIGHT_LED";
+			led-pins = <&pwm_b 0>;
+		};
+
+		color-amber-left {
 			led-color = "LED_AMBER";
-			led-id = "EC_LED_ID_BATTERY_LED";
+			led-id = "EC_LED_ID_LEFT_LED";
 			br-color = "EC_LED_COLOR_AMBER";
-			led-pins = <&pwm_y 100>,
-				   <&pwm_b 0>;
+			led-pins = <&pwm_y 100>;
 		};
 
-		color-blue {
+		color-blue-right {
 			led-color = "LED_BLUE";
-			led-id = "EC_LED_ID_BATTERY_LED";
+			led-id = "EC_LED_ID_RIGHT_LED";
 			br-color = "EC_LED_COLOR_BLUE";
-			led-pins = <&pwm_y 0>,
-				   <&pwm_b 100>;
+			led-pins = <&pwm_b 100>;
 		};
 	};
 };

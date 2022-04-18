@@ -42,6 +42,11 @@ child-binding:
                 - POWER_S3
                 - POWER_S5
 
+        charge-port:
+            description: If the LED color depends on port side (left or right).
+            type: int
+            required: false
+
         extra-flag:
             description: If the LED color depends on additional factors
             type: string
@@ -86,3 +91,17 @@ child-binding:
                              };
                 type: int
                 required: false
+
+            led-id:
+                type: string
+                required: true
+                description: Used to link the color nodes with the pin nodes in
+                             case of multiple LEDs.
+                enum:
+                    - EC_LED_ID_BATTERY_LED
+                    - EC_LED_ID_POWER_LED
+                    - EC_LED_ID_ADAPTER_LED
+                    - EC_LED_ID_LEFT_LED
+                    - EC_LED_ID_RIGHT_LED
+                    - EC_LED_ID_RECOVERY_HW_REINIT_LED
+                    - EC_LED_ID_SYSRQ_DEBUG_LED

@@ -63,7 +63,7 @@ struct led_pins_node_t {
 {									\
 	.led_color = GET_PROP(node_id, led_color),			\
 	.led_id = GET_PROP(node_id, led_id),				\
-	.br_color = GET_BR_COLOR(node_id, br_color),			\
+	.br_color = GET_PROP_NVE(node_id, br_color),			\
 	.gpio_pins = SET_GPIO_PIN(node_id)				\
 },
 
@@ -76,10 +76,11 @@ struct led_pins_node_t pins_node[] = {
  * Set all the GPIO pins defined in the node to the defined value,
  * to enable the color.
  */
-void led_set_color(enum led_color color)
+void led_set_color(enum led_color color, enum led_id id)
 {
 	for (int i = 0; i < LED_COLOR_COUNT; i++) {
-		if (pins_node[i].led_color == color) {
+		if ((pins_node[i].led_color == color) &&
+		    (pins_node[i].led_id == id)) {
 			for (int j = 0; j < LED_PIN_COUNT; j++) {
 				gpio_pin_set_dt(gpio_get_dt_spec(
 					pins_node[i].gpio_pins[j].signal),
