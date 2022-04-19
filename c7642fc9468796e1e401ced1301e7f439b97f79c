@@ -16,6 +16,24 @@
       "message": "nit: would you mind including a comment block of the spec citation for the hard reset?  (6.3.9 DR_Swap Message in Revision 3.1, Version 1.3 \"If there are any Active Modes between the\nPort Partners when a DR_Swap Message is a received, then a Hard Reset Shall be performed\")",
       "revId": "c7642fc9468796e1e401ced1301e7f439b97f79c",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a49dccc_26f2bf5d",
+        "filename": "common/usbc/usb_pe_drp_sm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1561,
+      "author": {
+        "id": 1530058
+      },
+      "writtenOn": "2022-04-19T16:33:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7423242b_355fe854",
+      "revId": "c7642fc9468796e1e401ced1301e7f439b97f79c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
