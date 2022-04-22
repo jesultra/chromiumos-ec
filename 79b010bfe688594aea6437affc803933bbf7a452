@@ -22,6 +22,75 @@
       },
       "revId": "79b010bfe688594aea6437affc803933bbf7a452",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f0acf5e_948ca056",
+        "filename": "include/ec_commands.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 7200,
+      "author": {
+        "id": 1534724
+      },
+      "writtenOn": "2022-04-22T19:10:26Z",
+      "side": 1,
+      "message": "I had always seen the enum documentation added inline, like in the previous version but I suppose this is equivalent.",
+      "range": {
+        "startLine": 7192,
+        "startChar": 0,
+        "endLine": 7200,
+        "endChar": 36
+      },
+      "revId": "79b010bfe688594aea6437affc803933bbf7a452",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a789966_31b24d5d",
+        "filename": "include/fpsensor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1534724
+      },
+      "writtenOn": "2022-04-22T19:10:26Z",
+      "side": 1,
+      "message": "Related to the question below, are these the possible errors? Or other possible outcomes of the function call?\n\nMaybe I am confused because the values in the macros below are not negative.",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 72
+      },
+      "revId": "79b010bfe688594aea6437affc803933bbf7a452",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "259ed2fb_46af1051",
+        "filename": "include/fpsensor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1534724
+      },
+      "writtenOn": "2022-04-22T19:10:26Z",
+      "side": 1,
+      "message": "Are these the same values defined at lines 85-87?",
+      "range": {
+        "startLine": 102,
+        "startChar": 3,
+        "endLine": 102,
+        "endChar": 34
+      },
+      "revId": "79b010bfe688594aea6437affc803933bbf7a452",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
