@@ -94,6 +94,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09bc1f33_5f20c6e2",
+        "filename": "include/fpsensor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1534724
+      },
+      "writtenOn": "2022-04-22T21:14:49Z",
+      "side": 1,
+      "message": "Thanks for the clarification!",
+      "parentUuid": "2bdf37c6_c289f00c",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 72
+      },
+      "revId": "79b010bfe688594aea6437affc803933bbf7a452",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "259ed2fb_46af1051",
