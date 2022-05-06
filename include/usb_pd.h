@@ -1217,13 +1217,28 @@ enum pd_sdb_temperature_status {
 BUILD_ASSERT(sizeof(enum pd_sdb_temperature_status) == 1);
 
 struct pd_sdb {
+	/* SDB Fields for PD REV 3.0 */
 	uint8_t internal_temp;
 	uint8_t present_input;
 	uint8_t present_battery_input;
 	uint8_t event_flags;
 	enum pd_sdb_temperature_status temperature_status;
 	uint8_t power_status;
+	/* SDB Fields for PD REV 3.1 */
+	uint8_t power_state_change;
 };
+
+#define PD_SBD_POWER_STATE_NOT_SUPPORTED        0x0
+#define PD_SBD_POWER_STATE_S0                   0x1
+#define PD_SBD_POWER_STATE_MODERN_STANDBY       0x2
+#define PD_SBD_POWER_STATE_S3                   0x3
+#define PD_SBD_POWER_STATE_S4                   0x4
+#define PD_SBD_POWER_STATE_S5                   0x5
+#define PD_SBD_POWER_STATE_G3                   0x6
+#define PD_SBD_POWER_STATE_INDICATOR_OFF        0x0
+#define PD_SBD_POWER_STATE_INDICATOR_ON         0x8
+#define PD_SBD_POWER_STATE_INDICATOR_BLINKING   0x10
+#define PD_SBD_POWER_STATE_INDICATOR_BREATHING  0x18
 
 /* Extended message type for REV 3.0 */
 enum pd_ext_msg_type {

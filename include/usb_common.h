@@ -242,6 +242,13 @@ int pd_broadcast_alert_msg(uint32_t ado);
  */
 int pd_send_alert_msg(int port, uint32_t ado);
 
+/*
+ * Gets Power State Change field of Status Data Block.
+ *
+ * @return uint8_t with current power state and LED indecator values.
+ */
+uint8_t pd_status_power_state_change(void);
+
 /**
  * During USB retimer firmware update, process operation
  * requested by AP

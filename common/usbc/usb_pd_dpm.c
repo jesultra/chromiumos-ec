@@ -16,6 +16,7 @@
 #include "system.h"
 #include "task.h"
 #include "tcpm/tcpm.h"
+#include "usb_common.h"
 #include "usb_dp_alt_mode.h"
 #include "usb_mode.h"
 #include "usb_mux.h"
@@ -23,6 +24,7 @@
 #include "usb_pd_dpm.h"
 #include "usb_pd_tcpm.h"
 #include "usb_pd_pdo.h"
+#include "usb_pe_sm.h"
 #include "usb_tbt_alt_mode.h"
 
 #ifdef CONFIG_COMMON_RUNTIME
@@ -816,6 +818,7 @@ int dpm_get_source_current(const int port)
 int dpm_get_status_msg(int port, uint8_t *msg, uint32_t *len)
 {
 	struct pd_sdb sdb;
+	struct rmdo partner_rmdo;
 
 	/* TODO(b/227236917): Fill in fields of Status message */
 
@@ -837,10 +840,17 @@ int dpm_get_status_msg(int port, uint8_t *msg, uint32_t *len)
 	/* Power Status */
 	sdb.power_status = 0x0;
 
-	/* USB PD Rev 3.0: 6.5.2 Status Message */
-	*len = 6;
+	partner_rmdo = pe_get_partner_rmdo(port);
+	if (partner_rmdo.major_rev == 3 && partner_rmdo.minor_rev == 1) {
+		/* USB PD Rev 3.1: 6.5.2 Status Message */
+		sdb.power_state_change = pd_status_power_state_change();
+		*len = 7;
+	} else {
+		/* USB PD Rev 3.0: 6.5.2 Status Message */
+		sdb.power_state_change = 0x0;
+		*len = 6;
+	}
 
 	memcpy(msg, &sdb, *len);
-
 	return EC_SUCCESS;
 }

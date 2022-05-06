@@ -18,6 +18,7 @@
 #include "gpio.h"
 #include "hooks.h"
 #include "mkbp_event.h"
+#include "power.h"
 #include "stdbool.h"
 #include "host_command.h"
 #include "system.h"
@@ -1089,6 +1090,47 @@ int pd_send_alert_msg(int port, uint32_t ado)
 #else
 	return EC_ERROR_INVALID_CONFIG;
 #endif
+}
+
+uint8_t pd_status_power_state_change(void)
+{
+#ifdef HAS_TASK_CHIPSET
+	switch (power_get_state()) {
+	case POWER_G3:
+	case POWER_S5G3:
+		return PD_SBD_POWER_STATE_G3 | PD_SBD_POWER_STATE_INDICATOR_OFF;
+	case POWER_S5:
+	case POWER_G3S5:
+	case POWER_S3S5:
+	case POWER_S4S5:
+		return PD_SBD_POWER_STATE_S5 | PD_SBD_POWER_STATE_INDICATOR_OFF;
+	case POWER_S4:
+	case POWER_S3S4:
+	case POWER_S5S4:
+		return PD_SBD_POWER_STATE_S4 | PD_SBD_POWER_STATE_INDICATOR_OFF;
+	case POWER_S3:
+	case POWER_S5S3:
+	case POWER_S0S3:
+	case POWER_S4S3:
+		return PD_SBD_POWER_STATE_S3 |
+		    PD_SBD_POWER_STATE_INDICATOR_BLINKING;
+	case POWER_S0:
+	case POWER_S3S0:
+#ifdef CONFIG_POWER_S0IX
+	case POWER_S0ixS0:
+#endif
+		return PD_SBD_POWER_STATE_S0 | PD_SBD_POWER_STATE_INDICATOR_ON;
+#ifdef CONFIG_POWER_S0IX
+	case POWER_S0ix:
+	case POWER_S0S0ix:
+		return PD_SBD_POWER_STATE_MODERN_STANDBY |
+		    PD_SBD_POWER_STATE_INDICATOR_BLINKING;
+#endif
+	default:
+		return PD_SBD_POWER_STATE_NOT_SUPPORTED;
+	}
+#endif
+	return PD_SBD_POWER_STATE_NOT_SUPPORTED;
 }
 
 #if defined(HAS_TASK_HOSTCMD) && !defined(TEST_BUILD)
