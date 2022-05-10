@@ -48,18 +48,18 @@ void board_keyboard_drive_col(int col)
 {
 	/* Drive all lines to high */
 	if (col == KEYBOARD_COLUMN_NONE)
-		gpio_set_level(GPIO_KBD_KSO2, 0);
+		gpio_set_level(GPIO_KBD_KSO4, 0);
 
 	/* Set KBSOUT to zero to detect key-press */
 	else if (col == KEYBOARD_COLUMN_ALL)
-		gpio_set_level(GPIO_KBD_KSO2, 1);
+		gpio_set_level(GPIO_KBD_KSO4, 1);
 
 	/* Drive one line for detection */
 	else {
-		if (col == 2)
-			gpio_set_level(GPIO_KBD_KSO2, 1);
+		if (col == 4)
+			gpio_set_level(GPIO_KBD_KSO4, 1);
 		else
-			gpio_set_level(GPIO_KBD_KSO2, 0);
+			gpio_set_level(GPIO_KBD_KSO4, 0);
 	}
 }
 
