@@ -59,6 +59,7 @@
 
 /* Thermal Config */
 #define CONFIG_TEMP_SENSOR_PCT2075
+#define THERMAL_CONTROL_REPEAT_TIMES 5
 
 #ifndef __ASSEMBLER__
 
