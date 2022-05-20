@@ -27,4 +27,15 @@ int thermal_fan_percent(int low, int high, int cur);
  */
 void board_override_fan_control(int fan, int *tmp);
 
+#ifdef THERMAL_CONTROL_REPEAT_TIMES
+/*
+ * Allow board set counter to do thermal control
+ *
+ * @param sensor Temp sensor ID to read
+ * @param thresh Temp threshold type
+ * @param t Temperature read from the temp sensor
+ */
+int board_thermal_over_thresh(int sensor, int thresh, int t);
+#endif
+
 #endif  /* __CROS_EC_THERMAL_H */

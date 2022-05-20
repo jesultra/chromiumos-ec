@@ -75,6 +75,9 @@ static void thermal_control(void)
 	int temp[TEMP_SENSOR_COUNT];
 #endif
 #endif
+#ifdef THERMAL_CONTROL_REPEAT_TIMES
+	static int count_over_times[EC_TEMP_THRESH_COUNT];
+#endif
 
 	/* add delay to ensure thermal sensor is ready when EC boot */
 #if defined(CONFIG_TEMP_SENSOR_POWER) && \
@@ -111,6 +114,18 @@ static void thermal_control(void)
 		for (j = 0; j < EC_TEMP_THRESH_COUNT; j++) {
 			int limit = thermal_params[i].temp_host[j];
 			int release = thermal_params[i].temp_host_release[j];
+#ifdef THERMAL_CONTROL_REPEAT_TIMES
+			int over = board_thermal_over_thresh(i, j, t);
+
+			if (over == 1) {
+				count_over_times[j]++;
+				CPRINTS("count_over_times[%d]=%d",
+					j, count_over_times[j]);
+				continue;
+			} else if (over == 0) {
+				count_over_times[j] = 0;
+			}
+#endif
 			if (limit) {
 				num_valid_limits[j]++;
 				if (t > limit) {
@@ -174,6 +189,11 @@ static void thermal_control(void)
 			cond_set_true(&cond_hot[j]);
 		else if (count_under[j] == num_valid_limits[j])
 			cond_set_false(&cond_hot[j]);
+#ifdef THERMAL_CONTROL_REPEAT_TIMES
+		if (count_over_times[j] >= THERMAL_CONTROL_REPEAT_TIMES) {
+			cond_set_true(&cond_hot[j]);
+		}
+#endif
 	}
 
 	/* What do we do about it? (note hard-coded logic). */

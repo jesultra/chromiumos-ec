@@ -4180,6 +4180,12 @@
  */
 #undef CONFIG_TEMP_SENSOR_POWER
 
+/*
+ * If defined, the thermal protection will triggered while the temperature
+ * read from specific temp sensor over the limit threshold continuously.
+ */
+#undef THERMAL_CONTROL_REPEAT_TIMES
+
 /* AMD STT (Skin Temperature Tracking) */
 #undef CONFIG_AMD_STT
 

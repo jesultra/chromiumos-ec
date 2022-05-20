@@ -69,11 +69,12 @@ struct ec_thermal_config thermal_params[TEMP_SENSOR_COUNT] = {
 	},
 	[TEMP_SENSOR_CPU] = {
 		.temp_host = {
-			[EC_TEMP_THRESH_HIGH] = 0,
-			[EC_TEMP_THRESH_HALT] = 0,
+			[EC_TEMP_THRESH_WARN] = C_TO_K(90),
+			[EC_TEMP_THRESH_HIGH] = C_TO_K(95),
+			[EC_TEMP_THRESH_HALT] = C_TO_K(100),
 		},
 		.temp_host_release = {
-			[EC_TEMP_THRESH_HIGH] = 0,
+			[EC_TEMP_THRESH_HIGH] = C_TO_K(85),
 		},
 		.temp_fan_off = 0,
 		.temp_fan_max = 0,
@@ -84,6 +85,8 @@ struct ec_thermal_config thermal_params[TEMP_SENSOR_COUNT] = {
 	 */
 };
 BUILD_ASSERT(ARRAY_SIZE(thermal_params) == TEMP_SENSOR_COUNT);
+
+int thermal_repeat_sensor = TEMP_SENSOR_CPU;
 
 struct fan_step {
 	int on;
@@ -142,4 +145,15 @@ int fan_percent_to_rpm(int fan, int pct)
 			fan_table[current_level].rpm);
 
 	return fan_table[current_level].rpm;
+}
+
+int board_thermal_over_thresh(int sensor, int thresh, int t)
+{
+	if (sensor != TEMP_SENSOR_CPU || thresh == EC_TEMP_THRESH_WARN)
+		return -1;
+
+	if (t > thermal_params[sensor].temp_host[thresh])
+		return 1;
+
+	return 0;
 }
