@@ -16,6 +16,108 @@
       "message": "i haven\u0027t yet verified, but wanted to get feedback on naming of file and functions ",
       "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5313ab2_505c3075",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2022-05-23T23:15:53Z",
+      "side": 1,
+      "message": "Thank you for taking on this important tech debt reduction.",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ce06ded_7650d597",
+        "filename": "common/usb_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2022-05-23T23:15:53Z",
+      "side": 1,
+      "message": "In looking up `pc_set_vbus_source_current_limit`, I have discovered a fairly deeply layered set of abstractions for doing this, including multiple layers of board-specific implementations.",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed0d9233_2ade59a4",
+        "filename": "common/usb_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2022-05-23T23:15:53Z",
+      "side": 1,
+      "message": "While looking up `pd_set_vbus_source_current_limit`, I have discovered a deeply layered set of abstractions for this same concept, including multiple levels of board-specific implementation. I think the opportunity exists to significantly clean this up, but I\u0027d understand if you didn\u0027t want to take that on.\n\nIt would probably not be good for our overall code health to simply add another layer here.\n\nDiana: I am interested in your thoughts here.",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5df41d8_199fe581",
+        "filename": "common/usb_control.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2022-05-23T23:15:53Z",
+      "side": 1,
+      "message": "I\u0027m not sure what the best name would be for this function. We call it when we change roles, but it\u0027s really more like, \"Update the port hardware connection state.\" Prior to this CL, this function was internal to the TC. It might make sense to leave it there.\n\nDiana, what do you think? Does anything else do something similar enough to this for it to be in common code?",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00147c64_7ecbfa32",
+        "filename": "common/usb_control.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2022-05-23T23:15:53Z",
+      "side": 1,
+      "message": "As noted in the comment, the logic for this function needs to happen after the TCPC init. The init ordering logic is still in the TC, and this code should probably be there too. I don\u0027t think encapsulating this function makes it easier to get the TC code right.",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a2c0bc_553b43c9",
+        "filename": "include/usb_control.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1305927
+      },
+      "writtenOn": "2022-05-23T23:15:53Z",
+      "side": 1,
+      "message": "IMO, the best prefix for this file and these functions is _probably_ `typec_`. There are a few existing public functions with this name, and they tend to do kind of the same thing as these new functions: Update the state of one of the Type-C signals in a way that abstracts the port hardware away for the caller. I had previously suggested `pd_*`, but the functions here are not specific to PD.\n\nAs noted elsewhere, there already is a `typec_` function for setting the source current limit, and that\u0027s kind of a can of worms, but that shouldn\u0027t stop us from using a good naming convention otherwise.",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
