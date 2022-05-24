@@ -105,6 +105,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f478b05_e049de73",
+        "filename": "common/usb_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2022-05-24T21:37:54Z",
+      "side": 1,
+      "message": "Agreed that it\u0027s probably not worth re-architecting typec_set_source_current_limit() within the scope of this CL, so moving the existing overridable should be fine.",
+      "parentUuid": "24540c8c_0c88c403",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5df41d8_199fe581",
@@ -136,6 +154,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "f5df41d8_199fe581",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5427ed49_a4356776",
+        "filename": "common/usb_control.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2022-05-24T21:37:54Z",
+      "side": 1,
+      "message": "I\u0027d say this is more of a helper for the TC than a generally useful function.  At least, we let the TC act as the authority for setting the partner connectedness and I wouldn\u0027t anticipate another module needing that.",
+      "parentUuid": "661b4c85_1f130c95",
       "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
