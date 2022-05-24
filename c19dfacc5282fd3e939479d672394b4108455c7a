@@ -69,6 +69,42 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24540c8c_0c88c403",
+        "filename": "common/usb_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-24T20:16:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed0d9233_2ade59a4",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92a1dbd9_328d27f8",
+        "filename": "common/usb_common.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-24T20:16:19Z",
+      "side": 1,
+      "message": "Done\nMoved the code to remove layer",
+      "parentUuid": "1ce06ded_7650d597",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5df41d8_199fe581",
@@ -82,6 +118,24 @@
       "writtenOn": "2022-05-23T23:15:53Z",
       "side": 1,
       "message": "I\u0027m not sure what the best name would be for this function. We call it when we change roles, but it\u0027s really more like, \"Update the port hardware connection state.\" Prior to this CL, this function was internal to the TC. It might make sense to leave it there.\n\nDiana, what do you think? Does anything else do something similar enough to this for it to be in common code?",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "661b4c85_1f130c95",
+        "filename": "common/usb_control.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-24T20:16:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5df41d8_199fe581",
       "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
@@ -103,6 +157,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e389f60_9e1576e8",
+        "filename": "common/usb_control.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-24T20:16:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00147c64_7ecbfa32",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5a2c0bc_553b43c9",
@@ -116,6 +188,24 @@
       "writtenOn": "2022-05-23T23:15:53Z",
       "side": 1,
       "message": "IMO, the best prefix for this file and these functions is _probably_ `typec_`. There are a few existing public functions with this name, and they tend to do kind of the same thing as these new functions: Update the state of one of the Type-C signals in a way that abstracts the port hardware away for the caller. I had previously suggested `pd_*`, but the functions here are not specific to PD.\n\nAs noted elsewhere, there already is a `typec_` function for setting the source current limit, and that\u0027s kind of a can of worms, but that shouldn\u0027t stop us from using a good naming convention otherwise.",
+      "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fc7899d_4bb88678",
+        "filename": "include/usb_control.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-24T20:16:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5a2c0bc_553b43c9",
       "revId": "c19dfacc5282fd3e939479d672394b4108455c7a",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
