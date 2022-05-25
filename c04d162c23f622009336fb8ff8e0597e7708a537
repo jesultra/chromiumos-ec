@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fabfbfb_f53b954e",
+        "filename": "driver/tcpm/stub.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-25T22:18:10Z",
+      "side": 1,
+      "message": "i think we can remove this function",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 1
+      },
+      "revId": "c04d162c23f622009336fb8ff8e0597e7708a537",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
