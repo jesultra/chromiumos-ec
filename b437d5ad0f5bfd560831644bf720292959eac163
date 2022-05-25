@@ -104,6 +104,24 @@
       "parentUuid": "108c25b2_b295d691",
       "revId": "b437d5ad0f5bfd560831644bf720292959eac163",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3243bf64_9cbbfb03",
+        "filename": "common/usb_pd_tcpc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-25T21:09:00Z",
+      "side": 1,
+      "message": "Done\n\nremove the additional layer of function calls",
+      "parentUuid": "b2f7055e_0771b026",
+      "revId": "b437d5ad0f5bfd560831644bf720292959eac163",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
