@@ -35,6 +35,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bf1d7ed_3f6528b0",
+        "filename": "common/usb_control.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-25T20:48:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "864afa3d_cd034038",
+      "revId": "b437d5ad0f5bfd560831644bf720292959eac163",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c2ed9ec_0195387b",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-05-25T14:49:59Z",
       "side": 1,
       "message": "Nit: You could stick this config check inside `typec_set_vconn` (using `IS_ENABLED`). If it wasn\u0027t set, the function would just bail out.",
+      "revId": "b437d5ad0f5bfd560831644bf720292959eac163",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "108c25b2_b295d691",
+        "filename": "common/usb_pd_tcpc.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-25T20:48:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c2ed9ec_0195387b",
       "revId": "b437d5ad0f5bfd560831644bf720292959eac163",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
