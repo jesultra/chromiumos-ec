@@ -33,6 +33,24 @@
       "message": "nit: technically, this isn\u0027t equivalent code, but I also can\u0027t find any boards currently defining pd_set_vconn() anyway.  It would probably be okay to just not change this file",
       "revId": "ef0246c3a8372b1c308243e75793576ac2abdd8f",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d85dbb4d_4cb7d249",
+        "filename": "common/usb_pd_tcpc.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1250,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2022-05-26T21:08:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6140785_b35385af",
+      "revId": "ef0246c3a8372b1c308243e75793576ac2abdd8f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
