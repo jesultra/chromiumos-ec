@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75957861_af01c94e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1202079
+      },
+      "writtenOn": "2022-05-31T19:33:43Z",
+      "side": 1,
+      "message": "+2 % nit",
+      "revId": "b0f47873ef6733cd33bdbf83785fa5baa6c3667e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22ed0dab_63d38854",
+        "filename": "board/duplo/battery.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1202079
+      },
+      "writtenOn": "2022-05-31T19:33:43Z",
+      "side": 1,
+      "message": "nit, here and below: 2022",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 1,
+        "endChar": 17
+      },
+      "revId": "b0f47873ef6733cd33bdbf83785fa5baa6c3667e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
