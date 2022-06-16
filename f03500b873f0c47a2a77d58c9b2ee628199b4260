@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "380fcf34_8d3f8cef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2022-06-16T17:23:03Z",
+      "side": 1,
+      "message": "lgtm. just nits.",
+      "revId": "f03500b873f0c47a2a77d58c9b2ee628199b4260",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9ef7463_12608353",
+        "filename": "chip/stm32/spi_controller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2022-06-16T17:23:03Z",
+      "side": 1,
+      "message": "Can you do\n\n  if (IS_ENABLED(CONFIG_USB_SPI))\n\nand remove the guard at line 337?",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 21
+      },
+      "revId": "f03500b873f0c47a2a77d58c9b2ee628199b4260",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "151b3559_5ef31589",
+        "filename": "chip/stm32/spi_controller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1106949
+      },
+      "writtenOn": "2022-06-16T17:23:03Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 415,
+        "startChar": 7,
+        "endLine": 415,
+        "endChar": 21
+      },
+      "revId": "f03500b873f0c47a2a77d58c9b2ee628199b4260",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
