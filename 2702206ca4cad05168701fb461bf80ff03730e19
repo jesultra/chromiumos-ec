@@ -16,6 +16,24 @@
       "message": "Thanks for the useful comments, please re-approve.",
       "revId": "2702206ca4cad05168701fb461bf80ff03730e19",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaad3473_9a135926",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1341996
+      },
+      "writtenOn": "2022-06-16T19:59:52Z",
+      "side": 1,
+      "message": "No, it seems the +2 was sticky. No need for you to look again, I have just followed your suggestions.",
+      "parentUuid": "4279ea76_6cb040ef",
+      "revId": "2702206ca4cad05168701fb461bf80ff03730e19",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
