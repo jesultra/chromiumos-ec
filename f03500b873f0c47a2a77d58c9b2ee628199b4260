@@ -41,6 +41,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29ea9423_fb9e14f9",
+        "filename": "chip/stm32/spi_controller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1341996
+      },
+      "writtenOn": "2022-06-16T19:58:56Z",
+      "side": 1,
+      "message": "Done.\n\nI suppose GCC will optimize away a global variable which is never referenced.",
+      "parentUuid": "e9ef7463_12608353",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 21
+      },
+      "revId": "f03500b873f0c47a2a77d58c9b2ee628199b4260",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "151b3559_5ef31589",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-06-16T17:23:03Z",
       "side": 1,
       "message": "ditto",
+      "range": {
+        "startLine": 415,
+        "startChar": 7,
+        "endLine": 415,
+        "endChar": 21
+      },
+      "revId": "f03500b873f0c47a2a77d58c9b2ee628199b4260",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53c1e673_3cdd2ad7",
+        "filename": "chip/stm32/spi_controller.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1341996
+      },
+      "writtenOn": "2022-06-16T19:58:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "151b3559_5ef31589",
       "range": {
         "startLine": 415,
         "startChar": 7,
