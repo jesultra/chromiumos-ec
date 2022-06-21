@@ -67,7 +67,9 @@ static void activate_chip_enable(
  */
 static void update_bc12_status_to_charger_manager(const int port)
 {
+#if defined(CONFIG_CHARGE_RAMP_SW) || defined(CONFIG_CHARGE_RAMP_HW)
 	const struct max14637_config_t * const cfg = &max14637_config[port];
+#endif
 	struct charge_port_info new_chg;
 
 	new_chg.voltage = USB_CHARGER_VOLTAGE_MV;
