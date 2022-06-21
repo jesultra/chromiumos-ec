@@ -1,8 +1,6 @@
 /* Copyright 2022 The Chromium OS Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
- *
- * This file is auto-generated - do not edit!
  */
 
 / {
@@ -186,6 +184,18 @@
 		};
 		gpio_usb_c0_int_odl: usb_c0_int_odl {
 			gpios = <&gpio0 1 GPIO_INPUT_PULL_UP>;
+		};
+		gpio_usb_c0_bc12_chg_det_l: usb_c0_bc12_chg_det_l {
+			gpios = <&gpiob 1 GPIO_INPUT>;
+		};
+		gpio_usb_c0_bc12_vbus_on: usb_c0_bc12_vbus_on {
+			gpios = <&gpio8 6 GPIO_OUTPUT_LOW>;
+		};
+		gpio_usb_c1_bc12_chg_det_l: usb_c1_bc12_chg_det_l {
+			gpios = <&gpio3 3 GPIO_INPUT>;
+		};
+		gpio_usb_c1_bc12_vbus_on: usb_c1_bc12_vbus_on {
+			gpios = <&gpio3 6 GPIO_OUTPUT_LOW>;
 		};
 		gpio_vccin_aux_vid0: vccin_aux_vid0 {
 			gpios = <&gpio9 2 GPIO_INPUT>;

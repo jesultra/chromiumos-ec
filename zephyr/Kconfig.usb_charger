@@ -38,6 +38,13 @@ config PLATFORM_EC_BC12_DETECT_PI3USB9201
 	  starts BC1.2 detection to detect the attached host type. It provides
 	  an I2C interface to report detection results.
 
+config PLATFORM_EC_BC12_DETECT_MAX14637
+	bool "Enable support for MAX14637"
+	help
+	  Build drivers for the MAX14637, a USB BC 1.2 Charger Detector.
+	  The max14637_config define the chip_enable_pin and chg_det_pin to
+	  enable IC and detect connection.
+
 config PLATFORM_EC_BC12_DETECT_MT6360
 	bool "MediaTek MT6360P PMIC"
 	help
