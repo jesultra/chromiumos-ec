@@ -10,6 +10,7 @@
 #include "hooks.h"
 #include "usb_mux.h"
 #include "system.h"
+#include "driver/bc12/max14637.h"
 #include "driver/retimer/anx7483_public.h"
 #include "driver/tcpm/tcpci.h"
 #include "driver/tcpm/raa489000.h"
@@ -17,6 +18,25 @@
 #include "nissa_common.h"
 
 LOG_MODULE_DECLARE(nissa, CONFIG_NISSA_LOG_LEVEL);
+
+/* BC 1.2 chip Configuration */
+const struct max14637_config_t
+	max14637_config[CONFIG_USB_PD_PORT_MAX_COUNT] = {
+	{
+		.chip_enable_pin =
+			GPIO_SIGNAL(DT_NODELABEL(gpio_usb_c0_bc12_vbus_on)),
+		.chg_det_pin =
+			GPIO_SIGNAL(DT_NODELABEL(gpio_usb_c0_bc12_chg_det_l)),
+		.flags = MAX14637_FLAGS_CHG_DET_ACTIVE_LOW,
+	},
+	{
+		.chip_enable_pin =
+			GPIO_SIGNAL(DT_NODELABEL(gpio_usb_c1_bc12_vbus_on)),
+		.chg_det_pin =
+			GPIO_SIGNAL(DT_NODELABEL(gpio_usb_c1_bc12_chg_det_l)),
+		.flags = MAX14637_FLAGS_CHG_DET_ACTIVE_LOW,
+	},
+};
 
 struct tcpc_config_t tcpc_config[CONFIG_USB_PD_PORT_MAX_COUNT] = {
 	{
