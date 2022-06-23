@@ -308,6 +308,9 @@ void system_print_banner(void)
 	/* be less verbose if we boot for USB resume to meet spec timings */
 	if (!(system_get_reset_flags() & EC_RESET_FLAG_USB_RESUME)) {
 		CPUTS("\n");
+	        CPUTS("[Reset cause: ");
+	        system_print_reset_flags();
+
 		if (system_jumped_to_this_image())
 			CPRINTS("UART initialized after sysjump");
 		else
@@ -315,8 +318,6 @@ void system_print_banner(void)
 		CPRINTF("[Image: %s, %s]\n",
 			 system_get_image_copy_string(),
 			 system_get_build_info());
-		CPUTS("[Reset cause: ");
-		system_print_reset_flags();
 		CPUTS("]\n");
 	}
 }
