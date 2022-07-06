@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc78c644_c53c5c89",
+        "filename": "zephyr/projects/corsola/CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1141739
+      },
+      "writtenOn": "2022-07-06T09:47:52Z",
+      "side": 0,
+      "message": "No sure if you awared of the latest led change from tentacruel ODM: https://crrev.com/c/3737302\n\nWe might need to keep its `board_led_get_state` function",
+      "range": {
+        "startLine": 57,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 34
+      },
+      "revId": "9e6663e9600e3a45a7e7f187de3654948ca073d4",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
