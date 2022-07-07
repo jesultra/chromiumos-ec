@@ -22,6 +22,30 @@
       },
       "revId": "9e6663e9600e3a45a7e7f187de3654948ca073d4",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334b0180_764a7ebe",
+        "filename": "zephyr/projects/corsola/CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1524179
+      },
+      "writtenOn": "2022-07-07T01:30:45Z",
+      "side": 0,
+      "message": "I think I did the wrong thing here, will fix it.\nLooks like it is possible to convert the `board_led_get_state` into DTS via setting more detailed fields of `charge-state` and `chip-state` right?",
+      "parentUuid": "dc78c644_c53c5c89",
+      "range": {
+        "startLine": 57,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 34
+      },
+      "revId": "9e6663e9600e3a45a7e7f187de3654948ca073d4",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
