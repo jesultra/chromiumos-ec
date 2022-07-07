@@ -46,6 +46,30 @@
       },
       "revId": "9e6663e9600e3a45a7e7f187de3654948ca073d4",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5199c231_1f404e46",
+        "filename": "zephyr/projects/corsola/CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1524179
+      },
+      "writtenOn": "2022-07-07T04:14:58Z",
+      "side": 0,
+      "message": "Modified the `led_tentacruel.dts` for handing these LED behavior.",
+      "parentUuid": "334b0180_764a7ebe",
+      "range": {
+        "startLine": 57,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 34
+      },
+      "revId": "9e6663e9600e3a45a7e7f187de3654948ca073d4",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
