@@ -22,6 +22,30 @@
       },
       "revId": "e90aa1f49ffe03f10d73f3010af26148bc4f73ac",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89268c7a_76c36944",
+        "filename": "zephyr/projects/corsola/led_tentacruel.dts",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1524179
+      },
+      "writtenOn": "2022-07-07T07:40:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17b86b72_c7b404d0",
+      "range": {
+        "startLine": 8,
+        "startChar": 1,
+        "endLine": 8,
+        "endChar": 2
+      },
+      "revId": "e90aa1f49ffe03f10d73f3010af26148bc4f73ac",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
