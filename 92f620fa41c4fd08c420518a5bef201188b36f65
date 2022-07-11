@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91872871_8b5f242b",
+        "filename": "zephyr/projects/brya/fan.dts",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1478788
+      },
+      "writtenOn": "2022-07-11T09:47:46Z",
+      "side": 0,
+      "message": "Can you move the property removal in their own patch? Mostly as an exercise on splitting a patch. :-)",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 26
+      },
+      "revId": "92f620fa41c4fd08c420518a5bef201188b36f65",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}

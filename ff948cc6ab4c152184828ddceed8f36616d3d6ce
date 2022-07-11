@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d91b8c2a_005bca4f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1478788
+      },
+      "writtenOn": "2022-07-11T09:47:46Z",
+      "side": 1,
+      "message": "nit: no need to mention \"make fan driver\" again, you already scoped the change from from \"zephyr: shim: fan\", just leave \"use \u0027period\u0027 from PWM spec...\".",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 88
+      },
+      "revId": "ff948cc6ab4c152184828ddceed8f36616d3d6ce",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb62ee7b_b506e03d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1478788
+      },
+      "writtenOn": "2022-07-11T09:47:46Z",
+      "side": 1,
+      "message": "Can you check that `fan_config` is statically initialized as expected? Of you did it already you can add another TEST\u003d line mentioning that (you can have multiple)",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 18
+      },
+      "revId": "ff948cc6ab4c152184828ddceed8f36616d3d6ce",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d508e88_601ffa23",
+        "filename": "zephyr/shim/src/fan.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1478788
+      },
+      "writtenOn": "2022-07-11T09:47:46Z",
+      "side": 1,
+      "message": "this can be replaced with a `struct pwm_dt_spec`, can you add a followup patch in the series to do that?",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 0
+      },
+      "revId": "ff948cc6ab4c152184828ddceed8f36616d3d6ce",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
