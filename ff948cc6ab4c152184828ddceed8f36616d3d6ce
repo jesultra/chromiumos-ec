@@ -24,6 +24,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84878192_25ecb177",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1541242
+      },
+      "writtenOn": "2022-07-13T10:33:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d91b8c2a_005bca4f",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 88
+      },
+      "revId": "ff948cc6ab4c152184828ddceed8f36616d3d6ce",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb62ee7b_b506e03d",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-07-11T09:47:46Z",
       "side": 1,
       "message": "Can you check that `fan_config` is statically initialized as expected? Of you did it already you can add another TEST\u003d line mentioning that (you can have multiple)",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 18
+      },
+      "revId": "ff948cc6ab4c152184828ddceed8f36616d3d6ce",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5c561af_4ce598ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1541242
+      },
+      "writtenOn": "2022-07-13T10:33:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb62ee7b_b506e03d",
       "range": {
         "startLine": 14,
         "startChar": 0,
