@@ -1,5 +1,5 @@
 # Embedded Controller (EC)
-
+# ec public decode tot
 [TOC]
 
 > **Note** - This document covers the legacy Chrome EC implementation. The
