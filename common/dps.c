@@ -7,7 +7,6 @@
 
 #include <stdint.h>
 
-#include "adc.h"
 #include "dps.h"
 #include "atomic.h"
 #include "battery.h"
@@ -16,7 +15,6 @@
 #include "charger.h"
 #include "charge_manager.h"
 #include "charge_state.h"
-#include "charge_state_v2.h"
 #include "ec_commands.h"
 #include "math_util.h"
 #include "task.h"
@@ -24,7 +22,6 @@
 #include "usb_common.h"
 #include "usb_pd.h"
 #include "util.h"
-#include "usb_pe_sm.h"
 
 #define K_MORE_PWR 96
 #define K_LESS_PWR 93
