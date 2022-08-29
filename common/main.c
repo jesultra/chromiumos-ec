@@ -224,9 +224,9 @@ test_mockable __keep int main(void)
 	keyboard_scan_init();
 #endif /* HAS_TASK_KEYSCAN */
 
-#if defined(CONFIG_DEDICATED_RECOVERY_BUTTON) || defined(CONFIG_VOLUME_BUTTONS)
+#if defined(CONFIG_DEDICATED_RECOVERY_BUTTON) || defined(CONFIG_VOLUME_BUTTONS) || defined(CONFIG_BRIGHTNESS_BUTTONS)
 	button_init();
-#endif /* defined(CONFIG_DEDICATED_RECOVERY_BUTTON | CONFIG_VOLUME_BUTTONS) */
+#endif /* defined(CONFIG_DEDICATED_RECOVERY_BUTTON | CONFIG_VOLUME_BUTTONS | CONFIG_BRIGHTNESS_BUTTONS) */
 
 	/* Make sure recovery boot won't be paused. */
 	if (IS_ENABLED(CONFIG_POWER_BUTTON_INIT_IDLE) &&

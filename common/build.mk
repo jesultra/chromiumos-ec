@@ -203,6 +203,7 @@ common-y+=sha256.o
 endif
 endif
 common-$(CONFIG_VOLUME_BUTTONS)+=button.o
+common-$(CONFIG_BRIGHTNESS_BUTTONS)+=button.o
 common-$(CONFIG_VSTORE)+=vstore.o
 common-$(CONFIG_WEBUSB_URL)+=webusb_desc.o
 common-$(CONFIG_WIRELESS)+=wireless.o

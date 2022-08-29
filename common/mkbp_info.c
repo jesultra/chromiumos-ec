@@ -25,12 +25,25 @@ __overridable int mkbp_support_volume_buttons(void)
 #endif
 }
 
+__overridable int mkbp_support_brightness_buttons(void)
+{
+#ifdef CONFIG_BRIGHTNESS_BUTTONS
+	return 1;
+#else
+	return 0;
+#endif
+}
+
 test_export_static uint32_t get_supported_buttons(void)
 {
 	uint32_t val = 0;
 
 	if (mkbp_support_volume_buttons()) {
 		val |= BIT(EC_MKBP_VOL_UP) | BIT(EC_MKBP_VOL_DOWN);
+	}
+
+	if (mkbp_support_brightness_buttons()) {
+		val |= BIT(EC_MKBP_BRIGHTNESS_UP) | BIT(EC_MKBP_BRIGHTNESS_DOWN);
 	}
 
 #ifdef CONFIG_DEDICATED_RECOVERY_BUTTON

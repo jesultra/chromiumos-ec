@@ -3989,6 +3989,8 @@ struct ec_response_get_next_event_v1 {
 #define EC_MKBP_VOL_UP 1
 #define EC_MKBP_VOL_DOWN 2
 #define EC_MKBP_RECOVERY 3
+#define EC_MKBP_BRIGHTNESS_UP 4
+#define EC_MKBP_BRIGHTNESS_DOWN 5
 
 /* Switches */
 #define EC_MKBP_LID_OPEN 0
@@ -6489,7 +6491,7 @@ struct ec_response_get_pd_port_caps {
  * Button press simulation
  *
  * This command is used to simulate a button press.
- * Supported commands are vup(volume up) vdown(volume down) & rec(recovery)
+ * Supported commands are vup(volume up) vdown(volume down) rec(recovery) bup(brightness up) bdown(brightness down)
  * Time duration for which button needs to be pressed is an optional parameter.
  *
  * NOTE: This is only available on unlocked devices for testing purposes only.
@@ -6517,6 +6519,8 @@ enum keyboard_button_type {
 	KEYBOARD_BUTTON_CAPSENSE_6 = 9,
 	KEYBOARD_BUTTON_CAPSENSE_7 = 10,
 	KEYBOARD_BUTTON_CAPSENSE_8 = 11,
+	KEYBOARD_BUTTON_BRIGHTNESS_DOWN = 12,
+	KEYBOARD_BUTTON_BRIGHTNESS_UP = 13,
 
 	KEYBOARD_BUTTON_COUNT,
 };

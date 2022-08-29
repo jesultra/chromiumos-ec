@@ -589,3 +589,13 @@ static void power_monitor(void)
 	}
 	hook_call_deferred(&power_monitor_data, delay);
 }
+
+int button_is_pseudo_detected(enum gpio_signal gpio) /* //for scaler test //raymondchung: ??? */
+{
+	return 0;
+}
+
+int pseudo_to_physical_value(enum gpio_signal gpio) /* //for scaler test //raymondchung: ??? */
+{
+	return 0;
+}

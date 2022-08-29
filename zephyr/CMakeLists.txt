@@ -546,6 +546,10 @@ zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_VBOOT_HASH
                                                 "${PLATFORM_EC}/common/vboot_hash.c")
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_VOLUME_BUTTONS
                                                 "${PLATFORM_EC}/common/button.c")
+zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_BRIGHTNESS_BUTTONS
+                                                "${PLATFORM_EC}/common/button.c")
+zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_PSEUDO_BUTTONS
+                                                "${PLATFORM_EC}/common/button.c")
 
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_VBOOT_EFS2
                                                 "${PLATFORM_EC}/common/vboot/efs2.c")

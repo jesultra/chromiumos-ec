@@ -32,7 +32,7 @@ ZTEST(ec_app_tests, test_keyboard_scan_init)
 }
 #endif
 
-#if defined(CONFIG_DEDICATED_RECOVERY_BUTTON) || defined(CONFIG_VOLUME_BUTTONS)
+#if defined(CONFIG_DEDICATED_RECOVERY_BUTTON) || defined(CONFIG_VOLUME_BUTTONS) || defined(CONFIG_BRIGHTNESS_BUTTONS) || defined(CONFIG_PSEUDO_BUTTONS)
 ZTEST(ec_app_tests, test_button_init)
 {
 	zassert_unreachable("TODO: Implement this test.");

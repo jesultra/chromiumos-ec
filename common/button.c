@@ -77,6 +77,9 @@ static int raw_button_pressed(const struct button_config *button)
 		if (IS_ENABLED(CONFIG_ADC_BUTTONS) &&
 		    button_is_adc_detected(button->gpio)) {
 			physical_value = adc_to_physical_value(button->gpio);
+		} else if (IS_ENABLED(CONFIG_PSEUDO_BUTTONS) &&
+		    button_is_pseudo_detected(button->gpio)) {
+			physical_value = pseudo_to_physical_value(button->gpio);
 		} else {
 			physical_value =
 				(!!gpio_get_level(button->gpio) ==
@@ -440,6 +443,10 @@ static int console_command_button(int argc, const char **argv)
 			button = button_present(KEYBOARD_BUTTON_VOLUME_DOWN);
 		else if (!strcasecmp(argv[argv_idx], "rec"))
 			button = button_present(KEYBOARD_BUTTON_RECOVERY);
+		else if (!strcasecmp(argv[argv_idx], "bup"))
+			button = button_present(KEYBOARD_BUTTON_BRIGHTNESS_UP);
+		else if (!strcasecmp(argv[argv_idx], "bdown"))
+			button = button_present(KEYBOARD_BUTTON_BRIGHTNESS_DOWN);
 		else {
 			/* If last parameter check if it is an integer. */
 			if (argv_idx == argc - 1) {
@@ -464,7 +471,7 @@ static int console_command_button(int argc, const char **argv)
 
 	return EC_SUCCESS;
 }
-DECLARE_CONSOLE_COMMAND(button, console_command_button, "vup|vdown|rec msec",
+DECLARE_CONSOLE_COMMAND(button, console_command_button, "vup|vdown|rec|bup|bdown msec",
 			"Simulate button press");
 #endif /* CONFIG_CMD_BUTTON */
 
@@ -546,6 +553,8 @@ enum debug_state {
 #define DEBUG_BTN_POWER BIT(0)
 #define DEBUG_BTN_VOL_UP BIT(1)
 #define DEBUG_BTN_VOL_DN BIT(2)
+#define DEBUG_BTN_BRIGHTNESS_UP BIT(3)
+#define DEBUG_BTN_BRIGHTNESS_DN BIT(4)
 #define DEBUG_TIMEOUT (10 * SECOND)
 
 static enum debug_state curr_debug_state = STATE_DEBUG_NONE;
@@ -568,6 +577,14 @@ static int debug_button_mask(void)
 	/* Get volume down state */
 	if (state[BUTTON_VOLUME_DOWN].debounced_pressed)
 		mask |= DEBUG_BTN_VOL_DN;
+
+	/* Get brightness up state */
+	if (state[BUTTON_BRIGHTNESS_UP].debounced_pressed)
+		mask |= DEBUG_BTN_BRIGHTNESS_UP;
+
+	/* Get brightness down state */
+	if (state[BUTTON_BRIGHTNESS_DOWN].debounced_pressed)
+		mask |= DEBUG_BTN_BRIGHTNESS_DN;
 
 	return mask;
 }
@@ -867,6 +884,23 @@ struct button_config buttons[BUTTON_COUNT] = {
 	}
 #endif /* defined(CONFIG_DEDICATED_RECOVERY_BUTTON_2) */
 #endif /* defined(CONFIG_DEDICATED_RECOVERY_BUTTON) */
+#ifdef CONFIG_BRIGHTNESS_BUTTONS
+	[BUTTON_BRIGHTNESS_UP] = {
+		.name = "Brightness Up",
+		.type = KEYBOARD_BUTTON_BRIGHTNESS_UP,
+		.gpio = GPIO_BRIGHTNESS_UP_L,
+		.debounce_us = BUTTON_DEBOUNCE_US,
+		.flags = 0,
+	},
+
+	[BUTTON_BRIGHTNESS_DOWN] = {
+		.name = "Brightness Down",
+		.type = KEYBOARD_BUTTON_BRIGHTNESS_DOWN,
+		.gpio = GPIO_BRIGHTNESS_DOWN_L,
+		.debounce_us = BUTTON_DEBOUNCE_US,
+		.flags = 0,
+	},
+#endif /* defined(CONFIG_BRIGHTNESS_BUTTONS) */
 };
 
 #ifdef CONFIG_BUTTON_TRIGGERED_RECOVERY

@@ -172,6 +172,11 @@ ALTERNATE(PIN_MASK(3, 0x10), 0, MODULE_ADC, 0)               /* GPIO34/PS2_DAT2/
 ALTERNATE(PIN_MASK(4, 0x38), 0, MODULE_ADC, 0)               /* GPIO45/ADC0, GPIO44/ADC1, GPIO43/ADC2 */
 ALTERNATE(PIN_MASK(E, 0x02), 0, MODULE_ADC, 0)               /* GPIOE1/ADC7 */
 
+UNIMPLEMENTED(VOLUME_UP_L) /* //for scaler test //raymondchung: ??? */
+UNIMPLEMENTED(VOLUME_DOWN_L) /* //for scaler test //raymondchung: ??? */
+UNIMPLEMENTED(BRIGHTNESS_UP_L) /* //for scaler test //raymondchung: ??? */
+UNIMPLEMENTED(BRIGHTNESS_DOWN_L) /* //for scaler test //raymondchung: ??? */
+
 /* Unused Pins */
 UNUSED(PIN(D, 6))       /* GPOD6/CR_SOUT3/SHDF_ESPI_L */
 UNUSED(PIN(3, 2))       /* GPO32/TRIS_L */

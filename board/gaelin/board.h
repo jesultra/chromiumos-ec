@@ -151,6 +151,10 @@
 #define CONFIG_CPS8100
 #endif
 
+#define CONFIG_VOLUME_BUTTONS /* //for scaler test //raymondchung: ??? */
+#define CONFIG_BRIGHTNESS_BUTTONS /* //for scaler test //raymondchung: ??? */
+#define CONFIG_PSEUDO_BUTTONS /* //for scaler test //raymondchung: ??? */
+
 #ifndef __ASSEMBLER__
 
 #include "gpio_signal.h" /* needed by registers.h */

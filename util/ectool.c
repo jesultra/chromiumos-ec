@@ -1514,6 +1514,10 @@ int cmd_button(int argc, char *argv[])
 			button = KEYBOARD_BUTTON_VOLUME_DOWN;
 		else if (!strcasecmp(argv[argv_idx], "rec"))
 			button = KEYBOARD_BUTTON_RECOVERY;
+		else if (!strcasecmp(argv[argv_idx], "bup"))
+			button = KEYBOARD_BUTTON_BRIGHTNESS_UP;
+		else if (!strcasecmp(argv[argv_idx], "bdown"))
+			button = KEYBOARD_BUTTON_BRIGHTNESS_DOWN;
 		else {
 			/* If last parameter check if it is an integer. */
 			if (argv_idx == argc - 1) {
@@ -9011,6 +9015,8 @@ static const char *const mkbp_button_strings[] = {
 	[EC_MKBP_VOL_UP] = "Volume up",
 	[EC_MKBP_VOL_DOWN] = "Volume down",
 	[EC_MKBP_RECOVERY] = "Recovery",
+	[EC_MKBP_BRIGHTNESS_UP] = "Brightness up",
+	[EC_MKBP_BRIGHTNESS_DOWN] = "Brightness down",
 };
 
 static const char *const mkbp_switch_strings[] = {
