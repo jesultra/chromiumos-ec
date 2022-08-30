@@ -16,6 +16,24 @@
       "message": "I am not entirely sure about what\u0027s going on here with all these \"\" 😄\nIt would be helpful if someone else reviewed this file.",
       "revId": "edf0d4a12e3c1d00f78a37ffe19634a3007f552b",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cbf424b_ffc15812",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1314845
+      },
+      "writtenOn": "2022-08-30T16:34:49Z",
+      "side": 1,
+      "message": "`shellcheck` suggests adding quotes around `${STM32MON_COMMAND}`. However, this was a variable with spaces in it (something like `st32mon -U -u -e -w`), so we need to make it an array in order for it to work: https://github.com/koalaman/shellcheck/wiki/Sc2086#exceptions.",
+      "parentUuid": "45072050_34dfb47a",
+      "revId": "edf0d4a12e3c1d00f78a37ffe19634a3007f552b",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
