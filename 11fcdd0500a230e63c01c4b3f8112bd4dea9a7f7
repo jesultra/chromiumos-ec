@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ade8c704_2221f447",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2022-09-02T20:05:29Z",
+      "side": 1,
+      "message": "Need to use `const struct usb_mux`",
+      "revId": "11fcdd0500a230e63c01c4b3f8112bd4dea9a7f7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
