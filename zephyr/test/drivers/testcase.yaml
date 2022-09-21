@@ -61,6 +61,9 @@ tests:
       - CONFIG_PLATFORM_EC_MKBP_INPUT_DEVICES=y
       - CONFIG_PLATFORM_EC_MKBP_EVENT=y
       - CONFIG_PLATFORM_EC_MKBP_USE_GPIO=y
+  drivers.system:
+    extra_configs:
+      - CONFIG_LINK_TEST_SUITE_SYSTEM=y
   drivers.usb_retimer_fw_update:
     extra_args: CONF_FILE="prj.conf;usb_retimer_fw_update/prj.conf"
     extra_configs:

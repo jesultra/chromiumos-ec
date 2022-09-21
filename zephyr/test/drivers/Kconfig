@@ -44,4 +44,7 @@ config LINK_TEST_SUITE_HOST_COMMANDS
 config LINK_TEST_SUITE_USBC_OCP
 	bool "Link tests for common USBC OCP code"
 
+config LINK_TEST_SUITE_SYSTEM
+	bool "Link tests for common system code"
+
 source "Kconfig.zephyr"
