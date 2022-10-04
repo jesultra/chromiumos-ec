@@ -3,5 +3,10 @@
 # found in the LICENSE file.
 
 zephyr_library_sources_ifdef(CONFIG_CROS_FLASH_IT8XXX2	cros_flash_it8xxx2.c)
-zephyr_library_sources_ifdef(CONFIG_CROS_FLASH_NPCX	cros_flash_npcx.c)
+
 zephyr_library_sources_ifdef(CONFIG_CROS_FLASH_XEC	cros_flash_xec.c)
+zephyr_library_link_libraries_ifdef(CONFIG_CROS_FLASH_XEC spi_flash_reg)
+
+# Add dependency on spi_flash_reg for spi_flash_reg.h
+zephyr_library_sources_ifdef(CONFIG_CROS_FLASH_NPCX	cros_flash_npcx.c)
+zephyr_library_link_libraries_ifdef(CONFIG_CROS_FLASH_NPCX spi_flash_reg)
