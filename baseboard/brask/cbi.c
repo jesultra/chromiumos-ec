@@ -14,10 +14,15 @@
 #define CPRINTF(format, args...) cprintf(CC_SYSTEM, format, ##args)
 
 static uint8_t board_id;
-
+static uint32_t sku;
 uint8_t get_board_id(void)
 {
 	return board_id;
+}
+
+uint32_t get_sku_id(void)
+{
+	return sku;
 }
 
 __overridable void board_cbi_init(void)
@@ -47,6 +52,11 @@ static void cbi_init(void)
 		board_id = cbi_val;
 
 	CPRINTS("Board ID: %d", board_id);
+
+	if (cbi_get_sku_id(&cbi_val) == EC_SUCCESS) {
+		sku = cbi_val;
+		CPRINTS("SKU: 0x%08x", sku);
+	}
 
 	board_init_fw_config();
 

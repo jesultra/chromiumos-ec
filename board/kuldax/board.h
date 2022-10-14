@@ -14,7 +14,7 @@
 #include "baseboard.h"
 
 #define CONFIG_MP2964
-
+#define CONFIG_MP2940
 /* Barrel Jack */
 #define DEDICATED_CHARGE_PORT 1
 
@@ -106,6 +106,8 @@
 #define I2C_ADDR_EEPROM_FLAGS 0x50
 
 #define I2C_ADDR_MP2964_FLAGS 0x20
+#define I2C_ADDR_MP2940_FLAGS 0x40
+
 
 #define USBC_PORT_C0_BB_RETIMER_I2C_ADDR 0x58
 #define USBC_PORT_C2_BB_RETIMER_I2C_ADDR 0x59

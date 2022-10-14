@@ -15,6 +15,7 @@
  */
 uint8_t get_board_id(void);
 
+uint32_t get_sku_id(void);
 /**
  * Configure run-time data structures and operation based on CBI data. This
  * typically includes customization for changes in the BOARD_VERSION and
