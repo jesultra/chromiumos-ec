@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c64d2dd_2148c03c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1202079
+      },
+      "writtenOn": "2022-10-18T16:59:50Z",
+      "side": 1,
+      "message": "LGTM\n\nto understand, this is the CL that fixes the div-0 issue?",
+      "revId": "d1004f8029513a8417b3f9b9ba06367587f96d33",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
