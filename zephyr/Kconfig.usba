@@ -35,6 +35,12 @@ config PLATFORM_EC_USB_PORT_POWER_DUMB
 	  USB-A ports are controlled with a single GPIO each, where turning it
 	  on enables the port and turning it off disables the port.
 
+config PLATFORM_EC_USB_HUB_RESET
+	bool "Support USB hub reset or not"
+	help
+	  Enable this if your board has a USB hub reset GPIO connect to EC to
+	  reset the USB hub.
+
 config PLATFORM_EC_USB_PORT_POWER_SMART
 	bool "Smart"
 	help
