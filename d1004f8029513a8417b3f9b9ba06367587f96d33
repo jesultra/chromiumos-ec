@@ -16,6 +16,23 @@
       "message": "LGTM\n\nto understand, this is the CL that fixes the div-0 issue?",
       "revId": "d1004f8029513a8417b3f9b9ba06367587f96d33",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f95d985_93777c2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1104704
+      },
+      "writtenOn": "2022-10-21T04:48:52Z",
+      "side": 1,
+      "message": "testing firmware (reqeuesting sensor data with iioservice_simpleclient while running suspend_stress_test hang the DUT at the second suspend. The servo was not installled properly, I will try on my local machine tomorrow.\nI suspect this CL is not the root cause of the problem.",
+      "revId": "d1004f8029513a8417b3f9b9ba06367587f96d33",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
