@@ -638,6 +638,7 @@ extern char mock_jump_data[sizeof(struct jump_data) + 256];
 
 #undef CONFIG_CUSTOM_FAN_CONTROL
 #ifdef CONFIG_PLATFORM_EC_CUSTOM_FAN_CONTROL
+#include "fan_steps.h"
 #define CONFIG_CUSTOM_FAN_CONTROL
 #endif
 

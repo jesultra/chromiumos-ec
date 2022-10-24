@@ -1,0 +1,26 @@
+# Copyright 2021 The ChromiumOS Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+description: Fan steps parent node
+
+compatible: "cros-ec,fan-steps"
+
+child-binding:
+  description: Fan_steps child node
+  properties:
+    temp_on:
+      required: false
+      type: array
+      description:
+        Temperature to trigger next fan level
+    temp_off:
+      required: false
+      type: array
+      description:
+        Temperature to trigger previous fan level
+    rpm_target:
+      required: false
+      type: array
+      description:
+        Fan speed for each level (in RPM)

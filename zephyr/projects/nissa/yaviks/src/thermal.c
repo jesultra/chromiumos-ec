@@ -5,7 +5,7 @@
 
 #include "chipset.h"
 #include "common.h"
-#include "console.h"
+#include "include/console.h"
 #include "fan.h"
 #include "hooks.h"
 #include "host_command.h"
@@ -13,9 +13,13 @@
 #include "temp_sensor/temp_sensor.h"
 #include "thermal.h"
 #include "util.h"
-/* Console output macros */
-#define CPUTS(outstr) cputs(CC_THERMAL, outstr)
-#define CPRINTS(format, args...) cprints(CC_THERMAL, format, ##args)
+
+
+#define LV(X) DT_CHILD(DT_INST(0, cros_ec_fan_steps), level_##X)
+
+#define TEMP_CPU TEMP_SENSOR_ID(DT_NODELABEL(temp_cpu))
+#define TEMP_5V TEMP_SENSOR_ID(DT_NODELABEL(temp_5v_regulator))
+#define TEMP_CHARGER TEMP_SENSOR_ID(DT_NODELABEL(temp_charger))
 
 struct fan_step {
 	/*
@@ -32,62 +36,80 @@ struct fan_step {
 	uint16_t rpm[FAN_CH_COUNT];
 };
 
-static const struct fan_step fan_step_table[] = {
-	{
-		/* level 0 */
-		.on = { 44, 47, 0 },
-		.off = { 99, 99, 99 },
-		.rpm = { 0 },
-	},
-	{
-		/* level 1 */
-		.on = { 48, 48, 0 },
-		.off = { 43, 45, 99 },
-		.rpm = { 2600 },
-	},
-	{
-		/* level 2 */
-		.on = { 50, 49, 0 },
-		.off = { 47, 46, 99 },
-		.rpm = { 2800 },
-	},
-	{
-		/* level 3 */
-		.on = { 52, 50, 54 },
-		.off = { 49, 47, 51 },
-		.rpm = { 3000 },
-	},
-	{
-		/* level 4 */
-		.on = { 54, 56, 60 },
-		.off = { 51, 48, 52 },
-		.rpm = { 3300 },
-	},
-	{
-		/* level 5 */
-		.on = { 60, 60, 64 },
-		.off = { 53, 52, 56 },
-		.rpm = { 3600 },
-	},
-	{
-		/* level 5 */
-		.on = { 100, 100, 100 },
-		.off = { 59, 54, 58 },
-		.rpm = { 4100 },
-	},
-};
-const int num_fan_levels = ARRAY_SIZE(fan_step_table);
+static struct fan_step fan_step_table[FAN_STEPS_COUNT];
+
+
+static void board_fansteps_init(void)
+{
+	
+	fan_step_table[0].on[0] = DT_PROP_BY_IDX(LV(0), temp_on, 0);
+	fan_step_table[0].off[0] = DT_PROP_BY_IDX(LV(0), temp_off, 0);
+	fan_step_table[0].on[1] = DT_PROP_BY_IDX(LV(0), temp_on, 1);
+	fan_step_table[0].off[1] = DT_PROP_BY_IDX(LV(0), temp_off, 1);
+	fan_step_table[0].on[2] = DT_PROP_BY_IDX(LV(0), temp_on, 2);
+	fan_step_table[0].off[2] = DT_PROP_BY_IDX(LV(0), temp_off, 2);
+	fan_step_table[0].rpm[0] = DT_PROP_BY_IDX(LV(0), rpm_target, 0);
+	
+	fan_step_table[1].on[0] = DT_PROP_BY_IDX(LV(1), temp_on, 0);
+	fan_step_table[1].off[0] = DT_PROP_BY_IDX(LV(1), temp_off, 0);
+	fan_step_table[1].on[1] = DT_PROP_BY_IDX(LV(1), temp_on, 1);
+	fan_step_table[1].off[1] = DT_PROP_BY_IDX(LV(1), temp_off, 1);
+	fan_step_table[1].on[2] = DT_PROP_BY_IDX(LV(1), temp_on, 2);
+	fan_step_table[1].off[2] = DT_PROP_BY_IDX(LV(1), temp_off, 2);
+	fan_step_table[1].rpm[0] = DT_PROP_BY_IDX(LV(1), rpm_target, 0);
+	
+	fan_step_table[2].on[0] = DT_PROP_BY_IDX(LV(2), temp_on, 0);
+	fan_step_table[2].off[0] = DT_PROP_BY_IDX(LV(2), temp_off, 0);
+	fan_step_table[2].on[1] = DT_PROP_BY_IDX(LV(2), temp_on, 1);
+	fan_step_table[2].off[1] = DT_PROP_BY_IDX(LV(2), temp_off, 1);
+	fan_step_table[2].on[2] = DT_PROP_BY_IDX(LV(2), temp_on, 2);
+	fan_step_table[2].off[2] = DT_PROP_BY_IDX(LV(2), temp_off, 2);
+	fan_step_table[2].rpm[0] = DT_PROP_BY_IDX(LV(2), rpm_target, 0);
+	
+	fan_step_table[3].on[0] = DT_PROP_BY_IDX(LV(3), temp_on, 0);
+	fan_step_table[3].off[0] = DT_PROP_BY_IDX(LV(3), temp_off, 0);
+	fan_step_table[3].on[1] = DT_PROP_BY_IDX(LV(3), temp_on, 1);
+	fan_step_table[3].off[1] = DT_PROP_BY_IDX(LV(3), temp_off, 1);
+	fan_step_table[3].on[2] = DT_PROP_BY_IDX(LV(3), temp_on, 2);
+	fan_step_table[3].off[2] = DT_PROP_BY_IDX(LV(3), temp_off, 2);
+	fan_step_table[3].rpm[0] = DT_PROP_BY_IDX(LV(3), rpm_target, 0);
+	
+	fan_step_table[4].on[0] = DT_PROP_BY_IDX(LV(4), temp_on, 0);
+	fan_step_table[4].off[0] = DT_PROP_BY_IDX(LV(4), temp_off, 0);
+	fan_step_table[4].on[1] = DT_PROP_BY_IDX(LV(4), temp_on, 1);
+	fan_step_table[4].off[1] = DT_PROP_BY_IDX(LV(4), temp_off, 1);
+	fan_step_table[4].on[2] = DT_PROP_BY_IDX(LV(4), temp_on, 2);
+	fan_step_table[4].off[2] = DT_PROP_BY_IDX(LV(4), temp_off, 2);
+	fan_step_table[4].rpm[0] = DT_PROP_BY_IDX(LV(4), rpm_target, 0);
+	
+	fan_step_table[5].on[0] = DT_PROP_BY_IDX(LV(5), temp_on, 0);
+	fan_step_table[5].off[0] = DT_PROP_BY_IDX(LV(5), temp_off, 0);
+	fan_step_table[5].on[1] = DT_PROP_BY_IDX(LV(5), temp_on, 1);
+	fan_step_table[5].off[1] = DT_PROP_BY_IDX(LV(5), temp_off, 1);
+	fan_step_table[5].on[2] = DT_PROP_BY_IDX(LV(5), temp_on, 2);
+	fan_step_table[5].off[2] = DT_PROP_BY_IDX(LV(5), temp_off, 2);
+	fan_step_table[5].rpm[0] = DT_PROP_BY_IDX(LV(5), rpm_target, 0);
+	
+	fan_step_table[6].on[0] = DT_PROP_BY_IDX(LV(6), temp_on, 0);
+	fan_step_table[6].off[0] = DT_PROP_BY_IDX(LV(6), temp_off, 0);
+	fan_step_table[6].on[1] = DT_PROP_BY_IDX(LV(6), temp_on, 1);
+	fan_step_table[6].off[1] = DT_PROP_BY_IDX(LV(6), temp_off, 1);
+	fan_step_table[6].on[2] = DT_PROP_BY_IDX(LV(6), temp_on, 2);
+	fan_step_table[6].off[2] = DT_PROP_BY_IDX(LV(6), temp_off, 2);
+	fan_step_table[6].rpm[0] = DT_PROP_BY_IDX(LV(6), rpm_target, 0);
+
+}
+DECLARE_HOOK(HOOK_INIT, board_fansteps_init, HOOK_PRIO_DEFAULT);
+
 
 int fan_table_to_rpm(int fan, int *temp)
 {
 	/* current fan level */
 	static int current_level;
-
 	/* previous sensor temperature */
 	static int prev_tmp[TEMP_SENSOR_COUNT];
 	int i;
 	int new_rpm = 0;
-
 	/*
 	 * Compare the current and previous temperature, we have
 	 * the three paths :
@@ -95,64 +117,42 @@ int fan_table_to_rpm(int fan, int *temp)
 	 *  2. increasing path. (check the trigger point)
 	 *  3. invariant path. (return the current RPM)
 	 */
-	if (temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_cpu))] <
-		    prev_tmp[TEMP_SENSOR_ID(DT_NODELABEL(temp_cpu))] ||
-	    temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_5v_regulator))] <
-		    prev_tmp[TEMP_SENSOR_ID(DT_NODELABEL(temp_5v_regulator))] ||
-	    temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_charger))] <
-		    prev_tmp[TEMP_SENSOR_ID(DT_NODELABEL(temp_charger))]) {
+	if (temp[TEMP_CPU] < prev_tmp[TEMP_CPU] ||
+	    temp[TEMP_5V] < prev_tmp[TEMP_5V] ||
+	    temp[TEMP_CHARGER] < prev_tmp[TEMP_CHARGER]) {
 		for (i = current_level; i > 0; i--) {
-			if (temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_cpu))] <
-				    fan_step_table[i].off[TEMP_SENSOR_ID(
-					    DT_NODELABEL(temp_cpu))] &&
-			    temp[TEMP_SENSOR_ID(
-				    DT_NODELABEL(temp_5v_regulator))] <
-				    fan_step_table[i].off[TEMP_SENSOR_ID(
-					    DT_NODELABEL(temp_5v_regulator))] &&
-			    temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_charger))] <
-				    fan_step_table[i].off[TEMP_SENSOR_ID(
-					    DT_NODELABEL(temp_charger))]) {
+			if (temp[TEMP_CPU] < fan_step_table[i].off[TEMP_CPU] &&
+			    temp[TEMP_5V] < fan_step_table[i].off[TEMP_5V] &&
+			    temp[TEMP_CHARGER] < fan_step_table[i].off[TEMP_CHARGER]) {
 				current_level = i - 1;
 			} else
 				break;
 		}
-	} else if (temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_cpu))] >
-			   prev_tmp[TEMP_SENSOR_ID(DT_NODELABEL(temp_cpu))] ||
-		   temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_5v_regulator))] >
-			   prev_tmp[TEMP_SENSOR_ID(
-				   DT_NODELABEL(temp_5v_regulator))] ||
-		   temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_charger))] >
-			   prev_tmp[TEMP_SENSOR_ID(DT_NODELABEL(temp_charger))]) {
-		for (i = current_level; i < num_fan_levels; i++) {
-			if (temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_cpu))] >
-				    fan_step_table[i].on[TEMP_SENSOR_ID(
-					    DT_NODELABEL(temp_cpu))] ||
-			    (temp[TEMP_SENSOR_ID(
-				     DT_NODELABEL(temp_5v_regulator))] >
-				     fan_step_table[i].on[TEMP_SENSOR_ID(
-					     DT_NODELABEL(temp_5v_regulator))] &&
-			     temp[TEMP_SENSOR_ID(DT_NODELABEL(temp_charger))] >
-				     fan_step_table[i].on[TEMP_SENSOR_ID(
-					     DT_NODELABEL(temp_charger))])) {
+	} else if (temp[TEMP_CPU] > prev_tmp[TEMP_CPU] ||
+		   temp[TEMP_5V] > prev_tmp[TEMP_5V] ||
+		    temp[TEMP_CHARGER] > prev_tmp[TEMP_CHARGER]) {
+		for (i = current_level; i < FAN_STEPS_COUNT; i++) {
+			if (temp[TEMP_CPU] > fan_step_table[i].on[TEMP_CPU] ||
+			    (temp[TEMP_5V] > fan_step_table[i].on[TEMP_5V] &&
+				  temp[TEMP_CHARGER] > fan_step_table[i].on[TEMP_CHARGER])) {
 				current_level = i + 1;
 			} else
 				break;
 		}
 	}
-
 	if (current_level < 0)
 		current_level = 0;
-
-	if (current_level >= num_fan_levels)
-		current_level = num_fan_levels - 1;
-
+	if (current_level >= FAN_STEPS_COUNT)
+		current_level = FAN_STEPS_COUNT - 1;
 	for (i = 0; i < TEMP_SENSOR_COUNT; ++i)
 		prev_tmp[i] = temp[i];
-
 	new_rpm = fan_step_table[current_level].rpm[fan];
-
+	
+	ccprintf("cpu:%d, 5v:%d, charger:%d, rmp:%d\n", temp[TEMP_CPU], temp[TEMP_5V], temp[TEMP_CHARGER], new_rpm);
+	
 	return new_rpm;
 }
+
 void board_override_fan_control(int fan, int *temp)
 {
 	if (chipset_in_state(CHIPSET_STATE_ON | CHIPSET_STATE_ANY_SUSPEND)) {

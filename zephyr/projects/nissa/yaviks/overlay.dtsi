@@ -235,19 +235,6 @@
 			};
 		};
 	};
-
-	fans {
-		compatible = "cros-ec,fans";
-		fan_0 {
-			pwms = <&pwm2 PWM_CHANNEL_2 PWM_KHZ(25) PWM_POLARITY_NORMAL>;
-			tach = <&tach1>;
-			rpm_min = <2600>;
-			rpm_start = <2600>;
-			rpm_max = <4100>;
-			rpm_deviation = <1>;
-			enable_gpio = <&gpio_fan_enable>;
-		};
-	};
 };
 
 &thermistor_3V3_51K1_47K_4050B {
@@ -384,20 +371,4 @@
 
 &usbpd0 {
 	status = "okay";
-};
-
-/* pwm for fan */
-&pwm2 {
-	status = "okay";
-	prescaler-cx = <PWM_PRESCALER_C6>;
-	pinctrl-0 = <&pwm2_gpa2_default>;
-	pinctrl-names = "default";
-};
-/* fan tachometer sensor */
-&tach1 {
-	status = "okay";
-	channel = <IT8XXX2_TACH_CHANNEL_A>;
-	pulses-per-round = <2>;
-	pinctrl-0 = <&tach1a_gpd7_default>;
-	pinctrl-names = "default";
 };
