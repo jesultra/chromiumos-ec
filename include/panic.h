@@ -80,7 +80,13 @@ enum panic_arch {
 /* Already returned via host command */
 #define PANIC_DATA_FLAG_OLD_HOSTCMD    (1 << 2)
 /* Already reported via host event */
+<<<<<<< HEAD   (2e7ebc baseboard: enable powered of PP1 and PP2 for port 1)
 #define PANIC_DATA_FLAG_OLD_HOSTEVENT  (1 << 3)
+=======
+#define PANIC_DATA_FLAG_OLD_HOSTEVENT BIT(3)
+/* The data was truncated to fit panic info host cmd */
+#define PANIC_DATA_FLAG_TRUNCATED BIT(4)
+>>>>>>> CHANGE (0a031b panic output: remove assert)
 
 /**
  * Write a string to the panic reporting device
