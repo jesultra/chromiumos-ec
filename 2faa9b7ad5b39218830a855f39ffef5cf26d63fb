@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ca36b69_95a01aa1",
+        "filename": "zephyr/drivers/cros_kb_raw/cros_kb_raw_npcx.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2022-10-25T15:55:23Z",
+      "side": 1,
+      "message": "Use a `bool` type.",
+      "range": {
+        "startLine": 221,
+        "startChar": 65,
+        "endLine": 221,
+        "endChar": 75
+      },
+      "revId": "2faa9b7ad5b39218830a855f39ffef5cf26d63fb",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a733469a_c0147f77",
+        "filename": "zephyr/include/drivers/cros_kb_raw.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2022-10-25T15:55:23Z",
+      "side": 1,
+      "message": "Use a `bool` type.",
+      "range": {
+        "startLine": 192,
+        "startChar": 63,
+        "endLine": 192,
+        "endChar": 73
+      },
+      "revId": "2faa9b7ad5b39218830a855f39ffef5cf26d63fb",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
