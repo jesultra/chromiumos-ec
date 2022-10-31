@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d807044f_84cdab4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2022-10-31T20:17:13Z",
+      "side": 1,
+      "message": "Please add the following to the commit message, and rebase the changes.\n\nLOW_COVERAGE_REASON: b:256669239 cros_kb_raw_npcx.c needs tests",
+      "revId": "8471a0e3d8172358046b0c712568854157d171aa",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
