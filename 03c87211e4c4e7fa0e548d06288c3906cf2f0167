@@ -22,6 +22,30 @@
       },
       "revId": "03c87211e4c4e7fa0e548d06288c3906cf2f0167",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b2ada31_b2fa6cfa",
+        "filename": "include/ap_ro_integrity_check.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1259838
+      },
+      "writtenOn": "2022-11-02T19:20:59Z",
+      "side": 1,
+      "message": "I went back and forth a few times on whether to reuse the existing values or not. I decided against it to make it very clear to the caller (if needed) that we are getting a V2 versus V1 response. It will also help prevent V1 and V2 status code from stopping on each other if either once needs to expand the number of failure reasons.\n\nI do make the gsctool handling code treat V1 and V2 success and failure the same though for output.\n\n(Also which one is the not provisioned error for V1?)",
+      "parentUuid": "6e43d288_81d8a3f5",
+      "range": {
+        "startLine": 35,
+        "startChar": 1,
+        "endLine": 35,
+        "endChar": 33
+      },
+      "revId": "03c87211e4c4e7fa0e548d06288c3906cf2f0167",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
