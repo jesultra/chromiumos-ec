@@ -245,9 +245,11 @@ struct ec_thermal_config thermal_params[] = {
 	 * {Twarn, Thigh, X    }, <off>
 	 * fan_off, fan_max
 	 */
-	{{0, C_TO_K(80), C_TO_K(81)}, {0, C_TO_K(78), 0},
-		C_TO_K(4), C_TO_K(76)},	/* TMP431_Internal */
-	{{0, 0, 0}, {0, 0, 0}, 0, 0},	/* TMP431_Sensor_1 */
+	{ { 0, C_TO_K(80), C_TO_K(81) },
+	  { 0, C_TO_K(78), 0 },
+	  C_TO_K(30),
+	  C_TO_K(55) }, /* TMP431_Internal */
+	{ { 0, 0, 0 }, { 0, 0, 0 }, 0, 0 }, /* TMP431_Sensor_1 */
 };
 BUILD_ASSERT(ARRAY_SIZE(thermal_params) == TEMP_SENSOR_COUNT);
 
@@ -438,17 +440,21 @@ BUILD_ASSERT(ARRAY_SIZE(pwm_channels) == PWM_CH_COUNT);
 
 typedef struct fan_step_1_1 fan_step;
 /* Note: Do not make the fan on/off point equal to 0 or 100 */
+/* Given the range of temp_fan_off to temp_fan_max specified above,
+ * each degree C is 4 percent of the range.
+ * 40 C, a typical idle temperature, is 25% of the way from 35 C to 55 C.
+ * Try to use zero fan at idle; otherwise use minimum fan.
+ */
 static const fan_step fan_table0[] = {
-	{ .on = 0, .off = 5, .rpm = 0 },
-	{ .on = 30, .off = 5, .rpm = 2180 },
-	{ .on = 49, .off = 46, .rpm = 2680 },
-	{ .on = 53, .off = 50, .rpm = 3300 },
-	{ .on = 58, .off = 54, .rpm = 3760 },
-	{ .on = 63, .off = 59, .rpm = 4220 },
-	{ .on = 68, .off = 64, .rpm = 4660 },
-	{ .on = 75, .off = 70, .rpm = 4900 },
+	{ .on = 0, .off = 2, .rpm = 0 },
+	{ .on = 28, .off = 3, .rpm = 2180 }, /* on at 37 C, off at 30 C */
+	{ .on = 44, .off = 24, .rpm = 2680 }, /* on at 41 C, off at 36 C */
+	{ .on = 52, .off = 40, .rpm = 3300 }, /* on at 43 C, off at 40 C */
+	{ .on = 60, .off = 48, .rpm = 3760 }, /* on at 45 C, off at 42 C */
+	{ .on = 68, .off = 56, .rpm = 4220 }, /* on at 47 C, off at 44 C */
+	{ .on = 76, .off = 64, .rpm = 4660 }, /* on at 49 C, off at 46 C */
+	{ .on = 98, .off = 72, .rpm = 4900 }, /* on at 55 C, off at 48 C */
 };
-/* All fan tables must have the same number of levels */
 #define NUM_FAN_LEVELS ARRAY_SIZE(fan_table0)
 
 static const fan_step *fan_table = fan_table0;

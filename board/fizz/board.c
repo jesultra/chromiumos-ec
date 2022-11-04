@@ -291,9 +291,11 @@ struct ec_thermal_config thermal_params[] = {
 	 * {Twarn, Thigh, X    }, <off>
 	 * fan_off, fan_max
 	 */
-	{{0, C_TO_K(80), C_TO_K(81)}, {0, C_TO_K(78), 0},
-		C_TO_K(4), C_TO_K(76)},	/* TMP431_Internal */
-	{{0, 0, 0}, {0, 0, 0}, 0, 0},	/* TMP431_Sensor_1 */
+	{ { 0, C_TO_K(80), C_TO_K(81) },
+	  { 0, C_TO_K(78), 0 },
+	  C_TO_K(25),
+	  C_TO_K(50) }, /* TMP431_Internal */
+	{ { 0, 0, 0 }, { 0, 0, 0 }, 0, 0 }, /* TMP431_Sensor_1 */
 };
 BUILD_ASSERT(ARRAY_SIZE(thermal_params) == TEMP_SENSOR_COUNT);
 
@@ -591,35 +593,40 @@ typedef struct fan_step_1_1 fan_step;
 static const fan_step *fan_table;
 
 /* Note: Do not make the fan on/off point equal to 0 or 100 */
+/* Given the range of temp_fan_off to temp_fan_max specified above,
+ * each degree C is 4 percent of the range.
+ * 40 C, a typical idle temperature, is 25% of the way from 35 C to 55 C.
+ * Try to use zero fan at idle; otherwise use minimum fan.
+ */
 static const fan_step fan_table0[] = {
 	{ .on = 0, .off = 1, .rpm = 0 },
-	{ .on = 36, .off = 1, .rpm = 2800 },
-	{ .on = 58, .off = 58, .rpm = 3200 },
-	{ .on = 66, .off = 61, .rpm = 3400 },
-	{ .on = 75, .off = 69, .rpm = 4200 },
-	{ .on = 81, .off = 76, .rpm = 4800 },
-	{ .on = 88, .off = 83, .rpm = 5200 },
-	{ .on = 98, .off = 91, .rpm = 5600 },
+	{ .on = 36, .off = 1, .rpm = 2800 }, /* on at 34 C, off at 25 C */
+	{ .on = 58, .off = 58, .rpm = 3200 }, /* on at 40 C, off at 39 C */
+	{ .on = 66, .off = 61, .rpm = 3400 }, /* on at 42 C, off at 40 C */
+	{ .on = 75, .off = 69, .rpm = 4200 }, /* on at 44 C, off at 42 C */
+	{ .on = 81, .off = 76, .rpm = 4800 }, /* on at 46 C, off at 44 C */
+	{ .on = 88, .off = 83, .rpm = 5200 }, /* on at 47 C, off at 45 C */
+	{ .on = 98, .off = 91, .rpm = 5600 }, /* on at 50 C, off at 47 C */
 };
 static const fan_step fan_table1[] = {
 	{ .on = 0, .off = 1, .rpm = 0 },
-	{ .on = 36, .off = 1, .rpm = 2800 },
-	{ .on = 62, .off = 58, .rpm = 3200 },
-	{ .on = 68, .off = 63, .rpm = 3400 },
-	{ .on = 75, .off = 69, .rpm = 4200 },
-	{ .on = 81, .off = 76, .rpm = 4800 },
-	{ .on = 88, .off = 83, .rpm = 5200 },
-	{ .on = 98, .off = 91, .rpm = 5600 },
+	{ .on = 36, .off = 1, .rpm = 2800 }, /* on at 34 C, off at 25 C */
+	{ .on = 62, .off = 58, .rpm = 3200 }, /* on at 40 C, off at 39 C */
+	{ .on = 68, .off = 63, .rpm = 3400 }, /* on at 42 C, off at 40 C */
+	{ .on = 75, .off = 69, .rpm = 4200 }, /* on at 44 C, off at 42 C */
+	{ .on = 81, .off = 76, .rpm = 4800 }, /* on at 46 C, off at 44 C */
+	{ .on = 88, .off = 83, .rpm = 5200 }, /* on at 47 C, off at 45 C */
+	{ .on = 98, .off = 91, .rpm = 5600 }, /* on at 50 C, off at 47 C */
 };
 static const fan_step fan_table2[] = {
 	{ .on = 0, .off = 1, .rpm = 0 },
-	{ .on = 36, .off = 1, .rpm = 2200 },
-	{ .on = 63, .off = 56, .rpm = 2900 },
-	{ .on = 69, .off = 65, .rpm = 3000 },
-	{ .on = 75, .off = 70, .rpm = 3300 },
-	{ .on = 80, .off = 76, .rpm = 3600 },
-	{ .on = 87, .off = 81, .rpm = 3900 },
-	{ .on = 98, .off = 91, .rpm = 5000 },
+	{ .on = 36, .off = 1, .rpm = 2200 }, /* on at 34 C, off at 25 C */
+	{ .on = 63, .off = 56, .rpm = 2900 }, /* on at 41 C, off at 39 C */
+	{ .on = 69, .off = 65, .rpm = 3000 }, /* on at 43 C, off at 41 C */
+	{ .on = 75, .off = 70, .rpm = 3300 }, /* on at 44 C, off at 42 C */
+	{ .on = 80, .off = 76, .rpm = 3600 }, /* on at 46 C, off at 44 C */
+	{ .on = 87, .off = 81, .rpm = 3900 }, /* on at 47 C, off at 45 C */
+	{ .on = 98, .off = 91, .rpm = 5000 }, /* on at 50 C, off at 47 C */
 };
 /* All fan tables must have the same number of levels */
 #define NUM_FAN_LEVELS ARRAY_SIZE(fan_table0)
