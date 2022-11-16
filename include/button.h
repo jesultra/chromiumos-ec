@@ -12,6 +12,7 @@
 #include "compile_time_macros.h"
 #include "gpio_signal.h"
 #include "ec_commands.h"
+#include "stdbool.h"
 
 #define BUTTON_FLAG_ACTIVE_HIGH BIT(0)
 #define BUTTON_FLAG_DISABLED BIT(1) /* Button disabled */
@@ -101,6 +102,8 @@ int button_is_adc_detected(enum gpio_signal gpio);
  * Returns the physical state of the button.
  */
 int adc_to_physical_value(enum gpio_signal gpio);
+
+bool button_is_pressed(enum button button);
 
 /* Public for testing purposes only, undocumented. */
 enum debug_state {

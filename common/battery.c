@@ -7,6 +7,7 @@
 
 #include "battery.h"
 #include "battery_fuel_gauge.h"
+#include "button.h"
 #include "charge_manager.h"
 #include "charge_state.h"
 #include "common.h"
@@ -329,6 +330,14 @@ static void pending_cutoff_deferred(void)
 }
 DECLARE_DEFERRED(pending_cutoff_deferred);
 
+static void do_cutoff(void)
+{
+	CPRINTS("Cutting off battery in %d second(s)",
+		CONFIG_BATTERY_CUTOFF_DELAY_US / SECOND);
+	hook_call_deferred(&pending_cutoff_deferred_data,
+			   CONFIG_BATTERY_CUTOFF_DELAY_US);
+}
+
 static void hook_ac_change(void)
 {
 	if (extpower_is_present()) {
@@ -336,14 +345,12 @@ static void hook_ac_change(void)
 		hook_call_deferred(&pending_cutoff_deferred_data, -1);
 	} else if (system_get_image_copy() == EC_IMAGE_RO) {
 		/* Unplugged while in RO */
-		const struct boot_key_entry key = boot_key_list[1];
-
-		if (keyboard_scan_is_key_pressed(key.col, key.row)) {
-			CPRINTS("Cutting off battery in %d second(s)",
-				CONFIG_BATTERY_CUTOFF_DELAY_US / SECOND);
-			hook_call_deferred(&pending_cutoff_deferred_data,
-					   CONFIG_BATTERY_CUTOFF_DELAY_US);
-		}
+#ifdef CONFIG_VOLUME_BUTTONS
+		if (button_is_pressed(BUTTON_VOLUME_DOWN))
+#elif defined(HAS_TASK_KEYSCAN)
+		if (keyscan_is_key_pressed(KEYSCAN_KEY_VOLUME_DOWN))
+#endif
+			do_cutoff();
 	}
 }
 DECLARE_HOOK(HOOK_AC_CHANGE, hook_ac_change, HOOK_PRIO_DEFAULT);
@@ -377,12 +384,8 @@ DECLARE_HOST_COMMAND(EC_CMD_BATTERY_CUT_OFF, battery_command_cutoff,
 
 static void check_pending_cutoff(void)
 {
-	if (battery_cutoff_state == BATTERY_CUTOFF_STATE_PENDING) {
-		CPRINTS("Cutting off battery in %d second(s)",
-			CONFIG_BATTERY_CUTOFF_DELAY_US / SECOND);
-		hook_call_deferred(&pending_cutoff_deferred_data,
-				   CONFIG_BATTERY_CUTOFF_DELAY_US);
-	}
+	if (battery_cutoff_state == BATTERY_CUTOFF_STATE_PENDING)
+		do_cutoff();
 }
 DECLARE_HOOK(HOOK_CHIPSET_SHUTDOWN, check_pending_cutoff, HOOK_PRIO_LAST);
 

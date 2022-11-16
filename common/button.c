@@ -825,6 +825,13 @@ DECLARE_HOOK(HOOK_TICK, debug_led_tick, HOOK_PRIO_DEFAULT);
 #endif /* !CONFIG_DEDICATED_RECOVERY_BUTTON */
 #endif /* CONFIG_EMULATED_SYSRQ */
 
+bool button_is_pressed(enum button button)
+{
+	if (button >= BUTTON_COUNT)
+		return false;
+	return state[button].debounced_pressed;
+}
+
 #ifndef CONFIG_BUTTONS_RUNTIME_CONFIG
 const struct button_config buttons[BUTTON_COUNT] = {
 #else

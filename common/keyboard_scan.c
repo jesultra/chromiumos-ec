@@ -840,11 +840,25 @@ const uint8_t *keyboard_scan_get_state(void)
 	return debounced_state;
 }
 
-bool keyboard_scan_is_key_pressed(uint8_t col, uint8_t row)
+bool keyscan_is_key_pressed(enum keyscan_key key)
 {
-	if (col >= KEYBOARD_COLS_MAX || row >= KEYBOARD_ROWS)
+	struct boot_key_entry entry;
+
+	if (key >= KEYSCAN_KEY_COUNT)
 		return false;
-	return debounced_state[col] & BIT(row);
+
+	switch (key) {
+	case KEYSCAN_KEY_VOLUME_DOWN:
+#ifndef CONFIG_KEYBOARD_CUSTOMIZATION
+		entry.col = KEYBOARD_COL_VOLUME_DOWN;
+		entry.row = KEYBOARD_ROW_VOLUME_DOWN;
+		break;
+#endif
+	default:
+		return false;
+	}
+
+	return debounced_state[entry.col] & BIT(entry.row);
 }
 
 void keyboard_scan_init(void)

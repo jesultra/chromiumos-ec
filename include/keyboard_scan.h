@@ -68,6 +68,12 @@ enum boot_key {
 	BOOT_KEY_LEFT_SHIFT = BIT(2),
 };
 
+enum keyscan_key {
+	KEYSCAN_KEY_VOLUME_DOWN,
+
+	KEYSCAN_KEY_COUNT
+};
+
 #if defined(HAS_TASK_KEYSCAN) && defined(CONFIG_KEYBOARD_BOOT_KEYS)
 /**
  * Returns mask of all the keys held down at boot time in addition to the
@@ -97,11 +103,10 @@ const uint8_t *keyboard_scan_get_state(void);
 /**
  * Check if a key is pressed
  *
- * @param col  Column of the key in the keyboard matrix
- * @param row  Row of the key in the keyboard matrix
+ * @param key  The key to be checked.
  * @return  True if the key is pressed or false otherwise.
  */
-bool keyboard_scan_is_key_pressed(uint8_t col, uint8_t row);
+bool keyscan_is_key_pressed(enum keyscan_key key);
 
 enum kb_scan_disable_masks {
 	/* Reasons why keyboard scanning should be disabled */
