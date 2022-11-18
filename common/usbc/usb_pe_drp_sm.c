@@ -4454,7 +4454,7 @@ static void pe_send_alert_entry(int port)
 
 	print_current_state(port);
 
-	if (msg == NULL || len == NULL) {
+	if (msg == NULL || *len == 0) {
 		pe_set_ready_state(port);
 	} else {
 		/* Get ADO from PE state, the ADO is a uint32_t */
