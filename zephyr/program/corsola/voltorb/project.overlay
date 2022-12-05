@@ -80,24 +80,14 @@
 		compatible = "cros-ec,led-policy";
 
 		/* Voltorb LED bat charge */
-		bat-power-state-charge-lvl-1 {
+		bat-power-state-charge {
 			charge-state = "PWR_STATE_CHARGE";
-			/* Battery percent range (>= Empty, <= 94%) */
+			/* Battery percent range (>= Empty, <= 96%) */
 			batt-lvl = <BATTERY_LEVEL_EMPTY
-					(BATTERY_LEVEL_NEAR_FULL - 3)>;
-
-			color-0 {
-				led-color = <&color_amber>;
-			};
-		};
-		bat-power-state-charge-lvl-2 {
-			charge-state = "PWR_STATE_CHARGE";
-			/* Battery percent range (>= 95%, <= 96%) */
-			batt-lvl = <(BATTERY_LEVEL_NEAR_FULL - 2)
 					(BATTERY_LEVEL_NEAR_FULL - 1)>;
 
 			color-0 {
-				led-color = <&color_blue>;
+				led-color = <&color_amber>;
 			};
 		};
 
@@ -106,7 +96,7 @@
 			charge-state = "PWR_STATE_CHARGE_NEAR_FULL";
 
 			color-0 {
-				led-color = <&color_blue>;
+				led-color = <&color_amber>;
 			};
 		};
 

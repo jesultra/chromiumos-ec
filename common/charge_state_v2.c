@@ -2230,6 +2230,13 @@ enum charge_state charge_get_state(void)
 #endif
 			return PWR_STATE_DISCHARGE;
 	case ST_CHARGE:
+#ifdef CONFIG_PWR_STATE_CHARGE_IDLE
+		int batt_state;
+
+		battery_status(&batt_state);
+		if (batt_state & STATUS_DISCHARGING)
+			return PWR_STATE_DISCHARGE;
+#endif
 		/* The only difference here is what the LEDs display. */
 		if (IS_ENABLED(CONFIG_CHARGE_MANAGER) &&
 		    charge_manager_get_active_charge_port() == CHARGE_PORT_NONE)
