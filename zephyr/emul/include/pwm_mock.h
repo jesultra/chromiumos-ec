@@ -12,7 +12,7 @@
 /*
  * Get pwm duty cycle
  *
- * @param dev		pointer to hte pwm device
+ * @param dev		pointer to the pwm device
  * @param channel	channel id
  *
  * @return duty		duty cycle in range [0, 100] or negative on error.
