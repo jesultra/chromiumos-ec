@@ -26,3 +26,6 @@ cd util
 # NOTE: this uses the Zephyr version of kconfiglib, runs separately from
 # test_kconfig_check.py
 pytest check_zephyr_project_config_unittest.py
+
+# tes test test
+./zephyr_check_compliance_unittest.py
