@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a99305a4_912a0f20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1330845
+      },
+      "writtenOn": "2023-01-13T23:54:08Z",
+      "side": 1,
+      "message": "This will align nicely with upstreaming support for coreboot-sdk, as /opt/coreboot-sdk is a CrOS chroot thing, and we don\u0027t need it hard coded in the cmake anymore 😊",
+      "revId": "eec6eb22ed7be12ea6619eb6870421dd067531b0",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
