@@ -1073,7 +1073,7 @@ DECLARE_HOST_COMMAND(EC_CMD_MKBP_SIMULATE_KEY, mkbp_command_simulate_key,
 		     EC_VER_MASK(0));
 
 #ifdef CONFIG_KEYBOARD_FACTORY_TEST
-
+int iii = 0;
 /* Run keyboard factory testing, scan out KSO/KSI if any shorted. */
 int keyboard_factory_test_scan(void)
 {
@@ -1139,6 +1139,7 @@ done:
 	gpio_set_flags(GPIO_KBD_KSO2, flags);
 	keyboard_scan_enable(1, KB_SCAN_DISABLE_LID_CLOSED);
 
+	iii = 0;
 	return shorted;
 }
 
@@ -1187,8 +1188,67 @@ int keyboard_get_keyboard_id(void)
 /*****************************************************************************/
 /* Console commands */
 #ifdef CONFIG_CMD_KEYBOARD
+int flags;
 static int command_ksstate(int argc, const char **argv)
 {
+	int i;
+	int port, id;
+
+	if (!strcasecmp(argv[1], "iii")) {
+		iii = 1;
+		ccprintf("set iii = 1\n");
+	}
+
+	if (!strcasecmp(argv[1], "gpi")) {
+
+		keyboard_scan_enable(0, KB_SCAN_DISABLE_LID_CLOSED);
+		flags = gpio_get_default_flags(GPIO_KBD_KSO2);
+
+		keybaord_raw_config_alt(0);
+
+		/* Set all of KSO/KSI pins to internal pull-up and input */
+		for (i = 0; i < keyboard_factory_scan_pins_used; i++) {
+			if (keyboard_factory_scan_pins[i][0] < 0)
+				continue;
+
+			port = keyboard_factory_scan_pins[i][0];
+			id = keyboard_factory_scan_pins[i][1];
+
+			gpio_set_flags_by_mask(port, 1 << id,
+					       GPIO_INPUT | GPIO_PULL_UP);
+		}
+
+		ccprintf("set KSI/KSO to input and pullup, md .b 0xF01D00 256\n");
+		//then read/write reg
+	}
+
+	if (!strcasecmp(argv[1], "gpo")) {
+		for (i = 0; i < keyboard_factory_scan_pins_used; i++) {
+			if (keyboard_factory_scan_pins[i][0] < 0)
+				continue;
+
+			port = keyboard_factory_scan_pins[i][0];
+			id = keyboard_factory_scan_pins[i][1];
+
+			gpio_set_flags_by_mask(port, 1 << id, GPIO_OUT_LOW);
+		}
+
+		ccprintf("set KSI/KSO to output and low, md .b 0xF01D00 256\n");
+		//then read/write reg
+	}
+
+	if (!strcasecmp(argv[1], "kbs")) {
+
+		keybaord_raw_config_alt(1);
+
+		gpio_set_flags(GPIO_KBD_KSO2, flags);
+		keyboard_scan_enable(1, KB_SCAN_DISABLE_LID_CLOSED);
+
+		ccprintf("set KSI/KSO to kbs, md .b 0xF01D00 256\n");
+		//then read/write reg
+	}
+
+#if 0
 	if (argc > 1) {
 		if (!strcasecmp(argv[1], "force")) {
 			print_state_changes = 1;
@@ -1204,9 +1264,10 @@ static int command_ksstate(int argc, const char **argv)
 	ccprintf("Keyboard scan disable mask: 0x%08x\n", disable_scanning_mask);
 	ccprintf("Keyboard scan state printing %s\n",
 		 print_state_changes ? "on" : "off");
+#endif
 	return EC_SUCCESS;
 }
-DECLARE_CONSOLE_COMMAND(ksstate, command_ksstate, "ksstate [on | off | force]",
+DECLARE_CONSOLE_COMMAND(ksstate, command_ksstate, "ksstate [gpio | kbs]",
 			"Show or toggle printing keyboard scan state");
 
 static int command_keyboard_press(int argc, const char **argv)

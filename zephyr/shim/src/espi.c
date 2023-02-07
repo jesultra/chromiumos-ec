@@ -599,10 +599,15 @@ int lpc_keyboard_has_char(void)
 	return status;
 }
 
+extern int iii;
 void lpc_keyboard_put_char(uint8_t chr, int send_irq)
 {
 	uint32_t kb_char = chr;
 	int rv;
+
+	if (iii == 1) {
+		return;
+	}
 
 	rv = espi_write_lpc_request(espi_dev, E8042_WRITE_KB_CHAR, &kb_char);
 	if (rv) {
