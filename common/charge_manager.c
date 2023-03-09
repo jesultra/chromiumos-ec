@@ -1030,7 +1030,7 @@ DECLARE_DEFERRED(charge_override_timeout);
 static void charger_detect_debounced(void)
 {
 	/* Inform host that charger detection is debounced. */
-	pd_send_host_event(PD_EVENT_POWER_CHANGE);
+//	pd_send_host_event(PD_EVENT_POWER_CHANGE);
 }
 DECLARE_DEFERRED(charger_detect_debounced);
 
