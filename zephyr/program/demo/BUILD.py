@@ -1,0 +1,22 @@
+# Copyright 2022 The ChromiumOS Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+"""Define zmake projects for demo."""
+
+
+def register_variant(
+    project_name,
+):
+    """Register a variant of demo."""
+    register_binman_project(
+        project_name=project_name,
+        zephyr_board="it81202cx",
+        dts_overlays=[here / "project.overlay"],
+        kconfig_files=[
+            here / "program.conf",
+        ],
+    )
+
+
+demo = register_variant("demo")
