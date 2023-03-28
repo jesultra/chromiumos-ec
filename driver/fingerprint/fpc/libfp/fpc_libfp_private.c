@@ -383,7 +383,7 @@ static int fp_finger_enroll(uint8_t *image, int *completion)
 
 static int fp_maintenance(void)
 {
-	return fpc_fp_maintenance(&errors);
+	return fpc_sensor_maintenance(&errors);
 }
 
 struct fp_sensor_interface fp_driver_libfp = {

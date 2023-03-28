@@ -16,7 +16,7 @@
 #error "Sensor type not defined!"
 #endif
 
-int fpc_fp_maintenance(uint16_t *error_state)
+int fpc_sensor_maintenance(uint16_t *error_state)
 {
 #if !defined(HAVE_PRIVATE)
 	return EC_ERROR_INVAL;

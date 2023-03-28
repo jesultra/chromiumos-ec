@@ -27,7 +27,7 @@
  * @return EC_ERROR_HW_INTERNAL on error (such as finger on sensor)
  * @return EC_SUCCESS on success
  */
-int fpc_fp_maintenance(uint16_t *error_state);
+int fpc_sensor_maintenance(uint16_t *error_state);
 
 /**
  * Returns the FPC sensor driver structure
