@@ -22,6 +22,30 @@
       },
       "revId": "10a42e84957fd6cad0bd5237e34f5b1774a3bc9c",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27837148_7ee98bf9",
+        "filename": "zephyr/zmake/zmake/zmake.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1478788
+      },
+      "writtenOn": "2023-04-03T15:48:21Z",
+      "side": 1,
+      "message": "It very much does.",
+      "parentUuid": "6eaca60b_5c0a8b2f",
+      "range": {
+        "startLine": 486,
+        "startChar": 0,
+        "endLine": 491,
+        "endChar": 0
+      },
+      "revId": "10a42e84957fd6cad0bd5237e34f5b1774a3bc9c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
