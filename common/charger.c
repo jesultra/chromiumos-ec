@@ -253,6 +253,14 @@ static int command_charger(int argc, const char **argv)
 			return EC_ERROR_PARAM2 + idx_provided;
 		dptf_limit_ma = d;
 		return EC_SUCCESS;
+	} else if (strcasecmp(argv[1 + idx_provided], "adaptive") == 0) {
+		d = strtoi(argv[2 + idx_provided], &e, 0);
+		if (*e)
+			return EC_ERROR_PARAM2 + idx_provided;
+		if (charge_set_adaptive_mode(chgnum, d) != EC_SUCCESS) {
+			return EC_ERROR_UNCHANGED;
+		}
+		return EC_SUCCESS;
 	} else if (strcasecmp(argv[1 + idx_provided], "dump") == 0) {
 		if (!IS_ENABLED(CONFIG_CMD_CHARGER_DUMP) ||
 		    !chg_chips[chgnum].drv->dump_registers) {
@@ -268,15 +276,16 @@ static int command_charger(int argc, const char **argv)
 	}
 }
 
-DECLARE_CONSOLE_COMMAND(charger, command_charger,
-			"[chgnum] [input | current | voltage | dptf] [newval]"
+DECLARE_CONSOLE_COMMAND(
+	charger, command_charger,
+	"[chgnum] [input | current | voltage | dptf | adaptive ] [newval]"
 #ifdef CONFIG_CMD_CHARGER_DUMP
-			"\n\t[chgnum] dump"
+	"\n\t[chgnum] dump"
 #endif
-			,
-			"Get or set charger param(s)"
+	,
+	"Get or set charger param(s)"
 #ifdef CONFIG_CMD_CHARGER_DUMP
-			". Dump registers."
+	". Dump registers."
 #endif
 );
 
