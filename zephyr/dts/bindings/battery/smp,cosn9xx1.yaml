@@ -1,0 +1,51 @@
+description: "SMP-COS SMP-COS4.26 "
+compatible: "smp,cosn9xx1"
+
+include: battery-smart.yaml
+
+properties:
+  enum-name:
+    type: string
+    default: "smp,cosn9xx1"
+
+  # Fuel gauge
+  manuf_name:
+    default: "SMP-COS4.26"
+  device_name:
+    default: "DELL N9XX1"
+  ship_mode_reg_addr:
+    default: 0x00
+  ship_mode_reg_data:
+    default: [0x0010, 0x0010]
+  fet_reg_addr:
+    default: 0x00
+  fet_reg_mask:
+    default: 0x2000
+  fet_disconnect_val:
+    default: 0x2000
+  fet_cfet_mask:
+    default: 0x0002
+  fet_cfet_off_val:
+    default: 0x0000
+
+  # Battery info
+  voltage_max:
+    default: 17800
+  voltage_normal:
+    default: 15200
+  voltage_min:
+    default: 12000
+  precharge_current:
+    default: 256
+  start_charging_min_c:
+    default: 0
+  start_charging_max_c:
+    default: 50
+  charging_min_c:
+    default: 0
+  charging_max_c:
+    default: 50
+  discharging_min_c:
+    default: -14
+  discharging_max_c:
+    default: 70

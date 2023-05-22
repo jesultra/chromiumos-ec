@@ -1,0 +1,75 @@
+/* Copyright 2022 The ChromiumOS Authors
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include <cros/thermistor/thermistor.dtsi>
+
+/ {
+	temp_soc: soc_temp {
+		compatible = "cros-ec,temp-sensor-thermistor";
+		thermistor = <&thermistor_3V3_30K9_47K_4050B>;
+		adc = <&adc_soc>;
+	};
+
+	temp_ddr: ddr {
+		compatible = "cros-ec,temp-sensor-thermistor";
+		thermistor = <&thermistor_3V3_30K9_47K_4050B>;
+		adc = <&adc_ddr>;
+	};
+
+	temp_charger: charger {
+		compatible = "cros-ec,temp-sensor-thermistor";
+		thermistor = <&thermistor_3V3_30K9_47K_4050B>;
+		adc = <&adc_charger>;
+	};
+
+	temp_ambient: ambient {
+		compatible = "cros-ec,temp-sensor-thermistor";
+		thermistor = <&thermistor_3V3_30K9_47K_4050B>;
+		adc = <&adc_ambient>;
+	};
+
+	named-temp-sensors {
+		compatible = "cros-ec,temp-sensors";
+		soc_temp {
+			temp_fan_off = <24>;
+			temp_fan_max = <51>;
+			temp_host_high = <77>;
+			temp_host_halt = <80>;
+			temp_host_release_high = <77>;
+			sensor = <&temp_soc>;
+		};
+
+		ddr {
+			temp_fan_off = <56>;
+			temp_fan_max = <59>;
+			temp_host_high = <75>;
+			temp_host_halt = <78>;
+			temp_host_release_high = <75>;
+			sensor = <&temp_ddr>;
+		};
+
+		charger {
+			temp_fan_off = <67>;
+			temp_fan_max = <70>;
+			temp_host_high = <86>;
+			temp_host_halt = <89>;
+			temp_host_release_high = <86>;
+			sensor = <&temp_charger>;
+		};
+
+		ambient {
+			temp_fan_off = <38>;
+			temp_fan_max = <45>;
+			temp_host_high = <57>;
+			temp_host_halt = <60>;
+			temp_host_release_high = <57>;
+			sensor = <&temp_ambient>;
+		};
+	};
+};
+
+&thermistor_3V3_30K9_47K_4050B {
+	status = "okay";
+};

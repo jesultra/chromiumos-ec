@@ -118,3 +118,6 @@ child-binding:
         - ADC_EVB_CH_2
         - ADC_EVB_CH_3
         - ADC_EVB_CH_4
+        - ADC_TEMP_SENSOR_1_SOC
+        - ADC_TEMP_SENSOR_2_DDR
+        - ADC_TEMP_SENSOR_4_AMBIENT
