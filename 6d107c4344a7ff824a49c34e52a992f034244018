@@ -16,6 +16,23 @@
       "message": "This will land after https://crrev.com/c/4547083, and can\u0027t be cherry-picked without it too.",
       "revId": "6d107c4344a7ff824a49c34e52a992f034244018",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51190115_29d605c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1520327
+      },
+      "writtenOn": "2023-05-23T03:55:26Z",
+      "side": 1,
+      "message": "Hi Andrey, this is ready for review, thanks.",
+      "revId": "6d107c4344a7ff824a49c34e52a992f034244018",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
