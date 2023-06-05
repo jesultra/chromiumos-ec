@@ -31,6 +31,38 @@ const struct anx7406_i2c_addr anx7406_i2c_addrs_flags[] = {
 
 static struct anx7406_i2c_addr i2c_peripheral[CONFIG_USB_PD_PORT_MAX_COUNT];
 
+static int anx7406_tcpc_write(int port, int reg, int val)
+{
+	if (tcpc_write(port, reg, val)) {
+		msleep(5);
+		return tcpc_write(port, reg, val);
+	}
+
+	return EC_SUCCESS;
+}
+
+static int anx7406_write8(const int port, const uint16_t addr_flags, int offset,
+			  int data)
+{
+	if (i2c_write8(port, addr_flags, offset, data)) {
+		msleep(5);
+		return i2c_write8(port, addr_flags, offset, data);
+	}
+
+	return EC_SUCCESS;
+}
+
+static int anx7406_read8(const int port, const uint16_t addr_flags, int offset,
+			 int *data)
+{
+	if (i2c_read8(port, addr_flags, offset, data)) {
+		msleep(5);
+		return i2c_read8(port, addr_flags, offset, data);
+	}
+
+	return EC_SUCCESS;
+}
+
 enum ec_error_list anx7406_set_gpio(int port, uint8_t gpio, bool value)
 {
 	if (gpio != 0) {
@@ -40,10 +72,10 @@ enum ec_error_list anx7406_set_gpio(int port, uint8_t gpio, bool value)
 
 	CPRINTS("C%d: Setting GPIO%u %s", port, gpio, value ? "high" : "low");
 
-	return i2c_write8(tcpc_config[port].i2c_info.port,
-			  i2c_peripheral[port].top_addr_flags,
-			  ANX7406_REG_GPIO0,
-			  value ? GPIO0_OUTPUT_HIGH : GPIO0_OUTPUT_LOW);
+	return anx7406_write8(tcpc_config[port].i2c_info.port,
+			      i2c_peripheral[port].top_addr_flags,
+			      ANX7406_REG_GPIO0,
+			      value ? GPIO0_OUTPUT_HIGH : GPIO0_OUTPUT_LOW);
 }
 
 static int anx7406_set_hpd(int port, int hpd_lvl)
@@ -58,9 +90,9 @@ static int anx7406_set_hpd(int port, int hpd_lvl)
 		val = HPD_DEGLITCH_TIME;
 	}
 
-	return i2c_write8(tcpc_config[port].i2c_info.port,
-			  i2c_peripheral[port].top_addr_flags,
-			  ANX7406_REG_HPD_DEGLITCH_H, val);
+	return anx7406_write8(tcpc_config[port].i2c_info.port,
+			      i2c_peripheral[port].top_addr_flags,
+			      ANX7406_REG_HPD_DEGLITCH_H, val);
 }
 
 int anx7406_hpd_reset(const int port)
@@ -68,9 +100,9 @@ int anx7406_hpd_reset(const int port)
 	int rv;
 
 	CPRINTS("HPD reset");
-	rv = i2c_write8(tcpc_config[port].i2c_info.port,
-			i2c_peripheral[port].top_addr_flags,
-			ANX7406_REG_HPD_CTRL_0, 0);
+	rv = anx7406_write8(tcpc_config[port].i2c_info.port,
+			    i2c_peripheral[port].top_addr_flags,
+			    ANX7406_REG_HPD_CTRL_0, 0);
 	if (rv) {
 		CPRINTS("Clear HPD_MODE failed: %d", rv);
 		return rv;
@@ -113,12 +145,13 @@ void anx7406_update_hpd_status(const struct usb_mux *mux, mux_state_t mux_state)
 		 * ANX7406_REG_HPD_IRQ0 first, then clear it. This bit is not
 		 * write clear.
 		 */
-		rv = i2c_write8(tcpc_config[port].i2c_info.port,
-				i2c_peripheral[port].top_addr_flags,
-				ANX7406_REG_HPD_CTRL_0, ANX7406_REG_HPD_IRQ0);
-		rv |= i2c_write8(tcpc_config[port].i2c_info.port,
-				 i2c_peripheral[port].top_addr_flags,
-				 ANX7406_REG_HPD_CTRL_0, 0);
+		rv = anx7406_write8(tcpc_config[port].i2c_info.port,
+				    i2c_peripheral[port].top_addr_flags,
+				    ANX7406_REG_HPD_CTRL_0,
+				    ANX7406_REG_HPD_IRQ0);
+		rv |= anx7406_write8(tcpc_config[port].i2c_info.port,
+				     i2c_peripheral[port].top_addr_flags,
+				     ANX7406_REG_HPD_CTRL_0, 0);
 		if (rv)
 			CPRINTS("Generate HPD IRQ failed: %d", rv);
 	}
@@ -154,8 +187,14 @@ static int anx7406_init(int port)
 
 	/* Set VBUS OCP */
 	rv = tcpc_write(port, ANX7406_REG_VBUS_OCP, OCP_THRESHOLD);
-	if (rv)
-		return rv;
+	if (rv) {
+		/* Failed but this is expected if the chip is in LPM. */
+		CPRINTS("C%d: Retrying to set OCP", port);
+		msleep(5);
+		rv = tcpc_write(port, ANX7406_REG_VBUS_OCP, OCP_THRESHOLD);
+		if (rv)
+			return rv;
+	}
 
 	/* Disable CAP write protect */
 	rv = tcpc_update8(port, ANX7406_REG_TCPCCTRL, ANX7406_REG_CAP_WP,
@@ -184,8 +223,8 @@ static int anx7406_init(int port)
 		return rv;
 
 	/* Let sink_ctrl & source_ctrl GPIO pin controlled by TCPC */
-	tcpc_write(port, ANX7406_REG_VBUS_SOURCE_CTRL, SOURCE_GPIO_OEN);
-	tcpc_write(port, ANX7406_REG_VBUS_SINK_CTRL, SINK_GPIO_OEN);
+	anx7406_tcpc_write(port, ANX7406_REG_VBUS_SOURCE_CTRL, SOURCE_GPIO_OEN);
+	anx7406_tcpc_write(port, ANX7406_REG_VBUS_SINK_CTRL, SINK_GPIO_OEN);
 
 	if (IS_ENABLED(CONFIG_USB_PD_DUAL_ROLE_AUTO_TOGGLE)) {
 		rv = tcpc_update8(port, TCPC_REG_ROLE_CTRL,
@@ -204,7 +243,7 @@ static int anx7406_init(int port)
 		return rv;
 
 	/* TCPC Filter set to 512uS */
-	rv = tcpc_write(port, ANX7406_REG_TCPCFILTER, 0xFF);
+	rv = anx7406_tcpc_write(port, ANX7406_REG_TCPCFILTER, 0xFF);
 	rv |= tcpc_update8(port, ANX7406_REG_TCPCCTRL,
 			   ANX7406_REG_TCPCFILTERBIT8, MASK_SET);
 	if (rv)
@@ -226,11 +265,13 @@ static int anx7406_set_polarity(int port, enum tcpc_cc_polarity polarity)
 	int rv;
 
 	if (polarity_rm_dts(polarity))
-		rv = tcpc_write(port, ANX7406_REG_VCONN_CTRL,
-				VCONN_PWR_CTRL_SEL | VCONN_CC1_PWR_ENABLE);
+		rv = anx7406_tcpc_write(port, ANX7406_REG_VCONN_CTRL,
+					VCONN_PWR_CTRL_SEL |
+						VCONN_CC1_PWR_ENABLE);
 	else
-		rv = tcpc_write(port, ANX7406_REG_VCONN_CTRL,
-				VCONN_PWR_CTRL_SEL | VCONN_CC2_PWR_ENABLE);
+		rv = anx7406_tcpc_write(port, ANX7406_REG_VCONN_CTRL,
+					VCONN_PWR_CTRL_SEL |
+						VCONN_CC2_PWR_ENABLE);
 	if (rv)
 		CPRINTS("Update VCONN power failed: %d, polarity: %d", rv,
 			polarity);
@@ -243,25 +284,25 @@ static int anx7406_m1_config(int port, int slave, int offset)
 	int rv;
 
 	/* Configure external I2C slave address */
-	rv = i2c_write8(tcpc_config[port].i2c_info.port,
-			i2c_peripheral[port].top_addr_flags, EXT_I2C1_ADDR,
-			slave);
+	rv = anx7406_write8(tcpc_config[port].i2c_info.port,
+			    i2c_peripheral[port].top_addr_flags, EXT_I2C1_ADDR,
+			    slave);
 	/* Configure external I2C slave offset */
-	rv |= i2c_write8(tcpc_config[port].i2c_info.port,
-			 i2c_peripheral[port].top_addr_flags, EXT_I2C1_OFFSET,
-			 offset);
+	rv |= anx7406_write8(tcpc_config[port].i2c_info.port,
+			     i2c_peripheral[port].top_addr_flags,
+			     EXT_I2C1_OFFSET, offset);
 	/* Configure external I2C transfer byte count */
-	rv |= i2c_write8(tcpc_config[port].i2c_info.port,
-			 i2c_peripheral[port].top_addr_flags,
-			 EXT_I2C1_ACCESS_DATA_BYTE_CNT, 1);
+	rv |= anx7406_write8(tcpc_config[port].i2c_info.port,
+			     i2c_peripheral[port].top_addr_flags,
+			     EXT_I2C1_ACCESS_DATA_BYTE_CNT, 1);
 	/* Clear DATA buffer */
-	rv |= i2c_write8(tcpc_config[port].i2c_info.port,
-			 i2c_peripheral[port].top_addr_flags,
-			 EXT_I2C1_ACCESS_CTRL, I2C1_DATA_CLR);
+	rv |= anx7406_write8(tcpc_config[port].i2c_info.port,
+			     i2c_peripheral[port].top_addr_flags,
+			     EXT_I2C1_ACCESS_CTRL, I2C1_DATA_CLR);
 	/* Clear release */
-	rv |= i2c_write8(tcpc_config[port].i2c_info.port,
-			 i2c_peripheral[port].top_addr_flags,
-			 EXT_I2C1_ACCESS_CTRL, 0);
+	rv |= anx7406_write8(tcpc_config[port].i2c_info.port,
+			     i2c_peripheral[port].top_addr_flags,
+			     EXT_I2C1_ACCESS_CTRL, 0);
 
 	return rv;
 }
@@ -273,9 +314,9 @@ int anx7406_m1_read(int port, int slave, int offset)
 	rv = anx7406_m1_config(port, slave, offset);
 
 	/* Send I2C read command */
-	rv |= i2c_write8(tcpc_config[port].i2c_info.port,
-			 i2c_peripheral[port].top_addr_flags, EXT_I2C1_CTRL,
-			 I2C1_CMD_READ | I2C1_SPEED_100K);
+	rv |= anx7406_write8(tcpc_config[port].i2c_info.port,
+			     i2c_peripheral[port].top_addr_flags, EXT_I2C1_CTRL,
+			     I2C1_CMD_READ | I2C1_SPEED_100K);
 	if (rv) {
 		CPRINTS("initial cisco I2C master failed!");
 		return rv;
@@ -284,9 +325,9 @@ int anx7406_m1_read(int port, int slave, int offset)
 	usleep(1000);
 
 	/* Read I2C data out */
-	rv = i2c_read8(tcpc_config[port].i2c_info.port,
-		       i2c_peripheral[port].top_addr_flags,
-		       EXT_I2C1_ACCESS_DATA, &val);
+	rv = anx7406_read8(tcpc_config[port].i2c_info.port,
+			   i2c_peripheral[port].top_addr_flags,
+			   EXT_I2C1_ACCESS_DATA, &val);
 	if (rv) {
 		CPRINTS("read cisco register failed!");
 		return rv;
@@ -303,13 +344,13 @@ static int anx7406_m1_write(int port, int slave, int offset, int data)
 	rv = anx7406_m1_config(port, slave, offset);
 
 	/* Configure I2C data */
-	rv |= i2c_write8(tcpc_config[port].i2c_info.port,
-			 i2c_peripheral[port].top_addr_flags,
-			 EXT_I2C1_ACCESS_DATA, data);
+	rv |= anx7406_write8(tcpc_config[port].i2c_info.port,
+			     i2c_peripheral[port].top_addr_flags,
+			     EXT_I2C1_ACCESS_DATA, data);
 	/* Send I2C write command */
-	rv |= i2c_write8(tcpc_config[port].i2c_info.port,
-			 i2c_peripheral[port].top_addr_flags, EXT_I2C1_CTRL,
-			 I2C1_CMD_WRITE | I2C1_SPEED_100K);
+	rv |= anx7406_write8(tcpc_config[port].i2c_info.port,
+			     i2c_peripheral[port].top_addr_flags, EXT_I2C1_CTRL,
+			     I2C1_CMD_WRITE | I2C1_SPEED_100K);
 	if (rv) {
 		CPRINTS("write data to cisco register failed!");
 		return rv;
