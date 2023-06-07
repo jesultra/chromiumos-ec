@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "181c722b_9ca6b887",
+        "filename": "common/mkbp_event.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1531147
+      },
+      "writtenOn": "2023-06-07T17:42:45Z",
+      "side": 1,
+      "message": "IS_ENABLED is preferred in general because it checks that the defined constant is both defined and enabled.  This is also why we shy away from things in KCONFIGS like:\nCONFIG_MKBP_USE_GPIO_ACTIVE_HIGH\u003dn\n\nAnd instead prefer them to be commented out:\n\u0027# CONFIG_MKBP_USE_GPIO_ACTIVE_HIGH\u003dn\u0027\n\nOur tooling still picks up that it\u0027s disabled, and errant #IF\u0027s won\u0027t fail on a definition of a \"don\u0027t use\" variable.",
+      "parentUuid": "aa408e0a_4e3038b3",
+      "revId": "d23fc71f300c3781b2c5ad2dd6a6436ea05fdd2f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2d087ae_a300062a",
         "filename": "common/mkbp_event.c",
         "patchSetId": 2
