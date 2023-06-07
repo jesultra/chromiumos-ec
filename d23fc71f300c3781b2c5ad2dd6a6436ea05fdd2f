@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8c0da84_fb3466e4",
+        "filename": "common/mkbp_event.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1287197
+      },
+      "writtenOn": "2023-06-07T17:58:25Z",
+      "side": 1,
+      "message": "\u003e GPIO_EC_INT_L? That\u0027s assumed to be defined here.\n\nI was thinking we might want to change the name, given it\u0027s not active low.  But we could also keep it.  Whatever is most clear for folks",
+      "parentUuid": "181c722b_9ca6b887",
+      "revId": "d23fc71f300c3781b2c5ad2dd6a6436ea05fdd2f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2d087ae_a300062a",
         "filename": "common/mkbp_event.c",
         "patchSetId": 2
