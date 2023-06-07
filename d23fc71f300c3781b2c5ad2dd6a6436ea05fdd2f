@@ -113,6 +113,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2dbdb39_9edc887e",
+        "filename": "common/mkbp_event.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1479762
+      },
+      "writtenOn": "2023-06-07T22:18:54Z",
+      "side": 1,
+      "message": "The name is coming from the sch, we\u0027ll have to scrub EC GPIO names with EEs",
+      "parentUuid": "d2d087ae_a300062a",
+      "range": {
+        "startLine": 108,
+        "startChar": 16,
+        "endLine": 108,
+        "endChar": 29
+      },
+      "revId": "d23fc71f300c3781b2c5ad2dd6a6436ea05fdd2f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7fc710e_6be228f3",
