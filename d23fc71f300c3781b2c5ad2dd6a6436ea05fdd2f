@@ -144,6 +144,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aca7316f_34b03119",
+        "filename": "common/mkbp_event.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1537632
+      },
+      "writtenOn": "2023-06-08T03:04:33Z",
+      "side": 1,
+      "message": "https://chromium-review.googlesource.com/c/chromiumos/platform/ec/+/4598637 done",
+      "parentUuid": "9fa5490c_78f95532",
+      "revId": "d23fc71f300c3781b2c5ad2dd6a6436ea05fdd2f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2d087ae_a300062a",
