@@ -128,6 +128,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9fa5490c_78f95532",
+        "filename": "common/mkbp_event.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1531147
+      },
+      "writtenOn": "2023-06-08T02:53:46Z",
+      "side": 1,
+      "message": "There are plenty of places in the EC code that use IS_ENABLED.  Please convert to that.\n\nSee:\nhttps://source.chromium.org/search?q\u003dIS_ENABLED%20case:yes\u0026ss\u003dchromiumos%2Fchromiumos%2Fcodesearch:src%2Fplatform%2Fec%2F",
+      "parentUuid": "408ff454_eb450178",
+      "revId": "d23fc71f300c3781b2c5ad2dd6a6436ea05fdd2f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2d087ae_a300062a",
         "filename": "common/mkbp_event.c",
         "patchSetId": 2
