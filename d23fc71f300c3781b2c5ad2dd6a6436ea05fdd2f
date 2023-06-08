@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c41b83b_11894f53",
+        "filename": "common/mkbp_event.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1537632
+      },
+      "writtenOn": "2023-06-08T00:22:22Z",
+      "side": 1,
+      "message": "Does EC code support if(CONFIG(CONFIG_MKBP_USE_GPIO_ACTIVE_HIGH))? We use this in coreboot.",
+      "parentUuid": "c8c0da84_fb3466e4",
+      "revId": "d23fc71f300c3781b2c5ad2dd6a6436ea05fdd2f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2d087ae_a300062a",
         "filename": "common/mkbp_event.c",
         "patchSetId": 2
@@ -150,6 +168,24 @@
       "writtenOn": "2023-06-07T16:11:03Z",
       "side": 1,
       "message": "Should depend on PLATFORM_EC_MKBP_USE_GPIO",
+      "revId": "d23fc71f300c3781b2c5ad2dd6a6436ea05fdd2f",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c966f8e4_91178fe5",
+        "filename": "zephyr/Kconfig.mkbp_event",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1537632
+      },
+      "writtenOn": "2023-06-08T00:22:22Z",
+      "side": 1,
+      "message": "I think this too, but this code also guard in PLATFORM_EC_MKBP_USE_GPIO, so if select it but not select PLATFORM_EC_MKBP_USE_GPIO, won\u0027t make any difference. No harm to add depend :p",
+      "parentUuid": "e7fc710e_6be228f3",
       "revId": "d23fc71f300c3781b2c5ad2dd6a6436ea05fdd2f",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
