@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f8ca740_8aed4bb0",
+        "filename": "zephyr/CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2023-06-21T22:25:23Z",
+      "side": 1,
+      "message": "i feel like we need a top level config for enabling unaligned\naccesses in the programming model.\npart of this would be to disable exceptions on unaligned\naccesses where appropriate and the other is to control generated code.\nthen, human written code would also have to conditionally take advantage\nof hardware assist for unaligned accesses.\n\nif we were to enable unaligned accesses, we would really want\nto check with various EC vendors to determine if their chips have\ncorner cases where unaligned accesses are not defined.",
+      "range": {
+        "startLine": 67,
+        "startChar": 12,
+        "endLine": 67,
+        "endChar": 22
+      },
+      "revId": "1e7c6da0a960019b84f99dd930265184dd453172",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
