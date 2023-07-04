@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5477e77e_5af5445b",
+        "filename": "zephyr/program/corsola/ponyta/CMakeLists.txt",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1525237
+      },
+      "writtenOn": "2023-07-04T03:33:34Z",
+      "side": 1,
+      "message": "I\u0027m not quite sure if it\u0027s alright to share this with other project,\nit may cause dependencies in the future.",
+      "revId": "179ba6a36cda4369ca293566b5d0ad4c5f8f129d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3386ece_b43b9f15",
+        "filename": "zephyr/program/corsola/ponyta/cbi.dtsi",
+        "patchSetId": 13
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1525237
+      },
+      "writtenOn": "2023-07-04T03:33:34Z",
+      "side": 1,
+      "message": "I\u0027ll assume you\u0027d like to reserve form_factory although there\u0027s only clamshell ?\nIs there any possibility that you\u0027ll have a convertible with LTE ?\nIf yes then there might be a problem since you\u0027ll have to handle LTE SAR.",
+      "revId": "179ba6a36cda4369ca293566b5d0ad4c5f8f129d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
