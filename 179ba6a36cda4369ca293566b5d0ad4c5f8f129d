@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5906752_4e5ff2bf",
+        "filename": "zephyr/program/corsola/ponyta/CMakeLists.txt",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1525237
+      },
+      "writtenOn": "2023-07-05T06:36:50Z",
+      "side": 1,
+      "message": "Sorry, but this kind of sharing might also affect steelix which is not ponyta\u0027s call.\nI\u0027ll suggest separating it from the beginning.",
+      "parentUuid": "d0350dc7_cc7bd237",
+      "revId": "179ba6a36cda4369ca293566b5d0ad4c5f8f129d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3386ece_b43b9f15",
         "filename": "zephyr/program/corsola/ponyta/cbi.dtsi",
         "patchSetId": 13
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Yes，we may be have a convertible with LTE like steelix in the future.",
       "parentUuid": "f3386ece_b43b9f15",
+      "revId": "179ba6a36cda4369ca293566b5d0ad4c5f8f129d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0130cb9_bd840907",
+        "filename": "zephyr/program/corsola/ponyta/cbi.dtsi",
+        "patchSetId": 13
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1525237
+      },
+      "writtenOn": "2023-07-05T06:36:50Z",
+      "side": 1,
+      "message": "steelix doesn\u0027t have LTE(rusty did), so please ensure LTE SAR is taking caring of if you\u0027d like to go this way.",
+      "parentUuid": "8e82c6fa_b10dec28",
       "revId": "179ba6a36cda4369ca293566b5d0ad4c5f8f129d",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
