@@ -2,14 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-load("@bazel_skylib//lib:shell.bzl", "shell")
-
-def _gen_shell_wrapper(argv, env):
-    script = "#!/bin/bash\n"
-    for key, val in env.items():
-        script += "export %s=%s\n" % (key, shell.quote(val))
-    script += '%s "$@"\n' % " ".join([shell.quote(x) for x in argv])
-    return script
+load("//platform/ec/bazel:utils.bzl", "gen_shell_wrapper")
 
 def _flash_ec(ctx):
     env = {
@@ -36,7 +29,7 @@ def _flash_ec(ctx):
 
     argv.extend(["--image", image_path])
 
-    script_content = _gen_shell_wrapper(argv = argv, env = env)
+    script_content = gen_shell_wrapper(argv = argv, env = env)
     ctx.actions.write(script, script_content, is_executable = True)
 
     runfiles = ctx.runfiles(
