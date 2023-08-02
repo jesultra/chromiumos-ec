@@ -19,6 +19,7 @@
 	(PDO_FIXED_DUAL_ROLE | PDO_FIXED_DATA_SWAP | PDO_FIXED_COMM_CAP)
 
 static bool current_limited;
+static int port_mask;
 
 static const uint32_t pd_src_pdo_1A5[] = {
 	PDO_FIXED(5000, 1500, PDO_FIXED_FLAGS),
@@ -51,9 +52,12 @@ static void update_src_pdo_deferred(void)
 	    (charge_get_percent() < BATT_LVL_CURRENT_LIMITED)) {
 		/* In S3, battery < 30%, set src pdo to 1A5 */
 		current_limited = true;
+		CPRINTS("------1 port_mask = %d", port_mask);
 
 		for (i = 0; i < board_get_usb_pd_port_count(); i++) {
 			if (tc_is_attached_src(i)) {
+				port_mask |= BIT(i);
+				CPRINTS("------2 port_mask = %d", port_mask);
 				CPRINTS("Set C%d src pdo 1A5", i);
 				pd_update_contract(i);
 			}
@@ -65,14 +69,19 @@ static void update_src_pdo_deferred(void)
 		/* In S3, battery >= 30%, check the battery every 60s */
 		hook_call_deferred(&update_src_pdo_deferred_data, 60 * SECOND);
 	} else if (chipset_in_state(CHIPSET_STATE_ON)) {
-		/* Resume src pdo to 3A */
-		current_limited = false;
+		if (current_limited) {
+			/* Resume src pdo to 3A */
+			current_limited = false;
 
-		for (i = 0; i < board_get_usb_pd_port_count(); i++) {
-			if (tc_is_attached_src(i))
-				pd_update_contract(i);
+			for (i = 0; i < board_get_usb_pd_port_count(); i++) {
+				if (tc_is_attached_src(i) && (port_mask & BIT(i))) {
+					CPRINTS("------3 port_mask = %d", port_mask);
+					pd_update_contract(i);
+				}
+			}
+
+			port_mask = 0;
 		}
-
 		hook_call_deferred(&update_src_pdo_deferred_data, -1);
 	} else if (check_cnt < 3) {
 		/* Check 3 times for stable power state */
@@ -80,10 +89,38 @@ static void update_src_pdo_deferred(void)
 		hook_call_deferred(&update_src_pdo_deferred_data, 10 * SECOND);
 	} else {
 		check_cnt = 0;
+		port_mask = 0;
 		current_limited = false;
 		hook_call_deferred(&update_src_pdo_deferred_data, -1);
 	}
+	CPRINTS("------4 port_mask = %d", port_mask);
 }
+
+static void update_port_mask_deferred(void)
+{
+	int i;
+
+	CPRINTS("------6 update_port_mask = %d", port_mask);
+	for (i = 0; i < board_get_usb_pd_port_count(); i++) {
+		CPRINTS("------ C%d src = %d", i, tc_is_attached_src(i));
+		// CPRINTS("------ C%d State: %s", i, tc_get_current_state(i));
+		if (!tc_is_attached_src(i) && (port_mask & BIT(i))) {
+			port_mask &= (~BIT(i));
+			CPRINTS("------7 port_mask = %d", port_mask);
+		}
+	}
+	CPRINTS("------8 update_port_mask = %d", port_mask);
+}
+DECLARE_DEFERRED(update_port_mask_deferred);
+
+static void check_pd_in_s3(void)
+{
+	CPRINTS("------5 update_port_mask = %d", port_mask);
+	if (chipset_in_state(CHIPSET_STATE_SUSPEND)) {
+		hook_call_deferred(&update_port_mask_deferred_data, 200 * MSEC);
+	}
+}
+DECLARE_HOOK(HOOK_USB_PD_DISCONNECT, check_pd_in_s3, HOOK_PRIO_LAST);
 
 static void check_src_port(void)
 {
@@ -102,7 +139,9 @@ DECLARE_HOOK(HOOK_CHIPSET_SUSPEND, check_src_port, HOOK_PRIO_DEFAULT);
 
 static void resume_src_port(void)
 {
-	/* Deferred 2s to avoid pd state conflict */
-	hook_call_deferred(&update_src_pdo_deferred_data, 2 * SECOND);
+	if (current_limited) {
+		/* Deferred 2s to avoid pd state conflict */
+		hook_call_deferred(&update_src_pdo_deferred_data, 2 * SECOND);
+	}
 }
 DECLARE_HOOK(HOOK_CHIPSET_RESUME, resume_src_port, HOOK_PRIO_DEFAULT);
