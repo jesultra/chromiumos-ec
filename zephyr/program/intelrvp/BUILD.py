@@ -118,3 +118,23 @@ register_intelrvp_project(
         here / "mtlrvp/mtlrvpp_npcx/prj.conf",
     ],
 )
+
+register_intelrvp_project(
+    project_name="mtlrvpp_pd",
+    chip="npcx9m3f",
+    extra_dts_overlays=[
+        here / "mtlrvp/mtlrvpp_npcx/fan.dts",
+        here / "mtlrvp/mtlrvpp_npcx/gpio.dts",
+        here / "mtlrvp/mtlrvpp_npcx/keyboard.dts",
+        here / "mtlrvp/mtlrvpp_npcx/interrupts.dts",
+        here / "mtlrvp/ioex.dts",
+        here / "mtlrvp/mtlrvpp_pd/mtlrvpp_pd.dts",
+        here / "mtlrvp/mtlrvpp_npcx/mtlrvp_npcx_power_signals.dts",
+        here / "adlrvp/adlrvp_npcx/temp_sensor.dts",
+        here / "mtlrvp/mtlrvpp_pd/usbc.dts",
+    ],
+    extra_kconfig_files=[
+        here / "zephyr_ap_pwrseq.conf",
+        here / "mtlrvp/mtlrvpp_npcx/prj.conf",
+    ],
+)
