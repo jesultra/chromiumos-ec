@@ -823,6 +823,16 @@ int bq25710_set_min_system_voltage(int chgnum, int mv)
 	return raw_write16(chgnum, BQ25710_REG_MIN_SYSTEM_VOLTAGE, reg);
 }
 
+int bq25710_is_acok(int chgnum)
+{
+	int reg;
+
+	if (raw_read16(chgnum, BQ25710_REG_CHARGER_STATUS, &reg))
+		return 0;
+
+	return reg & BQ_FIELD_MASK(BQ257X0, CHARGER_STATUS, STAT_AC);
+}
+
 #ifdef CONFIG_CHARGE_RAMP_HW
 
 static void bq25710_chg_ramp_handle(void)

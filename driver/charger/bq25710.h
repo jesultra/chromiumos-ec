@@ -74,4 +74,13 @@ extern const struct charger_drv bq25710_drv;
  */
 int bq25710_set_min_system_voltage(int chgnum, int mv);
 
+/**
+ * Get ACOK status
+ *
+ * @param chgnum: Index into charger chips
+ * @return 1 if ACOK
+ */
+
+int bq25710_is_acok(int chgnum);
+
 #endif /* __CROS_EC_BQ25710_H */
