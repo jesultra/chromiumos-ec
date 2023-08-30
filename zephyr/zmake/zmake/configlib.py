@@ -46,8 +46,9 @@ def register_npcx_project(**kwargs):
 
 
 def register_mchp_project(**kwargs):
+    """Register a project that uses MchpPacker."""
     kwargs.setdefault("output_packer", zmake.output_packers.MchpPacker)
-    kwargs.setdefault("modules", ["ec", "cmsis"])
+    kwargs.setdefault("modules", ["cmsis", "ec"])
     return register_binman_project(**kwargs)
 
 
