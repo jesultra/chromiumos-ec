@@ -92,6 +92,7 @@ static const
 		{ KEYBOARD_COL_ESC, KEYBOARD_ROW_ESC },
 		{ KEYBOARD_COL_DOWN, KEYBOARD_ROW_DOWN }, /* Down-arrow */
 		{ KEYBOARD_COL_LEFT_SHIFT, KEYBOARD_ROW_LEFT_SHIFT },
+		{ KEYBOARD_COL_LEFT_ALT, KEYBOARD_ROW_LEFT_ALT },
 	};
 static uint32_t boot_key_value = BOOT_KEY_NONE;
 #endif
@@ -754,6 +755,12 @@ uint32_t keyboard_scan_get_boot_keys(void)
 {
 	return boot_key_value;
 }
+
+static void keyboard_chipset_startup(void)
+{
+	boot_key_value = BOOT_KEY_NONE;
+}
+DECLARE_HOOK(HOOK_CHIPSET_STARTUP, keyboard_chipset_startup, HOOK_PRIO_DEFAULT);
 #endif
 
 const uint8_t *keyboard_scan_get_state(void)

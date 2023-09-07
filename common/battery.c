@@ -16,6 +16,7 @@
 #include "gpio.h"
 #include "hooks.h"
 #include "host_command.h"
+#include "keyboard_scan.h"
 #include "math_util.h"
 #include "timer.h"
 #include "usb_pd.h"
@@ -363,8 +364,15 @@ DECLARE_DEFERRED(pending_cutoff_deferred);
 static void clear_pending_cutoff(void)
 {
 	if (extpower_is_present()) {
+		/* Plugged */
 		battery_cutoff_state = BATTERY_CUTOFF_STATE_NORMAL;
 		hook_call_deferred(&pending_cutoff_deferred_data, -1);
+	} else {
+		/* Unplugged */
+		if (keyboard_scan_get_boot_keys() & BOOT_KEY_LEFT_ALT) {
+			CPRINTS("RAPU detected");
+			hook_call_deferred(&pending_cutoff_deferred_data, 0);
+		}
 	}
 }
 DECLARE_HOOK(HOOK_AC_CHANGE, clear_pending_cutoff, HOOK_PRIO_DEFAULT);
