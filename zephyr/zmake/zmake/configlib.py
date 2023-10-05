@@ -42,6 +42,7 @@ def register_raw_project(**kwargs):
 def register_binman_project(**kwargs):
     """Register a project that uses BinmanPacker."""
     kwargs.setdefault("output_packer", zmake.output_packers.BinmanPacker)
+    kwargs.setdefault("modules", ["picolibc", "ec", "pigweed"])
     return register_raw_project(**kwargs)
 
 
