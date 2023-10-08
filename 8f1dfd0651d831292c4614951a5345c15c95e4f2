@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5050e10d_07254c1e",
+        "filename": "zephyr/program/nissa/yaviks/src/sub_board.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1361259
+      },
+      "writtenOn": "2023-10-08T22:51:46Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem right, since `cbi_get_fw_config` returns the entire value of fw_config including other fields like keyboard backlight and fan configuration; there are many cases where the cached sub-board value would incorrectly be left unset.",
+      "range": {
+        "startLine": 45,
+        "startChar": 7,
+        "endLine": 45,
+        "endChar": 24
+      },
+      "revId": "8f1dfd0651d831292c4614951a5345c15c95e4f2",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
