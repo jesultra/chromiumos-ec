@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "325882fa_95751716",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1334530
+      },
+      "writtenOn": "2023-10-31T20:55:07Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 12,
+        "startChar": 50,
+        "endLine": 12,
+        "endChar": 71
+      },
+      "revId": "39243586ca806ab82a3a0f0d6f5fbc45642238f3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "4e732456_3cef8eca",
@@ -14,6 +37,24 @@
       "writtenOn": "2023-10-31T20:13:41Z",
       "side": 1,
       "message": "Unfortunately I cannot rebase crrev.com/c/4990321 because it is a merge commit, so I\u0027m not sure if there\u0027s another way to verify the commit other than merging. Thoughts?",
+      "revId": "39243586ca806ab82a3a0f0d6f5fbc45642238f3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27280521_e0bf96c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1334530
+      },
+      "writtenOn": "2023-10-31T20:55:07Z",
+      "side": 1,
+      "message": "I don\u0027t think this can break anything and shouldn\u0027t block anyone. Plus, it mirrors what we do for all firmware branches.",
+      "parentUuid": "4e732456_3cef8eca",
       "revId": "39243586ca806ab82a3a0f0d6f5fbc45642238f3",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
