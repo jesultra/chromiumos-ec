@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e732456_3cef8eca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1529242
+      },
+      "writtenOn": "2023-10-31T20:13:41Z",
+      "side": 1,
+      "message": "Unfortunately I cannot rebase crrev.com/c/4990321 because it is a merge commit, so I\u0027m not sure if there\u0027s another way to verify the commit other than merging. Thoughts?",
+      "revId": "39243586ca806ab82a3a0f0d6f5fbc45642238f3",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
