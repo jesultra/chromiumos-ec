@@ -1,0 +1,22 @@
+# Copyright 2023 The ChromiumOS Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+if PLATFORM_EC_USBC
+
+rsource "Kconfig.usbc_altmode"
+
+menuconfig USB_PDC_POWER_MGNT
+	bool "Configure USB-C PD Controller"
+	depends on PLATFORM_EC_USB_PD_TCPMV3
+	default y
+	select EVENTS
+	help
+	  Enable this to support configuring the USB-C power management
+	  when using Power Delivery Controllers.
+
+module = USB_PDC
+module-str = USB PDC
+source "subsys/logging/Kconfig.template.log_config"
+
+endif # PLATFORM_EC_USBC
