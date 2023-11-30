@@ -34,6 +34,24 @@
       "parentUuid": "6b4074a4_d4f8bbf8",
       "revId": "c702152ebb22372880883bd4bd44e8d49807d6bf",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d207a237_9df72118",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1469347
+      },
+      "writtenOn": "2023-11-30T17:25:41Z",
+      "side": 1,
+      "message": "Thanks Chen-Yu. Btw, I don\u0027t get email notifications from your comments in the geritt for some reason. I do get notifications for other people\u0027s comments. 😊",
+      "parentUuid": "403e905e_5d99f8f1",
+      "revId": "c702152ebb22372880883bd4bd44e8d49807d6bf",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
