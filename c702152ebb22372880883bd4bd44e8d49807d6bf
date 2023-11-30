@@ -16,6 +16,24 @@
       "message": "Chen-Yu, is there any need to cherry pick private scp change as well for the stable branch?\n\n5178188: cherry_scp: Add 10bit buffer calculation method in mt8195 | https://chrome-internal-review.googlesource.com/c/chromeos/vendor/mtk-ec-private/+/5178188",
       "revId": "c702152ebb22372880883bd4bd44e8d49807d6bf",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "403e905e_5d99f8f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1511663
+      },
+      "writtenOn": "2023-11-30T02:28:41Z",
+      "side": 1,
+      "message": "Yes. All changes need to be cherry-picked, both public and private. They are built together.",
+      "parentUuid": "6b4074a4_d4f8bbf8",
+      "revId": "c702152ebb22372880883bd4bd44e8d49807d6bf",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
