@@ -52,6 +52,23 @@
       "parentUuid": "403e905e_5d99f8f1",
       "revId": "c702152ebb22372880883bd4bd44e8d49807d6bf",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65e3b39b_697fe34c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1469347
+      },
+      "writtenOn": "2023-12-01T18:02:02Z",
+      "side": 1,
+      "message": "Hsin-Yi, PTAL. Thank you.",
+      "revId": "c702152ebb22372880883bd4bd44e8d49807d6bf",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
