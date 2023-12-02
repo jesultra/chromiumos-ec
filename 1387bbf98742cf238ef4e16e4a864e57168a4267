@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b692437_5e2ec41a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1469347
+      },
+      "writtenOn": "2023-12-02T00:32:17Z",
+      "side": 1,
+      "message": "Thanks Hsin-Yi. There is also companion private scp change as well if you get a chance.\n\n6726979: cherry_scp: Add 10bit buffer calculation method in mt8195 | https://chrome-internal-review.googlesource.com/c/chromeos/vendor/mtk-ec-private/+/6726979",
+      "revId": "1387bbf98742cf238ef4e16e4a864e57168a4267",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
