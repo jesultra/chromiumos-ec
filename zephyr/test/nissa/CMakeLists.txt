@@ -151,3 +151,18 @@ if(CONFIG_TEST_NISSA_ANRAGGAR)
             ${PLATFORM_EC_PROGRAM_DIR}/nissa/anraggar/src/keyboard.c
     )
 endif()
+
+if(CONFIG_TEST_NISSA_ULDREN)
+    target_sources(
+	    app PRIVATE
+	    src/uldren.c
+	    ${PLATFORM_EC_PROGRAM_DIR}/nissa/uldren/src/charger.c
+            #${PLATFORM_EC_PROGRAM_DIR}/nissa/uldren/src/form_factor.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/uldren/src/kb_backlight.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/uldren/src/mp2964_update.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/uldren/src/sensor.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/uldren/src/sub_board.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/uldren/src/usb_mux_config.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/uldren/src/usbc.c
+    )
+endif()
