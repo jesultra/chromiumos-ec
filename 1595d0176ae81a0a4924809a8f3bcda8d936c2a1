@@ -24,6 +24,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5355c18f_5f964489",
+        "filename": "board/cr50/tpm2/endorsement.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-20T23:52:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c3ccbcb_0150bcdc",
+      "range": {
+        "startLine": 525,
+        "startChar": 12,
+        "endLine": 525,
+        "endChar": 14
+      },
+      "revId": "1595d0176ae81a0a4924809a8f3bcda8d936c2a1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b54afef1_a995f72d",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-12-20T23:21:54Z",
       "side": 1,
       "message": "please add a message indicating if the channel was enabled or disabled.\n\nAlso, maybe have an array of {string, mask) tuples and iteratie through the array when parsing the command line. This way ti would be easy to add more explicit channel names if necessary. Just a though.",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 0
+      },
+      "revId": "1595d0176ae81a0a4924809a8f3bcda8d936c2a1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90b143f0_00bd70d9",
+        "filename": "common/console_output.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-20T23:52:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b54afef1_a995f72d",
       "range": {
         "startLine": 138,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab6fe715_4dcd43b4",
+        "filename": "common/tpm_registers.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-20T23:52:39Z",
+      "side": 1,
+      "message": "when printing registers cprints() adds overhead. I replaced use of CPRINTS to CPRINTF in that function for consistency.",
+      "parentUuid": "6d79da7d_ad364601",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 66
+      },
+      "revId": "1595d0176ae81a0a4924809a8f3bcda8d936c2a1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3046afcf_2b0437f5",
@@ -83,6 +155,24 @@
       "writtenOn": "2023-12-20T23:21:54Z",
       "side": 1,
       "message": "I\u0027m not sure if there is a check that the enum does not cross 31, should it be added in `include/console.h?`",
+      "revId": "1595d0176ae81a0a4924809a8f3bcda8d936c2a1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edf7b510_fec88c0a",
+        "filename": "include/console_channel.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-20T23:52:39Z",
+      "side": 1,
+      "message": "It is done as `enum`, so can\u0027t make BUILD_ASSERT, but CC_MASK is defined as `1U \u003c\u003c index`, so this will trigger warning.",
+      "parentUuid": "3046afcf_2b0437f5",
       "revId": "1595d0176ae81a0a4924809a8f3bcda8d936c2a1",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
