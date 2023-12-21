@@ -219,6 +219,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6761bff7_1c2b79f3",
+        "filename": "common/tpm_registers.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-21T17:50:10Z",
+      "side": 1,
+      "message": "I have no opinion here. We usually use CPRINTF/CPRINTS. Here it is just that we need 2 cprints channels, so extra letter. It might be that it is worth to split this file into parts related to TPM regs, TPM task and other stuff. We use `cprints(CC_TASK` explicitly in the code. I\u0027d leave it for later cleanup.",
+      "parentUuid": "a9a45a85_b48c88b7",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 15
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9dc2aa18_af4e9b19",
@@ -304,6 +328,30 @@
       "side": 1,
       "message": "yes. this was the whole purpose of this. `tpm` channel is for high level things, see commit message, and `tpmreg` includes all register and state changes. Both can be enabled at the same time if needed \u003d same behavior as before.\n\n`%ph` is very fast and rather compact. I think that it is possible to remove many other fields as command code is in these 10 bytes.",
       "parentUuid": "17366b3b_1ebb1ee0",
+      "range": {
+        "startLine": 1053,
+        "startChar": 4,
+        "endLine": 1053,
+        "endChar": 11
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a97eff9_c90e96d5",
+        "filename": "common/tpm_registers.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-21T17:50:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "facc2a87_1a27a95f",
       "range": {
         "startLine": 1053,
         "startChar": 4,
