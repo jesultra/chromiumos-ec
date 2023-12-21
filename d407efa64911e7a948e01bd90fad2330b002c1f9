@@ -130,6 +130,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa968669_96760be5",
+        "filename": "common/console_output.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2023-12-21T17:02:59Z",
+      "side": 1,
+      "message": "Oh you\u0027re right.",
+      "parentUuid": "0b7922d7_940ba3ef",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 40
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9a45a85_b48c88b7",
@@ -190,6 +214,30 @@
       "side": 1,
       "message": "it is a TPM2 header - it doesn\u0027t have anything secret. 4 bytes are command code, 4 bytes are size, 2 - session tag if any, 2 - subcommand\n\nIn response it is the same, but includes response code, which can be useful.",
       "parentUuid": "9dc2aa18_af4e9b19",
+      "range": {
+        "startLine": 1053,
+        "startChar": 4,
+        "endLine": 1053,
+        "endChar": 11
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17366b3b_1ebb1ee0",
+        "filename": "common/tpm_registers.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2023-12-21T17:02:59Z",
+      "side": 1,
+      "message": "Were you able to see all the output during boot when you enabled the tpm channel on a device?",
+      "parentUuid": "d5dd4c1f_a13ef219",
       "range": {
         "startLine": 1053,
         "startChar": 4,
