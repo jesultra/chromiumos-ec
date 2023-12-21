@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ccfb25c9_e925f5e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-21T17:00:22Z",
+      "side": 1,
+      "message": "i did that. will add to commit message",
+      "parentUuid": "094596f7_028273ad",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 4
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "432cbe69_666c0500",
         "filename": "common/console_output.c",
         "patchSetId": 4
@@ -43,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "414295e7_a33c47c4",
+        "filename": "common/console_output.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-21T17:00:22Z",
+      "side": 1,
+      "message": "ok, will do",
+      "parentUuid": "432cbe69_666c0500",
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c0fa4051_1d50330d",
         "filename": "common/console_output.c",
         "patchSetId": 4
@@ -54,6 +96,30 @@
       "writtenOn": "2023-12-21T15:25:59Z",
       "side": 1,
       "message": "This only toggles the specified channel right? It should be possible to toggle the console channel if you want.",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 40
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b7922d7_940ba3ef",
+        "filename": "common/console_output.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-21T17:00:22Z",
+      "side": 1,
+      "message": "what do you mean by console channel? I saw that you don\u0027t want to toggle CC_COMMAND when set mask numerically, so replicated it here",
+      "parentUuid": "c0fa4051_1d50330d",
       "range": {
         "startLine": 141,
         "startChar": 0,
@@ -100,6 +166,30 @@
       "writtenOn": "2023-12-21T15:25:59Z",
       "side": 1,
       "message": "Is this safe to do?\n\nEven if it is safe to do. I think it\u0027ll be too much output. If you turn on the tpm channel on a real device there is too much tpm output and it becomes garbled. If we add more data, it\u0027ll worsen the issue.",
+      "range": {
+        "startLine": 1053,
+        "startChar": 4,
+        "endLine": 1053,
+        "endChar": 11
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5dd4c1f_a13ef219",
+        "filename": "common/tpm_registers.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-21T17:00:22Z",
+      "side": 1,
+      "message": "it is a TPM2 header - it doesn\u0027t have anything secret. 4 bytes are command code, 4 bytes are size, 2 - session tag if any, 2 - subcommand\n\nIn response it is the same, but includes response code, which can be useful.",
+      "parentUuid": "9dc2aa18_af4e9b19",
       "range": {
         "startLine": 1053,
         "startChar": 4,
