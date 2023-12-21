@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "094596f7_028273ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2023-12-21T15:25:59Z",
+      "side": 1,
+      "message": "Boot a chromebook with the default channle.\n\nBoot a chromebook with chan 0xffffffff. Make sure the output looks ok.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 4
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "432cbe69_666c0500",
+        "filename": "common/console_output.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2023-12-21T15:25:59Z",
+      "side": 1,
+      "message": "This change doesn\u0027t have anything to do with the tpm change. Separate it into its own cl.",
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0fa4051_1d50330d",
+        "filename": "common/console_output.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2023-12-21T15:25:59Z",
+      "side": 1,
+      "message": "This only toggles the specified channel right? It should be possible to toggle the console channel if you want.",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 40
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a45a85_b48c88b7",
+        "filename": "common/tpm_registers.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2023-12-21T15:25:59Z",
+      "side": 1,
+      "message": "Maybe CPRINTFR to match the other cprint naming.",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 15
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dc2aa18_af4e9b19",
+        "filename": "common/tpm_registers.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 1136059
+      },
+      "writtenOn": "2023-12-21T15:25:59Z",
+      "side": 1,
+      "message": "Is this safe to do?\n\nEven if it is safe to do. I think it\u0027ll be too much output. If you turn on the tpm channel on a real device there is too much tpm output and it becomes garbled. If we add more data, it\u0027ll worsen the issue.",
+      "range": {
+        "startLine": 1053,
+        "startChar": 4,
+        "endLine": 1053,
+        "endChar": 11
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
