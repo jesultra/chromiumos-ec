@@ -48,6 +48,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5574bbee_5b3691ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-21T17:13:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccfb25c9_e925f5e5",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 4
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "432cbe69_666c0500",
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "ok, will do",
       "parentUuid": "432cbe69_666c0500",
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4a3783e_e733e692",
+        "filename": "common/console_output.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-21T17:13:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "414295e7_a33c47c4",
       "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
@@ -238,6 +280,30 @@
       "side": 1,
       "message": "Were you able to see all the output during boot when you enabled the tpm channel on a device?",
       "parentUuid": "d5dd4c1f_a13ef219",
+      "range": {
+        "startLine": 1053,
+        "startChar": 4,
+        "endLine": 1053,
+        "endChar": 11
+      },
+      "revId": "d407efa64911e7a948e01bd90fad2330b002c1f9",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "facc2a87_1a27a95f",
+        "filename": "common/tpm_registers.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 1324172
+      },
+      "writtenOn": "2023-12-21T17:13:15Z",
+      "side": 1,
+      "message": "yes. this was the whole purpose of this. `tpm` channel is for high level things, see commit message, and `tpmreg` includes all register and state changes. Both can be enabled at the same time if needed \u003d same behavior as before.\n\n`%ph` is very fast and rather compact. I think that it is possible to remove many other fields as command code is in these 10 bytes.",
+      "parentUuid": "17366b3b_1ebb1ee0",
       "range": {
         "startLine": 1053,
         "startChar": 4,
