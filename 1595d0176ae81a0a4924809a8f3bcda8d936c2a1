@@ -175,6 +175,24 @@
       "parentUuid": "3046afcf_2b0437f5",
       "revId": "1595d0176ae81a0a4924809a8f3bcda8d936c2a1",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e35790ff_ec8e17d9",
+        "filename": "include/console_channel.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000039
+      },
+      "writtenOn": "2023-12-21T00:16:38Z",
+      "side": 1,
+      "message": "can\u0027t we have the last element in the enum set to ENUM_MAX and then check for its value at compile time?",
+      "parentUuid": "edf7b510_fec88c0a",
+      "revId": "1595d0176ae81a0a4924809a8f3bcda8d936c2a1",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
