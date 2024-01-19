@@ -4016,7 +4016,8 @@ static void pe_snk_ready_run(int port)
 		/* Inform DPM state machine that PE is set for messages */
 		dpm_set_pe_ready(port, true);
 
-		if (pd_timer_is_expired(port, PE_TIMER_SINK_EPR_KEEP_ALIVE)) {
+		if (IS_ENABLED(CONFIG_USB_PD_EPR) &&
+		    pd_timer_is_expired(port, PE_TIMER_SINK_EPR_KEEP_ALIVE)) {
 			set_state_pe(port, PE_SNK_EPR_KEEP_ALIVE);
 			return;
 		}
