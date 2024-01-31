@@ -5,6 +5,16 @@
  */
 
  /{
+	named-i2c-ports {
+		ec_pd_power: typec-aic1-power {
+			i2c-port = <&i2c1>;
+			enum-names = "I2C_PORT_TYPEC_POWER";
+		};
+		ec_pd_data: typec-aic-data {
+			i2c-port = <&i2c3>;
+			enum-names = "I2C_PORT_TYPEC_DATA";
+		};
+	};
 	usbc {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -12,19 +22,39 @@
 			compatible = "named-usbc-port";
 			reg = <0>;
 			chg = <&charger>;
+			alt-mode = <&pdc_data_port0>;
 			pdc = <&pdc_power_p0>;
+			usb-mux-chain-0 {
+				compatible = "cros-ec,usb-mux-chain";
+				usb-muxes = <&virtual_mux_0>;
+			};
 		};
-
+		port0-muxes {
+			virtual_mux_0: virtual-mux-0 {
+				compatible = "cros-ec,usbc-mux-virtual";
+			};
+		};
 		usbc_port1: port0@1 {
 			compatible = "named-usbc-port";
 			reg = <1>;
+			alt-mode = <&pdc_data_port1>;
 			pdc = <&pdc_power_p1>;
-
+			usb-mux-chain-1 {
+				compatible = "cros-ec,usb-mux-chain";
+				usb-muxes = <&virtual_mux_1>;
+			};
+		};
+		port1-muxes {
+			virtual_mux_1: virtual-mux-1 {
+				compatible = "cros-ec,usbc-mux-virtual";
+			};
 		};
 	};
 };
 
 &i2c1 {
+	label = "I2C_PD_POWER";
+	status = "okay";
 	pdc_power_p0: rts54-pdc@66 {
 		compatible = "realtek,rts54-pdc";
 		reg = <0x66>;
@@ -42,5 +72,24 @@
 		compatible = "intersil,isl923x";
 		status = "okay";
 		reg = <0x9>;
+	};
+};
+
+/* pd-aic-data */
+&i2c3 {
+	label = "I2C_PD_DATA";
+	status = "okay";
+	pinctrl-names = "default";
+
+	pdc_data_port0: rts@68 {
+		compatible = "intel,pd-altmode";
+		reg = <0x68>;
+		irq-gpios = <&gpioj 1 GPIO_ACTIVE_LOW>;
+	};
+	pdc_data_port1: rts@69 {
+		compatible = "intel,pd-altmode";
+		reg = <0x69>;
+		irq-gpios = <&gpioj 1 GPIO_ACTIVE_LOW>;
+		irq-shared;
 	};
 };
