@@ -12,6 +12,30 @@ choice TEST_BOARD_VARIANT
 	# Nissa variants
 	config TEST_BOARD_CRAASK
 		bool "Run craask tests"
+
+	config TEST_BOARD_CRAASKOV
+		bool "Run craaskov tests"
+
+	config TEST_BOARD_GOTHRAX
+		bool "Run gothrax tests"
+
+	config TEST_BOARD_NIVVIKS
+		bool "Run nivvkis tests"
+
+	config TEST_BOARD_PIRRHA
+		bool "Run pirrha tests"
+
+	config TEST_BOARD_PUJJO
+		bool "Run pujjo tests"
+
+	config TEST_BOARD_ULDREN
+		bool "Run uldren tests"
+
+	config TEST_BOARD_XIVU
+		bool "Run xivu tests"
+
+	config TEST_BOARD_XIVUR
+		bool "Run xivur tests"
 endchoice
 
 choice TEST_CHARGER
