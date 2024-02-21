@@ -1,0 +1,33 @@
+syntax = "proto2";
+
+message manifest_t {
+    optional int32 manifest_version = 1;
+    optional string ec_version = 2;
+
+    message component_t {
+        optional string component_type = 3;
+        optional string component_name = 4;
+
+        message i2c_t {
+            optional int32 port = 5;
+            optional string addr = 6;
+        }
+
+        optional i2c_t i2c = 7;
+
+        message usbc_t {
+            optional int32 port = 8;
+        }
+
+        optional usbc_t usbc = 9;
+
+        message ssfc_t {
+            optional string mask = 10;
+            optional int32 value = 11;
+        }
+
+        optional ssfc_t ssfc = 12;
+    }
+
+    repeated component_t component_list = 13;
+}
