@@ -123,6 +123,10 @@ test_mockable void _pdc_trace_rts_req(const uint8_t * const buf,
 test_mockable void _pdc_trace_rts_resp(const uint8_t * const buf,
 				       const int count)
 {
+	printk("%s:", __func__);
+	for (int i = 0; i < count; ++i)
+		printk(" %02x", buf[i]);
+	printk("\n");
 }
 
 #endif
@@ -1156,6 +1160,20 @@ static void st_read_run(void *o)
 		*(uint16_t *)data->user_buf =
 			((data->rd_buf[2] << 8) | data->rd_buf[1]) *
 			VOLTAGE_SCALE_FACTOR;
+
+		printk("CMD_GET_VBUS_VOLTAGE: rd_buf_len %d\n", data->rd_buf_len);
+		printk("CMD_GET_VBUS_VOLTAGE: %02x %02x %02x %02x %02x %02x %02x %02x %02x %02x\n",
+		       data->rd_buf[0],
+		       data->rd_buf[1],
+		       data->rd_buf[2],
+		       data->rd_buf[3],
+		       data->rd_buf[4],
+		       data->rd_buf[5],
+		       data->rd_buf[6],
+		       data->rd_buf[7],
+		       data->rd_buf[8],
+		       data->rd_buf[9]);
+
 		break;
 	case CMD_GET_CONNECTOR_STATUS: {
 		/* Map Realtek GET_RTK_STATUS bits to UCSI GET_CONNECTOR_STATUS
@@ -1221,6 +1239,10 @@ static void st_read_run(void *o)
 		/* Realtek Voltage Reading Byte 18 (low byte) and Byte 19 (high
 		 * byte) */
 		cs->voltage_reading = data->rd_buf[19] << 8 | data->rd_buf[18];
+
+		printk("CMD_GET_CONNECTOR_STATUS: cs->voltage_reading %d mV\n",
+		       cs->voltage_reading * 50);
+
 		break;
 	}
 	case CMD_GET_ERROR_STATUS: {
