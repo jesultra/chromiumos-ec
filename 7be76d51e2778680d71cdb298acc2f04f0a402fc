@@ -16,6 +16,24 @@
       "message": "```\nE       AssertionError: Build targets were changed.  Please run ./bazel/gen_bazel_targets.py.\n```",
       "revId": "7be76d51e2778680d71cdb298acc2f04f0a402fc",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8167b26_8826eb0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1461738
+      },
+      "writtenOn": "2024-04-08T10:13:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8b525de_c37fd2f3",
+      "revId": "7be76d51e2778680d71cdb298acc2f04f0a402fc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
