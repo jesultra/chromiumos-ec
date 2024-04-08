@@ -16,6 +16,24 @@
       "message": "Please put this in alphabetic order",
       "revId": "25d250befaecac53ee6ec52e17619560757116a8",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5e49ef1_4b6e8f97",
+        "filename": "bazel/all_targets.generated.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 2431,
+      "author": {
+        "id": 1461738
+      },
+      "writtenOn": "2024-04-08T03:20:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1cc75d1_ee08f8a9",
+      "revId": "25d250befaecac53ee6ec52e17619560757116a8",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
