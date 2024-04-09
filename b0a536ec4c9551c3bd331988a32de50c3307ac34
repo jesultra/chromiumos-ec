@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "340840ca_c2100bb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1529538
+      },
+      "writtenOn": "2024-04-09T01:22:16Z",
+      "side": 1,
+      "message": "Could you try to enable CONFIG_PLATFORM_EC_CHARGER_BQ25720 in test_case.yaml for the test build failure ?",
+      "revId": "b0a536ec4c9551c3bd331988a32de50c3307ac34",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
