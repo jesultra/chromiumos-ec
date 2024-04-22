@@ -46,6 +46,30 @@
       },
       "revId": "0801cdc439be602d4b1d1a76441882e92643e169",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56a2c6cd_89b3850c",
+        "filename": "test/run_device_tests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1314845
+      },
+      "writtenOn": "2024-04-22T18:14:59Z",
+      "side": 1,
+      "message": "Did the updated change get uploaded? I still see the old version.",
+      "parentUuid": "0c09b5fc_533e0840",
+      "range": {
+        "startLine": 508,
+        "startChar": 4,
+        "endLine": 508,
+        "endChar": 54
+      },
+      "revId": "0801cdc439be602d4b1d1a76441882e92643e169",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
