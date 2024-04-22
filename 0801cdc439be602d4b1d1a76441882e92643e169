@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd0e796_3d33cae9",
+        "filename": "test/run_device_tests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 1441652
+      },
+      "writtenOn": "2024-04-22T13:35:51Z",
+      "side": 1,
+      "message": "We should use standard TODO. It\u0027s also highlighted in some editors.\n\n```suggestion\n    # TODO(b/311568657) Update expected value once b/311568657 is closed.\n```",
+      "range": {
+        "startLine": 508,
+        "startChar": 4,
+        "endLine": 508,
+        "endChar": 54
+      },
+      "revId": "0801cdc439be602d4b1d1a76441882e92643e169",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
