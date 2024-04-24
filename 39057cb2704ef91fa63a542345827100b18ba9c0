@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f95e9c6f_dc06e108",
+        "filename": "zephyr/subsys/pd_controller/pdc_host_cmd.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2024-04-24T18:11:21Z",
+      "side": 1,
+      "message": "This code duplicates the implementation in common/usb_pd_host_cmd_common.c.\n\nYou should define a new common file for this code if usb_pd_host_cmd_common.c can\u0027t be used.",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 77
+      },
+      "revId": "39057cb2704ef91fa63a542345827100b18ba9c0",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
