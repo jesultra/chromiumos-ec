@@ -22,6 +22,30 @@
       },
       "revId": "bfcfc388750716ef0a97282b2c5d2dbe5e175642",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bde9979_ef1d56c4",
+        "filename": "include/usb_pd.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2708,
+      "author": {
+        "id": 1380943
+      },
+      "writtenOn": "2024-04-25T20:02:10Z",
+      "side": 1,
+      "message": "I tried removing the CONFIG_USBC_SS_MUX but see below error.\n#error CONFIG_USBC_SS_MUX must be enabled for USB4 mode support\n\nNow i have changed the #if condition, kindly check.",
+      "parentUuid": "980ba188_4653204f",
+      "range": {
+        "startLine": 2703,
+        "startChar": 0,
+        "endLine": 2708,
+        "endChar": 0
+      },
+      "revId": "bfcfc388750716ef0a97282b2c5d2dbe5e175642",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
