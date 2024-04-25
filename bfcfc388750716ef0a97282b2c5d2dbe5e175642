@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "980ba188_4653204f",
+        "filename": "include/usb_pd.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2708,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2024-04-25T15:34:23Z",
+      "side": 1,
+      "message": "This logic is hard to follow.\n\nThe PMC-PD interface still needs USB PD host commands, but just a subset of commands. So I think the PMC-PD configuration should still enable CONFIG_USB_PD_HOST_CMD.\n\nWhen using PMC-PD, does the EC need any mux support?  Can you disable CONFIG_USBC_SS_MUX instead of disabling CONFIG_USB_PD_HOST_CMD?",
+      "range": {
+        "startLine": 2703,
+        "startChar": 0,
+        "endLine": 2708,
+        "endChar": 0
+      },
+      "revId": "bfcfc388750716ef0a97282b2c5d2dbe5e175642",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
