@@ -29,8 +29,8 @@ add_subdirectory(zephyr)
 add_subdirectory(common)
 add_subdirectory(third_party)
 
-# The EXISTS behavior is only well defined for full paths.
-get_filename_component(private_repo_abs_path "private/fingerprint" ABSOLUTE)
-if (EXISTS "${private_repo_abs_path}")
-  add_subdirectory(private/fingerprint)
-endif()
+-# The EXISTS behavior is only well defined for full paths.
+-get_filename_component(private_repo_abs_path "private/fingerprint" ABSOLUTE)
+-if (EXISTS "${private_repo_abs_path}")
+-  add_subdirectory(../ec-private/fingerprint)
+-endif()

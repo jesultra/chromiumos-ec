@@ -18,7 +18,7 @@ BOARD ?= elm
 # Directory where the board is configured (includes /$(BOARD) at the end)
 BDIR:=$(wildcard board/$(BOARD))
 # Private board directory
-PBDIR:=$(wildcard private-*/board/$(BOARD))
+PBDIR:=$(wildcard ../ec-private-*/board/$(BOARD))
 
 # We need either public, or private board directory, or both.
 ifeq (,$(BDIR)$(PBDIR))
@@ -101,7 +101,7 @@ not_cfg = $(subst ro rw,y,$(filter-out $(1:y=ro rw),ro rw))
 shell_echo = $(if $(filter-out 0,$(V)),$(info $(1)))$(shell $(1))
 
 # Check if private driver repository is present
-ifneq ($(wildcard private/build.mk),)
+ifneq ($(wildcard ../ec-private/build.mk),)
 HAVE_PRIVATE:=y
 CPPFLAGS+=-DHAVE_PRIVATE
 endif
@@ -173,7 +173,7 @@ endif
 _tsk_lst_flags+=-I$(BDIR) -DBOARD_$(UC_BOARD)=$(EMPTY) -I$(BASEDIR) \
 		-DBASEBOARD_$(UC_BASEBOARD)=$(EMPTY) \
 		-D_MAKEFILE=$(EMPTY) -imacros $(_tsk_lst_file)
--include private/task_list_flags.mk
+-include ../ec-private/task_list_flags.mk
 
 _tsk_lst_ro:=$(call shell_echo,$(CPP) -P -DSECTION_IS_RO=$(EMPTY) \
 	$(_tsk_lst_flags) include/task_filter.h)
@@ -200,7 +200,7 @@ endif
 # them into variables available to this build script
 # Usage: $(shell $(call cmd_get_configs,<RO|RW>))
 cmd_get_configs = $(CPP) $(foreach BLD,$(1),$(CPPFLAGS)) -P -dM \
-	-Ichip/$(CHIP) -I$(BASEDIR) -I$(BDIR) $(if $(HAVE_PRIVATE),-Iprivate) \
+	-Ichip/$(CHIP) -I$(BASEDIR) -I$(BDIR) $(if $(HAVE_PRIVATE),-I../ec-private) \
 	include/config.h | \
 	grep -o "\#define \(CONFIG\|VARIANT\)_[A-Z0-9_]*" | cut -c9- | sort
 _flag_cfg_ro:=$(call shell_echo,$(call cmd_get_configs,RO))
@@ -240,7 +240,7 @@ $(foreach c,$(_mock_cfg),$(eval $(c)=y))
 ifneq ($(CONFIG_COMMON_RUNTIME),y)
 ifneq ($(CONFIG_DFU_BOOTMANAGER_MAIN),ro)
 	_irq_list:=$(call shell_echo,$(CPP) $(CPPFLAGS) -P -Ichip/$(CHIP) \
-		-I$(BASEDIR) -I$(BDIR) $(if $(HAVE_PRIVATE),-Iprivate) \
+		-I$(BASEDIR) -I$(BDIR) $(if $(HAVE_PRIVATE),-I../ec-private) \
 		-D"ENABLE_IRQ(x)=EN_IRQ x" \
 		-imacros chip/$(CHIP)/registers.h \
 		- < $(BDIR)/ec.irqlist | grep "EN_IRQ .*" | cut -c8-)
@@ -252,7 +252,7 @@ endif
 # Compute RW firmware size and offset
 # Usage: $(shell $(call cmd_config_eval,<CONFIG_*>))
 cmd_config_eval = echo "$(1)" | $(CPP) $(CPPFLAGS) -P \
-	-Ichip/$(CHIP) -I$(BASEDIR) -I$(BDIR) $(if $(HAVE_PRIVATE),-Iprivate) \
+	-Ichip/$(CHIP) -I$(BASEDIR) -I$(BDIR) $(if $(HAVE_PRIVATE),-I../ec-private) \
 	-imacros include/config.h -
 _rw_off_str:=$(call shell_echo,$(call cmd_config_eval,CONFIG_RW_MEM_OFF))
 _rw_off:=$(shell echo "$$(($(_rw_off_str)))")
@@ -275,6 +275,7 @@ $(eval CHIP_FAMILY_$(UC_CHIP_FAMILY)=y)
 # Third arg is the config variable value ("y" for configuration options
 #   that are set for both RO and RW, "rw" for RW-only configuration options)
 objs_from_dir_p=$(foreach obj, $($(2)-$(3)), $(1)/$(obj))
+
 objs_from_dir=$(call objs_from_dir_p,$(1),$(2),y)
 
 # Usage: $(call vars_from_dir,<dest-var-prefix>,<path>,<src-var-prefix>)
@@ -303,9 +304,9 @@ $(1)-dirs-y += $(addprefix $(2)/,$($(3)-dirs-y))
 endef
 
 # Include all subdirs under feature-x.
-feature-x-builds = $(wildcard private/feature-x/*/build.mk)
+feature-x-builds = $(wildcard ../ec-private/feature-x/*/build.mk)
 include $(feature-x-builds)
-$(eval $(call vars_from_dir,private,feature-x,feature-x))
+$(eval $(call vars_from_dir,../ec-private,feature-x,feature-x))
 
 # Get build configuration from sub-directories
 # Note that this re-includes the board and chip makefiles
@@ -331,7 +332,7 @@ include common/build.mk
 include driver/build.mk
 include fuzz/build.mk
 include power/build.mk
--include private/build.mk
+-include ../ec-private/build.mk
 ifneq ($(PDIR),)
 include $(PDIR)/build.mk
 endif
@@ -349,13 +350,13 @@ include crypto/build.mk
 endif
 
 # Collect all includes.
-includes-y+=$(call objs_from_dir_p,private,private-incs,y)
+includes-y+=$(call objs_from_dir_p,../ec-private,private-incs,y)
 includes+=$(includes-y)
 
 # Collect all build object output directories.
 # This is different than the dirs variable, which serves as include path
 # and build output directory creation.
-dirs-y+=$(call objs_from_dir_p,private,private-dirs,y)
+dirs-y+=$(call objs_from_dir_p,../ec-private,private-dirs,y)
 
 # Wrapper for fetching all the sources relevant to this build
 # target.
@@ -367,12 +368,12 @@ all-obj-$(1)+=$(call objs_from_dir_p,core/$(CORE),core,$(1))
 all-obj-$(1)+=$(call objs_from_dir_p,chip/$(CHIP),chip,$(1))
 all-obj-$(1)+=$(call objs_from_dir_p,$(BASEDIR),baseboard,$(1))
 all-obj-$(1)+=$(call objs_from_dir_p,$(BDIR),board,$(1))
-all-obj-$(1)+=$(call objs_from_dir_p,private,private,$(1))
+all-obj-$(1)+=$(call objs_from_dir_p,../ec-private,private,$(1))
 ifneq ($(PDIR),)
 all-obj-$(1)+=$(call objs_from_dir_p,$(PDIR),$(PDIR),$(1))
 endif
 ifneq ($(PBDIR),)
-all-obj-$(1)+=$(call objs_from_dir_p,$(PBDIR),board-private,$(1))
+all-obj-$(1)+=$(call objs_from_dir_p,$(PBDIR),board-ec-private,$(1))
 endif
 all-obj-$(1)+=$(call objs_from_dir_p,common,common,$(1))
 ifeq ($(USE_BUILTIN_STDLIB), 1)
@@ -433,7 +434,7 @@ host-srcs-cxx := $(foreach u,$(host-util-bin-cxx-y), \
 
 dirs=core/$(CORE) chip/$(CHIP) $(BASEDIR) $(BDIR) common fuzz power test \
 	cts/common cts/$(CTS_MODULE) $(out)/gen
-dirs+= private $(PDIR) $(PBDIR)
+dirs+= ../ec-private $(PDIR) $(PBDIR)
 dirs+=$(shell find common -type d)
 dirs+=$(shell find driver -type d)
 ifeq ($(USE_BUILTIN_STDLIB), 1)
