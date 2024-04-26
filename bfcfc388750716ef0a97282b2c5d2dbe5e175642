@@ -46,6 +46,30 @@
       },
       "revId": "bfcfc388750716ef0a97282b2c5d2dbe5e175642",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2df80af6_fd6a0d36",
+        "filename": "include/usb_pd.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2708,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2024-04-26T15:55:03Z",
+      "side": 1,
+      "message": "For the PMC-PD configuration, we shouldn\u0027t need USB4 support either.\n\nThe only code that checks for USB4 support is the pd_task_intel_altmode.c, which isn\u0027t used in the PMC-PD configuration.",
+      "parentUuid": "2bde9979_ef1d56c4",
+      "range": {
+        "startLine": 2703,
+        "startChar": 0,
+        "endLine": 2708,
+        "endChar": 0
+      },
+      "revId": "bfcfc388750716ef0a97282b2c5d2dbe5e175642",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
