@@ -24,6 +24,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb0bb9e7_f1cc8f39",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1352056
+      },
+      "writtenOn": "2024-05-17T19:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54dfa3e5_c523107c",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 4
+      },
+      "revId": "de9ba257b7ab5f3de94522b92bf99566f986f728",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc72236d_e205f424",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-05-16T22:25:47Z",
       "side": 1,
       "message": "lets use smlink interface",
+      "range": {
+        "startLine": 23,
+        "startChar": 2,
+        "endLine": 23,
+        "endChar": 12
+      },
+      "revId": "de9ba257b7ab5f3de94522b92bf99566f986f728",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38136cfc_97fd4057",
+        "filename": "zephyr/program/intelrvp/ptlrvp/ptlerb_mchp/i2c.dtsi",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1352056
+      },
+      "writtenOn": "2024-05-17T19:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc72236d_e205f424",
       "range": {
         "startLine": 23,
         "startChar": 2,
