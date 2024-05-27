@@ -15,6 +15,28 @@
 #include "../pwm.dtsi"
 #include "../rwsig.dtsi"
 
+/ {
+	aliases {
+		usb-hid-tp = &usb_hid_tp;
+	};
+
+	hid_kb_dev: hid_kb_dev {
+		compatible = "zephyr,hid-device";
+		interface-name = "HID0";
+		protocol-code = "keyboard";
+		in-polling-rate = <1>;
+		in-report-size = <64>;
+	};
+
+	hid_tp_dev: hid_tp_dev {
+		compatible = "zephyr,hid-device";
+		interface-name = "HID1";
+		protocol-code = "none";
+		in-polling-rate = <1>;
+		in-report-size = <64>;
+	};
+};
+
 &i2c0 {
 	touchpad@15 {
 		/* not tested, don't care on reference board */
@@ -31,4 +53,24 @@
 
 &sha0 {
 	status = "okay";
+};
+
+zephyr_udc0: &usb0 {
+	status = "okay";
+	pinctrl-0 = <&usb0_dm_gph5_default
+		     &usb0_dp_gph6_default>;
+	pinctrl-names = "default";
+
+	usb_hid_tp: usb-hid-tp {
+		compatible = "cros-ec,usb-hid-touchpad";
+
+		/* TODO: find a way to probe touchpad parameters
+		 * dynamically.
+		 */
+		logical_max_x = <2925>;
+		logical_max_y = <1440>;
+		physical_max_x = <929>;
+		physical_max_y = <457>;
+		max_pressure = <511>;
+	};
 };
