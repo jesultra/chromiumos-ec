@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f52e1d7_2c3ae161",
+        "filename": "zephyr/program/intelrvp/ptlrvp/ptlrvp_mchp/i2c.dtsi",
+        "patchSetId": 15
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2024-06-05T21:00:02Z",
+      "side": 1,
+      "message": "as this section would be common to all the boards, can it be moved to a common file and macro the i2c_smb_0 \u0026 i2c_smb_1 ?",
+      "range": {
+        "startLine": 6,
+        "startChar": 2,
+        "endLine": 6,
+        "endChar": 3
+      },
+      "revId": "749a831073311dabed2142daa8d48eadc4889c8d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
