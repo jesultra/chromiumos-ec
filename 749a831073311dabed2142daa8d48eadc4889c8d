@@ -22,6 +22,30 @@
       },
       "revId": "749a831073311dabed2142daa8d48eadc4889c8d",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c375faf0_a88437f5",
+        "filename": "zephyr/program/intelrvp/ptlrvp/ptlrvp_mchp/i2c.dtsi",
+        "patchSetId": 15
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1296157
+      },
+      "writtenOn": "2024-06-06T15:07:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f52e1d7_2c3ae161",
+      "range": {
+        "startLine": 6,
+        "startChar": 2,
+        "endLine": 6,
+        "endChar": 3
+      },
+      "revId": "749a831073311dabed2142daa8d48eadc4889c8d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
