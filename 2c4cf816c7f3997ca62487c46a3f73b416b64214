@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fc31acc_6faf6c2f",
+        "filename": "zephyr/program/intelrvp/ptlrvp/ptlrvp_mchp/include/board.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2024-06-07T23:11:42Z",
+      "side": 1,
+      "message": "i\u0027m not sure these make the device tree more readable.\nare you planning to have multiple versions of this file\n(for multiple ECs) affect what `ptlrvp/i2c.dtsi` ends\nup defining?\n\ni\u0027d be included to move the affected sections of `ptlrvp/i2c.dtsi`\ndown one level into the EC specific directory (possibly as overrides)\nand avoid a hybrid `#define` and device tree scheme.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 16
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ebebe445_fc207ac0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "zephyr/program/intelrvp/ptlrvp/ptlrvp_mchp/include/board.h",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 34,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "2c4cf816c7f3997ca62487c46a3f73b416b64214",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
