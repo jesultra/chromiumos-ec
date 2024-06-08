@@ -64,6 +64,30 @@
       },
       "revId": "2c4cf816c7f3997ca62487c46a3f73b416b64214",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1ef7383_e49de260",
+        "filename": "zephyr/program/intelrvp/ptlrvp/ptlrvp_mchp/include/board.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1352056
+      },
+      "writtenOn": "2024-06-08T01:07:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "257baff5_b885656c",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 16
+      },
+      "revId": "2c4cf816c7f3997ca62487c46a3f73b416b64214",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
