@@ -16,6 +16,24 @@
       "message": "changes done to `.gitlab-ci.ymi`:\n```\nfsammoura@fsammoura1:~/chromiumos/src/platform/ec$ git diff\ndiff --git a/.gitlab-ci.yml b/.gitlab-ci.yml\nindex 7d26792c12..66131cca69 100644\n--- a/.gitlab-ci.yml\n+++ b/.gitlab-ci.yml\n@@ -443,13 +443,10 @@ zephyr_boards_coverage:\n   script:\n     - cd ${EC_DIR}\n     - projects\u003d( $(zmake --zephyr-base \"${ZEPHYR_BASE}\"\n-      --modules-dir \"${MODULES_DIR}\" list-projects |\n-      grep -v bloonchipper |\n-      split -n r/\"${CI_NODE_INDEX}\"/\"${CI_NODE_TOTAL}\") )\n+      --modules-dir \"${MODULES_DIR}\" list-projects ) )\n     - zmake --zephyr-base \"${ZEPHYR_BASE}\"\n       --modules-dir \"${MODULES_DIR}\" -l DEBUG build\n       --coverage --delete-intermediates \"${projects[@]}\"\n-    - mv build/zephyr/all_builds.info \"build/zephyr/all_builds${CI_NODE_INDEX}.info\"\n   artifacts:\n     paths:\n       - ec_dir/build/zephyr/all_builds*.info\nfsammoura@fsammoura1:~/chromiumos/src/platform/ec$ \n```",
       "revId": "3447062abdefbbd796c9aa47df9f04a99497f8c7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efb2060e_dbb1db97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1541085
+      },
+      "writtenOn": "2024-06-11T19:57:17Z",
+      "side": 1,
+      "message": "```\nzephyr_boards_coverage:\n  stage: build\n  needs: []\n  parallel: 5\n  script:\n    - cd ${EC_DIR}\n    - projects\u003d( $(zmake --zephyr-base \"${ZEPHYR_BASE}\"\n      --modules-dir \"${MODULES_DIR}\" list-projects ) )\n    - zmake --zephyr-base \"${ZEPHYR_BASE}\"\n      --modules-dir \"${MODULES_DIR}\" -l DEBUG build\n      --coverage --delete-intermediates \"${projects[@]}\"\n  artifacts:\n    paths:\n      - ec_dir/build/zephyr/all_builds*.info\n    expire_in: 1 week\n  coverage: \u0027/lines\\.*: \\d+\\.\\d+%/\u0027\n```",
+      "parentUuid": "ddebc92c_9e5aeaaa",
+      "revId": "3447062abdefbbd796c9aa47df9f04a99497f8c7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
