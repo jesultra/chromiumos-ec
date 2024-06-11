@@ -51,6 +51,52 @@
       "message": "output logs:\nhttps://drive.google.com/file/d/1l8a935NyAU_jgqZf6hNZOPLKeMRCc2-W/view?resourcekey\u003d0-E9oUzC6Dk1hw86aNsoc_BA",
       "revId": "3447062abdefbbd796c9aa47df9f04a99497f8c7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12e38904_75a2e64f",
+        "filename": "zephyr/program/fpmcu/BUILD.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1314845
+      },
+      "writtenOn": "2024-06-11T20:46:34Z",
+      "side": 1,
+      "message": "nit: `FPC_EXISTS`. Same in other file.",
+      "range": {
+        "startLine": 34,
+        "startChar": 3,
+        "endLine": 34,
+        "endChar": 12
+      },
+      "revId": "3447062abdefbbd796c9aa47df9f04a99497f8c7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ba27612_bd601510",
+        "filename": "zephyr/program/fpmcu/BUILD.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1314845
+      },
+      "writtenOn": "2024-06-11T20:46:34Z",
+      "side": 1,
+      "message": "Nit slightly cleaner if you do something like:\n\n```\nvariant_modules_list \u003d [\"hal_stm32\", \"cmsis\"]\n\nif FPC_EXISTS:\n  variant_modules_list.append(\"fpc\")\n```",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 49
+      },
+      "revId": "3447062abdefbbd796c9aa47df9f04a99497f8c7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
