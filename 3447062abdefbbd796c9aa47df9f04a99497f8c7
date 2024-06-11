@@ -121,6 +121,30 @@
       },
       "revId": "3447062abdefbbd796c9aa47df9f04a99497f8c7",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "725878f2_f6f89c42",
+        "filename": "zephyr/program/fpmcu/BUILD.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1541085
+      },
+      "writtenOn": "2024-06-11T21:03:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ba27612_bd601510",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 49
+      },
+      "revId": "3447062abdefbbd796c9aa47df9f04a99497f8c7",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
