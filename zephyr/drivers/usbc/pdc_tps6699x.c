@@ -435,8 +435,10 @@ static void st_idle_entry(void *o)
 
 	print_current_state(data);
 
-	/* Reset the command */
-	data->cmd = CMD_NONE;
+	/* Reset the command if no pending PDC_CMD_EVENT */
+	if (!k_event_test(&data->pdc_event, PDC_CMD_EVENT)) {
+		data->cmd = CMD_NONE;
+	}
 }
 
 static void st_idle_run(void *o)
@@ -807,6 +809,7 @@ static int cmd_get_ic_status_sync_internal(const struct i2c_dt_spec *i2c,
 	union reg_version version;
 	union reg_tx_identity tx_identity;
 	int rv;
+	union reg_customer_use customer_val;
 
 	if (info == NULL) {
 		return -EINVAL;
@@ -815,6 +818,12 @@ static int cmd_get_ic_status_sync_internal(const struct i2c_dt_spec *i2c,
 	rv = tps_rd_version(i2c, &version);
 	if (rv) {
 		LOG_ERR("Failed to read version");
+		return rv;
+	}
+
+	rv = tps_rw_customer_use(i2c, &customer_val, I2C_MSG_READ);
+	if (rv) {
+		LOG_ERR("Failed to read customer register");
 		return rv;
 	}
 
@@ -829,6 +838,9 @@ static int cmd_get_ic_status_sync_internal(const struct i2c_dt_spec *i2c,
 
 	/* TI FW main version */
 	info->fw_version = version.version;
+
+	/* FW config version for this FW version */
+	info->fw_config_version = customer_val.fw_config_version;
 
 	/* TI VID PID (little-endian) */
 	info->vid_pid = (*(uint16_t *)tx_identity.vendor_id) << 2 |
@@ -1606,6 +1618,20 @@ static const struct pdc_driver_api_t pdc_driver_api = {
 	.get_pch_data_status = tps_get_pch_data_status,
 };
 
+static int pdc_interrupt_mask_init(struct pdc_data_t *data)
+{
+	struct pdc_config_t const *cfg = data->dev->config;
+	union reg_interrupt irq_mask = {
+		.pd_hardreset = 1,
+		.plug_insert_or_removal = 1,
+		.status_updated = 1,
+		.power_event_occurred_error = 1,
+		.externl_dcdc_event_received = 1,
+	};
+
+	return tps_rw_interrupt_mask(&cfg->i2c, &irq_mask, I2C_MSG_WRITE);
+}
+
 static void pdc_interrupt_callback(const struct device *dev,
 				   struct gpio_callback *cb, uint32_t pins)
 {
@@ -1635,6 +1661,14 @@ static int pdc_init(const struct device *dev)
 		return -ENODEV;
 	}
 
+	k_event_init(&data->pdc_event);
+	k_mutex_init(&data->mtx);
+
+	data->cmd = CMD_NONE;
+	data->dev = dev;
+	pdc_data[cfg->connector_number] = data;
+	data->init_done = false;
+
 	rv = gpio_pin_configure_dt(&cfg->irq_gpios, GPIO_INPUT);
 	if (rv < 0) {
 		LOG_ERR("Unable to configure GPIO");
@@ -1657,19 +1691,18 @@ static int pdc_init(const struct device *dev)
 		return rv;
 	}
 
-	k_event_init(&data->pdc_event);
-	k_mutex_init(&data->mtx);
-
-	data->cmd = CMD_NONE;
-	data->dev = dev;
-	pdc_data[cfg->connector_number] = data;
-	data->init_done = false;
-
 	/* Set initial state */
 	smf_set_initial(SMF_CTX(data), &states[ST_INIT]);
 
 	/* Create the thread for this port */
 	cfg->create_thread(dev);
+
+	/* Setup I2C1 interrupt mask for this port */
+	rv = pdc_interrupt_mask_init(data);
+	if (rv < 0) {
+		LOG_ERR("Write interrupt mask failed");
+		return rv;
+	}
 
 	/* Trigger an interrupt on startup */
 	k_event_post(&data->pdc_event, PDC_IRQ_EVENT);
