@@ -11,6 +11,3 @@ else()
   zephyr_library_sources_ifdef(CONFIG_USB_DC_HID_TOUCHPAD usb_hid_tp_dummy.c)
   zephyr_library_sources(usb_google_dummy.c)
 endif ()
-
-zephyr_library_sources_ifdef(CONFIG_USB_DEVICE_GOOGLE_UPDATE usb_google_update.c)
-zephyr_library_sources_ifdef(CONFIG_USB_DEVICE_GOOGLE_I2C usb_google_i2c.c)

@@ -23,7 +23,7 @@
 
 #ifdef CONFIG_PLATFORM_EC_ONE_WIRE_UART
 #include "drivers/one_wire_uart_stream.h"
-#elif defined(CONFIG_USB_DEVICE_GOOGLE_UPDATE)
+#elif defined(CONFIG_PLATFORM_EC_USB_UPDATE)
 #include "drivers/usb_stream.h"
 #else
 #include "usb-stream.h"
