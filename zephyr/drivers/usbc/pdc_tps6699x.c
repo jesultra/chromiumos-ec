@@ -74,6 +74,8 @@ enum cmd_t {
 	CMD_SET_PDR,
 	/** Get PDOs */
 	CMD_GET_PDOS,
+	/** Set PDOs */
+	CMD_SET_PDOS,
 	/** Get Connector Status */
 	CMD_GET_CONNECTOR_STATUS,
 	/** Get Error Status */
@@ -188,6 +190,8 @@ struct pdc_data_t {
 	enum pdo_offset_t pdo_offset;
 	/** Number of PDOS */
 	uint8_t num_pdos;
+	/** PDOS */
+	uint32_t *pdos;
 	/** Port Partner PDO */
 	bool port_partner_pdo;
 	/** CCOM */
@@ -229,6 +233,8 @@ static const struct smf_state states[];
 static void cmd_set_drp_mode(struct pdc_data_t *data);
 static void cmd_set_tpc_rp(struct pdc_data_t *data);
 static void cmd_get_rdo(struct pdc_data_t *data);
+static void cmd_set_src_pdos(struct pdc_data_t *data);
+static void cmd_set_snk_pdos(struct pdc_data_t *data);
 static void cmd_get_ic_status(struct pdc_data_t *data);
 static int cmd_get_ic_status_sync_internal(const struct i2c_dt_spec *i2c,
 					   struct pdc_info_t *info);
@@ -512,6 +518,12 @@ static void st_idle_run(void *o)
 		case CMD_GET_PDOS:
 			task_ucsi(data, UCSI_GET_PDOS);
 			break;
+		case CMD_SET_PDOS:
+			if (data->pdo_type == SOURCE_PDO)
+				cmd_set_src_pdos(data);
+			else
+				cmd_set_snk_pdos(data);
+			break;
 		case CMD_GET_CONNECTOR_STATUS:
 			task_ucsi(data, UCSI_GET_CONNECTOR_STATUS);
 			break;
@@ -702,6 +714,100 @@ static void cmd_set_tpc_rp(struct pdc_data_t *data)
 	rv = tps_rw_port_control(&cfg->i2c, &pdc_port_control, I2C_MSG_WRITE);
 	if (rv) {
 		LOG_ERR("Write port control failed");
+		goto error_recovery;
+	}
+
+	/* Command has completed */
+	data->cci_event.command_completed = 1;
+	/* Inform the system of the event */
+	call_cci_event_cb(data);
+
+	/* Transition to idle state */
+	set_state(data, ST_IDLE);
+	return;
+
+error_recovery:
+	set_state(data, ST_ERROR_RECOVERY);
+}
+
+static void cmd_set_src_pdos(struct pdc_data_t *data)
+{
+	struct pdc_config_t const *cfg = data->dev->config;
+	union reg_transmit_source_capabilities pdc_tx_src_capabilities;
+	int rv;
+
+	/* Support SPR only */
+	if (data->num_pdos == 0 || data->num_pdos > 7)
+		goto error_recovery;
+
+	/* Read PDC Transmit Source Capabilities */
+	rv = tps_rw_transmit_source_capabilities(
+		&cfg->i2c, &pdc_tx_src_capabilities, I2C_MSG_READ);
+	if (rv) {
+		LOG_ERR("Read transmit source capabilities failed");
+		goto error_recovery;
+	}
+
+	pdc_tx_src_capabilities.number_of_valid_pdos = data->num_pdos;
+	for (int i = 0; i < data->num_pdos; i++) {
+		LOG_DBG("SRC_PDO[%d]: %x -> %x", i + 1,
+			pdc_tx_src_capabilities.spr_tx_source_pdo[i],
+			data->pdos[i]);
+		pdc_tx_src_capabilities.spr_tx_source_pdo[i] = data->pdos[i];
+	}
+
+	/* Write PDC Transmit Source Capabilities */
+	rv = tps_rw_transmit_source_capabilities(
+		&cfg->i2c, &pdc_tx_src_capabilities, I2C_MSG_WRITE);
+	if (rv) {
+		LOG_ERR("Write transmit source capabilities failed");
+		goto error_recovery;
+	}
+
+	/* Command has completed */
+	data->cci_event.command_completed = 1;
+	/* Inform the system of the event */
+	call_cci_event_cb(data);
+
+	/* Transition to idle state */
+	set_state(data, ST_IDLE);
+	return;
+
+error_recovery:
+	set_state(data, ST_ERROR_RECOVERY);
+}
+
+static void cmd_set_snk_pdos(struct pdc_data_t *data)
+{
+	struct pdc_config_t const *cfg = data->dev->config;
+	union reg_transmit_sink_capabilities pdc_tx_snk_capabilities;
+	int rv;
+
+	/* Support SPR only */
+	if (data->num_pdos == 0 || data->num_pdos > 7)
+		goto error_recovery;
+
+	/* Read PDC Transmit Sink Capabilities */
+	rv = tps_rw_transmit_sink_capabilities(
+		&cfg->i2c, &pdc_tx_snk_capabilities, I2C_MSG_READ);
+	if (rv) {
+		LOG_ERR("Read transmit sink capabilities failed");
+		goto error_recovery;
+	}
+
+	pdc_tx_snk_capabilities.number_of_valid_pdos = data->num_pdos;
+	for (int i = 0; i < data->num_pdos; i++) {
+		LOG_DBG("SNK_PDO[%d]: %x -> %x", i + 1,
+			pdc_tx_src_capabilities.spr_tx_sink_pdo[i],
+			data->pdos[i]);
+		pdc_tx_snk_capabilities.spr_tx_sink_pdo[i] = data->pdos[i];
+	}
+
+	/* Write PDC Transmit Sink Capabilities */
+	rv = tps_rw_transmit_sink_capabilities(
+		&cfg->i2c, &pdc_tx_snk_capabilities, I2C_MSG_WRITE);
+	if (rv) {
+		LOG_ERR("Write transmit sink capabilities failed");
 		goto error_recovery;
 	}
 
@@ -1214,6 +1320,7 @@ static void st_task_wait_run(void *o)
 	/* Data byte offset 0 is the return error code */
 	if (cmd.command || cmd_data.data[0] != 0) {
 		/* Command has completed with error */
+		LOG_INF("data->cmd: %d, err: %d", data->cmd, cmd_data.data[0]);
 		data->cci_event.error = 1;
 	}
 
@@ -1453,6 +1560,18 @@ static int tps_get_pdos(const struct device *dev, enum pdo_type_t pdo_type,
 	return tps_post_command(dev, CMD_GET_PDOS, pdos);
 }
 
+static int tps_set_pdos(const struct device *dev, enum pdo_type_t type,
+			uint32_t *pdo, int count)
+{
+	struct pdc_data_t *data = dev->data;
+
+	data->pdo_type = type;
+	data->pdos = pdo;
+	data->num_pdos = count;
+
+	return tps_post_command(dev, CMD_SET_PDOS, NULL);
+}
+
 static int tps_get_info(const struct device *dev, struct pdc_info_t *info,
 			bool live)
 {
@@ -1655,7 +1774,7 @@ static const struct pdc_driver_api_t pdc_driver_api = {
 	.set_sink_path = tps_set_sink_path,
 	.get_connector_status = tps_get_connector_status,
 	.get_pdos = tps_get_pdos,
-	/* TODO(b/345783692): Implement set_pdos */
+	.set_pdos = tps_set_pdos,
 	.get_rdo = tps_get_rdo,
 	.set_rdo = tps_set_rdo,
 	.get_error_status = tps_get_error_status,
