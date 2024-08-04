@@ -257,10 +257,13 @@ __maybe_unused static int nx20p3483_vbus_source_enable(int port, int enable)
 
 	/* We want to control vbus discharge with source enable */
 	if (IS_ENABLED(CONFIG_USBC_NX20P348X_VBUS_DISCHARGE_BY_SRC_EN)) {
-		if (enable)
+		if (enable) {
 			nx20p348x_discharge_vbus(port, 0);
-		else
+			ccprintf("nx20p3483_vbus_source_enable: port: %d disable discharge\n", port);
+		} else {
 			nx20p348x_discharge_vbus(port, 1);
+			ccprintf("nx20p3483_vbus_source_enable: port: %d enable discharge\n", port);
+		}
 	}
 
 	/*
@@ -550,6 +553,7 @@ static int nx20p348x_set_vconn(int port, int enable)
 
 static int nx20p348x_dev_is_connected(int port, enum ppc_device_role dev)
 {
+	ccprintf("nx20p348x_dev_is_connected port: %d, Dev: %d\n", port, dev);
 	/* VBUS Discharge must be off in sink mode. */
 	if (dev == PPC_DEV_SRC || dev == PPC_DEV_SNK)
 		return nx20p348x_discharge_vbus(port, 0);

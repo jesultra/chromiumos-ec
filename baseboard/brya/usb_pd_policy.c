@@ -37,6 +37,8 @@ void pd_power_supply_reset(int port)
 {
 	int prev_en;
 
+	CPRINTS("pd_power_supply_reset: port: %d", port);
+
 	prev_en = ppc_is_sourcing_vbus(port);
 
 	/* Disable VBUS. */
