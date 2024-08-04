@@ -261,6 +261,8 @@ int ppc_vbus_source_enable(int port, int enable)
 		return EC_ERROR_INVAL;
 	}
 
+	CPRINTS("%s: port: %d, enable: %d", __func__, port, enable);
+
 	ppc = &ppc_chips[port];
 	if (ppc->drv->vbus_source_enable)
 		rv = ppc->drv->vbus_source_enable(port, enable);
