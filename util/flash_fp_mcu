@@ -1140,15 +1140,46 @@ config_brox() {
 
   readonly GPIO_CHIP="gpiochip${gpiobase}"
 
-  # FPMCU RST_ODL is on GPP_E21 = 320 + (247 - 226) = 341
-  local gpionrst=341
-  readonly GPIO_NRST=$(( gpionrst + gpiobase ))
-  # FPMCU BOOT0 is on GPP_D9 = 160 + (108 - 99) = 169
-  local gpioboot=169
-  readonly GPIO_BOOT0=$(( gpioboot + gpiobase ))
-  # FP_PWR_EN is on GPP_E20 = 320 + (246-226) = 340
-  local gpiopwren=340
-  readonly GPIO_PWREN=$(( gpiopwren + gpiobase ))
+  local model
+  model=$(cros_config / name)
+  case "${model}" in
+    (lotso)
+      # FPMCU RST_ODL is on GPP_E21 = 320 + (247 - 226) = 341
+      local gpionrst=341
+      readonly GPIO_NRST=$(( gpionrst + gpiobase ))
+      # FPMCU BOOT0 is on GPP_D9 = 160 + (108 - 99) = 169
+      local gpioboot=169
+      readonly GPIO_BOOT0=$(( gpioboot + gpiobase ))
+      # FP_PWR_EN is on GPP_E20 = 320 + (246-226) = 340
+      local gpiopwren=340
+      readonly GPIO_PWREN=$(( gpiopwren + gpiobase ))
+      ;;
+    (jubilant|jubileum)
+      # FPMCU RST_ODL is on GPP_D15 = 160 + (114 - 99) = 175
+      # Why isn't this just GPP_D15 = 160 + 15 = 175
+      local gpionrst=175
+      readonly GPIO_NRST=$(( gpionrst + gpiobase ))
+      # FPMCU BOOT0 is on GPP_D3 = 160 + (102 - 99) = 163
+      # Why isn't this just GPP_D3 = 160 + 3 = 163
+      local gpioboot=163
+      readonly GPIO_BOOT0=$(( gpioboot + gpiobase ))
+      # FP_PWR_EN is on GPP_D2 = 160 + (101 - 99) = 162
+      # Why isn't this just GPP_D14 = 160 + 2 = 162
+      local gpiopwren=162
+      readonly GPIO_PWREN=$(( gpiopwren + gpiobase ))
+      ;;
+    *)
+      # FPMCU RST_ODL is on GPP_E21 = 320 + (247 - 226) = 341
+      local gpionrst=341
+      readonly GPIO_NRST=$(( gpionrst + gpiobase ))
+      # FPMCU BOOT0 is on GPP_D9 = 160 + (108 - 99) = 169
+      local gpioboot=169
+      readonly GPIO_BOOT0=$(( gpioboot + gpiobase ))
+      # FP_PWR_EN is on GPP_E20 = 320 + (246-226) = 340
+      local gpiopwren=340
+      readonly GPIO_PWREN=$(( gpiopwren + gpiobase ))
+      ;;
+  esac
 }
 
 main() {
