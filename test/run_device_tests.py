@@ -457,7 +457,8 @@ class AllTests:
             # and it is verified by the kernel.poll test.
             TestConfig(test_name="timer_dos", skip_for_zephyr=True),
             TestConfig(test_name="tpm_seed_clear"),
-            TestConfig(test_name="uart"),
+            # UART buffering is not used with Zephyr.
+            TestConfig(test_name="uart", skip_for_zephyr=True),
             TestConfig(test_name="unaligned_access"),
             TestConfig(test_name="unaligned_access_benchmark"),
             TestConfig(test_name="utils", timeout_secs=25),
@@ -549,6 +550,10 @@ class AllTests:
         """Return Zephyr upstream test configs."""
         # Make sure proper paths are added in the twister script, see ZEPHYR_TEST_PATHS
         tests = [
+            TestConfig(
+                zephyr_name="drivers.entropy",
+                test_name="zephyr_drivers_entropy",
+            ),
             TestConfig(
                 zephyr_name="drivers.flash.stm32.f4",
                 test_name="zephyr_flash_stm32f4",

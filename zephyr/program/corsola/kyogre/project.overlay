@@ -398,6 +398,11 @@
 		port0@0 {
 			/delete-property/ bc12;
 		};
+		port1@1{
+			/delete-property/ bc12;
+			/delete-property/ tcpc;
+			/delete-property/ ppc;
+		};
 	};
 
 	cros-keyscan {
@@ -494,4 +499,8 @@
 		&kso16_gp03
 		&kso17_gpb1
 	>;
+};
+
+&i2c2_0 {
+	clock-frequency = <I2C_BITRATE_FAST>;
 };
