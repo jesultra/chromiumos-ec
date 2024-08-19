@@ -262,6 +262,12 @@
 			use_fast_start;
 		};
 	};
+
+	named-gpios {
+		gpio_ap_xhci_init_done_r: ap_xhci_init_done_r {
+			gpios = <&gpioj 4 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
+		};
+	};
 };
 
 /*

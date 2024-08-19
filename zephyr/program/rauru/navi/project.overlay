@@ -80,6 +80,9 @@
 		gpio_usb_c0_dp_in_hpd_l: usb_c0_dp_in_hpd {
 			gpios = <&gpiof 2 (GPIO_OUTPUT | GPIO_ACTIVE_HIGH | GPIO_OUTPUT_INIT_HIGH)>;
 		};
+		gpio_ap_xhci_init_done_r: ap_xhci_init_done_r {
+			gpios = <&gpioj 4 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
+		};
 	};
 
 	/* Rotation matrix used by drivers. */
