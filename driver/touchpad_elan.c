@@ -236,7 +236,9 @@ static int elan_tp_read_report(void)
 
 	if (hover_info & 0x40) {
 		/* TODO(b/35582031): Report hover event */
+#if 0
 		CPRINTF("[TP] hover!\n");
+#endif
 	}
 
 	set_touchpad_report(&report);

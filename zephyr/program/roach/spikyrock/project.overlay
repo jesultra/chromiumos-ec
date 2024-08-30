@@ -31,6 +31,22 @@
 	aliases {
 		usb-hid-tp = &usb_hid_tp;
 	};
+
+	hid_kb_dev: hid_kb_dev {
+		compatible = "zephyr,hid-device";
+		interface-name = "HID0";
+		protocol-code = "keyboard";
+		in-polling-period-us = <1>;
+		in-report-size = <64>;
+	};
+
+	hid_tp_dev: hid_tp_dev {
+		compatible = "zephyr,hid-device";
+		interface-name = "HID1";
+		protocol-code = "none";
+		in-polling-period-us = <1>;
+		in-report-size = <64>;
+	};
 };
 
 &uart2 {
@@ -44,8 +60,12 @@
 &ite_uart2_wrapper {
 	status = "disabled";
 };
-
-&usb0 {
+/*
+&sha0 {
+	status = "okay";
+};
+*/
+zephyr_udc0: &usb0 {
 	status = "okay";
 	pinctrl-0 = <&usb0_dm_gph5_default
 		     &usb0_dp_gph6_default>;
