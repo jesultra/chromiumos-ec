@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13a76424_548bb84d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1273086
+      },
+      "writtenOn": "2024-09-16T19:03:09Z",
+      "side": 1,
+      "message": "Light - Please mark this with V+1, if it is all that you need in the factory branch.",
+      "revId": "90e99461c4e35b9f5e3924e19a33313666721a29",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
