@@ -509,9 +509,9 @@ enum pd_alternate_modes {
 #endif
 
 enum usb_pd_svdm_ver {
-	SVDM_VER_1_0,
-	SVDM_VER_2_0,
-	SVDM_VER_2_1,
+	SVDM_VER_1_0 = 0b0000,
+	SVDM_VER_2_0 = 0b0100,
+	SVDM_VER_2_1 = 0b0101,
 };
 
 /* Discovery results for a port partner (SOP) or cable plug (SOP') */
@@ -566,13 +566,12 @@ struct partner_active_modes {
 	(((vid) << 16) | ((type) << 15) | ((custom) & 0x7FFF))
 
 #define VDO_SVDM_TYPE BIT(15)
-#define VDO_SVDM_VERS_MAJOR(x) (x << 13)
-#define VDO_SVDM_VERS_MINOR(x) (x << 11)
+#define VDO_SVDM_VERS(x) ((x) << 11)
 #define VDO_OPOS(x) (x << 8)
 #define VDO_CMDT(x) (x << 6)
 #define VDO_OPOS_MASK VDO_OPOS(0x7)
 #define VDO_CMDT_MASK VDO_CMDT(0x3)
-#define VDO_SVDM_VERS_MASK (VDO_SVDM_VERS_MAJOR(0x3) | VDO_SVDM_VERS_MINOR(0x3))
+#define VDO_SVDM_VERS_MASK (0xF << 11)
 
 #define CMDT_INIT 0
 #define CMDT_RSP_ACK 1
@@ -1622,6 +1621,7 @@ int pd_get_rev(int port, enum tcpci_msg_type type);
  * @param type USB-C port partner
  * @return SVDM_VER_1_0 for VDM Version 1.0
  *         SVDM_VER_2_0 for VDM Version 2.0
+ *         SVDM_VER_2_1 for VDM Version 2.1
  */
 int pd_get_vdo_ver(int port, enum tcpci_msg_type type);
 
