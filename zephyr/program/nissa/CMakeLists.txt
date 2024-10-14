@@ -246,6 +246,7 @@ if(DEFINED CONFIG_BOARD_GLASSWAY)
 			"glassway/src/sub_board.c"
 			"glassway/src/kb_backlight.c"
 	)
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_FAN "glassway/src/board.c")
 	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_FAN "glassway/src/fan.c")
 	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_USBC "glassway/src/usbc.c")
 	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGER "glassway/src/charger.c")
