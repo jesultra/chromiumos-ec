@@ -80,6 +80,8 @@
 	pinctrl-names = "default", "sleep";
 	row-size = <8>;
 	col-size = <13>;
+	poll-period-ms = <3>;
+	stable-poll-period-ms = <9>;
 	kso-ignore-mask = <04>;
 
 	kso-gpio {
