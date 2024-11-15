@@ -18,6 +18,24 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2cc2648_069f203c",
+        "filename": "chip/stm32/usb-stream.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1341996
+      },
+      "writtenOn": "2024-11-15T16:42:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e147232_182904a0",
+      "revId": "ed486ba1b204c3f8ec6da3ab0c41ed2bc3e8a388",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "011dedfd_d1d5be47",
@@ -41,6 +59,30 @@
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3aac0a4_64d881eb",
+        "filename": "chip/stm32/usb-stream.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1341996
+      },
+      "writtenOn": "2024-11-15T16:42:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "011dedfd_d1d5be47",
+      "range": {
+        "startLine": 165,
+        "startChar": 6,
+        "endLine": 165,
+        "endChar": 53
+      },
+      "revId": "ed486ba1b204c3f8ec6da3ab0c41ed2bc3e8a388",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "156e7ab0_62fa272f",
@@ -54,6 +96,24 @@
       "writtenOn": "2024-11-15T16:35:55Z",
       "side": 1,
       "message": "Why wasn\u0027t the structure itself removed? It seems to only be used in this file.",
+      "revId": "ed486ba1b204c3f8ec6da3ab0c41ed2bc3e8a388",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2d5fd9b_bfb09144",
+        "filename": "chip/stm32/usb-stream.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1341996
+      },
+      "writtenOn": "2024-11-15T16:42:07Z",
+      "side": 1,
+      "message": "In the very next patch in this stack, I am added a new bit-field to this struct, so for the sake of not removing and re-adding, I thought I would keep the empty struct declaration.",
+      "parentUuid": "156e7ab0_62fa272f",
       "revId": "ed486ba1b204c3f8ec6da3ab0c41ed2bc3e8a388",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
