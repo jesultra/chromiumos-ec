@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "181b884c_53624455",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1562212
+      },
+      "writtenOn": "2024-12-03T08:44:00Z",
+      "side": 1,
+      "message": "Tests failed. pujjogatwin/cbi.dtsi should also be added to` test/nissa/boards/pujjogatwin.dts`.",
+      "revId": "367b7a0007bc5f43e127e4c7048c927550235fac",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
