@@ -16,6 +16,24 @@
       "message": "Tests failed. pujjogatwin/cbi.dtsi should also be added to` test/nissa/boards/pujjogatwin.dts`.",
       "revId": "367b7a0007bc5f43e127e4c7048c927550235fac",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e913c66e_29da7cbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3693003
+      },
+      "writtenOn": "2024-12-04T05:05:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "181b884c_53624455",
+      "revId": "367b7a0007bc5f43e127e4c7048c927550235fac",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
