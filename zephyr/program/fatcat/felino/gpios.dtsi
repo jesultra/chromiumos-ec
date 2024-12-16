@@ -34,7 +34,7 @@
 			gpios = <&gpioj 3 (GPIO_INPUT | GPIO_ACTIVE_LOW)>;
 		};
 		gpio_en_s5_rails: en_s5_rails {
-			gpios = <&gpiof 2 GPIO_OUTPUT>;
+			gpios = <&gpiof 2 GPIO_INPUT>;
 		};
 		gpio_lid_open: lid_open {
 			gpios = <&gpiob 1 GPIO_INPUT>;
@@ -75,7 +75,7 @@
 			enum-name = "GPIO_BATT_PRES_ODL";
 		};
 		gpio_ec_pch_pwrok: ec_pch_pwrok {
-			gpios = <&gpiob 5 (GPIO_OUTPUT | GPIO_VOLTAGE_1P8)>;
+			gpios = <&gpiob 5 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
 		};
 		gpio_ccd_mode_odl: ccd_mode_odl {
 			gpios = <&gpioe 6 GPIO_INPUT>;
@@ -90,7 +90,7 @@
 			gpios = <&gpiod 0 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
 		};
 		gpio_ec_pch_sys_pwrok: ec_pch_sys_pwrok {
-			gpios = <&gpiod 5 (GPIO_OUTPUT | GPIO_VOLTAGE_1P8)>;
+			gpios = <&gpiod 5 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
 		};
 		gpio_vcc_ddr_pwrok: vcc_ddr_pwrok {
 			gpios = <&gpioe 2 GPIO_INPUT>;
@@ -99,7 +99,7 @@
 			gpios = <&gpioe 1 GPIO_OUTPUT>;
 		};
 		gpio_v5p0a_en: v5p0a_en {
-			gpios = <&gpioh 3 GPIO_OUTPUT>;
+			gpios = <&gpioh 3 GPIO_INPUT>;
 		};
 		gpio_soc_caterr_n: soc_caterr_n {
 			gpios = <&gpiof 6 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
@@ -137,7 +137,7 @@
 		gpio_bat_disconnect_ec_odl: bat_disconnect_ec_odl {
 			gpios = <&gpioc 0 GPIO_ODR_LOW>;
 		};
-		gpio_vccprim_io_pgoog: vccprim_io_pgoog {
+		gpio_vccprim_io_pgood: vccprim_io_pgood {
 			gpios = <&gpiog 1 GPIO_INPUT>;
 		};
 		gpio_ec_soc_rec_switch_odl: ec_soc_rec_switch_odl {
@@ -177,7 +177,7 @@
 			gpios = <&gpioe 5 GPIO_OUTPUT>;
 		};
 		gpio_ec_rsmrst_l: ec_rsmrst_l {
-			gpios = <&gpioi 6 (GPIO_OUTPUT | GPIO_VOLTAGE_1P8)>;
+			gpios = <&gpioi 6 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
 		};
 		gpio_ec_soc_int_odl: ec_soc_int_odl {
 			gpios = <&gpiod 4 (GPIO_OUTPUT | GPIO_VOLTAGE_1P8)>;

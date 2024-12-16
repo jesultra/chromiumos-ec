@@ -17,14 +17,14 @@
 		/*
 		 * Aliases for power signal names
 		 */
-		en_pp3300_a: ec_ds3_r {};
-		en_pp5000_s5: bga_pinf4 {};
-		rsmrst_pwrgd: rsmrst_pwrgd_n_r {};
-		ec_pch_rsmrst_l: pm_rsmrst_n_r {};
-		pch_slp_s0_n: pch_slp_s0_n_r {};
-		ec_pch_pwrok_od: pch_pwrok_ec_r {};
-		all_sys_pwrgd: all_sys_pwrgd_r {};
-		pwrbtn: gsc_ec_pwr_btn_odl {};
+		en_pp3300_a: en_s5_rails {};
+		en_pp5000_s5: v5p0a_en {};
+		rsmrst_pwrgd: vccprim_io_pgood {};
+		ec_pch_rsmrst_l: ec_rsmrst_l {};
+		pch_slp_s0_n: sys_slp_s0ix_l {};
+		ec_pch_pwrok_od: ec_pch_pwrok {};
+		all_sys_pwrgd: vcc_ddr_pwrok {};
+		pwrbtn: ec_pch_pwr_btn_odl {};
 	};
 };
 
@@ -43,15 +43,6 @@
 /* Felino overrides follow... */
 
 / {
-	named-gpios {
-		compatible = "named-gpios";
-
-		/* override since arb does not support GPIO_VOLTAGE_1P8 */
-		gpio_rsmrst_pwrgd_n_r: rsmrst_pwrgd_n_r {
-			gpios = <&gpiof 0 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
-		};
-	};
-
 	batteries {
 		default_battery: cosmx_ap20cbl-4 {
 			compatible = "cosmx,ap20cbl-4", "battery-smart";
