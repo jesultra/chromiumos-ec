@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fe0d5eb_58eb9bcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2024-12-20T15:34:12Z",
+      "side": 1,
+      "message": "Do we want to enable CBI board version on all Brox variants?",
+      "revId": "d059369c1e3d0b532ed37bd5c0ac2160dbe5484d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
