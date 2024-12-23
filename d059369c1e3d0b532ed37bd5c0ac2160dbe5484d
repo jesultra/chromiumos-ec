@@ -16,6 +16,24 @@
       "message": "Do we want to enable CBI board version on all Brox variants?",
       "revId": "d059369c1e3d0b532ed37bd5c0ac2160dbe5484d",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49a4426b_9b550aae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1273086
+      },
+      "writtenOn": "2024-12-23T17:17:21Z",
+      "side": 1,
+      "message": "Do you know why the ODMs might ask for it.  I am trying to get ahead of a factory stoppage, if they need it in their process.  We can hold off, if there is a downside here.\n\nIs there a downside?",
+      "parentUuid": "0fe0d5eb_58eb9bcf",
+      "revId": "d059369c1e3d0b532ed37bd5c0ac2160dbe5484d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
