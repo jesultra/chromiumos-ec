@@ -34,6 +34,24 @@
       "parentUuid": "0fe0d5eb_58eb9bcf",
       "revId": "d059369c1e3d0b532ed37bd5c0ac2160dbe5484d",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cd2d4be_0540e348",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2024-12-23T22:27:32Z",
+      "side": 1,
+      "message": "With this change, only the greenbayupoc platform doesn\u0027t CONFIG_PLATFORM_EC_BOARD_VERSION_CBI.\n\nI think we should go ahead and enable this for all Brox variants in [brox/program.conf](https://source.chromium.org/chromiumos/chromiumos/codesearch/+/HEAD:src/platform/ec/zephyr/program/brox/program.conf)",
+      "parentUuid": "49a4426b_9b550aae",
+      "revId": "d059369c1e3d0b532ed37bd5c0ac2160dbe5484d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
