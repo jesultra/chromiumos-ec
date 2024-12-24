@@ -52,6 +52,24 @@
       "parentUuid": "49a4426b_9b550aae",
       "revId": "d059369c1e3d0b532ed37bd5c0ac2160dbe5484d",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd18b919_36eb423e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1273086
+      },
+      "writtenOn": "2024-12-24T00:31:37Z",
+      "side": 1,
+      "message": "Is this overcome by events with this change in place?\n\n5147428: brox: enable CBI | https://chromium-review.googlesource.com/c/chromiumos/platform/ec/+/5147428\n\nShould I abandon this project change in favor of the program level change that already merged?",
+      "parentUuid": "1cd2d4be_0540e348",
+      "revId": "d059369c1e3d0b532ed37bd5c0ac2160dbe5484d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
