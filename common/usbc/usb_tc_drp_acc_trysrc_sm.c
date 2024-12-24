@@ -1537,9 +1537,13 @@ static void restart_tc_sm(int port, enum usb_tc_state start_state)
 #endif
 }
 
+//extern bool allow_vconn_dis[IT83XX_USBPD_PHY_PORT_COUNT];
+
 void tc_state_init(int port)
 {
 	enum usb_tc_state first_state;
+
+	//CPRINTS("p%d task allow_vconn_dis {%d, %d}", port, allow_vconn_dis[0], allow_vconn_dis[1]);
 
 	if (port >= CONFIG_USB_PD_PORT_MAX_COUNT)
 		return;

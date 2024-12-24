@@ -457,6 +457,8 @@ __maybe_unused static int it8xxx2_tcpm_decode_sop_prime_enable(int port,
 
 static int it8xxx2_tcpm_set_vconn(int port, int enable)
 {
+	CPRINTS("p%d set vconn %d", port, enable);
+
 	/*
 	 * IT8xxx2 doesn't have integrated circuit to source CC lines for VCONN.
 	 * An external device like PPC or Power Switch has to source the VCONN.
@@ -878,6 +880,7 @@ static void it8xxx2_init(enum usbpd_port port, int role)
 	it8xxx2_set_data_role(port, role);
 	/* Set default power role and assert Rp/Rd */
 	it8xxx2_set_power_role(port, role);
+	CPRINTS("p%d init allow_vconn_dis {%d , %d}", port, allow_vconn_dis[0], allow_vconn_dis[1]);
 	/* Set value 1 to allow Vconn disable */
 	if (IS_ENABLED(CONFIG_USBC_VCONN)) {
 		allow_vconn_dis[port] = 1;
