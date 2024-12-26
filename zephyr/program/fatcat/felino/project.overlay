@@ -42,12 +42,18 @@
 /* Felino overrides follow... */
 
 / {
-	named-gpios {
-		compatible = "named-gpios";
-
-		/* override since arb does not support GPIO_VOLTAGE_1P8 */
-		gpio_rsmrst_pwrgd_n_r: rsmrst_pwrgd_n_r {
-			gpios = <&gpiof 0 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
+	batteries {
+		default_battery: lges-ap23a8l {
+			compatible = "lges,ap23a8l", "battery-smart";
+		};
+		smp_ap23a7l {
+			compatible = "smp,ap23a7l", "battery-smart";
+		};
+		cosmx_ap23abl {
+			compatible = "cosmx,ap23abl", "battery-smart";
+		};
+		panasonic_ap23a5l {
+			compatible = "panasonic,ap23a5l", "battery-smart";
 		};
 	};
 };
