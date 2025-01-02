@@ -3182,43 +3182,48 @@ static void tc_attached_src_run(const int port)
 	int rv;
 
 	/* Check for connection */
-	rv = tcpm_get_cc(port, &cc1, &cc2);
+	if (pd_timer_is_expired(port, TC_TIMER_CC_DEBOUNCE)) {
+		rv = tcpm_get_cc(port, &cc1, &cc2);
 
-	if (polarity_rm_dts(tc[port].polarity))
-		cc1 = cc2;
+		if (polarity_rm_dts(tc[port].polarity))
+			cc1 = cc2;
 
-	if (cc1 == TYPEC_CC_VOLT_OPEN)
-		tc[port].cc_state = PD_CC_NONE;
-	else
-		tc[port].cc_state = PD_CC_UFP_ATTACHED;
+		if (cc1 == TYPEC_CC_VOLT_OPEN)
+			tc[port].cc_state = PD_CC_NONE;
+		else
+			tc[port].cc_state = PD_CC_UFP_ATTACHED;
 
-	/*
-	 * When the SRC.Open state is detected on the monitored CC pin, a DRP
-	 * shall transition to Unattached.SNK unless it strongly prefers the
-	 * Source role. In that case, it shall transition to TryWait.SNK.
-	 * This transition to TryWait.SNK is needed so that two devices that
-	 * both prefer the Source role do not loop endlessly between Source
-	 * and Sink. In other words, a DRP that would enter Try.SRC from
-	 * AttachWait.SNK shall enter TryWait.SNK for a Sink detach from
-	 * Attached.SRC.
-	 */
-	if (!rv && tc[port].cc_state == PD_CC_NONE &&
-	    pd_timer_is_expired(port, TC_TIMER_CC_DEBOUNCE)) {
-		bool tryWait;
-		enum usb_tc_state new_tc_state = TC_UNATTACHED_SNK;
+		pd_timer_enable(port, TC_TIMER_CC_DEBOUNCE,
+				PD_T_SRC_DISCONNECT);
+		/*
+		 * When the SRC.Open state is detected on the monitored CC pin,
+		 * a DRP shall transition to Unattached.SNK unless it strongly
+		 * prefers the Source role. In that case, it shall transition to
+		 * TryWait.SNK. This transition to TryWait.SNK is needed so that
+		 * two devices that both prefer the Source role do not loop
+		 * endlessly between Source and Sink. In other words, a DRP that
+		 * would enter Try.SRC from AttachWait.SNK shall enter
+		 * TryWait.SNK for a Sink detach from Attached.SRC.
+		 */
+		if (!rv && tc[port].cc_state == PD_CC_NONE &&
+		    pd_timer_is_expired(port, TC_TIMER_CC_DEBOUNCE)) {
+			bool tryWait;
+			enum usb_tc_state new_tc_state = TC_UNATTACHED_SNK;
 
-		if (IS_ENABLED(CONFIG_USB_PD_TRY_SRC))
-			tryWait = is_try_src_enabled(port) &&
-				  !TC_CHK_FLAG(port, TC_FLAGS_TS_DTS_PARTNER);
+			if (IS_ENABLED(CONFIG_USB_PD_TRY_SRC))
+				tryWait = is_try_src_enabled(port) &&
+					  !TC_CHK_FLAG(port,
+						       TC_FLAGS_TS_DTS_PARTNER);
 
-		if (drp_state[port] == PD_DRP_FORCE_SOURCE)
-			new_tc_state = TC_UNATTACHED_SRC;
-		else if (IS_ENABLED(CONFIG_USB_PD_TRY_SRC))
-			new_tc_state = tryWait ? TC_TRY_WAIT_SNK :
-						 TC_UNATTACHED_SNK;
+			if (drp_state[port] == PD_DRP_FORCE_SOURCE)
+				new_tc_state = TC_UNATTACHED_SRC;
+			else if (IS_ENABLED(CONFIG_USB_PD_TRY_SRC))
+				new_tc_state = tryWait ? TC_TRY_WAIT_SNK :
+							 TC_UNATTACHED_SNK;
 
-		set_state_tc(port, new_tc_state);
-		return;
+			set_state_tc(port, new_tc_state);
+			return;
+		}
 	}
 
 #ifdef CONFIG_USB_PE_SM
