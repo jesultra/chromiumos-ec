@@ -70,6 +70,24 @@
       "parentUuid": "1cd2d4be_0540e348",
       "revId": "d059369c1e3d0b532ed37bd5c0ac2160dbe5484d",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c83eb83f_0619d58c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1523797
+      },
+      "writtenOn": "2025-01-08T19:16:09Z",
+      "side": 1,
+      "message": "The linked CL is for a different config option and from early in the program. We should simply enable `CONFIG_PLATFORM_EC_BOARD_VERSION_CBI` in the parent-level Brox program config so it impacts all of the devices.",
+      "parentUuid": "dd18b919_36eb423e",
+      "revId": "d059369c1e3d0b532ed37bd5c0ac2160dbe5484d",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
