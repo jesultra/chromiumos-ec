@@ -95,14 +95,14 @@ extern "C" {
 
 /* Below are some safety checks for keyboard_customization.h files. */
 #ifdef CONFIG_KEYBOARD_MULTIPLE
-#if defined(KEYBOARD_COL_DOWN) || defined(KEYBOARD_ROW_DOWN) || \
-        defined(KEYBOARD_COL_ESC) || defined(KEYBOARD_ROW_ESC) || \
-        defined(KEYBOARD_COL_KEY_H) || defined(KEYBOARD_ROW_KEY_H) || \
-        defined(KEYBOARD_COL_KEY_R) || defined(KEYBOARD_ROW_KEY_R) || \
-        defined(KEYBOARD_COL_LEFT_ALT) || defined(KEYBOARD_ROW_LEFT_ALT) || \
-        defined(KEYBOARD_COL_REFRESH) || defined(KEYBOARD_ROW_REFRESH) || \
-        defined(KEYBOARD_COL_RIGHT_ALT) || defined(KEYBOARD_ROW_RIGHT_ALT) || \
-        defined(KEYBOARD_COL_LEFT_SHIFT) || defined(KEYBOARD_ROW_LEFT_SHIFT)
+#if defined(KEYBOARD_COL_DOWN) || defined(KEYBOARD_ROW_DOWN) ||               \
+	defined(KEYBOARD_COL_ESC) || defined(KEYBOARD_ROW_ESC) ||             \
+	defined(KEYBOARD_COL_KEY_H) || defined(KEYBOARD_ROW_KEY_H) ||         \
+	defined(KEYBOARD_COL_KEY_R) || defined(KEYBOARD_ROW_KEY_R) ||         \
+	defined(KEYBOARD_COL_LEFT_ALT) || defined(KEYBOARD_ROW_LEFT_ALT) ||   \
+	defined(KEYBOARD_COL_REFRESH) || defined(KEYBOARD_ROW_REFRESH) ||     \
+	defined(KEYBOARD_COL_RIGHT_ALT) || defined(KEYBOARD_ROW_RIGHT_ALT) || \
+	defined(KEYBOARD_COL_LEFT_SHIFT) || defined(KEYBOARD_ROW_LEFT_SHIFT)
 #error Populate the structs key_typ & boot_key_list instead of defining keyboard macros.
 #endif
 #endif /* CONFIG_KEYBOARD_MULTIPLE */
