@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd04ee7c_c1cd306d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1273086
+      },
+      "writtenOn": "2025-01-14T18:11:20Z",
+      "side": 1,
+      "message": "Verified command:\n\n```\nlotso-rev1 ~ # ectool cbi get 0\nAs uint: 1 (0x1)\nAs binary: 01\nlotso-rev1 ~ # ectool boardversion\n1\n```",
+      "revId": "6ac9eab4abdda4f93eade8f6bddb0916d129df2a",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
