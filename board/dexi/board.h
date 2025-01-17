@@ -12,6 +12,9 @@
 #define VARIANT_DEDEDE_EC_IT8320
 #include "baseboard.h"
 
+/* TODO: remove me once we fix IT83XX_ILM_BLOCK_SIZE out of space issue */
+#undef CONFIG_LTO
+
 #define CONFIG_CMD_CHARGER_DUMP
 
 /* I2C Bus Configuration */

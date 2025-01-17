@@ -15,7 +15,7 @@
 #include "driver/cec/bitbang.h"
 #include "driver/cec/it83xx.h"
 #include "driver/ppc/syv682x_public.h"
-#include "driver/tcpm/it83xx_pd.h"
+#include "driver/tcpm/it8xxx2_pd_public.h"
 #include "driver/temp_sensor/thermistor.h"
 #include "driver/usb_mux/it5205.h"
 #include "gpio.h"
@@ -43,7 +43,7 @@
 const struct tcpc_config_t tcpc_config[CONFIG_USB_PD_PORT_MAX_COUNT] = {
 	{
 		.bus_type = EC_BUS_TYPE_EMBEDDED,
-		.drv = &it83xx_tcpm_drv,
+		.drv = &it8xxx2_tcpm_drv,
 	},
 };
 
