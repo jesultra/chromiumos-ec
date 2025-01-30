@@ -116,7 +116,8 @@ int timestamp_expired(timestamp_t deadline, const timestamp_t *now)
 	return ((int64_t)(now->val - deadline.val) >= 0);
 }
 
-#ifndef CONFIG_HW_SPECIFIC_UDELAY
+/* Zephyr provides its own implementation in hwtimer shim. */
+#ifndef CONFIG_ZEPHYR
 void udelay(unsigned int us)
 {
 	unsigned int t0 = __hw_clock_source_read();
