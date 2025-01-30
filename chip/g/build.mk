@@ -136,7 +136,11 @@ ifneq ($(CR50_DEV),)
 CPPFLAGS += -DCR50_DEV=$(CR50_DEV)
 endif
 
-MANIFEST := util/signer/ec_RW-manifest-dev.json
+ifneq ($(BRANCH),)
+MANIFEST := util/signer/ec_RW-manifest-$(BRANCH).json
+else
+MANIFEST := util/signer/ec_RW-manifest-TOT.json
+endif
 CR50_RO_KEY ?= rom-testkey-A.pem
 
 ifeq ($(CHIP_MK_INCLUDED_ONCE),)
@@ -148,6 +152,8 @@ CODESIGNER_PATH := $(abspath ../cr50-utils/software/tools/codesigner)
 # Try to find preinstalled or pre-built codesigner
 SIGNER := $(firstword $(wildcard /usr/bin/cr50-codesigner\
 	    $(CODESIGNER_PATH)/codesigner))
+
+SANITIZE_MANIFEST := $(abspath ../gsc-utils/util/convert_signing_json.sh)
 
 # We'll have to tweak the manifest no matter what, but different ways
 # depending on the way the image is built.

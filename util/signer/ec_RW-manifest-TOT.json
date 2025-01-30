@@ -33,15 +33,11 @@
   "tag": "00000000000000000000000000000000000000000000000000000000",
 
   // cros_loader uses b1-dev key as key to verify RW with
-  //"keyid": -1187158727,  // b1-dev key
-  "keyid": -561489779,  // prod RW key
+  "keyid": -764428053,  // mateches rom-testkey-A.pem
 
   "p4cl": 177,  // P4 sync cl for XML we link against. 177 == 0xb1.
 
-  // Make sure a value is there so that current time is not used, and make
-  // sure the value is small so that any dev build with the same
-  // epoch/major/minor would be preferred
-  "timestamp": 1,
+  "timestamp": 0,
   "epoch": 0,  // FWR diversification contributor, 32 bits.
   "major": 6,  // FW2_HIK_CHAIN counter.
   "minor": 280,  // Mostly harmless version field.

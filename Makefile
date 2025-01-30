@@ -148,6 +148,7 @@ UC_CHIP_FAMILY:=$(call uppercase,$(CHIP_FAMILY))
 UC_CHIP_VARIANT:=$(call uppercase,$(CHIP_VARIANT))
 UC_CORE:=$(call uppercase,$(CORE))
 UC_PROJECT:=$(call uppercase,$(PROJECT))
+UC_BRANCH:=$(call uppercase,$(BRANCH))
 
 # Transform the configuration into make variables.  This must be done after
 # the board/baseboard/project/chip/core variables are defined, since some of
@@ -260,6 +261,7 @@ $(eval BOARD_$(UC_BOARD)=y)
 $(eval CHIP_$(UC_CHIP)=y)
 $(eval CHIP_VARIANT_$(UC_CHIP_VARIANT)=y)
 $(eval CHIP_FAMILY_$(UC_CHIP_FAMILY)=y)
+$(eval BRANCH_$(UC_BRANCH)=y)
 
 # Private subdirectories may call this from their build.mk
 # First arg is the path to be prepended to configured *.o files.

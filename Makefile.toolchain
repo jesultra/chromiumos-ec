@@ -119,6 +119,7 @@ CFLAGS_DEFINE=-DOUTDIR=$(out)/$(BLD) -DCHIP=$(CHIP) -DBOARD_TASKFILE=$(_tsk_lst_
               -DBOARD=$(BOARD) -DCORE=$(CORE) -DPROJECT=$(PROJECT) \
               -DCHIP_VARIANT=$(CHIP_VARIANT) -DCHIP_FAMILY=$(CHIP_FAMILY) \
               -DBOARD_$(UC_BOARD)=$(EMPTY) \
+              -DBRANCH_$(UC_BRANCH)=$(BRANCH) \
               -DCHIP_$(UC_CHIP)=$(EMPTY) \
               -DCORE_$(UC_CORE)=$(EMPTY) \
               -DCHIP_VARIANT_$(UC_CHIP_VARIANT)=$(EMPTY) \

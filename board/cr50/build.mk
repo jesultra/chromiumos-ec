@@ -10,6 +10,26 @@ CHIP:=g
 CHIP_FAMILY:=cr50
 CHIP_VARIANT ?= cr50_fpga
 
+# Define the branch type.
+# Valid values are: TOT, PREPVT, and MP
+# Branch differences:
+# MP
+#   - use ec_RW-manifest-MP.json
+#   - restrict ccd open
+#   - restrict spihash command
+# PREPVT
+#   - use ec_RW-manifest-PREPVT.json
+#   - loosen requirements for ccd open
+#   - spihash command is available when ccd is locked
+# TOT
+#   - use ec_RW-manifest-TOT.json
+#   - loosen requirements for ccd open
+#   - spihash command is available when ccd is locked
+#   - added chargen command for testing uart
+#
+# This is the TOT branch.
+BRANCH:=TOT
+
 # Additional / overriding warnings for common rules and chip
 # (TODO) enable after https://crrev.com/c/3198155
 # CFLAGS_BOARD :=-Wno-array-parameter -Wno-stringop-overread

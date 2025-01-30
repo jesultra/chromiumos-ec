@@ -2,9 +2,12 @@
 // List of fuses and their expected values.
 "fuses": {
         "FLASH_PERSO_PAGE_LOCK": 5,  // individualized
-        "FW_DEFINED_DATA_BLK0": 2,  // kevin EVT 1
+        "FW_DEFINED_DATA_BLK0": 2,  // cros SKU
         "FW_DEFINED_DATA_EXTRA_BLK6": 0  // escape hatch
 },
+  "board_id": 1179010630,  // that's 0x46464646, a.k.a. 'FFFF' in ASCII
+  "board_id_mask": 0,
+  "board_id_flags": 65536, // 0x10000
 // Rollback state.
 "info": {
                                               "4": -1,   "5": -1,   "6": -1,
@@ -33,13 +36,17 @@
   "tag": "00000000000000000000000000000000000000000000000000000000",
 
   // cros_loader uses b1-dev key as key to verify RW with
-  "keyid": -764428053,  // mateches rom-testkey-A.pem
+  //"keyid": -1187158727,  // b1-dev key
+  "keyid": -2018034841,  // prod RW key used by the builder
 
   "p4cl": 177,  // P4 sync cl for XML we link against. 177 == 0xb1.
 
-  "timestamp": 0,
+  // Make sure a value is there so that current time is not used, and make
+  // sure the value is small so that any dev build with the same
+  // epoch/major/minor would be preferred
+  "timestamp": 1,
   "epoch": 0,  // FWR diversification contributor, 32 bits.
-  "major": 6,  // FW2_HIK_CHAIN counter.
+  "major": 5,  // FW2_HIK_CHAIN counter.
   "minor": 280,  // Mostly harmless version field.
   "applysec": -1,  // Mask to and with fuse BROM_APPLYSEC.
   "config1": 13,  // Which BROM_CONFIG1 actions to take before launching.
