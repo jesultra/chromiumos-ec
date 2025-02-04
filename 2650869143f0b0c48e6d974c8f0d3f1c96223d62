@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c425d56c_ecbbf69a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1131142
+      },
+      "writtenOn": "2025-02-04T20:37:43Z",
+      "side": 1,
+      "message": "I\u0027m working on a patch to delay init until S4...Currently the PD port isn\u0027t powered till S5 and sometimes init happens before S5 causing issues. I have a physical rework on my board to move it to an always on rail and don\u0027t see any issues with it so I do not think it\u0027s a port issue more a timing of init",
+      "revId": "2650869143f0b0c48e6d974c8f0d3f1c96223d62",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
