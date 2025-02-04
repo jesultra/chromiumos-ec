@@ -4,3 +4,4 @@
 
 zephyr_library_sources("src/touch_panel.c")
 zephyr_library_sources("src/common.c")
+zephyr_library_sources("src/charger.c")
