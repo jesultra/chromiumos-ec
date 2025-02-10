@@ -8,7 +8,7 @@
 		compatible = "cros-ec,fans";
 
 		fan: fan {
-			pwms = <&pwm2 0 PWM_KHZ(324) PWM_POLARITY_NORMAL>;
+			pwms = <&pwm2 0 PWM_KHZ(50) PWM_POLARITY_NORMAL>;
 			tach = <&tach0>;
 			rpm_min = <1000>;
 			rpm_start = <1000>;
