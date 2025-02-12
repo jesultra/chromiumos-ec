@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526b12a4_e4aa7a02",
+        "filename": "zephyr/program/intelrvp/ptlrvp/src/board_id.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2025-02-12T22:32:24Z",
+      "side": 1,
+      "message": "the condition checks for `AP_POWER_STATE_G3`.\ndoes this make sense?\n\nthe sequence is G3-\u003eS5-\u003eS4, right?",
+      "range": {
+        "startLine": 30,
+        "startChar": 61,
+        "endLine": 30,
+        "endChar": 63
+      },
+      "revId": "cc782ae862b15d7debb4bbed42cf41c377c3ddfc",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
