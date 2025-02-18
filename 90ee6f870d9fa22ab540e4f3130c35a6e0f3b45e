@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b93b884a_2fa93aef",
+        "filename": "zephyr/program/intelrvp/ptlrvp/src/board_id.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1190764
+      },
+      "writtenOn": "2025-02-18T18:36:36Z",
+      "side": 1,
+      "message": "should we complain and return here if `!device_is_ready(pca95xx_dev)`\nin case this is unexpectedly called?",
+      "revId": "90ee6f870d9fa22ab540e4f3130c35a6e0f3b45e",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
