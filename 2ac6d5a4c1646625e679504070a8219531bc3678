@@ -34,6 +34,24 @@
       "parentUuid": "4d0864f8_0eb210f0",
       "revId": "2ac6d5a4c1646625e679504070a8219531bc3678",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44959952_e6916344",
+        "filename": "zephyr/program/intelrvp/ptlrvp/src/board_id.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1131142
+      },
+      "writtenOn": "2025-02-20T19:43:29Z",
+      "side": 1,
+      "message": "Actually it doesn\u0027t like the AP powerseq callbacks so need to figure out how to sim that",
+      "parentUuid": "7731c148_57772339",
+      "revId": "2ac6d5a4c1646625e679504070a8219531bc3678",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
