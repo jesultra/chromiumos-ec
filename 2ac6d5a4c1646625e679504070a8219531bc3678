@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d0864f8_0eb210f0",
+        "filename": "zephyr/program/intelrvp/ptlrvp/src/board_id.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1308749
+      },
+      "writtenOn": "2025-02-20T18:36:57Z",
+      "side": 1,
+      "message": "Can you add some tests for this board code?",
+      "revId": "2ac6d5a4c1646625e679504070a8219531bc3678",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
