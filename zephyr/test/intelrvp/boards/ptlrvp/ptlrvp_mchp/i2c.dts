@@ -5,12 +5,12 @@
 
 /* charger */
 &CHARGER_I2C {
-	/* pinctrl not defined in mchp emul and port_sel not declared in
+	/* pinctrl not defined in mchp emul and port-sel not declared in
 	i2c-emul-controller */
 };
 
 /* typec-aic1-power */
 &PD_POW_I2C {
-	/* pinctrl not defined in mchp emul and port_sel not declared in
+	/* pinctrl not defined in mchp emul and port-sel not declared in
 	i2c-emul-controller */
 };

@@ -7,7 +7,7 @@
 #include "ec_commands.h"
 #include "hooks.h"
 #include "keyboard_8042_sharedlib.h"
-#include "keyboard_customization.h"
+#include "keyboard_config.h"
 #include "keyboard_scan.h"
 #include "timer.h"
 
@@ -30,6 +30,7 @@ static const struct ec_response_keybd_config orisa_kb = {
 	.capabilities = KEYBD_CAP_SCRNLOCK_KEY,
 };
 
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_VIVALDI));
 __override const struct ec_response_keybd_config *
 board_vivaldi_keybd_config(void)
 {

@@ -80,18 +80,18 @@ typedef enum {
  *
  * @param[out] id sensor id read from sensor.
  *
- * @return EGIS_OK : on success.
+ * @return EGIS_API_OK : on success.
  * @return EGIS_API_ERROR_IO_SPI on SPI transfer failure, @p id filled with
  * zeros
  * @return EGIS_API_ERROR_PARAMETER on incorrect parameter, @p id filled with
  * zeros
  */
-int egis_get_hwid(uint16_t *id);
+egis_api_return_t egis_get_hwid(uint16_t *id);
 
 /**
  * @brief Reset and initialize the sensor IC.
  *
- * @return EGIS_OK : on success
+ * @return EGIS_API_OK : on success
  * @return negative value on error, list below
  * @return EGIS_API_ERROR_DEVICE_NOT_FOUND : on sensor cannot be detected
  * @return EGIS_API_ERROR_IO_SPI : on execute SPI transfer fail
@@ -111,7 +111,7 @@ egis_api_return_t egis_sensor_init(void);
 /**
  * @brief Deinitialize the sensor IC.
  *
- * @return EGIS_OK : on success.
+ * @return EGIS_API_OK : on success.
  */
 egis_api_return_t egis_sensor_deinit(void);
 

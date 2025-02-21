@@ -10,6 +10,7 @@
 #ifndef __CROS_EC_PDC_POWER_MGMT_H
 #define __CROS_EC_PDC_POWER_MGMT_H
 
+#include "usb_mux.h"
 #include "usb_pd.h"
 
 #include <stdbool.h>
@@ -47,8 +48,23 @@ enum pdc_state_t {
 	/** Stop operation */
 	PDC_SUSPENDED,
 
+	/** Initial value, a placeholder state before entering init state */
+	PDC_INVALID,
 	/** State count. Always leave as last item. */
 	PDC_STATE_COUNT,
+};
+
+/**
+ * @brief PDC power mgmt board callback types
+ */
+enum pdc_power_mgmt_board_cb_t {
+	/** Unattach */
+	PDC_BOARD_CB_UNATTACH,
+	/** DP Attention */
+	PDC_BOARD_CB_DP_ATTENTION,
+
+	/** State count. Always leave as last item. */
+	PDC_BOARD_CB_COUNT,
 };
 
 /**
@@ -624,6 +640,18 @@ int pdc_power_mgmt_wait_for_sync(int port, int timeout_ms);
 int pdc_power_mgmt_register_ppm_callback(const struct pdc_callback *callback);
 
 /**
+ * @brief Register board callbacks for PDC events .
+ *
+ * In order to keep the PPM and the PDC power mgmt api in sync, we let PDM first
+ * handle interrupts and then forward them to the PPM.
+ *
+ * @param callback - Callback for when a new connector interrupt is seen.
+ *
+ * @retval 0 if successful or error code
+ */
+int pdc_power_mgmt_register_board_callback(enum pdc_power_mgmt_board_cb_t type,
+					   const void *callback);
+/**
  * @brief Acknowledge connector status change bits with PDM.
  *
  * @param port - USB-C port number
@@ -633,6 +661,39 @@ int pdc_power_mgmt_register_ppm_callback(const struct pdc_callback *callback);
  */
 int pdc_power_mgmt_ppm_ack_status_change(int port,
 					 union conn_status_change_bits_t ci);
+
+/**
+ * @brief Board hook for DP Attention event
+ *
+ * @param port USB-C port number
+ * @param port vdo_dp_status Attention VDO
+ */
+typedef void (*pdc_power_mgmt_board_dp_attention_cb)(int port,
+						     uint32_t vdo_dp_status);
+/**
+ * @brief Board hook for port unattached event
+ *
+ * @param port USB-C port number
+ */
+typedef void (*pdc_power_mgmt_board_unattached_cb)(int port);
+
+/**
+ * @brief Get the latest DP Attention/Status VDO for the port.
+ *
+ * @param port USB-C port number
+ *
+ * @retval Cached Attention VDO
+ */
+uint32_t pdc_power_mgmt_get_dp_status(int port);
+
+/**
+ * @brief Get DP mux mode by the pin assignment
+ *
+ * @param port USB-C port number
+ *
+ * @retval Mux state for the DP pin assignment
+ */
+mux_state_t pdc_power_mgmt_get_dp_mux_mode(int port);
 
 /**
  * @brief Return the current UCSI connector status on a port for the PPM.

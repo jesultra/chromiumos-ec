@@ -27,7 +27,23 @@ def init_toolchain():
     # (environment variable, bazel target)
     toolchains = [
         ("COREBOOT_SDK_ROOT_arm", "@ec-coreboot-sdk-arm-eabi//:get_path"),
+        (
+            "COREBOOT_SDK_ROOT_picolibc_arm",
+            "@ec-coreboot-sdk-picolibc-arm-eabi//:get_path",
+        ),
+        (
+            "COREBOOT_SDK_ROOT_libstdcxx_arm",
+            "@ec-coreboot-sdk-libstdcxx-arm-eabi//:get_path",
+        ),
         ("COREBOOT_SDK_ROOT_x86", "@ec-coreboot-sdk-i386-elf//:get_path"),
+        (
+            "COREBOOT_SDK_ROOT_picolibc_x86",
+            "@ec-coreboot-sdk-picolibc-i386-elf//:get_path",
+        ),
+        (
+            "COREBOOT_SDK_ROOT_libstdcxx_x86",
+            "@ec-coreboot-sdk-libstdcxx-i386-elf//:get_path",
+        ),
         ("COREBOOT_SDK_ROOT_riscv", "@ec-coreboot-sdk-riscv-elf//:get_path"),
         ("COREBOOT_SDK_ROOT_nds32", "@ec-coreboot-sdk-nds32le-elf//:get_path"),
     ]
@@ -78,7 +94,7 @@ if __name__ == "__main__":
     # Return a formatted string which can be declared as an associative array in bash
     print(
         " ".join(
-            f"[{key}]={value.decode('utf-8')}"
+            f"[\"{key}\"]=\"{value.decode('utf-8')}\""
             for key, value in env_vars.items()
         )
     )

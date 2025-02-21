@@ -31,12 +31,10 @@
 #include "usb_api.h"
 #include "util.h"
 
+#include <string.h>
+
 #ifdef CONFIG_ZEPHYR
 #include "drivers/one_wire_uart.h"
-#endif
-
-#ifdef CONFIG_KEYBOARD_MULTIPLE
-#include "keyboard_customization.h"
 #endif
 
 /* Console output macros */
@@ -97,18 +95,15 @@ __overridable struct keyboard_scan_config keyscan_config = {
 
 #ifdef CONFIG_KEYBOARD_BOOT_KEYS
 #ifndef CONFIG_KEYBOARD_MULTIPLE
-static const
-#endif
-	struct boot_key_entry boot_key_list[] = {
-		[BOOT_KEY_ESC] = { KEYBOARD_COL_ESC, KEYBOARD_ROW_ESC },
-		[BOOT_KEY_DOWN_ARROW] = { KEYBOARD_COL_DOWN,
-					  KEYBOARD_ROW_DOWN },
-		[BOOT_KEY_LEFT_SHIFT] = { KEYBOARD_COL_LEFT_SHIFT,
-					  KEYBOARD_ROW_LEFT_SHIFT },
-		[BOOT_KEY_REFRESH] = { KEYBOARD_COL_REFRESH,
-				       KEYBOARD_ROW_REFRESH },
-	};
+static const struct boot_key_entry boot_key_list[] = {
+	[BOOT_KEY_ESC] = { KEYBOARD_COL_ESC, KEYBOARD_ROW_ESC },
+	[BOOT_KEY_DOWN_ARROW] = { KEYBOARD_COL_DOWN, KEYBOARD_ROW_DOWN },
+	[BOOT_KEY_LEFT_SHIFT] = { KEYBOARD_COL_LEFT_SHIFT,
+				  KEYBOARD_ROW_LEFT_SHIFT },
+	[BOOT_KEY_REFRESH] = { KEYBOARD_COL_REFRESH, KEYBOARD_ROW_REFRESH },
+};
 BUILD_ASSERT(ARRAY_SIZE(boot_key_list) == BOOT_KEY_COUNT);
+#endif
 static uint32_t boot_key_value = BOOT_KEY_NONE;
 #endif
 
@@ -380,16 +375,32 @@ static int read_matrix(uint8_t *state, bool at_boot)
 	if (pb_pressed && at_boot) {
 		/* Check if KSI2 (or KSI3) is asserted on all columns */
 		for (c = 0; c < keyboard_cols; c++) {
-			if (!(state[c] & KEYBOARD_MASKED_BY_POWERBTN)) {
+#ifdef CONFIG_KEYBOARD_MULTIPLE
+			if (!(state[c] & KEYBOARD_MASKED_BY_POWERBTN(
+						 key_typ.row_refresh))) {
 				break;
 			}
+#else
+			if (!(state[c] & KEYBOARD_MASKED_BY_POWERBTN(
+						 KEYBOARD_ROW_REFRESH))) {
+				break;
+			}
+#endif
 		}
 
 		if (c == keyboard_cols) {
 			for (c = 0; c < keyboard_cols; c++) {
+#ifdef CONFIG_KEYBOARD_MULTIPLE
+				if (c == key_typ.col_refresh)
+					continue;
+				state[c] &= ~KEYBOARD_MASKED_BY_POWERBTN(
+					key_typ.row_refresh);
+#else
 				if (c == KEYBOARD_COL_REFRESH)
 					continue;
-				state[c] &= ~KEYBOARD_MASKED_BY_POWERBTN;
+				state[c] &= ~KEYBOARD_MASKED_BY_POWERBTN(
+					KEYBOARD_ROW_REFRESH);
+#endif
 			}
 		}
 	}
@@ -475,19 +486,44 @@ static int check_runtime_keys(const uint8_t *state)
 	int c;
 
 	/*
+	 * if volume up and r are on the same column,
+	 * the coresponding row should be masked.
+	 */
+#ifndef CONFIG_KEYBOARD_MULTIPLE
+	uint8_t mask_key_r_row = 0;
+	uint8_t mask_key_vol_up_row = 0;
+
+	if (key_vol_up_col == KEYBOARD_COL_KEY_R) {
+		mask_key_r_row = KEYBOARD_ROW_TO_MASK(KEYBOARD_ROW_KEY_R);
+		mask_key_vol_up_row = KEYBOARD_ROW_TO_MASK(key_vol_up_row);
+	}
+#else
+	uint8_t mask_key_r_row = 0;
+
+	if (key_vol_up_col == key_typ.col_key_r) {
+		mask_key_r_row = KEYBOARD_ROW_TO_MASK(key_typ.row_key_r);
+	}
+#endif
+
+	/*
 	 * All runtime key combos are (right or left ) alt + volume up + (some
 	 * key NOT on the same col as alt or volume up )
 	 */
-	if (state[key_vol_up_col] != KEYBOARD_ROW_TO_MASK(key_vol_up_row))
+	if ((state[key_vol_up_col] & ~mask_key_r_row) !=
+	    KEYBOARD_ROW_TO_MASK(key_vol_up_row))
 		return 0;
 
 #ifndef CONFIG_KEYBOARD_MULTIPLE
-	if (state[KEYBOARD_COL_RIGHT_ALT] != KEYBOARD_MASK_RIGHT_ALT &&
-	    state[KEYBOARD_COL_LEFT_ALT] != KEYBOARD_MASK_LEFT_ALT)
+	if (state[KEYBOARD_COL_RIGHT_ALT] !=
+		    KEYBOARD_ROW_TO_MASK(KEYBOARD_ROW_RIGHT_ALT) &&
+	    state[KEYBOARD_COL_LEFT_ALT] !=
+		    KEYBOARD_ROW_TO_MASK(KEYBOARD_ROW_LEFT_ALT))
 		return 0;
 #else
-	if (state[key_typ.col_right_alt] != KEYBOARD_MASK_RIGHT_ALT &&
-	    state[key_typ.col_left_alt] != KEYBOARD_MASK_LEFT_ALT)
+	if (state[key_typ.col_right_alt] !=
+		    KEYBOARD_ROW_TO_MASK(key_typ.row_right_alt) &&
+	    state[key_typ.col_left_alt] !=
+		    KEYBOARD_ROW_TO_MASK(key_typ.row_left_alt))
 		return 0;
 #endif
 
@@ -501,18 +537,20 @@ static int check_runtime_keys(const uint8_t *state)
 			num_press++;
 	}
 
-	if (num_press != 3)
+	if (num_press > 3)
 		return 0;
 
 #ifndef CONFIG_KEYBOARD_MULTIPLE
 	/* Check individual keys */
-	if (state[KEYBOARD_COL_KEY_R] == KEYBOARD_MASK_KEY_R) {
+	if ((state[KEYBOARD_COL_KEY_R] & ~mask_key_vol_up_row) ==
+	    KEYBOARD_ROW_TO_MASK(KEYBOARD_ROW_KEY_R)) {
 		/* R = reboot */
 		CPRINTS("warm reboot");
 		keyboard_clear_buffer();
 		chipset_reset(CHIPSET_RESET_KB_WARM_REBOOT);
 		return 1;
-	} else if (state[KEYBOARD_COL_KEY_H] == KEYBOARD_MASK_KEY_H) {
+	} else if (state[KEYBOARD_COL_KEY_H] ==
+		   KEYBOARD_ROW_TO_MASK(KEYBOARD_ROW_KEY_H)) {
 		/* H = hibernate */
 		CPRINTS("hibernate");
 		system_enter_hibernate(0, 0);
@@ -520,13 +558,15 @@ static int check_runtime_keys(const uint8_t *state)
 	}
 #else
 	/* Check individual keys */
-	if (state[key_typ.col_key_r] == KEYBOARD_MASK_KEY_R) {
+	if (state[key_typ.col_key_r] ==
+	    KEYBOARD_ROW_TO_MASK(key_typ.row_key_r)) {
 		/* R = reboot */
 		CPRINTS("warm reboot");
 		keyboard_clear_buffer();
 		chipset_reset(CHIPSET_RESET_KB_WARM_REBOOT);
 		return 1;
-	} else if (state[key_typ.col_key_h] == KEYBOARD_MASK_KEY_H) {
+	} else if (state[key_typ.col_key_h] ==
+		   KEYBOARD_ROW_TO_MASK(key_typ.row_key_h)) {
 		/* H = hibernate */
 		CPRINTS("hibernate");
 		system_enter_hibernate(0, 0);
@@ -851,7 +891,7 @@ static uint32_t check_key_list(const uint8_t *state)
 
 	/* Update mask with all boot keys that were pressed. */
 	k = boot_key_list;
-	for (c = 0; c < ARRAY_SIZE(boot_key_list); c++, k++) {
+	for (c = 0; c < BOOT_KEY_COUNT; c++, k++) {
 		if (curr_state[k->col] & BIT(k->row)) {
 			boot_key_mask |= BIT(c);
 			curr_state[k->col] &= ~BIT(k->row);
@@ -1338,17 +1378,26 @@ DECLARE_CONSOLE_COMMAND(ksstate, command_ksstate, "ksstate [on | off | force]",
 static int command_keyboard_press(int argc, const char **argv)
 {
 	if (argc == 1) {
-		int i, j;
+		int c, r;
 
 		ccputs("Simulated keys:\n");
-		for (i = 0; i < keyboard_cols; ++i) {
-			if (simulated_key[i] == 0)
+		for (c = 0; c < keyboard_cols; ++c) {
+			if (simulated_key[c] == 0)
 				continue;
-			for (j = 0; j < KEYBOARD_ROWS; ++j)
-				if (simulated_key[i] & BIT(j))
-					ccprintf("\t%d %d\n", i, j);
+			for (r = 0; r < KEYBOARD_ROWS; ++r)
+				if (simulated_key[c] & BIT(r))
+					ccprintf("\t%d %d\n", c, r);
 		}
+	} else if (argc == 2 && !strncmp(argv[1], "clear", 6)) {
+		int c, r;
 
+		for (c = 0; c < keyboard_cols; ++c) {
+			if (simulated_key[c] == 0)
+				continue;
+			for (r = 0; r < KEYBOARD_ROWS; ++r)
+				if (simulated_key[c] & BIT(r))
+					simulate_key(r, c, 0);
+		}
 	} else if (argc == 3 || argc == 4) {
 		int r, c, p;
 		char *e;

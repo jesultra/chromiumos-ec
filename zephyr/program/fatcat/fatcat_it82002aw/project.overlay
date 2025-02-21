@@ -19,8 +19,7 @@ i2c3ALT: &i2c3 {
 #include "generated.dtsi"
 #include "include/board.h"
 
-#define CHARGER_I2C i2c4
-#define PD_POW_I2C i2c1
+#define PD_POW_IRQ_GPIO &gpiof 5
 
 / {
 	named-gpios {
@@ -30,7 +29,10 @@ i2c3ALT: &i2c3 {
 		en_pp3300_a: ec_ds3_r {};
 		en_pp5000_s5: bga_pinf4 {};
 		rsmrst_pwrgd: rsmrst_pwrgd_n_r {};
-		ec_pch_rsmrst_l: pm_rsmrst_n_r {};
+		/*
+		 * TODO: b/386856132 - update schematics net names
+		 */
+		ec_pch_rsmrst_l: cpu_c10_gate_r {};
 		pch_slp_s0_n: pch_slp_s0_n_r {};
 		ec_pch_pwrok_od: pch_pwrok_ec_r {};
 		all_sys_pwrgd: all_sys_pwrgd_r {};
@@ -38,18 +40,27 @@ i2c3ALT: &i2c3 {
 	};
 };
 
-#include "../../intelrvp/ptlrvp/i2c.dtsi"
-#include "../../intelrvp/ptlrvp/keyboard.dtsi"
-#include "../../intelrvp/ptlrvp/power_signals.dtsi"
-
 #include "adc.dtsi"
 #include "console.dtsi"
+#include "fan.dtsi"
 #include "gpios.dtsi"
-#include "gsc_board.dtsi"
 #include "i2c.dtsi"
 #include "interrupts.dtsi"
 #include "keyboard.dtsi"
 #include "pwm.dtsi"
+#include "temp_sensors.dtsi"
+
+#include "../../intelrvp/ptlrvp/gsc_board.dtsi"
+
+&it8801_mfd {
+	irq-gpios = <&gpioi 6 GPIO_ACTIVE_LOW>;
+};
+
+#include "../../intelrvp/ptlrvp/ioex_gpio.dtsi"
+#include "../../intelrvp/ptlrvp/power_signals.dtsi"
+#include "../../intelrvp/ptlrvp/battery.dtsi"
+#include "../../intelrvp/ptlrvp/pd.dtsi"
+#include "../../intelrvp/ptlrvp/usbc.dtsi"
 
 /* these need to be promoted to program.conf */
 

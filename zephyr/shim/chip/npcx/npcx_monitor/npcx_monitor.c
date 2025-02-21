@@ -181,7 +181,11 @@ int sspi_flash_physical_clear_stsreg(void)
 	if (NPCX_UMA_DB0 != 0x00)
 		return 0;
 	sspi_flash_execute_cmd(CMD_READ_STATUS_REG2, MASK_CMD_RD_1BYTE);
-	if (NPCX_UMA_DB0 != 0x00)
+	/* Ignore any one-time-programmable bits that might be set.
+	 * These bits only affect the security register region and not the main
+	 * flash memory.
+	 */
+	if ((NPCX_UMA_DB0 & ~SPI_FLASH_SR2_OTP_MASK) != 0x00)
 		return 0;
 	/* Enable tri-state */
 	sspi_flash_tristate(1);

@@ -334,6 +334,7 @@ static void task_disc(struct pdc_data_t *data);
 static void task_ucsi(struct pdc_data_t *data,
 		      enum ucsi_command_t ucsi_command);
 static void task_raw_ucsi(struct pdc_data_t *data);
+static int pdc_autonegotiate_sink_reset(struct pdc_data_t *data);
 
 /**
  * @brief PDC port data used in interrupt handler
@@ -1225,13 +1226,13 @@ static void cmd_set_rdo(struct pdc_data_t *data)
 		goto error_recovery;
 	}
 	if ((pdo & PDO_TYPE_MASK) == PDO_TYPE_BATTERY) {
-		max_v = PDO_BATT_GET_MAX_VOLT(pdo);
-		min_v = PDO_BATT_GET_MIN_VOLT(pdo);
-		max_a = CONFIG_PLATFORM_EC_PD_MAX_CURRENT_MA / 10;
-		min_power = PDO_BATT_GET_OP_POWER(pdo);
+		max_v = PDO_BATT_MAX_VOLTAGE(pdo);
+		min_v = PDO_BATT_MIN_VOLTAGE(pdo);
+		max_a = CONFIG_PLATFORM_EC_USB_PD_MAX_CURRENT_MA / 10;
+		min_power = PDO_BATT_MAX_POWER(pdo);
 	} else {
-		max_v = min_v = PDO_FIXED_GET_VOLT(pdo);
-		max_a = PDO_FIXED_GET_CURR(pdo);
+		max_v = min_v = PDO_FIXED_VOLTAGE(pdo);
+		max_a = PDO_FIXED_CURRENT(pdo);
 		min_power = max_v * max_a;
 	}
 
@@ -1239,12 +1240,11 @@ static void cmd_set_rdo(struct pdc_data_t *data)
 	an_snk.auto_compute_sink_min_voltage = 0;
 	an_snk.auto_compute_sink_max_voltage = 0;
 	an_snk.auto_neg_max_current = max_a / 10;
-	an_snk.auto_neg_sink_min_required_power = min_power / 250;
+	an_snk.auto_neg_sink_min_required_power = min_power / 1000 / 250;
 	an_snk.auto_neg_max_voltage = max_v / 50;
 	an_snk.auto_neg_min_voltage = min_v / 50;
 	an_snk.auto_neg_capabilities_mismach_power =
-		CONFIG_PLATFORM_EC_PD_MAX_POWER_MW / 250;
-
+		CONFIG_PLATFORM_EC_USB_PD_MAX_POWER_MW / 250;
 	rv = tps_rw_autonegotiate_sink(&cfg->i2c, &an_snk, I2C_MSG_WRITE);
 	if (rv) {
 		LOG_ERR("Failed to write auto negotiate sink register.");
@@ -1853,17 +1853,6 @@ static void st_task_wait_run(void *o)
 			*voltage = cs->voltage_reading * cs->voltage_scale * 5;
 		} else {
 			len = sizeof(union connector_status_t);
-			if (cs->conn_partner_type == DEBUG_ACCESSORY_ATTACHED) {
-				union reg_status pdc_status;
-				rv = tps_rd_status(&cfg->i2c, &pdc_status);
-				if (!rv) {
-					cs->conn_partner_type =
-						(pdc_status.data_role ?
-							 UFP_ATTACHED :
-							 DFP_ATTACHED);
-				}
-			}
-
 			/* If we had previously cached the connection status
 			 * change, append those bits in GET_CONNECTOR_STATUS.
 			 * The PDC clears these after the first read but we want
@@ -1880,6 +1869,8 @@ static void st_task_wait_run(void *o)
 			 */
 			data->cached_conn_status = *cs;
 			data->use_cached_conn_status_change = true;
+			if (!cs->connect_status)
+				pdc_autonegotiate_sink_reset(data);
 		}
 		break;
 	}
@@ -2520,6 +2511,35 @@ static int pdc_interrupt_mask_init(struct pdc_data_t *data)
 	return tps_rw_interrupt_mask(&cfg->i2c, &irq_mask, I2C_MSG_WRITE);
 }
 
+static int pdc_autonegotiate_sink_reset(struct pdc_data_t *data)
+{
+	union reg_autonegotiate_sink an_snk;
+	struct pdc_config_t const *cfg = data->dev->config;
+	int rv;
+
+	rv = tps_rw_autonegotiate_sink(&cfg->i2c, &an_snk, I2C_MSG_READ);
+	if (rv) {
+		LOG_ERR("Failed to read auto negotiate sink register.");
+		return rv;
+	}
+
+	an_snk.auto_compute_sink_min_power = 0;
+	an_snk.auto_compute_sink_min_voltage = 0;
+	an_snk.auto_compute_sink_max_voltage = 0;
+	an_snk.auto_neg_max_current = 3000 / 10;
+	an_snk.auto_neg_sink_min_required_power = 15000 / 250;
+	an_snk.auto_neg_max_voltage = 5000 / 50;
+	an_snk.auto_neg_min_voltage = 5000 / 50;
+
+	rv = tps_rw_autonegotiate_sink(&cfg->i2c, &an_snk, I2C_MSG_WRITE);
+	if (rv) {
+		LOG_ERR("Failed to write auto negotiate sink register.");
+		return rv;
+	}
+
+	return 0;
+}
+
 static int pdc_exit_dead_battery(struct pdc_data_t *data)
 {
 	struct pdc_config_t const *cfg = data->dev->config;
@@ -2609,6 +2629,11 @@ static int pdc_init(const struct device *dev)
 	rv = pdc_interrupt_mask_init(data);
 	if (rv < 0) {
 		LOG_ERR("Write interrupt mask failed");
+		return rv;
+	}
+	rv = pdc_autonegotiate_sink_reset(data);
+	if (rv < 0) {
+		LOG_ERR("Reset autonegotiate_sink reg failed");
 		return rv;
 	}
 	rv = pdc_exit_dead_battery(data);

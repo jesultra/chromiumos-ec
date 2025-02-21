@@ -13,6 +13,10 @@
 		i2c_ec_i2c_mi: ec_i2c_mi {
 			enum-names = "I2C_PORT_SMB_BS";
 		};
+		i2c_ec_i2c_pd2: ec_i2c_pd2 {
+			i2c-port = <&i2c1_0>;
+			enum-names = "I2C_PORT_PD2";
+		};
 		i2c_smb_pch: smb_pch {
 			i2c-port = <&i2c4_1>;
 			enum-names = "I2C_PORT_SMB_PCH";
@@ -24,8 +28,19 @@
 	status = "okay";
 };
 
-&i2c0_0 {
-	label = "I2C_PORT_PD";
+pd_pow_i2c: &i2c0_0 {
+};
+
+&i2c_ctrl1 {
+	status = "okay";
+};
+
+&i2c1_0 {
+	status = "okay";
+	pinctrl-0 = <&i2c1_0_sda_scl_gp87_90>;
+	pinctrl-names = "default";
+
+	label = "I2C_PORT_PD2";
 	clock-frequency = <I2C_BITRATE_STANDARD>;
 };
 
@@ -33,9 +48,7 @@
 	status = "okay";
 };
 
-&i2c2_0 {
-	label = "I2C_PORT_SMB_BS";
-	clock-frequency = <I2C_BITRATE_STANDARD>;
+charger_i2c: &i2c2_0 {
 };
 
 &i2c_ctrl4 {
@@ -51,7 +64,11 @@
 	clock-frequency = <I2C_BITRATE_STANDARD>;
 };
 
+#include "../../intelrvp/ptlrvp/i2c.dtsi"
+
 /*
- * Aliases to common names
+ * Using IT8801 MFD driver
+ * These lines can be deleted after all PTL platforms support the MFD driver.
+ * b/386325459
  */
-i2c_smb_bs: &i2c_ec_i2c_mi {};
+/delete-node/ &kb_discrete;

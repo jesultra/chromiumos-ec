@@ -49,7 +49,7 @@
 
 #define ANX7483_EMUL1 EMUL_DT_GET(DT_NODELABEL(anx7483_port1))
 
-#define TEST_LID_DEBOUNCE_MS (CONFIG_LID_DEBOUNCE_US / MSEC + 1)
+#define TEST_LID_DEBOUNCE_MS (CONFIG_LID_DEBOUNCE_US / USEC_PER_MSEC + 1)
 
 #define ASSERT_GPIO_FLAGS(spec, expected)                                  \
 	do {                                                               \

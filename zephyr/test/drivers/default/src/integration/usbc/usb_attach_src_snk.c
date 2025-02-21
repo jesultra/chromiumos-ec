@@ -618,7 +618,7 @@ ZTEST_F(usb_detach_test, test_detach_src_snk)
 		      "Charging at VBUS %dmV, but PD reports %dmV", 0,
 		      snk_power_info.meas.voltage_max);
 
-	zassert_within(snk_power_info.meas.voltage_now, 0, 10,
+	zassert_within((int32_t)snk_power_info.meas.voltage_now, 0, 10,
 		       "Actually charging at VBUS %dmV, but PD reports %dmV", 0,
 		       snk_power_info.meas.voltage_now);
 
@@ -644,7 +644,7 @@ ZTEST_F(usb_detach_test, test_detach_src_snk)
 		      USB_CHG_TYPE_NONE, src_power_info.type);
 
 	/* TODO(b/209907615): Confirm measure value requirements */
-	zassert_within(src_power_info.meas.voltage_now, 0, 10,
+	zassert_within((int32_t)src_power_info.meas.voltage_now, 0, 10,
 		       "Expected Charging at VBUS %dmV, but PD reports %dmV",
 		       DEFAULT_VBUS_MV, src_power_info.meas.voltage_now);
 
@@ -680,7 +680,7 @@ ZTEST_F(usb_detach_test, test_detach_snk_src)
 		      "Charging at VBUS %dmV, but PD reports %dmV", 0,
 		      snk_power_info.meas.voltage_max);
 
-	zassert_within(snk_power_info.meas.voltage_now, 0, 10,
+	zassert_within((int32_t)snk_power_info.meas.voltage_now, 0, 10,
 		       "Actually charging at VBUS %dmV, but PD reports %dmV", 0,
 		       snk_power_info.meas.voltage_now);
 
@@ -706,7 +706,7 @@ ZTEST_F(usb_detach_test, test_detach_snk_src)
 		      USB_CHG_TYPE_NONE, src_power_info.type);
 
 	/* TODO(b/209907615): Confirm measure value requirements */
-	zassert_within(src_power_info.meas.voltage_now, 0, 10,
+	zassert_within((int32_t)src_power_info.meas.voltage_now, 0, 10,
 		       "Expected Charging at VBUS %dmV, but PD reports %dmV",
 		       DEFAULT_VBUS_MV, src_power_info.meas.voltage_now);
 
@@ -738,7 +738,7 @@ ZTEST_F(usb_detach_test, test_detach_sink)
 		      "Charging at VBUS %dmV, but PD reports %dmV",
 		      DEFAULT_VBUS_MV, pd_power_info.meas.voltage_max);
 
-	zassert_within(pd_power_info.meas.voltage_now, 0, 10,
+	zassert_within((int32_t)pd_power_info.meas.voltage_now, 0, 10,
 		       "Actually charging at VBUS %dmV, but PD reports %dmV", 0,
 		       pd_power_info.meas.voltage_now);
 
@@ -778,7 +778,7 @@ ZTEST_F(usb_detach_test, test_detach_source)
 		      USB_CHG_TYPE_NONE, pd_power_info.type);
 
 	/* TODO(b/209907615): Confirm measure value requirements */
-	zassert_within(pd_power_info.meas.voltage_now, 0, 10,
+	zassert_within((int32_t)pd_power_info.meas.voltage_now, 0, 10,
 		       "Expected Charging at VBUS %dmV, but PD reports %dmV",
 		       DEFAULT_VBUS_MV, pd_power_info.meas.voltage_now);
 

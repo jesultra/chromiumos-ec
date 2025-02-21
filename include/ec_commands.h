@@ -142,6 +142,8 @@ extern "C" {
 #define EC_MEMMAP_SIZE 255 /* ACPI IO buffer max is 255 bytes */
 #define EC_MEMMAP_TEXT_MAX 8 /* Size of a string in the memory map */
 
+#define EC_LPC_ADDR_MEMMAP_INDEXED_IO 0x380
+
 /* The offset address of each type of data in mapped memory. */
 #define EC_MEMMAP_TEMP_SENSOR 0x00 /* Temp sensors 0x00 - 0x0f */
 #define EC_MEMMAP_FAN 0x10 /* Fan speeds 0x10 - 0x17 */
@@ -3115,7 +3117,7 @@ struct ec_params_motion_sense {
 		 */
 		struct __ec_todo_unpacked {
 			/* Data to set or EC_MOTION_SENSE_NO_VALUE to read.
-			 * kb_wake_angle: angle to wakup AP.
+			 * kb_wake_angle: angle to wakeup AP.
 			 */
 			int16_t data;
 		} kb_wake_angle;
@@ -5918,6 +5920,7 @@ struct ec_response_pd_status {
 #define PD_EVENT_DATA_SWAP BIT(3)
 #define PD_EVENT_TYPEC BIT(4)
 #define PD_EVENT_PPM BIT(5)
+#define PD_EVENT_INIT BIT(6)
 
 struct ec_response_host_event_status {
 	uint32_t status; /* PD MCU host event status */
@@ -8206,9 +8209,9 @@ struct ec_params_fp_passthru {
 	 FP_MODE_MATCH | FP_MODE_RESET_SENSOR | FP_MODE_SENSOR_MAINTENANCE | \
 	 FP_MODE_DONT_CHANGE)
 
-/* Capture types defined in bits [30..28] */
-#define FP_MODE_CAPTURE_TYPE_SHIFT 28
-#define FP_MODE_CAPTURE_TYPE_MASK (0x7 << FP_MODE_CAPTURE_TYPE_SHIFT)
+/* Capture types defined in bits [30..26] */
+#define FP_MODE_CAPTURE_TYPE_SHIFT 26
+#define FP_MODE_CAPTURE_TYPE_MASK (0x1F << FP_MODE_CAPTURE_TYPE_SHIFT)
 /**
  * enum fp_capture_type - Specifies the "mode" when capturing images.
  *
@@ -8227,11 +8230,11 @@ struct ec_params_fp_passthru {
  */
 enum fp_capture_type {
 	FP_CAPTURE_VENDOR_FORMAT = 0,
-	FP_CAPTURE_SIMPLE_IMAGE = 1,
-	FP_CAPTURE_PATTERN0 = 2,
-	FP_CAPTURE_PATTERN1 = 3,
-	FP_CAPTURE_QUALITY_TEST = 4,
-	FP_CAPTURE_RESET_TEST = 5,
+	FP_CAPTURE_SIMPLE_IMAGE = 4,
+	FP_CAPTURE_PATTERN0 = 8,
+	FP_CAPTURE_PATTERN1 = 12,
+	FP_CAPTURE_QUALITY_TEST = 16,
+	FP_CAPTURE_RESET_TEST = 20,
 	FP_CAPTURE_TYPE_MAX,
 };
 /* Extracts the capture type from the sensor 'mode' word */

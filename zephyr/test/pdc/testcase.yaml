@@ -13,6 +13,24 @@ tests:
     extra_dtc_overlay_files:
     - "./boards/rts5453p.overlay"
 
+  pdc.utils:
+    timeout: 500
+    extra_configs:
+    - CONFIG_TEST_SUITE_PDC_UTILS=y
+    - CONFIG_TEST_DISABLE_INLINE_CHIPSET_IN_STATE=y
+    extra_dtc_overlay_files:
+    - "./boards/rts5453p.overlay"
+
+  pdc.usb_mux:
+    timeout: 500
+    extra_configs:
+    - CONFIG_TEST_SUITE_PDC_PMC_USB_MUX=y
+    - CONFIG_PDC_POWER_MGMT_USB_MUX=y
+    - CONFIG_PLATFORM_EC_USBC_SS_MUX=y
+    - CONFIG_USB_PDC_LOG_LEVEL_DBG=y
+    extra_dtc_overlay_files:
+    - "./boards/rts5453p.overlay"
+
   pdc.generic.tps6699x:
     timeout: 300
     extra_configs:
@@ -61,6 +79,53 @@ tests:
     - CONFIG_USB_PDC_LOG_LEVEL_DBG=y
     - CONFIG_TEST_DISABLE_INLINE_CHIPSET_IN_STATE=y
     - CONFIG_PLATFORM_EC_USB_PD_FRS=n
+    extra_dtc_overlay_files:
+    - "./boards/rts5453p.overlay"
+
+  pdc.policy.only_fixed_pdos:
+    timeout: 500
+    extra_configs:
+    - CONFIG_TEST_SUITE_PDC_POLICY=y
+    - CONFIG_TEST_DISABLE_INLINE_CHIPSET_IN_STATE=y
+    - CONFIG_PLATFORM_EC_USB_PD_ONLY_FIXED_PDOS=y
+    extra_dtc_overlay_files:
+    - "./boards/rts5453p.overlay"
+
+  pdc.policy.low_voltage:
+    timeout: 500
+    extra_configs:
+    - CONFIG_TEST_SUITE_PDC_POLICY=y
+    - CONFIG_TEST_DISABLE_INLINE_CHIPSET_IN_STATE=y
+    - CONFIG_PLATFORM_EC_USB_PD_PREFER_LOW_VOLTAGE=y
+    extra_dtc_overlay_files:
+    - "./boards/rts5453p.overlay"
+
+  pdc.policy.high_voltage:
+    timeout: 500
+    extra_configs:
+    - CONFIG_TEST_SUITE_PDC_POLICY=y
+    - CONFIG_TEST_DISABLE_INLINE_CHIPSET_IN_STATE=y
+    - CONFIG_PLATFORM_EC_USB_PD_PREFER_HIGH_VOLTAGE=y
+    extra_dtc_overlay_files:
+    - "./boards/rts5453p.overlay"
+
+  pdc.policy_clamped:
+    extra_configs:
+    - CONFIG_TEST_SUITE_PDC_POLICY_CLAMPED=y
+    - CONFIG_TEST_DISABLE_INLINE_CHIPSET_IN_STATE=y
+    - CONFIG_PLATFORM_EC_USB_PD_MAX_VOLTAGE_MV=15000
+    - CONFIG_PLATFORM_EC_USB_PD_MAX_POWER_MW=30000
+    - CONFIG_PLATFORM_EC_USB_PD_MAX_CURRENT_MA=2000
+    extra_dtc_overlay_files:
+    - "./boards/rts5453p.overlay"
+
+  pdc.policy_variable:
+    extra_configs:
+    - CONFIG_TEST_SUITE_PDC_POLICY_VARIABLE=y
+    - CONFIG_TEST_DISABLE_INLINE_CHIPSET_IN_STATE=y
+    - CONFIG_PLATFORM_EC_USB_PD_MAX_VOLTAGE_MV=28000
+    - CONFIG_PLATFORM_EC_USB_PD_MAX_POWER_MW=65000
+    - CONFIG_PLATFORM_EC_USB_PD_MAX_CURRENT_MA=3000
     extra_dtc_overlay_files:
     - "./boards/rts5453p.overlay"
 
@@ -124,6 +189,13 @@ tests:
     - CONFIG_TEST_SUITE_PPM=y
     - CONFIG_UCSI_PPM=y
     - CONFIG_EMUL_PPM_DRIVER=n
+    extra_dtc_overlay_files:
+    - "./boards/rts5453p.overlay"
+
+  pdc.ppm_console:
+    extra_configs:
+    - CONFIG_TEST_SUITE_PPM_CONSOLE=y
+    - CONFIG_UCSI_PPM_CONSOLE=y
     extra_dtc_overlay_files:
     - "./boards/rts5453p.overlay"
 

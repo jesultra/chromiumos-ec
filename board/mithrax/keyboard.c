@@ -72,6 +72,7 @@ const uint8_t rgbkbd_map[] = {
 #undef DELM
 const size_t rgbkbd_map_size = ARRAY_SIZE(rgbkbd_map);
 
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_VIVALDI));
 __override const struct ec_response_keybd_config *
 board_vivaldi_keybd_config(void)
 {
@@ -104,3 +105,6 @@ __override const struct key {
 	{ .row = 0, .col = 1 }, /* T15 */
 };
 BUILD_ASSERT(ARRAY_SIZE(vivaldi_keys) == MAX_TOP_ROW_KEYS);
+
+/* TK_REFRESH is always T2 above, vivaldi_keys are overridden. */
+BUILD_ASSERT_REFRESH_RC(3, 2);

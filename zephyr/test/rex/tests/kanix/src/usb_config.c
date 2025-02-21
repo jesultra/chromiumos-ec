@@ -28,6 +28,11 @@ FAKE_VALUE_FUNC(int, pd_set_power_supply_ready, int);
 FAKE_VALUE_FUNC(int, ppc_vbus_sink_enable, int, int);
 FAKE_VALUE_FUNC(int, ppc_is_sourcing_vbus, int);
 
+/* Normally implemented in zephyr/shim/src/espi.c */
+void lpc_keyboard_resume_irq(void)
+{
+}
+
 int mock_cros_cbi_get_fw_config_hb(enum cbi_fw_config_field_id field_id,
 				   uint32_t *value)
 {

@@ -26,6 +26,7 @@ elseif(DEFINED CONFIG_BOARD_JUBILANT)
 	add_subdirectory(jubilant)
 
 	zephyr_include_directories("jubilant/include")
+	zephyr_library_sources("jubilant/src/touch_panel.c")
 	zephyr_library_sources("src/hibernate.c")
 	zephyr_library_sources("src/suspend_resume.c")
 	zephyr_library_sources("src/usbc.c")

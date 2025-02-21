@@ -13,3 +13,7 @@ target_sources_ifdef(CONFIG_TEST_BOARD_JUBILANT_KEYBOARD app PRIVATE
 target_sources_ifdef(CONFIG_TEST_BOARD_JUBILANT_FAN app PRIVATE src/fan.c)
 target_sources_ifdef(CONFIG_TEST_BOARD_JUBILANT_FAN app PRIVATE
 	${PLATFORM_EC_PROGRAM_DIR}/brox/jubilant/src/thermal.c)
+
+target_sources_ifdef(CONFIG_TEST_BOARD_JUBILANT_TOUCH_PANEL app PRIVATE src/touch_panel.c)
+target_sources_ifdef(CONFIG_TEST_BOARD_JUBILANT_TOUCH_PANEL app PRIVATE
+	${PLATFORM_EC_PROGRAM_DIR}/brox/jubilant/src/touch_panel.c)

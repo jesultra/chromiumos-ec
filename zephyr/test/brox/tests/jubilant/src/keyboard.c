@@ -147,9 +147,14 @@ ZTEST(jubilant_keyboard, test_keyboard_matrix_cbi_error)
 
 ZTEST(jubilant_keyboard, test_keyboard_matrix_cbi_invalid)
 {
+	cros_cbi_get_fw_config_fake.custom_fake =
+		cros_cbi_get_fw_config_kb_numpad;
+
 	/* just to exercise the "invalid value" code path */
 	kb_numpad = 2;
 	keyboard_matrix_init();
+
+	/* TODO: Check if the message "invalid cbi value: 4d2" was logged. */
 }
 
 ZTEST(jubilant_keyboard, test_get_scancode_set2)
@@ -196,4 +201,37 @@ ZTEST(jubilant_keyboard, test_set_keycap_label)
 	zassert_equal(get_keycap_label(0, 14), KLLI_UNKNO);
 	set_keycap_label(0, 14, KLLI_F15);
 	zassert_equal(get_keycap_label(0, 14), KLLI_F15);
+}
+
+static bool keyboard_ca_fr;
+
+static int cbi_get_keyboard_type_config(enum cbi_fw_config_field_id field,
+					uint32_t *value)
+{
+	if (field != FW_KB_TYPE)
+		return -EINVAL;
+
+	*value = keyboard_ca_fr ? FW_KB_TYPE_CA_FR : FW_KB_TYPE_DEFAULT;
+	return 0;
+}
+
+ZTEST(jubilant_keyboard, test_keyboard_type)
+{
+	uint16_t forwardslash_pipe_key = 0x0061;
+	uint16_t right_control_key = 0xe014;
+
+	cros_cbi_get_fw_config_fake.custom_fake = cbi_get_keyboard_type_config;
+	keyboard_ca_fr = false;
+	keyboard_matrix_init();
+	zassert_equal(get_scancode_set2(3, 14), right_control_key);
+
+	RESET_FAKE(cros_cbi_get_fw_config);
+	cros_cbi_get_fw_config_fake.return_val = EINVAL;
+	keyboard_matrix_init();
+	zassert_equal(get_scancode_set2(3, 14), right_control_key);
+
+	cros_cbi_get_fw_config_fake.custom_fake = cbi_get_keyboard_type_config;
+	keyboard_ca_fr = true;
+	keyboard_matrix_init();
+	zassert_equal(get_scancode_set2(3, 14), forwardslash_pipe_key);
 }

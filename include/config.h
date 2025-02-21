@@ -2795,9 +2795,6 @@
  */
 #undef CONFIG_HWTIMER_64BIT
 
-/* Use a hardware specific udelay(). */
-#undef CONFIG_HW_SPECIFIC_UDELAY
-
 /*****************************************************************************/
 /* I2C configuration */
 
@@ -3021,8 +3018,22 @@
 #undef CONFIG_IT83XX_EXTENDED_ILM
 /* IT8320 hardware timer driver runs from ILM */
 #undef CONFIG_IT83XX_EXTENDED_ILM_HWTIMER_DRIVER
+/* I2C controller runs from ILM */
+#undef CONFIG_IT83XX_EXTENDED_ILM_I2C_CONTROLLER
 /* IT8320 I2C driver runs from ILM */
 #undef CONFIG_IT83XX_EXTENDED_ILM_I2C_DRIVER
+/* IT8320 IRQ driver runs from ILM */
+#undef CONFIG_IT83XX_EXTENDED_ILM_IRQ_DRIVER
+/* IT8320 UART driver runs from ILM */
+#undef CONFIG_IT83XX_EXTENDED_ILM_UART_DRIVER
+/* USBC PD timer runs from ILM */
+#undef CONFIG_IT83XX_EXTENDED_ILM_USBC_PD_TIMER
+/* TCPCI driver runs from ILM */
+#undef CONFIG_IT83XX_EXTENDED_ILM_TCPCI_DRIVER
+/* Timer runs from ILM */
+#undef CONFIG_IT83XX_EXTENDED_ILM_TIMER
+/* RAA489000 driver runs from ILM */
+#undef CONFIG_IT83XX_EXTENDED_ILM_RAA489000_DRIVER
 
 /*
  * The IT8320 supports e-flash clock up to 48 MHz (IT8390 maximum is 32 MHz).
@@ -4802,9 +4813,9 @@
  *
  * The default SNK PDOs are:
  * - Fixed 5V/500mA with the same PDO_FIXED_FLAGS
- * - Variable (non-battery) min 4.75V, max PD_MAX_VOLTAGE_MV, operational
- *   current 3A
- * - Battery min 4.75V, max PD_MAX_VOLTAGE_MV, operational power 15W
+ * - Variable (non-battery) min 4.75V, max CONFIG_USB_PD_MAX_VOLTAGE_MV,
+ *   operational current 3A
+ * - Battery min 4.75V, max CONFIG_USB_PD_MAX_VOLTAGE_MV, operational power 15W
  */
 #undef CONFIG_USB_PD_CUSTOM_PDO
 
@@ -4911,6 +4922,18 @@
  * enables PD Rev3.0 functionality.
  */
 #undef CONFIG_USB_PD_REV30
+
+/*
+ * If enabled, the PD selection logic will select the PDO offering the lower
+ * voltage if multiple PDOs provide the same power.
+ */
+#undef CONFIG_USB_PD_PREFER_LOW_VOLTAGE
+
+/*
+ * If enabled, the PD selection logic will select the PDO offering the higher
+ * voltage if multiple PDOs provide the same power.
+ */
+#undef CONFIG_USB_PD_PREFER_HIGH_VOLTAGE
 
 /* Defined automatically based on on maximum PD revision supported. */
 #undef CONFIG_PD_RETRY_COUNT
@@ -6291,6 +6314,42 @@
 	"USB PD controller."
 #endif
 
+/* Set default USB PD power levels unless already defined by the platform. */
+/*
+ * Base configuration for PD power operating power value, which is used
+ * in PD negotiation. The final PD parameter used in negotiation is
+ * affected by CONFIG_USB_PD_MAX_POWER_MW,
+ * CONFIG_USB_PD_MAX_CURRENT_MA, and CONFIG_USB_PD_MAX_VOLTAGE_MV.
+ * Increase this value is the system requires more than 15 watts to boot
+ * without a battery.
+ */
+#ifndef CONFIG_USB_PD_OPERATING_POWER_MW
+#define CONFIG_USB_PD_OPERATING_POWER_MW 15000
+#endif
+
+/*
+ * The maximum PD negotiated current for the system.
+ */
+#ifndef CONFIG_USB_PD_MAX_CURRENT_MA
+#define CONFIG_USB_PD_MAX_CURRENT_MA 3000
+#endif
+
+/*
+ * The maximum PD negotiated voltage for the system.
+ */
+#ifndef CONFIG_USB_PD_MAX_VOLTAGE_MV
+#define CONFIG_USB_PD_MAX_VOLTAGE_MV 20000
+#endif
+
+/*
+ * The maximum PD negotiated power for the system. By default, this
+ * is derived from CONFIG_USB_PD_MAX_CURRENT_MA and CONFIG_PD_MAX_CURRENT_MV.
+ */
+#ifndef CONFIG_USB_PD_MAX_POWER_MW
+#define CONFIG_USB_PD_MAX_POWER_MW \
+	((CONFIG_USB_PD_MAX_CURRENT_MA * CONFIG_USB_PD_MAX_VOLTAGE_MV) / 1000)
+#endif
+
 /******************************************************************************/
 /*
  * Automatically define CONFIG_HOSTCMD_X86 if either child option is defined.
@@ -7427,8 +7486,15 @@
 #endif
 
 /* Select CONFIG_IT83XX_EXTENDED_ILM automatically */
-#if defined(CONFIG_IT83XX_EXTENDED_ILM_HWTIMER_DRIVER) || \
-	defined(CONFIG_IT83XX_EXTENDED_ILM_I2C_DRIVER)
+#if defined(CONFIG_IT83XX_EXTENDED_ILM_HWTIMER_DRIVER) ||     \
+	defined(CONFIG_IT83XX_EXTENDED_ILM_I2C_CONTROLLER) || \
+	defined(CONFIG_IT83XX_EXTENDED_ILM_I2C_DRIVER) ||     \
+	defined(CONFIG_IT83XX_EXTENDED_ILM_IRQ_DRIVER) ||     \
+	defined(CONFIG_IT83XX_EXTENDED_ILM_UART_DRIVER) ||    \
+	defined(CONFIG_IT83XX_EXTENDED_ILM_USBC_PD_TIMER) ||  \
+	defined(CONFIG_IT83XX_EXTENDED_ILM_TCPCI_DRIVER) ||   \
+	defined(CONFIG_IT83XX_EXTENDED_ILM_TIMER) ||          \
+	defined(CONFIG_IT83XX_EXTENDED_ILM_RAA489000_DRIVER)
 #define CONFIG_IT83XX_EXTENDED_ILM
 #endif
 

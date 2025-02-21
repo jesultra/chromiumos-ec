@@ -92,7 +92,7 @@ except ImportError:
 import zephyr_check_compliance
 
 
-# pylint:disable=protected-access,no-self-use
+# pylint:disable=protected-access
 
 
 class TestZephyrCheckCompliance(unittest.TestCase):

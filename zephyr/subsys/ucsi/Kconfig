@@ -20,6 +20,11 @@ config UCSI_PPM_THREAD_PRIORITY
 	help
 	  Set thread priority of the PPM.
 
+config UCSI_PPM_CONSOLE
+	bool "UCSI PPM console commands"
+	help
+	  Enable the `ppm` console command, which supports calling various
+	  UCSI commands through the PPM subsystem to the PDCs.
 
 module = UCSI_PPM
 module-str = UCSI PPM

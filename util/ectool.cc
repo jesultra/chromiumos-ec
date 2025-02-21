@@ -9796,7 +9796,7 @@ static void cmd_memory_dump_usage(const char *command_name)
 {
 	fprintf(stderr,
 		"Usage: %s [<address> [<size>]]\n"
-		"  Prints the memory available for dumping in hexdump cononical format.\n"
+		"  Prints the memory available for dumping in hexdump canonical format.\n"
 		"  <address> is a 32-bit address offset. Defaults to 0x0.\n"
 		"  <size> is the number of bytes to print after <address>."
 		" Defaults to end of RAM.\n"

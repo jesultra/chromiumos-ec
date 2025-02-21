@@ -12,24 +12,24 @@
 #include "../ite_i2c.dtsi"
 #include "../ite_interrupts.dtsi"
 #include "../ite_keyboard.dtsi"
-#include "../ite_led.dtsi"
 #include "../ite_usbc.dtsi"
 #include "../ite_shi.dtsi"
+#include "./led.dtsi"
 #include "./thermistor.dtsi"
 #include <cros/thermistor/thermistor.dtsi>
 #include <dt-bindings/motionsense/utils.h>
 
 / {
 	batteries {
-		default_battery: b300049 {
-			compatible = "celxpert,b300049", "battery-smart";
+		default_battery: hq24u2s1p3l {
+			compatible = "utl,hq24u2s1p3l", "battery-smart";
 		};
 	};
 	gpio-interrupts {
 		int_base_imu: base_imu {
 			irq-pin = <&base_imu_int_l>;
 			flags = <GPIO_INT_EDGE_FALLING>;
-			handler = "bmi3xx_interrupt";
+			handler = "motion_interrupt";
 		};
 
 		int_pmic_ec_resetb: pmic-ec-resetb {
@@ -122,6 +122,16 @@
 			enum-name = "GPIO_USB_C0_FRS_EN";
 		};
 
+		gpio_ec_led1_odl: ec_led1_odl {
+			gpios = <&gpioa 1 (GPIO_OUTPUT | GPIO_OPEN_DRAIN | GPIO_ACTIVE_HIGH | GPIO_OUTPUT_INIT_HIGH)>;
+		};
+		gpio_ec_led2_odl: ec_led2_odl {
+			gpios = <&gpioa 0 (GPIO_OUTPUT | GPIO_OPEN_DRAIN | GPIO_ACTIVE_HIGH | GPIO_OUTPUT_INIT_HIGH)>;
+		};
+		gpio_ac_lcd: gpio-ac-lcd{
+			gpios = <&gpiom 6 GPIO_OUTPUT_LOW>;
+		};
+
 		/delete-node/ en_pp5000_usb_a0_vbus;
 		/delete-node/ usb_a0_fault_odl;
 		/delete-node/ usb_c1_bc12_charger_int_odl;
@@ -138,11 +148,33 @@
 		<&gpioh 2 GPIO_INPUT_PULL_DOWN>,
 		<&gpioi 3 GPIO_INPUT_PULL_DOWN>,	//EC_AP_RSVD0_ODL
 		<&gpioj 4 GPIO_INPUT_PULL_DOWN>,
-		<&gpiom 2 GPIO_INPUT_PULL_DOWN>,
-		<&gpiom 6 GPIO_INPUT_PULL_DOWN>;
+		<&gpiom 2 GPIO_INPUT_PULL_DOWN>;
 	};
 
 	/delete-node/ cros-keyscan;
+
+	/* wyrdeer-specific ssfc fields. */
+	wyrdeer-ssfc {
+		compatible = "cros-ec,cbi-ssfc";
+
+		/* SSFC field to identify BASE motion sensor. */
+		lid-sensor {
+			enum-name = "BASE_SENSOR";
+			size = <3>;
+
+			lid_sensor_0: bmi323 {
+				compatible = "cros-ec,cbi-ssfc-value";
+				status = "okay";
+				value = <1>;
+				default;
+			};
+			lid_sensor_1: lsm6dsm {
+				compatible = "cros-ec,cbi-ssfc-value";
+				status = "okay";
+				value = <2>;
+			};
+		};
+	};
 
 	aliases {
 		/*
@@ -151,11 +183,14 @@
 		 * its own <>_INT_EVENT.
 		 */
 		bmi3xx-int = &lid_accel;
+		lsm6dsm-int = &lid_accel;
 	};
 
 	motionsense-mutex {
 		compatible = "cros-ec,motionsense-mutex";
 		lid_mutex_bmi323: bmi323-mutex {
+		};
+		lid_mutex_lsm6dsm: lsm6dsm-mutex {
 		};
 	};
 
@@ -167,11 +202,24 @@
 				 (-1) 0 0
 				 0 0 1>;
 		};
+		lid_rot_ref_lsm6dsm: lid-rotation-ref-lsm6dsm {
+			mat33 = <1 0 0
+				 0 1 0
+				 0 0 1>;
+		};
 	};
 
 	motionsense-sensor-data {
 		bmi323_data: bmi323-drv-data {
 			compatible = "cros-ec,drvdata-bmi3xx";
+			status = "okay";
+		};
+		lsm6dsm_data_accel: lsm6dsm-accel-drv-data {
+			compatible = "cros-ec,drvdata-lsm6dsm";
+			status = "okay";
+		};
+		lsm6dsm_data_gyro: lsm6dsm-gyro-drv-data {
+			compatible = "cros-ec,drvdata-lsm6dsm";
 			status = "okay";
 		};
 	};
@@ -189,17 +237,10 @@
 			mutex = <&lid_mutex_bmi323>;
 			port = <&i2c_sensor>;
 			rot-standard-ref = <&lid_rot_ref_bmi>;
-			default-range = <2>;
 			drv-data = <&bmi323_data>;
 			configs {
 				compatible =
 					"cros-ec,motionsense-sensor-config";
-				ec-s0 {
-					odr = <(10000 | ROUND_UP_FLAG)>;
-				};
-				ec-s3 {
-					odr = <(10000 | ROUND_UP_FLAG)>;
-				};
 			};
 		};
 
@@ -213,6 +254,41 @@
 			port = <&i2c_sensor>;
 			rot-standard-ref = <&lid_rot_ref_bmi>;
 			drv-data = <&bmi323_data>;
+		};
+	};
+
+	motionsense-sensor-alt {
+		alt_lid_accel: alt-lid-accel {
+			compatible = "cros-ec,lsm6dsm-accel";
+			status = "okay";
+
+			active-mask = "SENSOR_ACTIVE_S0_S3";
+			location = "MOTIONSENSE_LOC_LID";
+			mutex = <&lid_mutex_lsm6dsm>;
+			port = <&i2c_sensor>;
+			rot-standard-ref = <&lid_rot_ref_lsm6dsm>;
+			drv-data = <&lsm6dsm_data_accel>;
+			alternate-for = <&lid_accel>;
+			alternate-ssfc-indicator = <&lid_sensor_1>;
+			configs {
+				compatible =
+					"cros-ec,motionsense-sensor-config";
+			};
+		};
+
+		alt_lid_gyro: alt-lid-gyro {
+			compatible = "cros-ec,lsm6dsm-gyro";
+			status = "okay";
+
+			active-mask = "SENSOR_ACTIVE_S0_S3";
+			location = "MOTIONSENSE_LOC_LID";
+			mutex = <&lid_mutex_lsm6dsm>;
+			port = <&i2c_sensor>;
+			rot-standard-ref = <&lid_rot_ref_lsm6dsm>;
+			default-range = <(1000 | ROUND_UP_FLAG)>; /* dps */
+			drv-data = <&lsm6dsm_data_gyro>;
+			alternate-for = <&lid_gyro>;
+			alternate-ssfc-indicator = <&lid_sensor_1>;
 		};
 	};
 
@@ -232,7 +308,6 @@
 
 		port0@0{
 			/delete-property/ bc12;
-			ppc_alt = <&ppc_port0>;
 			usb-mux-chain-0{
 				usb-muxes = <&ps8743_mux_1 &virtual_mux_0>;
 			};
@@ -287,268 +362,13 @@
 			sensor = <&charger_bc12_port1>;
 		};
 	};
-	/*
-	 * The hardware design sets PWM0 as the amber light,
-	 * PWM1 as the white light and PWM2 as none.
-	 */
-	pwmleds{
-		led_power_white: ec_led1_odl {
-			pwms = <&pwm2 PWM_CHANNEL_2 PWM_HZ(324) PWM_POLARITY_INVERTED>;
-		};
-		led_battery_amber: ec_led2_odl {
-			pwms = <&pwm0 PWM_CHANNEL_0 PWM_HZ(324) PWM_POLARITY_INVERTED>;
-		};
-		led_battery_white: ec_led3_odl {
-			pwms = <&pwm1 PWM_CHANNEL_1 PWM_HZ(324) PWM_POLARITY_INVERTED>;
-		};
-	};
-
-	pwm-led-pins {
-		power_led: power-led {
-			led-id = "EC_LED_ID_POWER_LED";
-			led-pwms = <&led_power_white>;
-
-			/* Overwrite Power LED white to off */
-			color-power-white {
-				led-color = "LED_WHITE";
-				led-values = <0>;
-			};
-		};
-	};
-
-	/delete-node/ led-colors;
-	led-colors {
-		compatible = "cros-ec,led-policy";
-
-		sysrq-alias = "EC_LED_ID_BATTERY_LED";
-		sysrq-led-control-color = "LED_WHITE";
-
-		recovery-hw-reinit-alias = "EC_LED_ID_BATTERY_LED";
-		recovery-hw-reinit-led-control-color = "LED_AMBER";
-
-		/* WYRDEER LED bat charge */
-		bat-power-state-charge-lvl-1 {
-			charge-state = "LED_PWRS_CHARGE";
-			/* Battery percent range (>= Empty, <= 94%) */
-			batt-lvl = <BATTERY_LEVEL_EMPTY 94>;
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-				color-0 {
-					led-color = "LED_AMBER";
-				};
-			};
-		};
-
-		bat-power-state-charge-lvl-2 {
-			charge-state = "LED_PWRS_CHARGE";
-			/* Battery percent range (>= 95) */
-			batt-lvl = <95 100>;
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-				color-0 {
-					led-color = "LED_WHITE";
-				};
-			};
-		};
-
-		bat-power-state-charge-near-full {
-			charge-state = "LED_PWRS_CHARGE_NEAR_FULL";
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_WHITE";
-				};
-			};
-		};
-
-		bat-power-state-charge-idle {
-			charge-state = "LED_PWRS_IDLE";
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_WHITE";
-				};
-			};
-		};
-
-		bat-power-state-charge-forced-idle {
-			charge-state = "LED_PWRS_FORCED_IDLE";
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_WHITE";
-				};
-			};
-		};
-
-		/* WYRDEER LED bat discharge */
-		bat-power-state-discharge {
-			charge-state = "LED_PWRS_DISCHARGE";
-			chipset-state = "POWER_S0";
-			/* Battery percent range (>= 11%, <= Full) */
-			batt-lvl = <(BATTERY_LEVEL_LOW + 1) BATTERY_LEVEL_FULL>;
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_WHITE";
-				};
-			};
-		};
-
-		bat-power-state-discharge-s3 {
-			charge-state = "LED_PWRS_DISCHARGE";
-			chipset-state = "POWER_S3";
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_WHITE";
-					period-ms = <1000>;
-				};
-
-				color-1 {
-					led-color = "LED_OFF";
-					period-ms = <3000>;
-				};
-			};
-		};
-
-		bat-power-state-discharge-s5 {
-			charge-state = "LED_PWRS_DISCHARGE";
-			chipset-state = "POWER_S5";
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_OFF";
-				};
-			};
-		};
-
-		/* WYRDEER LED low bat discharge */
-		bat-power-state-discharge-s0-bat-low {
-			charge-state = "LED_PWRS_DISCHARGE";
-			chipset-state = "POWER_S0";
-			batt-lvl = <BATTERY_LEVEL_EMPTY BATTERY_LEVEL_LOW>;
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_AMBER";
-					period-ms = <1000>;
-				};
-
-				color-1 {
-					led-color = "LED_OFF";
-					period-ms = <3000>;
-				};
-			};
-		};
-
-		/* WYRDEER LED bat error */
-		bat-power-state-error {
-			charge-state = "LED_PWRS_ERROR";
-			chipset-state = "POWER_S0";
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_AMBER";
-					period-ms = <1000>;
-				};
-
-				color-1 {
-					led-color = "LED_OFF";
-					period-ms = <1000>;
-				};
-			};
-		};
-
-		bat-power-state-error-s3 {
-			charge-state = "LED_PWRS_ERROR";
-			chipset-state = "POWER_S3";
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_WHITE";
-					period-ms = <1000>;
-				};
-
-				color-1 {
-					led-color = "LED_OFF";
-					period-ms = <3000>;
-				};
-			};
-		};
-
-		bat-power-state-error-s5 {
-			charge-state = "LED_PWRS_ERROR";
-			chipset-state = "POWER_S5";
-
-			battery-led {
-				led-id = "EC_LED_ID_BATTERY_LED";
-
-				color-0 {
-					led-color = "LED_OFF";
-				};
-			};
-		};
-
-		pwr-power-state-off-s3 {
-			chipset-state = "POWER_S3";
-
-			power-led {
-				led-id = "EC_LED_ID_POWER_LED";
-				color-0 {
-					led-color = "LED_OFF";
-				};
-			};
-		};
-
-		pwr-power-state-off-s5 {
-			chipset-state = "POWER_S5";
-
-			power-led {
-				led-id = "EC_LED_ID_POWER_LED";
-				color-0 {
-					led-color = "LED_OFF";
-				};
-			};
-		};
-
-		pwr-power-state-on {
-			chipset-state = "POWER_S0";
-
-			power-led {
-				led-id = "EC_LED_ID_POWER_LED";
-				color-0 {
-					led-color = "LED_WHITE";
-				};
-			};
-		};
-	};
 };
 
 &i2c0{
 	charger_bc12_port1: rt9490@53{
 		compatible = "richtek,rt9490";
 		thermistor = <&thermistor_rt9490>;
+		eoc-current = <120>;
 		/delete-property/ irq;
 	};
 };
@@ -558,10 +378,8 @@
 		compatible = "parade,ps8743";
 		reg = <0x10>;
 	};
-	rt1739@70{
-		compatible = "richtek,rt1739-ppc";
-	};
-	ppc_port0: syv682x@40 {
+	/delete-node/ rt1739@70;
+	bc12_ppc_port0: syv682x@40 {
 		compatible = "silergy,syv682x";
 		status = "okay";
 		reg = <0x40>;

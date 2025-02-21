@@ -161,7 +161,7 @@ test_export_static void fan_init(void)
 					 * 100ms
 					 */
 					hook_call_deferred(&set_fan_status_data,
-							   100 * MSEC);
+							   100 * USEC_PER_MSEC);
 					break;
 				}
 			}

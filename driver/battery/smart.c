@@ -298,7 +298,7 @@ int battery_time_to_full(int *minutes)
 }
 
 /* Read battery status */
-int battery_status(int *status)
+test_mockable int battery_status(int *status)
 {
 	return sb_read(SB_BATTERY_STATUS, status);
 }

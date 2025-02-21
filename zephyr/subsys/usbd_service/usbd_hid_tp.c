@@ -464,7 +464,7 @@ static void hid_tp_proc_queue(void)
 	}
 
 	mutex_unlock(touchpad.report_queue_mutex);
-	hook_call_deferred(&hid_tp_proc_queue_data, 1 * MSEC);
+	hook_call_deferred(&hid_tp_proc_queue_data, 1 * USEC_PER_MSEC);
 }
 
 __maybe_unused static void tp_msg_deferred(void)

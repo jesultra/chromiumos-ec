@@ -105,6 +105,13 @@ if(CONFIG_TEST_NISSA_GOTHRAX)
     )
 endif()
 
+target_sources_ifdef(
+        CONFIG_TEST_GOTHRAX_SUB_BOARD
+        app PRIVATE
+        src/gothrax_sub_board.c
+        src/log_module.c
+        ${PLATFORM_EC_PROGRAM_DIR}/nissa/gothrax/src/sub_board.c)
+
 if(CONFIG_TEST_NISSA_PUJJO)
     target_sources(
             app PRIVATE
@@ -259,6 +266,23 @@ if(CONFIG_TEST_NISSA_QUANDISO)
     )
 endif()
 
+if(CONFIG_TEST_NISSA_QUANDISO2)
+    target_compile_definitions(app PRIVATE CHARGER_PRIMARY=0 CHARGER_SECONDARY=1)
+    zephyr_include_directories("${PLATFORM_EC}/zephyr/shim/chip/it8xxx2/include")
+    target_sources(
+            app PRIVATE
+            src/quandiso2.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/quandiso2/src/board.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/quandiso2/src/charger.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/quandiso2/src/fan.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/quandiso2/src/keyboard.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/quandiso2/src/led.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/quandiso2/src/sub_board.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/quandiso2/src/thermal.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/quandiso2/src/usbc.c
+    )
+endif()
+
 if(CONFIG_TEST_NISSA_YAVILLA)
     target_compile_definitions(app PRIVATE CHARGER_PRIMARY=0 CHARGER_SECONDARY=1)
     zephyr_include_directories("${PLATFORM_EC}/zephyr/shim/chip/it8xxx2/include")
@@ -283,6 +307,9 @@ if(CONFIG_TEST_NISSA_GLASSWAY)
             ${PLATFORM_EC_PROGRAM_DIR}/nissa/glassway/src/sub_board.c
             ${PLATFORM_EC_PROGRAM_DIR}/nissa/glassway/src/usbc.c
             ${PLATFORM_EC_PROGRAM_DIR}/nissa/glassway/src/charger.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/glassway/src/board.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/glassway/src/usb_mux_config.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/glassway/src/keyboard.c
     )
 endif()
 
@@ -324,5 +351,16 @@ if(CONFIG_TEST_NISSA_TELIKS)
             src/teliks.c
             ${PLATFORM_EC_PROGRAM_DIR}/nissa/teliks/src/board.c
             ${PLATFORM_EC_PROGRAM_DIR}/nissa/teliks/src/keyboard_customization.c
+    )
+endif()
+
+if(CONFIG_TEST_NISSA_DIRKS)
+    zephyr_include_directories("${PLATFORM_EC_PROGRAM_DIR}/nissa/dirks/include")
+    target_sources(
+            app PRIVATE
+            src/dirks.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/dirks/src/led.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/dirks/src/hdmi.c
+            ${PLATFORM_EC_PROGRAM_DIR}/nissa/dirks/src/usbc.c
     )
 endif()

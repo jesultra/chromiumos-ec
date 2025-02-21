@@ -46,6 +46,8 @@ static uint32_t board_version = PREINIT_VERSION;
 static struct gpio_callback cs_callback;
 static const struct gpio_dt_spec cs_gpio =
 	GPIO_DT_SPEC_GET(DT_NODELABEL(shi0), cs_gpios);
+static void ap_wakeup_isr(const struct device *port, struct gpio_callback *cb,
+			  gpio_port_pins_t pins);
 
 /*
  * Enables the interrupt on the CS_L pin. This is done with a deferred call
@@ -55,6 +57,11 @@ static void enable_cs_interrupt(void)
 {
 	gpio_add_callback_dt(&cs_gpio, &cs_callback);
 	gpio_pin_interrupt_configure_dt(&cs_gpio, GPIO_INT_EDGE_BOTH);
+
+	/* trigger the callback if CS_L is already low at this point */
+	if (!gpio_pin_get_dt(&cs_gpio)) {
+		ap_wakeup_isr(cs_gpio.port, &cs_callback, cs_gpio.pin);
+	}
 }
 DECLARE_DEFERRED(enable_cs_interrupt);
 
@@ -67,6 +74,21 @@ static void disable_cs_interrupt(void)
 	gpio_pin_interrupt_configure_dt(&cs_gpio, GPIO_INT_EDGE_FALLING);
 }
 
+static void ap_wakeup_isr_debounce(void)
+{
+	const struct gpio_dt_spec *s3_indicator_l =
+		GPIO_DT_FROM_NODELABEL(gpio_ap_in_sleep_l);
+	int val = gpio_pin_get_dt(&cs_gpio);
+
+	if (val) {
+		disable_cs_interrupt();
+		gpio_pin_configure_dt(s3_indicator_l, GPIO_INPUT);
+	}
+}
+
+DECLARE_DEFERRED(ap_wakeup_isr_debounce);
+
+#define AP_WAKEUP_ISR_DEBOUNCE_T (2 * USEC_PER_MSEC)
 /*
  * Interrupt handler for the CS_L pin. This function is called when the AP
  * enters or exits S3 sleep.
@@ -79,10 +101,16 @@ static void ap_wakeup_isr(const struct device *port, struct gpio_callback *cb,
 	int val = gpio_pin_get_dt(&cs_gpio);
 
 	if (val) {
-		disable_cs_interrupt();
-		gpio_pin_configure_dt(s3_indicator_l, GPIO_INPUT);
+		/*
+		 * (b/354870788#comment88) Workaround for the unepxected RTC
+		 * wake-up from AP. This This should be reverted once resolved
+		 * in the SPM.
+		 **/
+		hook_call_deferred(&ap_wakeup_isr_debounce_data,
+				   AP_WAKEUP_ISR_DEBOUNCE_T);
 	} else {
 		gpio_pin_configure_dt(s3_indicator_l, GPIO_OUTPUT_LOW);
+		hook_call_deferred(&ap_wakeup_isr_debounce_data, -1);
 	}
 }
 
@@ -152,7 +180,8 @@ __override void board_handle_host_sleep_event(enum host_sleep_event state)
 		 * Delay 50 ms to enable the IRQ to avoid being triggered by the
 		 * ongoing SPI transaction.
 		 */
-		hook_call_deferred(&enable_cs_interrupt_data, 50 * MSEC);
+		hook_call_deferred(&enable_cs_interrupt_data,
+				   50 * USEC_PER_MSEC);
 	}
 }
 

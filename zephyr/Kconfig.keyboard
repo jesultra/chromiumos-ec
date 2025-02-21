@@ -143,6 +143,7 @@ config PLATFORM_EC_KEYBOARD_ROW_VOL_UP
 	default 0
 	range 0 7
 	depends on !PLATFORM_EC_KEYBOARD_CUSTOMIZATION
+        depends on PLATFORM_EC_KEYBOARD_RUNTIME_KEYS
 	help
 	  Row position of volume-up key
 
@@ -151,6 +152,7 @@ config PLATFORM_EC_KEYBOARD_COL_VOL_UP
 	default 4
 	range 0 17
 	depends on !PLATFORM_EC_KEYBOARD_CUSTOMIZATION
+        depends on PLATFORM_EC_KEYBOARD_RUNTIME_KEYS
 	help
 	  Column position of volume-up key
 

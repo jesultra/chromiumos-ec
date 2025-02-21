@@ -138,6 +138,11 @@ void uart_shell_rx_bypass(bool enable)
 	rx_bypass_enabled = enable;
 }
 
+int uart_init_done(void)
+{
+	return uart_shell_dev->state->initialized;
+}
+
 int uart_shell_stop(void)
 {
 	struct k_poll_event event = K_POLL_EVENT_INITIALIZER(
@@ -475,6 +480,12 @@ static void handle_sprintf_rv(int rv, size_t *len)
 	}
 }
 
+static bool shell_is_active(void)
+{
+	return shell_zephyr != NULL &&
+	       shell_zephyr->ctx->state == SHELL_STATE_ACTIVE;
+}
+
 static void zephyr_print(const char *buff, size_t size)
 {
 	/*
@@ -487,8 +498,7 @@ static void zephyr_print(const char *buff, size_t size)
 	 */
 	bool in_isr = k_is_in_isr();
 
-	if (in_isr || shell_stopped ||
-	    shell_zephyr->ctx->state != SHELL_STATE_ACTIVE) {
+	if (in_isr || shell_stopped || !shell_is_active()) {
 		if (IS_ENABLED(CONFIG_PLATFORM_EC_ISR_CONSOLE_OUTPUT) ||
 		    !in_isr) {
 			printk("!%s", buff);

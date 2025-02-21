@@ -82,13 +82,40 @@ static void c0_ccsbu_ovp_interrupt(enum gpio_signal s)
 	pd_handle_cc_overvoltage(0);
 }
 
-/* for G2176RB1U issue */
-static void backlight_interrupt(enum gpio_signal s)
+/* for G2176RB1U issue WA */
+static void bl_pg_handle(void)
 {
-	gpio_set_level(GPIO_EC_PPVAR_BLPWR, 0);
-	crec_usleep(10 * MSEC);
 	gpio_set_level(GPIO_EC_PPVAR_BLPWR, 1);
+	crec_msleep(50);
+	if (gpio_get_level(GPIO_VBL_PG_OD)) {
+		gpio_enable_interrupt(GPIO_VBL_PG_OD);
+	}
 }
+DECLARE_DEFERRED(bl_pg_handle);
+
+static void bl_pg_interrupt(enum gpio_signal s)
+{
+	/* G2176RB1U recovery action */
+	if (!gpio_get_level(GPIO_VBL_PG_OD)) {
+		gpio_disable_interrupt(GPIO_VBL_PG_OD);
+		gpio_set_level(GPIO_EC_PPVAR_BLPWR, 0);
+		hook_call_deferred(&bl_pg_handle_data, 10 * MSEC);
+	}
+}
+
+static void bl_pg_startup(void)
+{
+	gpio_set_level(GPIO_EC_PPVAR_BLPWR, 1);
+	gpio_enable_interrupt(GPIO_VBL_PG_OD);
+}
+DECLARE_HOOK(HOOK_CHIPSET_STARTUP, bl_pg_startup, HOOK_PRIO_DEFAULT);
+
+static void bl_pg_shutdown(void)
+{
+	gpio_disable_interrupt(GPIO_VBL_PG_OD);
+	gpio_set_level(GPIO_EC_PPVAR_BLPWR, 0);
+}
+DECLARE_HOOK(HOOK_CHIPSET_HARD_OFF, bl_pg_shutdown, HOOK_PRIO_DEFAULT);
 
 static void check_audio_jack(void);
 DECLARE_DEFERRED(check_audio_jack);
@@ -258,10 +285,6 @@ int board_set_active_charge_port(int port)
 
 	CPRINTS("New chg p%d", port);
 
-	/* for als function */
-	if (!gpio_get_level(GPIO_DOOR_OPEN_EC) && als_enable_status())
-		return EC_SUCCESS;
-
 	/* Disable all ports. */
 	if (port == CHARGE_PORT_NONE) {
 		tcpc_write(0, TCPC_REG_COMMAND, TCPC_REG_COMMAND_SNK_CTRL_LOW);
@@ -389,7 +412,6 @@ void board_init(void)
 		hook_call_deferred(&check_c0_line_data, 0);
 
 	gpio_enable_interrupt(GPIO_USB_C0_CCSBU_OVP_ODL);
-	gpio_enable_interrupt(GPIO_VBL_PD_OD);
 	gpio_enable_interrupt(GPIO_JACK_DETECT);
 
 	/* Turn on 5V if the system is on, otherwise turn it off */
@@ -456,3 +478,40 @@ __override const struct svdm_response svdm_rsp = {
 	 * Applicability of Structured VDM Commands.
 	 */
 };
+
+static void awasuki_charge_mode_setting(void)
+{
+	int reg = 0;
+
+	if (extpower_is_present()) {
+		if (get_chg_ctrl_mode() == CHARGE_CONTROL_IDLE) {
+			if (i2c_read16(I2C_PORT_USB_C0, I2C_ADDR_CHARGER_FLAGS,
+				       ISL923X_REG_CONTROL0,
+				       &reg) == EC_SUCCESS) {
+				if (!(reg & RAA489000_C0_VSYS_OFFSET)) {
+					reg |= RAA489000_C0_VSYS_OFFSET;
+					if (i2c_write16(I2C_PORT_USB_C0,
+							I2C_ADDR_CHARGER_FLAGS,
+							ISL923X_REG_CONTROL0,
+							reg))
+						CPRINTF("C0 ISL9238_REG_CONTROL0 write fail!");
+				}
+			}
+		} else {
+			if (i2c_read16(I2C_PORT_USB_C0, I2C_ADDR_CHARGER_FLAGS,
+				       ISL923X_REG_CONTROL0,
+				       &reg) == EC_SUCCESS) {
+				if (reg & RAA489000_C0_VSYS_OFFSET) {
+					reg &= ~RAA489000_C0_VSYS_OFFSET;
+					if (i2c_write16(I2C_PORT_USB_C0,
+							I2C_ADDR_CHARGER_FLAGS,
+							ISL923X_REG_CONTROL0,
+							reg))
+						CPRINTF("C0 ISL9238_REG_CONTROL0 write fail!");
+				}
+			}
+		}
+	}
+}
+DECLARE_HOOK(HOOK_BATTERY_SOC_CHANGE, awasuki_charge_mode_setting,
+	     HOOK_PRIO_DEFAULT);

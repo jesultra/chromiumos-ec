@@ -37,7 +37,7 @@
 		virtual-dock-det-n {
 			gpios = <&pca95xx_1 7  GPIO_INPUT>;
 		};
-		virtual-battery {
+		ioex-virtual-battery {
 			gpios = <&pca95xx_1 6  GPIO_INPUT>;
 		};
 		ec-m2-ssd-pln-delay {

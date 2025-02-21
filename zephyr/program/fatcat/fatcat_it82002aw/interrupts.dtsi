@@ -7,15 +7,25 @@
 	gpio-interrupts {
 		compatible = "cros-ec,gpio-interrupts";
 
-		int_ioex_kbd_intr_n: ioex_kbd_intr_n {
-			irq-pin = <&gpio_c_ioex_kbd_intr_r>;
-			flags = <GPIO_INT_EDGE_FALLING>;
-			handler = "io_expander_it8801_interrupt";
+		int_dc_jack_present: dc_jack_present {
+			irq-pin = <&std_adp_prsnt>;
+			flags = <GPIO_INT_EDGE_BOTH>;
+			handler = "board_dc_jack_interrupt";
 		};
 		int_power_button: power_button {
 			irq-pin = <&pwrbtn>;
 			flags = <GPIO_INT_EDGE_BOTH>;
 			handler = "power_button_interrupt";
+		};
+		int_vol_up: vol_up {
+			irq-pin = <&vol_up_ec>;
+			flags = <GPIO_INT_EDGE_BOTH>;
+			handler = "button_interrupt";
+		};
+		int_vol_dn: vol_dn {
+			irq-pin = <&vol_dn_ec>;
+			flags = <GPIO_INT_EDGE_BOTH>;
+			handler = "button_interrupt";
 		};
 	};
 };

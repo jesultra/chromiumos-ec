@@ -51,6 +51,9 @@ test_export_static int eppm_init(void)
 		drv->get_active_port_count(pdc_dev));
 	ucsi_ppm_register_notify(ppm_dev, opm_notify, NULL);
 
+	/* Signal the OPM that the PPM just initialized */
+	pd_send_host_event(PD_EVENT_INIT);
+
 	return 0;
 }
 SYS_INIT(eppm_init, APPLICATION, 99);

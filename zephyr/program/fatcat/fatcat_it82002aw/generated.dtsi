@@ -10,6 +10,9 @@
 	named-adc-channels {
 		compatible = "named-adc-channels";
 
+		adc_c_chrg_amon_bmon_r: c_chrg_amon_bmon_r {
+			io-channels = <&adc0 1>;
+		};
 		adc_vr_temp_v_1p05_pch_ec_r: vr_temp_v_1p05_pch_ec_r {
 			io-channels = <&adc0 2>;
 		};
@@ -32,6 +35,7 @@
 		};
 		gpio_bat_det_r: bat_det_r {
 			gpios = <&gpioe 5 (GPIO_INPUT)>;
+			enum-name = "GPIO_BATT_PRES_ODL";
 		};
 		gpio_bga_pina10: bga_pina10 {
 			gpios = <&gpiof 2 (GPIO_INPUT)>;
@@ -64,11 +68,8 @@
 		gpio_cpu_c10_gate_r: cpu_c10_gate_r {
 			gpios = <&gpioj 0 (GPIO_INPUT)>;
 		};
-		gpio_c_chrg_amon_bmon_r: c_chrg_amon_bmon_r {
-			gpios = <&gpioi 1 (GPIO_INPUT)>;
-		};
 		gpio_c_ec_pdb_ctrl_r: c_ec_pdb_ctrl_r {
-			gpios = <&gpioh 0 (GPIO_OUTPUT | GPIO_ACTIVE_HIGH)>;
+			gpios = <&gpioh 0 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>;
 		};
 		gpio_c_ec_wp_odl_r: c_ec_wp_odl_r {
 			gpios = <&gpiob 5 (GPIO_INPUT | GPIO_ACTIVE_LOW)>;
@@ -84,6 +85,7 @@
 		};
 		gpio_ec_ds3_r: ec_ds3_r {
 			gpios = <&gpioi 7 (GPIO_INPUT)>;
+			enum-name = "GPIO_TEMP_SENSOR_POWER";
 		};
 		gpio_ec_fan_pwr_disable_n_r: ec_fan_pwr_disable_n_r {
 			gpios = <&gpioc 4 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>;
@@ -97,20 +99,17 @@
 		gpio_en_slp_z_r: en_slp_z_r {
 			gpios = <&gpiod 4 (GPIO_OUTPUT | GPIO_ACTIVE_HIGH)>;
 		};
-		gpio_espi_io2_r: espi_io2_r {
-			gpios = <&gpiom 2 (GPIO_INPUT)>;
-		};
 		gpio_fmiso_r: fmiso_r {
-			gpios = <&gpiog 5 (GPIO_INPUT)>;
+			gpios = <&gpiog 5 (GPIO_INPUT | GPIO_PULL_UP)>;
 		};
 		gpio_fmosi_r: fmosi_r {
-			gpios = <&gpiog 4 (GPIO_INPUT)>;
+			gpios = <&gpiog 4 (GPIO_INPUT | GPIO_PULL_DOWN)>;
 		};
 		gpio_fsce_l_r: fsce_l_r {
-			gpios = <&gpiog 3 (GPIO_INPUT)>;
+			gpios = <&gpiog 3 (GPIO_INPUT | GPIO_PULL_UP)>;
 		};
 		gpio_fsck_r: fsck_r {
-			gpios = <&gpiog 7 (GPIO_INPUT)>;
+			gpios = <&gpiog 7 (GPIO_INPUT | GPIO_PULL_DOWN)>;
 		};
 		gpio_gpg0: gpg0 {
 			gpios = <&gpiog 0 (GPIO_INPUT)>;
@@ -124,20 +123,14 @@
 		gpio_io_exp_int_mecc_r: io_exp_int_mecc_r {
 			gpios = <&gpioh 5 (GPIO_INPUT | GPIO_ACTIVE_LOW)>;
 		};
-		gpio_kso16_r: kso16_r {
-			gpios = <&gpioc 3 (GPIO_INPUT)>;
-		};
-		gpio_kso17_r: kso17_r {
-			gpios = <&gpioc 5 (GPIO_INPUT)>;
-		};
 		gpio_pch_pwrok_ec_r: pch_pwrok_ec_r {
-			gpios = <&gpioj 1 (GPIO_INPUT)>;
+			gpios = <&gpioj 1 (GPIO_OUTPUT | GPIO_ACTIVE_HIGH | GPIO_OUTPUT_INIT_LOW)>;
 		};
 		gpio_pch_slp_s0_n_r: pch_slp_s0_n_r {
 			gpios = <&gpioj 5 (GPIO_INPUT)>;
 		};
 		gpio_pm_pwrbtn_n_r: pm_pwrbtn_n_r {
-			gpios = <&gpioe 3 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>;
+			gpios = <&gpioe 3 (GPIO_OUTPUT | GPIO_OPEN_DRAIN | GPIO_ACTIVE_LOW)>;
 			enum-name = "GPIO_PCH_PWRBTN_L";
 		};
 		gpio_pm_rsmrst_n_r: pm_rsmrst_n_r {
@@ -156,16 +149,17 @@
 			gpios = <&gpiof 0 (GPIO_INPUT)>;
 		};
 		gpio_rst_push_n_d_r: rst_push_n_d_r {
-			gpios = <&gpioj 7 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>;
+			gpios = <&gpioj 7 (GPIO_OUTPUT | GPIO_OPEN_DRAIN | GPIO_ACTIVE_LOW)>;
 		};
 		gpio_smc_extsmi_n_c_ec_pch_int_odl_r: smc_extsmi_n_c_ec_pch_int_odl_r {
-			gpios = <&gpioj 4 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>;
+			gpios = <&gpioj 4 (GPIO_OUTPUT | GPIO_OPEN_DRAIN | GPIO_ACTIVE_LOW)>;
 		};
 		gpio_smc_lid_r: smc_lid_r {
 			gpios = <&gpiod 3 (GPIO_INPUT)>;
+			enum-name = "GPIO_LID_OPEN";
 		};
 		gpio_smc_wake_sci_n_r: smc_wake_sci_n_r {
-			gpios = <&gpiob 6 (GPIO_INPUT)>;
+			gpios = <&gpiob 6 (GPIO_OUTPUT | GPIO_OPEN_DRAIN | GPIO_ACTIVE_LOW)>;
 		};
 		gpio_std_adpt_cntrl_gpio_r: std_adpt_cntrl_gpio_r {
 			gpios = <&gpioa 7 (GPIO_OUTPUT | GPIO_ACTIVE_HIGH)>;
@@ -181,12 +175,14 @@
 		};
 		gpio_volume_up_r: volume_up_r {
 			gpios = <&gpioa 4 (GPIO_INPUT)>;
+			enum-name = "GPIO_VOLUME_UP_L";
 		};
 		gpio_vol_dn_ec_r: vol_dn_ec_r {
 			gpios = <&gpioa 0 (GPIO_INPUT)>;
+			enum-name = "GPIO_VOLUME_DOWN_L";
 		};
 		gpio_wc_usbc_pd_alrt_aic1_r: wc_usbc_pd_alrt_aic1_r {
-			gpios = <&gpiof 5 (GPIO_INPUT)>;
+			gpios = <&gpiof 5 (GPIO_INPUT | GPIO_ACTIVE_LOW)>;
 		};
 		gpio_wc_usbc_pd_alrt_aic2_r: wc_usbc_pd_alrt_aic2_r {
 			gpios = <&gpioj 6 (GPIO_INPUT | GPIO_ACTIVE_LOW)>;
@@ -219,7 +215,8 @@
 
 &adc0 {
 	status = "okay";
-	pinctrl-0 = <&adc0_ch2_gpi2_default
+	pinctrl-0 = <&adc0_ch1_gpi1_default
+		&adc0_ch2_gpi2_default
 		&adc0_ch3_gpi3_default
 		&adc0_ch4_gpi4_default
 		&adc0_ch5_gpi5_default>;
@@ -311,6 +308,8 @@
 		&kso13_default
 		&kso14_default
 		&kso15_default
+		&kso16_default
+		&kso17_default
 		&kso1_default
 		&kso3_default
 		&kso4_default

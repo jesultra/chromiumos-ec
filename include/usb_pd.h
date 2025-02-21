@@ -111,6 +111,10 @@ enum pdo_peak_overcurrent {
 	PDO_PEAK_OVERCURR_150,
 };
 
+/* Note - macros for extracting PDO voltage, current, and power fields are
+ * provided in ec_commands.h.
+ */
+
 #define PDO_FIXED_SUSPEND BIT(28) /* USB Suspend supported */
 /* Higher capability in vSafe5V sink PDO */
 #define PDO_FIXED_SNK_HIGHER_CAP BIT(28)
@@ -120,35 +124,32 @@ enum pdo_peak_overcurrent {
 #define PDO_FIXED_FRS_CURR_3A0_AT_5V (3 << 23)
 #define PDO_FIXED_EPR_MODE_CAPABLE BIT(23)
 #define PDO_FIXED_PEAK_CURR(peak) ((peak & 3) << 20) /* Peak current */
-#define PDO_FIXED_VOLT(mv) (((mv) / 50) << 10) /* Voltage in 50mV units */
-#define PDO_FIXED_CURR(ma) (((ma) / 10) << 0) /* Max current in 10mA units */
-#define PDO_FIXED_GET_VOLT(pdo) (((pdo >> 10) & 0x3FF) * 50)
-#define PDO_FIXED_GET_CURR(pdo) ((pdo & 0x3FF) * 10)
+#define PDO_FIXED_SET_VOLTAGE(mv) \
+	(((mv) / 50) << 10) /* Voltage in 50mV units */
+#define PDO_FIXED_SET_CURRENT(ma) \
+	(((ma) / 10) << 0) /* Max current in 10mA units */
 #define PDO_FIXED_GET_DRP BIT(29)
 #define PDO_FIXED_GET_UNCONSTRAINED_PWR BIT(27)
 #define PDO_FIXED_GET_USB_COMM_CAPABLE BIT(26)
 
 #define PDO_FIXED(mv, ma, flags) \
-	(PDO_FIXED_VOLT(mv) | PDO_FIXED_CURR(ma) | (flags))
+	(PDO_FIXED_SET_VOLTAGE(mv) | PDO_FIXED_SET_CURRENT(ma) | (flags))
 
-#define PDO_VAR_MAX_VOLT(mv) ((((mv) / 50) & 0x3FF) << 20)
-#define PDO_VAR_MIN_VOLT(mv) ((((mv) / 50) & 0x3FF) << 10)
-#define PDO_VAR_OP_CURR(ma) ((((ma) / 10) & 0x3FF) << 0)
+#define PDO_VAR_SET_MAX_VOLTAGE(mv) ((((mv) / 50) & 0x3FF) << 20)
+#define PDO_VAR_SET_MIN_VOLTAGE(mv) ((((mv) / 50) & 0x3FF) << 10)
+#define PDO_VAR_SET_OP_CURRENT(ma) ((((ma) / 10) & 0x3FF) << 0)
 
-#define PDO_VAR(min_mv, max_mv, op_ma)                         \
-	(PDO_VAR_MIN_VOLT(min_mv) | PDO_VAR_MAX_VOLT(max_mv) | \
-	 PDO_VAR_OP_CURR(op_ma) | PDO_TYPE_VARIABLE)
+#define PDO_VAR(min_mv, max_mv, op_ma)                                       \
+	(PDO_VAR_SET_MIN_VOLTAGE(min_mv) | PDO_VAR_SET_MAX_VOLTAGE(max_mv) | \
+	 PDO_VAR_SET_OP_CURRENT(op_ma) | PDO_TYPE_VARIABLE)
 
-#define PDO_BATT_MAX_VOLT(mv) ((((mv) / 50) & 0x3FF) << 20)
-#define PDO_BATT_MIN_VOLT(mv) ((((mv) / 50) & 0x3FF) << 10)
-#define PDO_BATT_OP_POWER(mw) ((((mw) / 250) & 0x3FF) << 0)
-#define PDO_BATT_GET_MAX_VOLT(pdo) (((pdo >> 20) & 0x3FF) * 50)
-#define PDO_BATT_GET_MIN_VOLT(pdo) (((pdo >> 10) & 0x3FF) * 50)
-#define PDO_BATT_GET_OP_POWER(pdo) ((pdo & 0x3FF) * 250)
+#define PDO_BATT_SET_MAX_VOLTAGE(mv) ((((mv) / 50) & 0x3FF) << 20)
+#define PDO_BATT_SET_MIN_VOLTAGE(mv) ((((mv) / 50) & 0x3FF) << 10)
+#define PDO_BATT_SET_MAX_POWER(mw) ((((mw) / 250) & 0x3FF) << 0)
 
-#define PDO_BATT(min_mv, max_mv, op_mw)                          \
-	(PDO_BATT_MIN_VOLT(min_mv) | PDO_BATT_MAX_VOLT(max_mv) | \
-	 PDO_BATT_OP_POWER(op_mw) | PDO_TYPE_BATTERY)
+#define PDO_BATT(min_mv, max_mv, op_mw)                                        \
+	(PDO_BATT_SET_MIN_VOLTAGE(min_mv) | PDO_BATT_SET_MAX_VOLTAGE(max_mv) | \
+	 PDO_BATT_SET_MAX_POWER(op_mw) | PDO_TYPE_BATTERY)
 
 /* Programmable power supply values for augmented PDOs. */
 enum pdo_augmented_pps {
@@ -159,13 +160,13 @@ enum pdo_augmented_pps {
 #define PDO_AUG_PPS(pps) ((pps & 3) << 28)
 #define PDO_AUG_GET_PPS(pdo) ((pdo >> 28) & 0x3)
 
-#define PDO_AUG_MAX_VOLT(mv) ((((mv) / 100) & 0xFF) << 17)
-#define PDO_AUG_MIN_VOLT(mv) ((((mv) / 100) & 0xFF) << 8)
-#define PDO_AUG_MAX_CURR(ma) ((((ma) / 50) & 0x7F) << 0)
+#define PDO_AUG_SET_MAX_VOLTAGE(mv) ((((mv) / 100) & 0xFF) << 17)
+#define PDO_AUG_SET_MIN_VOLTAGE(mv) ((((mv) / 100) & 0xFF) << 8)
+#define PDO_AUG_SET_MAX_CURRENT(ma) ((((ma) / 50) & 0x7F) << 0)
 
-#define PDO_AUG(min_mv, max_mv, max_ma)                        \
-	(PDO_AUG_MIN_VOLT(min_mv) | PDO_AUG_MAX_VOLT(max_mv) | \
-	 PDO_AUG_MAX_CURR(max_ma) | PDO_TYPE_AUGMENTED)
+#define PDO_AUG(min_mv, max_mv, max_ma)                                      \
+	(PDO_AUG_SET_MIN_VOLTAGE(min_mv) | PDO_AUG_SET_MAX_VOLTAGE(max_mv) | \
+	 PDO_AUG_SET_MAX_CURRENT(max_ma) | PDO_TYPE_AUGMENTED)
 
 #define PDO_AUG_EPR_MAX_VOLT(mv) ((((mv) / 100) & 0x1FF) << 17)
 #define PDO_AUG_EPR_MIN_VOLT(mv) ((((mv) / 100) & 0xFF) << 8)
@@ -293,7 +294,11 @@ enum pdo_augmented_pps {
 #define PD_T_BIST_CONT_MODE (55 * MSEC) /* 30ms to 60ms */
 #define PD_T_VCONN_SOURCE_ON (100 * MSEC) /* 100ms */
 #define PD_T_DRP_TRY (125 * MSEC) /* between 75ms and 150ms */
-#define PD_T_TRY_TIMEOUT (550 * MSEC) /* between 550ms and 1100ms */
+/* TODO(b/390238808): Setting this to 550 ms can result in the observed time in
+ * Try.SRC being as low as 549 ms. As a workaround, increase it slightly.
+ * Ideally, timers should be at least millisecond-accurate.
+ */
+#define PD_T_TRY_TIMEOUT (560 * MSEC) /* between 550ms and 1100ms */
 #define PD_T_TRY_WAIT (600 * MSEC) /* Wait time for TryWait.SNK */
 #define PD_T_SINK_REQUEST (100 * MSEC) /* 100ms before next request */
 #define PD_T_PD_DEBOUNCE (15 * MSEC) /* between 10ms and 20ms */
@@ -352,8 +357,11 @@ enum pdo_augmented_pps {
 /* Maximum SPR voltage in mV offered by PD 3.0 Version 2.0 Spec */
 #define PD_REV3_MAX_VOLTAGE 20000
 
-/* Maximum SPR voltage in mV */
+/* Maximum fixed SPR voltage in mV */
 #define PD_MAX_SPR_VOLTAGE 20000
+
+/* Maximum variable SPR voltage in mV */
+#define PD_MAX_VARIABLE_VOLTAGE 21000
 
 /* Maximum EPR voltage in mV */
 #define PD_MAX_EPR_VOLTAGE 48000

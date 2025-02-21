@@ -522,11 +522,6 @@ __overridable void pd_try_execute_vconn_swap(int port, int flags)
 		pd_try_vconn_src(port);
 }
 
-__overridable int pd_is_valid_input_voltage(int mv)
-{
-	return 1;
-}
-
 __overridable void pd_transition_voltage(int idx)
 {
 	/* Most devices are fixed 5V output. */

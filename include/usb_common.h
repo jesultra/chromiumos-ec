@@ -125,15 +125,17 @@ enum tcpc_cc_polarity get_src_polarity(enum tcpc_cc_voltage_status cc1,
  * @param src_cap_cnt
  * @param src_caps
  * @param max_mv maximum voltage (or -1 if no limit)
- * @param pdo raw pdo corresponding to index, or index 0 on error (output)
+ * @param selected_pdo raw pdo corresponding to index, or index 0 on error
+ *			(output)
  * @return index of PDO within source cap packet
  */
-int pd_find_pdo_index(uint32_t src_cap_cnt, const uint32_t *const src_caps,
-		      int max_mv, uint32_t *selected_pdo);
+int pd_select_best_pdo(uint32_t src_cap_cnt, const uint32_t *const src_caps,
+		       int max_mv, uint32_t *selected_pdo);
 
 /**
  * Extract power information out of a Power Data Object (PDO) and clamp
- * current values to board limits (PD_MAX_POWER_MW, PD_MAX_CURRENT_MA)
+ * current values to board limits (CONFIG_USB_PD_MAX_POWER_MW,
+ * CONFIG_USB_PD_MAX_CURRENT_MA)
  *
  * @param pdo raw pdo to extract
  * @param ma current of the PDO (output)

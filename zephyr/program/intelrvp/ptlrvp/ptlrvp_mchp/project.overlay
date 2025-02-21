@@ -30,3 +30,30 @@
 	offset = <0x3F000>;
 	size = <0x1000>;
 };
+
+/ {
+	named-gpios {
+		/delete-node/  ec-jtag-tms;
+	};
+
+	tabletmode_interrupt: tabletmode-interrupt {
+		compatible = "cros,tabletmode-interrupt";
+		irq-gpios = <MCHP_GPIO_DECODE_150 GPIO_ACTIVE_LOW>;
+	};
+};
+
+
+/* TODO:  Remove this when b/393403088 is resolved.
+ */
+&pd_pow_i2c {
+    /delete-node/ rts54-pdc@68;
+};
+
+/ {
+    usbc-ports {
+        /delete-node/ port2@2;
+        ppm-driver {
+            lpm = <&pd_pow_port0 &pd_pow_port1>;
+        };
+    };
+};

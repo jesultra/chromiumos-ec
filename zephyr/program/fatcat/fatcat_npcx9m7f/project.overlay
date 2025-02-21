@@ -13,10 +13,11 @@
 
 #include "generated.dtsi"
 
+#include "fan.dtsi"
 #include "gpios.dtsi"
 #include "i2c.dtsi"
+#include "temp_sensors.dtsi"
 
-#include "../fatcat_it82002aw/gsc_board.dtsi"
 #include "../fatcat_it82002aw/interrupts.dtsi"
 
 /* Power Signals */
@@ -28,12 +29,20 @@
 #define PWR_PCH_PWROK &gpio6 1
 #define PWR_ALL_SYS_PWRGD &gpio6 3
 
-#define CHARGER_I2C i2c2_0
-#define PD_POW_I2C i2c0_0
+#define PD_POW_IRQ_GPIO &gpiof 0
 
 #include "../../intelrvp/ptlrvp/power_signals.dtsi"
-#include "../../intelrvp/ptlrvp/i2c.dtsi"
-#include "../../intelrvp/ptlrvp/keyboard.dtsi"
+#include "../../intelrvp/ptlrvp/gsc_board.dtsi"
+#include "../../intelrvp/ptlrvp/battery.dtsi"
+#include "../../intelrvp/ptlrvp/ioex_gpio.dtsi"
+#include "../../intelrvp/ptlrvp/ptlrvp_npcx/psl.dtsi"
+#include "../../intelrvp/ptlrvp/ptlrvp_npcx/keyboard.dtsi"
+#include "../../intelrvp/ptlrvp/pd.dtsi"
+#include "../../intelrvp/ptlrvp/usbc.dtsi"
+
+&it8801_mfd {
+	irq-gpios = <&gpio7 0 GPIO_ACTIVE_LOW>;
+};
 
 /* fatcat_npcx9m7f overrides follow... */
 

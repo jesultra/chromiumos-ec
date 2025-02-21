@@ -46,3 +46,12 @@
 	sample-clk = <NPCX_TACH_FREQ_LFCLK>; /* Use LFCLK as sampling clock */
 	pulses-per-round = <2>; /* number of pulses per round of encoder */
 };
+
+/* Remove temp_sensor_4 ADC channel as it doesn't exist on the ORB */
+&adc0 {
+	pinctrl-0 = <&adc0_chan0_gp45
+		&adc0_chan1_gp44
+		&adc0_chan10_gpe0
+		&adc0_chan4_gp41
+		&adc0_chan6_gp34>;
+};

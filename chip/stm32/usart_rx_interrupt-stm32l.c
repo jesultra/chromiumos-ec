@@ -100,12 +100,18 @@ static void usart_rx_interrupt_handler(struct usart_config const *config)
 	}
 
 #ifdef STM32_USART_CR2_RTOEN
-	if (status & STM32_USART_SR_RTOF) {
+	if (status & (STM32_USART_SR_RTOF | STM32_USART_SR_FE)) {
 		/*
-		 * UART RX line has been idle for a while, tell the consumer to
-		 * flush the queue of previously received characters.
+		 * RTOF means that the RX line has been idle (high) for a while,
+		 * that is, the sender has stopped/paused transmission.  FE
+		 * (framing error) means that the RX line sat low for longer
+		 * than a full character frame.  In either case, tell the
+		 * consumer to immediately process the queue of previously
+		 * received characters, as it is quite possible we will not
+		 * receive any more characters for a while.
 		 */
-		STM32_USART_ICR(base) = STM32_USART_ICR_RTOCF;
+		STM32_USART_ICR(base) = STM32_USART_ICR_RTOCF |
+					STM32_USART_ICR_FECF;
 		queue_flush(config->producer.queue);
 	}
 #endif

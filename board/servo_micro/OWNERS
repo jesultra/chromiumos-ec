@@ -1,0 +1,4 @@
+<<<<<<< HEAD   (f27254 Merge remote-tracking branch cros/main into firmware-fpmcu-h)
+=======
+include chromiumos/owners:v1:/platform/OWNERS.hwtools
+>>>>>>> BRANCH (7951cd zephyr: Remove EXTERNAL_MODULE_LIBCPP as tokenized log depen)

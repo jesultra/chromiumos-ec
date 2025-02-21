@@ -49,7 +49,8 @@ test/timer.cc
 test/tpm_seed_clear.cc
 test/unaligned_access.cc
 test/utils_str.c
-test/utils.c"
+test/utils.c
+test/watchdog.cc"
 
 for file in "$@"; do
   ec_file="${file##**/platform/ec/}"

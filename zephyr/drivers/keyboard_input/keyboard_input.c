@@ -66,15 +66,21 @@ void keyboard_scan_enable(int enable, enum kb_scan_disable_masks mask)
 	}
 }
 
-static int keyboard_pm_init(void)
+static int keyboard_input_init(void)
 {
+	struct input_kbd_matrix_common_data *data = kbd_dev->data;
+
 	/* Initialize as active */
 	pm_device_runtime_get(kbd_dev);
+
+	/* fix up the device thread priority */
+	k_thread_priority_set(&data->thread,
+			      EC_TASK_PRIORITY(EC_TASK_KEYSCAN_PRIO));
 
 	return 0;
 }
 
-SYS_INIT(keyboard_pm_init, APPLICATION, 0);
+SYS_INIT(keyboard_input_init, APPLICATION, 0);
 
 static void keyboard_input_cb(struct input_event *evt, void *user_data)
 {
@@ -114,11 +120,51 @@ static int cmd_ksstate(const struct shell *sh, size_t argc, char **argv)
 
 SHELL_CMD_REGISTER(ksstate, NULL, "Show keyboard scan state", cmd_ksstate);
 
+/* Keys simulated-pressed */
+static uint8_t simulated_key[KEYBOARD_COLS_MAX];
+
+static void simulate_key(int row, int col, int pressed)
+{
+	simulated_key[col] &= ~BIT(row);
+	if (pressed)
+		simulated_key[col] |= BIT(row);
+
+	input_report_abs(kbd_dev, INPUT_ABS_X, col, false, K_FOREVER);
+	input_report_abs(kbd_dev, INPUT_ABS_Y, row, false, K_FOREVER);
+	input_report_key(kbd_dev, INPUT_BTN_TOUCH, pressed, true, K_FOREVER);
+}
+
 static int cmd_kbpress(const struct shell *sh, size_t argc, char **argv)
 {
 	int err = 0;
 	uint32_t row, col, val;
 
+	if (argc < 2) {
+		shell_print(sh, "Simulated keys:");
+		for (col = 0; col < keyboard_cols; ++col) {
+			if (simulated_key[col] == 0)
+				continue;
+			for (row = 0; row < KEYBOARD_ROWS; ++row)
+				if (simulated_key[col] & BIT(row))
+					shell_print(sh, "\t%d %d", col, row);
+		}
+		return 0;
+	}
+	if (!strcmp(argv[1], "clear")) {
+		for (col = 0; col < keyboard_cols; ++col) {
+			if (simulated_key[col] == 0)
+				continue;
+			for (row = 0; row < KEYBOARD_ROWS; ++row)
+				if (simulated_key[col] & BIT(row))
+					simulate_key(row, col, 0);
+		}
+		return 0;
+	}
+
+	if (argc != 4) {
+		shell_error(sh, "Usage: %s [clear | col row [0 | 1]]", argv[0]);
+		return -EINVAL;
+	}
 	col = shell_strtoul(argv[1], 0, &err);
 	if (err) {
 		shell_error(sh, "Invalid argument: %s", argv[1]);
@@ -136,16 +182,13 @@ static int cmd_kbpress(const struct shell *sh, size_t argc, char **argv)
 		shell_error(sh, "Invalid argument: %s", argv[1]);
 		return err;
 	}
-
-	input_report_abs(kbd_dev, INPUT_ABS_X, col, false, K_FOREVER);
-	input_report_abs(kbd_dev, INPUT_ABS_Y, row, false, K_FOREVER);
-	input_report_key(kbd_dev, INPUT_BTN_TOUCH, val, true, K_FOREVER);
-
+	simulate_key(row, col, val);
 	return 0;
 }
 
-SHELL_CMD_ARG_REGISTER(kbpress, NULL, "Simulate keypress: ksstate col row 0|1",
-		       cmd_kbpress, 4, 0);
+SHELL_CMD_ARG_REGISTER(kbpress, NULL,
+		       "Simulate keypress: kbpress [clear | col row [0 | 1]]",
+		       cmd_kbpress, 1, 3);
 
 static enum ec_status
 mkbp_command_simulate_key(struct host_cmd_handler_args *args)
@@ -159,9 +202,7 @@ mkbp_command_simulate_key(struct host_cmd_handler_args *args)
 	if (p->col >= cfg->col_size || p->row >= cfg->row_size)
 		return EC_RES_INVALID_PARAM;
 
-	input_report_abs(kbd_dev, INPUT_ABS_X, p->col, false, K_FOREVER);
-	input_report_abs(kbd_dev, INPUT_ABS_Y, p->row, false, K_FOREVER);
-	input_report_key(kbd_dev, INPUT_BTN_TOUCH, p->pressed, true, K_FOREVER);
+	simulate_key(p->row, p->col, p->pressed);
 
 	return EC_RES_SUCCESS;
 }

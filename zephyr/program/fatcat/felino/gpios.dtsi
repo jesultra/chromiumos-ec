@@ -68,6 +68,7 @@
 		};
 		gpio_ccd_mode_odl: ccd_mode_odl {
 			gpios = <&gpioe 6 GPIO_INPUT>;
+			enum-name = "GPIO_CCD_MODE_ODL";
 		};
 		gpio_ish_i2c_ec_scl: ish_i2c_ec_scl {
 			gpios = <&gpioc 7 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
@@ -103,13 +104,16 @@
 			gpios = <&gpioh 6 GPIO_INPUT>;
 		};
 		gpio_ec_slp_sx_n: ec_slp_sx_n {
-			gpios = <&gpioh 4 GPIO_INPUT>;
+			gpios = <&gpioh 4 GPIO_OUTPUT>;
 		};
 		gpio_typec_i2c_int_ec: typec_i2c_int_ec {
-			gpios = <&gpiof 5 GPIO_INPUT>;
+			gpios = <&gpiof 5 GPIO_ACTIVE_LOW>;
+		};
+		gpio_edp_bklt_en: edp_bklt_en {
+			gpios = <&gpiof 7 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
 		};
 		gpio_ec_edp_bklt_en: ec_edp_bklt_en {
-			gpios = <&gpiof 7 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
+			gpios = <&gpioh 0 GPIO_OUTPUT>;
 		};
 		gpio_ec_vddq_en: ec_vddq_en {
 			gpios = <&gpioj 1 GPIO_OUTPUT>;
@@ -126,7 +130,7 @@
 		gpio_bat_disconnect_ec_odl: bat_disconnect_ec_odl {
 			gpios = <&gpioc 0 GPIO_ODR_LOW>;
 		};
-		gpio_vccprim_io_pgoog: vccprim_io_pgoog {
+		gpio_vccprim_io_pgood: vccprim_io_pgood {
 			gpios = <&gpiog 1 GPIO_INPUT>;
 		};
 		gpio_ec_soc_rec_switch_odl: ec_soc_rec_switch_odl {

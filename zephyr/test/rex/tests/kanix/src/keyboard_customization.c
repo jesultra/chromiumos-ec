@@ -13,6 +13,13 @@
 #include <drivers/vivaldi_kbd.h>
 #include <keyboard_scan.h>
 
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_CUSTOMIZATION));
+
+/* Normally implemented in zephyr/shim/src/espi.c */
+void lpc_keyboard_resume_irq(void)
+{
+}
+
 ZTEST_SUITE(kanix_keyboard, NULL, NULL, NULL, NULL, NULL);
 
 ZTEST(kanix_keyboard, test_get_scancode_set2)

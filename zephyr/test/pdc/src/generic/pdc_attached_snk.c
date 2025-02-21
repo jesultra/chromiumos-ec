@@ -71,7 +71,7 @@ ZTEST_USER_F(pdc_attached_snk, test_new_pd_sink_contract)
 	 * disabled during this step */
 	emul_pdc_set_pdos(fixture->emul_pdc, SOURCE_PDO, PDO_OFFSET_0,
 			  ARRAY_SIZE(pdos), PARTNER_PDO, pdos);
-	in_conn_status_change_bits.battery_charging_status = 1;
+	in_conn_status_change_bits.supported_provider_caps = 1;
 	in.raw_conn_status_change_bits = in_conn_status_change_bits.raw_value;
 	emul_pdc_connect_partner(fixture->emul_pdc, &in);
 
@@ -146,7 +146,7 @@ int connect_default_charger_then_0w(struct pdc_attached_snk_fixture *fixture,
 		return ret;
 	}
 
-	in_conn_status_change_bits.battery_charging_status = 1;
+	in_conn_status_change_bits.supported_provider_caps = 1;
 	in.raw_conn_status_change_bits = in_conn_status_change_bits.raw_value;
 	/* Update connector status and trigger an interrupt. */
 	ret = emul_pdc_connect_partner(fixture->emul_pdc, &in);

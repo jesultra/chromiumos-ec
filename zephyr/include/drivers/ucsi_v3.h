@@ -37,7 +37,7 @@ extern "C" {
  * @brief Mamimun number of data bytes the PDC can transfer or receive
  *        at a time
  */
-#define PDC_MAX_DATA_LENGTH 256
+#define PDC_MAX_DATA_LENGTH 255
 
 /**
  * @brief UCSI Commands
@@ -1475,6 +1475,16 @@ struct ucsi_memory_region {
 	uint8_t message_out[MESSAGE_OUT_SIZE]; /* PPM input */
 	uint8_t reserved_1;
 } __packed __aligned(4);
+
+/* Response to UCSI GET_ALTERNATE_MODES command */
+struct ucsi_get_alternate_modes_t {
+	struct altmode_field {
+		/* Standard or Vendor ID */
+		uint16_t svid;
+		/* Mode ID for above SVID */
+		uint32_t mid;
+	} __packed altmode_fields[2];
+} __packed;
 
 BUILD_ASSERT(offsetof(struct ucsi_memory_region, version) ==
 		     UCSI_VERSION_OFFSET,

@@ -20,6 +20,9 @@ LOG_MODULE_DECLARE(ap_pwrseq, LOG_LEVEL_INF);
 
 #define X86_NON_DSX_FORCE_SHUTDOWN_TO_MS 50
 
+/* Power cycling primary rail requires at least 30 ms 'off' time */
+#define BOARD_PTL_RVP_MINIMUM_POWER_DOWN_DELAY_MS 30
+
 void board_ap_power_force_shutdown(void)
 {
 	int timeout_ms = X86_NON_DSX_FORCE_SHUTDOWN_TO_MS;
@@ -39,6 +42,8 @@ void board_ap_power_force_shutdown(void)
 
 	if (power_signal_get(PWR_RSMRST_PWRGD))
 		LOG_WRN("RSMRST_PWRGD didn't go low!  Assuming G3.");
+
+	k_msleep(BOARD_PTL_RVP_MINIMUM_POWER_DOWN_DELAY_MS);
 }
 
 #ifdef CONFIG_AP_PWRSEQ_DRIVER

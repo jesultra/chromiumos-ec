@@ -211,6 +211,7 @@ tests:
     extra_configs:
       - CONFIG_TEST_PROJECT_KANIX=y
       - CONFIG_TEST_PROJECT_KEYBOARD=y
+      - CONFIG_PLATFORM_EC_KEYBOARD_CUSTOMIZATION=y
   rex.kanix.keyboard_customization:
     extra_dtc_overlay_files:
       - boards/kanix/kanix.dtsi
@@ -251,9 +252,10 @@ tests:
       - CONFIG_TEST_PROJECT_TOUCH_PANEL=y
       - CONFIG_PLATFORM_EC_LID_SWITCH=y
 
-  # ISH project tests
-  rex.ish:
+  rex.kanix.fan:
     extra_dtc_overlay_files:
-      - boards/rex_ish/ish.dtsi
+      - boards/kanix/kanix.dtsi
     extra_configs:
-      - CONFIG_TEST_PROJECT_REX_ISH=y
+      - CONFIG_TEST_PROJECT_KANIX=y
+      - CONFIG_TEST_BOARD_FAN_CUSTOM=y
+      - CONFIG_TEST_DISABLE_INLINE_CHIPSET_IN_STATE=y

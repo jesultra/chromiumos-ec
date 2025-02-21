@@ -81,6 +81,11 @@ config TEST_VOLTORB
 	  Include voltorb_usbc.c into the binary to test the type-c output
 	  current limit function.
 
+config TEST_VOLTORB_DPS
+	bool "Run the tests intended for voltorb"
+	help
+	  Include voltorb_dps.c into the binary to test DPS change.
+
 config TEST_DISABLE_INLINE_CHIPSET_IN_STATE
 	bool "Disable chipset_in_state inline method"
 	help

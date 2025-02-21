@@ -1756,7 +1756,8 @@ function flash_npcx_uut() {
 		"${EC_DIR}/build/${BOARD}/chip/npcx/spiflashfw" \
 		"${EC_DIR}/build/zephyr/${BOARD}/output" \
 		"$(dirname "${LOCAL_BUILD}")" \
-		"$(dirname "${EMERGE_BUILD}")" ;
+		"$(dirname "${EMERGE_BUILD}")" \
+		"/usr/share/ec-devutils" ;
 	do
 		if [ -f "${dir}/npcx_monitor.bin" ] ; then
 			MON="${dir}/npcx_monitor.bin"

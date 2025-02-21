@@ -18,10 +18,10 @@
 #define CPRINTS(format, args...) cprints(CC_SYSTEM, format, ##args)
 #define CPRINTF(format, args...) cprintf(CC_SYSTEM, format, ##args)
 
-#define BASE_DETECT_RETRY_US (500 * MSEC)
+#define BASE_DETECT_RETRY_US (500 * USEC_PER_MSEC)
 /* Base detection debouncing */
-#define BASE_DETECT_EN_DEBOUNCE_US (350 * MSEC)
-#define BASE_DETECT_DIS_DEBOUNCE_US (20 * MSEC)
+#define BASE_DETECT_EN_DEBOUNCE_US (350 * USEC_PER_MSEC)
+#define BASE_DETECT_DIS_DEBOUNCE_US (20 * USEC_PER_MSEC)
 
 K_MUTEX_DEFINE(modify_base_detection_mutex);
 static uint64_t base_detect_debounce_time;

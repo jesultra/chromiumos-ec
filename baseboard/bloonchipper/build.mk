@@ -78,7 +78,8 @@ test-list-y = \
        unaligned_access \
        unaligned_access_benchmark \
        utils \
-       utils_str
+       utils_str \
+       watchdog \
 
 # This is relative to the EC root directory.
 -include ../ec-private/board/hatch_fp/build.mk

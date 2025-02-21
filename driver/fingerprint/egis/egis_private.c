@@ -6,6 +6,8 @@
 #include "common.h"
 #include "egis_api.h"
 #include "fpsensor/fpsensor.h"
+#include "gpio.h"
+#include "plat_reset.h"
 #include "system.h"
 #include "task.h"
 #include "util.h"
@@ -75,6 +77,13 @@ void fp_sensor_low_power(void)
 
 int fp_sensor_init(void)
 {
+	egis_fp_reset_sensor();
+	/*
+	 * Sensor has two INT pads (INT and INTB), and the polarities of INT and
+	 * INTB are opposite, Not sure about the final wiring configuration,
+	 * so we use a comparison approach.
+	 */
+	int int_pin_value = gpio_get_level(GPIO_FPS_INT);
 	egis_api_return_t ret = egis_sensor_init();
 	errors = 0;
 	if (ret == EGIS_API_ERROR_IO_SPI) {
@@ -84,6 +93,12 @@ int fp_sensor_init(void)
 	} else if (ret != EGIS_API_OK) {
 		errors |= FP_ERROR_INIT_FAIL;
 	}
+
+	if (int_pin_value == gpio_get_level(GPIO_FPS_INT)) {
+		CPRINTS("Sensor IRQ not ready");
+		errors |= FP_ERROR_NO_IRQ;
+	}
+
 	return EC_SUCCESS;
 }
 
@@ -94,10 +109,14 @@ int fp_sensor_deinit(void)
 
 int fp_sensor_get_info(struct ec_response_fp_info *resp)
 {
-	int rc = EC_SUCCESS;
+	uint16_t sensor_id;
 	memcpy(resp, &egis_fp_sensor_info, sizeof(struct ec_response_fp_info));
+	if (egis_get_hwid(&sensor_id) != EGIS_API_OK)
+		return EC_RES_ERROR;
+
+	resp->model_id = sensor_id;
 	resp->errors = errors;
-	return rc;
+	return EC_SUCCESS;
 }
 
 __overridable int fp_finger_match(void *templ, uint32_t templ_count,

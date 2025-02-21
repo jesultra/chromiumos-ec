@@ -56,16 +56,23 @@ def msg_run(cmd: List[str]) -> None:
     subprocess.run(cmd, check=True)
 
 
-def launch(board: str, project: str, enable_write_protect: bool) -> int:
+def launch(
+    board: str,
+    enable_write_protect: bool,
+    zephyr: bool,
+    zephyr_bin: str,
+    ec_project: str,
+) -> int:
     """Launches an EC image in Renode.
 
     This image can be the actual firmware image or an on-board test image.
 
     Args:
         board: The name of the EC/Zephyr board.
-        project: The name of the EC project.
         enable_write_protect: Whether to enable hardware write protection.
-
+        zephyr: True if running EC-based Zephyr image.
+        zephyr_bin: Path to Zephyr binary.
+        ec_project: The name of the EC project.
     Returns:
         0 on success, otherwise non-zero.
     """
@@ -75,21 +82,24 @@ def launch(board: str, project: str, enable_write_protect: bool) -> int:
     script_path = pathlib.Path(__file__).parent.resolve()
     ec_dir = script_path.parent
 
-    if project == "zephyr":
+    if zephyr_bin:
+        bin_file = pathlib.Path(zephyr_bin)
+        elf_ro_file = pathlib.Path(os.path.dirname(zephyr_bin)) / "zephyr.elf"
+        # There is only a single ELF file in upstream Zephyr builds.
+        elf_rw_file = elf_ro_file
+    elif zephyr:
         out_dir = ec_dir / "build" / "zephyr" / board / "output"
-    else:
-        out_dir = ec_dir / "build" / board
-        if project != "ec":
-            out_dir /= project
-
-    if project == "zephyr":
         bin_file = out_dir / "ec.bin"
         elf_ro_file = out_dir / "zephyr.ro.elf"
         elf_rw_file = out_dir / "zephyr.rw.elf"
     else:
-        bin_file = out_dir / f"{project}.bin"
-        elf_ro_file = out_dir / "RO" / f"{project}.RO.elf"
-        elf_rw_file = out_dir / "RW" / f"{project}.RW.elf"
+        out_dir = ec_dir / "build" / board
+        if ec_project != "ec":
+            out_dir /= ec_project
+
+        bin_file = out_dir / f"{ec_project}.bin"
+        elf_ro_file = out_dir / "RO" / f"{ec_project}.RO.elf"
+        elf_rw_file = out_dir / "RW" / f"{ec_project}.RW.elf"
 
     if not bin_file.exists():
         print(f"Error - The bin file '{bin_file}' does not exist.")
@@ -104,6 +114,10 @@ def launch(board: str, project: str, enable_write_protect: bool) -> int:
     # Change directory to the EC root for Renode internal relative includes,
     # like "include @util/renode/${board}.resc".
     os.chdir(ec_dir)
+
+    # Outside the chroot, we may not have libicu
+    # https://aka.ms/dotnet-missing-libicu
+    os.environ["DOTNET_SYSTEM_GLOBALIZATION_INVARIANT"] = "1"
 
     renode_execute: List[str] = []
     # We set the machine name to the exact board name, since we might be
@@ -153,15 +167,13 @@ def main(argv: Optional[List[str]] = None) -> Optional[int]:
     """The mainest function."""
 
     parser = argparse.ArgumentParser(
-        description="""Launch an EC image in Renode.
-        This can be the actual firmware image or an on-board test image.
-        """,
+        description="Launch an EC/Zephyr image in Renode.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     parser.add_argument(
-        "board",
-        nargs="?",
+        "-b",
+        "--board",
         choices=CONSOLE_MAP.keys(),
         default=os.environ.get("BOARD", DEFAULT_BOARD),
         help="""
@@ -170,15 +182,34 @@ def main(argv: Optional[List[str]] = None) -> Optional[int]:
         The BOARD environment variable can be used instead of this flag.
         """,
     )
-    parser.add_argument(
-        "project",
-        nargs="?",
+
+    group = parser.add_argument_group(
+        "Image Options", "Only one of the following arguments may be used."
+    )
+    exclusive_group = group.add_mutually_exclusive_group()
+    exclusive_group.add_argument(
+        "--ec",
+        type=str,
         default=os.environ.get("PROJECT", DEFAULT_PROJECT),
         help="""
-        Name of the EC project. This is normally just 'ec' or 'zephyr', but
+        Name of the EC project. This is normally just 'ec', but
         could be a test name for on-board test images.
 
         The PROJECT environment variable can be used instead of this flag.
+        """,
+    )
+
+    exclusive_group.add_argument(
+        "--zephyr", action="store_true", help="Run Zephyr."
+    )
+
+    exclusive_group.add_argument(
+        "--zephyr-bin",
+        type=str,
+        help="""
+        Full path to a Zephyr binary.
+
+        Used for running upstream Zephyr binaries.
         """,
     )
 
@@ -192,8 +223,10 @@ def main(argv: Optional[List[str]] = None) -> Optional[int]:
     opts = parser.parse_args(argv)
     return launch(
         board=opts.board,
-        project=opts.project,
         enable_write_protect=opts.enable_write_protect,
+        zephyr=opts.zephyr,
+        zephyr_bin=opts.zephyr_bin,
+        ec_project=opts.ec,
     )
 
 

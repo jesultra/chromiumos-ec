@@ -28,10 +28,9 @@ bool fp_match_success(int match_result);
 
 /**
  * @param mode sensor mode
- * @return true if the mode is a test capture that does not require finger
- * touch.
+ * @return true if the mode is a test capture that requires finger touch.
  */
-bool is_test_capture(uint32_t mode);
+bool is_finger_needed(uint32_t mode);
 
 /**
  * @param mode sensor mode

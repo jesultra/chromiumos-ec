@@ -19,6 +19,11 @@ FAKE_VALUE_FUNC(int, cros_cbi_get_fw_config, enum cbi_fw_config_field_id,
 FAKE_VOID_FUNC(set_scancode_set2, uint8_t, uint8_t, uint16_t);
 FAKE_VOID_FUNC(get_scancode_set2, uint8_t, uint8_t);
 
+/* Normally implemented in zephyr/shim/src/espi.c */
+void lpc_keyboard_resume_irq(void)
+{
+}
+
 int cros_cbi_get_fw_config_mock(enum cbi_fw_config_field_id field_id,
 				uint32_t *value)
 {

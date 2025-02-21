@@ -67,34 +67,36 @@
 			flags = <GPIO_INT_EDGE_BOTH>;
 			handler = "lid_interrupt";
 		};
-		int_tablet_mode: tablet_mode {
-			irq-pin = <&gpio_tablet_mode_l>;
-			flags = <GPIO_INT_EDGE_BOTH>;
-			handler = "gmr_tablet_switch_isr";
-		};
-		int_imu: ec_imu {
-			irq-pin = <&gpio_imu_int_l>;
-			flags = <GPIO_INT_EDGE_FALLING>;
-			handler = "motion_interrupt";
-		};
-		int_lid_imu: lid_imu {
-			irq-pin = <&gpio_acc_int_l>;
-			flags = <GPIO_INT_EDGE_FALLING>;
-			handler = "lid_accel_interrupt";
-		};
 		int_ac_present: ac_present {
 			irq-pin = <&gpio_ec_acok_od>;
 			flags = <GPIO_INT_EDGE_BOTH>;
 			handler = "extpower_interrupt";
 		};
+		int_als_status: als_status {
+			irq-pin = <&ec_als_odl>;
+			flags = <GPIO_INT_EDGE_FALLING>;
+			handler = "door_open_interrupt";
+		};
+		int_jack_detect: jack_detect {
+			irq-pin = <&gpio_jack_detect_l>;
+			flags = <GPIO_INT_EDGE_BOTH>;
+			handler = "audio_jack_interrupt";
+		};
+		int_blpwr_pgd: blpwr_pgd {
+			irq-pin = <&gpio_blpwr_pgd>;
+			flags = <GPIO_INT_EDGE_FALLING>;
+			handler = "bl_pg_interrupt";
+		};
 	};
 
 	unused-pins {
 		compatible = "unused-gpios";
-		unused-gpios = <&gpiod 4 GPIO_INPUT_PULL_DOWN>,
-			       <&gpioe 6 GPIO_INPUT_PULL_DOWN>,
-			       <&gpioh 6 GPIO_INPUT_PULL_DOWN>,
+
+		unused-gpios = <&gpioa 7 GPIO_INPUT_PULL_DOWN>,
+			       <&gpioc 0 GPIO_INPUT_PULL_DOWN>,
+			       <&gpiod 4 GPIO_INPUT_PULL_DOWN>,
 			       <&gpiob 5 GPIO_INPUT_PULL_DOWN>,
+			       <&gpioj 0 GPIO_INPUT_PULL_DOWN>,
 			       <&gpioj 1 GPIO_INPUT_PULL_DOWN>;
 	};
 
@@ -121,31 +123,31 @@
 
 	named-temp-sensors {
 		compatible = "cros-ec,temp-sensors";
-		cpu_vr {
+		temp_sensor_vr: cpu_vr {
 			temp_host_high = <88>;
 			temp_host_halt = <91>;
 			temp_host_release_high = <85>;
 			power-good-pin = <&gpio_ec_soc_dsw_pwrok>;
 			sensor = <&temp_cpu_vr>;
 		};
-		cpu {
-			temp_host_high = <80>;
-			temp_host_halt = <83>;
-			temp_host_release_high = <77>;
+		temp_sensor_cpu: cpu {
+			temp_host_high = <79>;
+			temp_host_halt = <82>;
+			temp_host_release_high = <76>;
 			power-good-pin = <&gpio_ec_soc_dsw_pwrok>;
 			sensor = <&temp_cpu>;
 		};
-		ambient {
-			temp_host_high = <70>;
-			temp_host_halt = <73>;
-			temp_host_release_high = <67>;
+		temp_sensor_ambient: ambient {
+			temp_host_high = <75>;
+			temp_host_halt = <78>;
+			temp_host_release_high = <72>;
 			power-good-pin = <&gpio_ec_soc_dsw_pwrok>;
 			sensor = <&temp_ambient>;
 		};
-		charger {
-			temp_host_high = <84>;
-			temp_host_halt = <87>;
-			temp_host_release_high = <81>;
+		temp_sensor_charger: charger {
+			temp_host_high = <85>;
+			temp_host_halt = <88>;
+			temp_host_release_high = <82>;
 			power-good-pin = <&gpio_ec_soc_dsw_pwrok>;
 			sensor = <&temp_charger>;
 		};
@@ -200,14 +202,14 @@
 	};
 };
 
-&gpio_imu_int_l {
-	gpios = <&gpioj 0 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
-};
 &gpio_vccin_aux_vid0 {
 	gpios = <&gpiod 0 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
 };
 &gpio_vccin_aux_vid1 {
 	gpios = <&gpiok 1 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
+};
+&gpio_jack_detect_l {
+	gpios = <&gpioh 6 (GPIO_INPUT | GPIO_VOLTAGE_1P8)>;
 };
 
 &gpio_ec_prochot_odl {

@@ -46,10 +46,9 @@ ZTEST(lid_angle_common, test_disable_in_s0)
 	zassert_equal(0, keyboard_scan_enable_fake.call_count);
 }
 
+#ifdef CONFIG_TABLET_MODE
 ZTEST(lid_angle_common, test_override_enable_in_tablet_mode)
 {
-	Z_TEST_SKIP_IFNDEF(CONFIG_TABLET_MODE);
-
 	tablet_get_mode_fake.return_val = 1;
 
 	lid_angle_peripheral_enable(1);
@@ -58,3 +57,4 @@ ZTEST(lid_angle_common, test_override_enable_in_tablet_mode)
 	zassert_equal(KB_SCAN_DISABLE_LID_ANGLE,
 		      keyboard_scan_enable_fake.arg1_val);
 }
+#endif

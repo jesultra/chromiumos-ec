@@ -17,6 +17,7 @@
 # * stm32f0   - All boards that use an STM32F0 family of chip
 # * stm32f4   - All boards that use an STM32F4 family of chip
 # * stm32h7   - All boards that use an STM32H7 family of chip
+# * stm32l    - All boards that use an STM32Lx family of chip
 # * npcx      - "
 # * mchp      - "
 # * ish       - "
@@ -139,6 +140,7 @@ parse-boards() {
     [stm32f0]="$(boards-with 'CHIP_VARIANT[[:space:]:=]*stm32f0')"
     [stm32f4]="$(boards-with 'CHIP_VARIANT[[:space:]:=]*stm32f4')"
     [stm32h7]="$(boards-with 'CHIP_VARIANT[[:space:]:=]*stm32h7')"
+    [stm32l]="$(boards-with 'CHIP_VARIANT[[:space:]:=]*stm32l')"
     [npcx]="$(boards-with 'CHIP[[:space:]:=]*npcx')"
     [mchp]="$(boards-with 'CHIP[[:space:]:=]*mchp')"
     [ish]="$(boards-with 'CHIP[[:space:]:=]*ish')"
@@ -224,6 +226,9 @@ if [[ "${FLAGS_private}" == "${FLAGS_TRUE}" ]]; then
   LINKS+=( ec-private )
   LINKS+=( fingerprint )
 fi
+
+# This link is outside the new makefile's. vpython3 files in utils/ link here.
+ln -s "$(realpath ../../third_party)" "${TMP_DIR}"/third_party
 
 # TODO support changing toolchains between versions
 echo "# Adding coreboot-sdk to env."

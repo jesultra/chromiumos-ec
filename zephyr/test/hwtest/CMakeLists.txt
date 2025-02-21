@@ -46,6 +46,7 @@ zephyr_library_sources_ifdef(CONFIG_HW_TEST_UNALIGNED_ACCESS src/unaligned_acces
 zephyr_library_sources_ifdef(CONFIG_HW_TEST_UNALIGNED_ACCESS_BENCHMARK src/unaligned_access_benchmark.cc)
 zephyr_library_sources_ifdef(CONFIG_HW_TEST_UTILS ${PLATFORM_EC}/zephyr/test/utils/src/utils.c)
 zephyr_library_sources_ifdef(CONFIG_HW_TEST_UTILS_STR ${PLATFORM_EC}/zephyr/test/utils/src/utils_str.c)
+zephyr_library_sources_ifdef(CONFIG_HW_TEST_WATCHDOG src/watchdog.cc)
 
 # Create an external lib for tests. The Zephyr build doesn't allow using
 # try/throw instructions, when exceptions are disabled.

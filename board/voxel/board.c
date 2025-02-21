@@ -81,6 +81,7 @@ static const struct ec_response_keybd_config zbu_old_kb = {
 	.capabilities = KEYBD_CAP_SCRNLOCK_KEY,
 };
 
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_VIVALDI));
 __override const struct ec_response_keybd_config *
 board_vivaldi_keybd_config(void)
 {
@@ -89,6 +90,9 @@ board_vivaldi_keybd_config(void)
 	else
 		return &zbu_old_kb;
 }
+
+/* TODO(b/219051027): Add assert to check that key_typ.{row,col}_refresh == the
+ * row/col in the tables above. */
 
 /* Keyboard scan setting */
 __override struct keyboard_scan_config keyscan_config = {

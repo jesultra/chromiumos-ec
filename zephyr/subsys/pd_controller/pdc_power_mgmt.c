@@ -13,8 +13,11 @@
 #include "charge_manager.h"
 #include "chipset.h"
 #include "drivers/ucsi_v3.h"
+#include "ec_commands.h"
 #include "hooks.h"
 #include "test/util.h"
+#include "usb_common.h"
+#include "usb_mux.h"
 #include "usb_pd.h"
 #include "usbc/pdc_dpm.h"
 #include "usbc/pdc_power_mgmt.h"
@@ -407,6 +410,7 @@ static const char *const pdc_state_names[] = {
 	[PDC_SRC_TYPEC_ONLY] = "TypeCSrcAttached",
 	[PDC_SNK_TYPEC_ONLY] = "TypeCSnkAttached",
 	[PDC_SUSPENDED] = "Suspended",
+	[PDC_INVALID] = "PDC Invalid",
 };
 
 BUILD_ASSERT(ARRAY_SIZE(pdc_state_names) == PDC_STATE_COUNT,
@@ -748,6 +752,10 @@ struct pdc_port_t {
 	bool frs_enable;
 	/** Store response to the GET_ATTENTION_VDO command */
 	union get_attention_vdo_t attention_vdo;
+	/** board callback for Type-C port unattach event */
+	pdc_power_mgmt_board_unattached_cb board_unattach_cb;
+	/** board callback for DP Attention event */
+	pdc_power_mgmt_board_dp_attention_cb board_dp_attention_cb;
 };
 
 /**
@@ -806,17 +814,17 @@ static const uint32_t pdo_snk_fixed_flags =
 static const uint32_t pdc_snk_pdos[] = {
 	/* Mandatory fixed 5V PDO */
 	PDO_FIXED(5000,
-		  MIN((CONFIG_PLATFORM_EC_PD_OPERATING_POWER_MW / 5),
-		      CONFIG_PLATFORM_EC_PD_MAX_CURRENT_MA),
+		  MIN((CONFIG_PLATFORM_EC_USB_PD_OPERATING_POWER_MW / 5),
+		      CONFIG_PLATFORM_EC_USB_PD_MAX_CURRENT_MA),
 		  pdo_snk_fixed_flags),
 	/* Battery PDO covering 5V-5% to the board maximum voltage and current
 	 */
-	PDO_BATT(4750, CONFIG_PLATFORM_EC_PD_MAX_VOLTAGE_MV,
-		 CONFIG_PLATFORM_EC_PD_OPERATING_POWER_MW),
+	PDO_BATT(4750, CONFIG_PLATFORM_EC_USB_PD_MAX_VOLTAGE_MV,
+		 CONFIG_PLATFORM_EC_USB_PD_OPERATING_POWER_MW),
 	/* Variable PDO covering 5V-5% to the board maximum voltage and current
 	 */
-	PDO_VAR(4750, CONFIG_PLATFORM_EC_PD_MAX_VOLTAGE_MV,
-		CONFIG_PLATFORM_EC_PD_MAX_CURRENT_MA),
+	PDO_VAR(4750, CONFIG_PLATFORM_EC_USB_PD_MAX_VOLTAGE_MV,
+		CONFIG_PLATFORM_EC_USB_PD_MAX_CURRENT_MA),
 };
 
 static const struct smf_state pdc_states[];
@@ -864,6 +872,10 @@ static bool should_suspend(struct pdc_port_t *port)
 	case PDC_SUSPENDED:
 		return false;
 
+	case PDC_INVALID:
+		__ASSERT(0,
+			 "current_state is an unreachable state (PDC_INVALID)");
+		break;
 	case PDC_STATE_COUNT:
 		__ASSERT(0, "Invalid state");
 	}
@@ -963,12 +975,13 @@ static struct pdc_data_t *pdc_data[] = { DT_INST_FOREACH_STATUS_OKAY(
  * @brief As a sink, this is the max voltage (in millivolts) we can request
  *        before getting source caps
  */
-static uint32_t pdc_max_request_mv = CONFIG_PLATFORM_EC_PD_MAX_VOLTAGE_MV;
+static uint32_t pdc_max_request_mv = CONFIG_PLATFORM_EC_USB_PD_MAX_VOLTAGE_MV;
 
 /**
  * @brief As a sink, this is the max power (in milliwatts) needed to operate
  */
-static uint32_t pdc_max_operating_power = CONFIG_PLATFORM_EC_PD_MAX_POWER_MW;
+static uint32_t pdc_max_operating_power =
+	CONFIG_PLATFORM_EC_USB_PD_MAX_POWER_MW;
 
 static enum pdc_state_t get_pdc_state(struct pdc_port_t *port)
 {
@@ -1031,6 +1044,11 @@ static void send_pending_public_commands(struct pdc_port_t *port)
 	if (port->send_cmd.public.pending) {
 		set_pdc_state(port, PDC_SEND_CMD_START);
 	}
+}
+
+uint32_t pdc_power_mgmt_get_dp_status(int port)
+{
+	return pdc_data[port]->port.attention_vdo.vdo;
 }
 
 atomic_val_t pdc_power_mgmt_get_events(int port)
@@ -1229,8 +1247,7 @@ static void handle_connector_status(struct pdc_port_t *port)
 			LOG_INF("C%d: Attention", port_number);
 		}
 
-		if (conn_status_change_bits.battery_charging_status &&
-		    status->sink_path_status == 0 &&
+		if (conn_status_change_bits.supported_provider_caps &&
 		    port->attached_state == SNK_ATTACHED_STATE &&
 		    port->snk_attached_local_state >= SNK_ATTACHED_GET_PDOS) {
 			/* Source caps have changed. Set the sink-
@@ -1240,7 +1257,7 @@ static void handle_connector_status(struct pdc_port_t *port)
 			 * again. */
 			atomic_set_bit(port->snk_policy.flags,
 				       SNK_POLICY_NEW_SRC_CAPS_AVAILABLE);
-			LOG_INF("C%d: Sink path disconnected", port_number);
+			LOG_INF("C%d: New SRC CAPs available", port_number);
 		}
 
 		if (status->power_direction) {
@@ -1466,6 +1483,8 @@ static bool should_swap_to_source(struct pdc_port_t *port)
 
 static void handle_attention_vdo(struct pdc_port_t *port)
 {
+	const struct pdc_config_t *config = port->dev->config;
+	int port_num = config->connector_num;
 	/* Check for an HPD wake on DP Status. The conditions are...
 	 *  a) Device is suspended.
 	 *  b) Port is currently using an alternate mode.
@@ -1478,6 +1497,10 @@ static void handle_attention_vdo(struct pdc_port_t *port)
 	    port->hpd_wake_watch &&
 	    PD_VDO_DPSTS_HPD_LVL(port->attention_vdo.vdo)) {
 		host_set_single_event(EC_HOST_EVENT_USB_MUX);
+	}
+
+	if (port->board_dp_attention_cb) {
+		port->board_dp_attention_cb(port_num, port->attention_vdo.vdo);
 	}
 }
 
@@ -1499,12 +1522,7 @@ static void run_snk_policies(struct pdc_port_t *port)
 		return;
 	} else if (atomic_test_and_clear_bit(port->snk_policy.flags,
 					     SNK_POLICY_NEW_POWER_REQUEST)) {
-		/* TODO: b/382277419
-		 * this policy flag should construct a new RDO request
-		 * based on the current maximum voltage and maximum current.
-		 */
-		port->get_pdo = (struct get_pdo_t){ 0 };
-		port->snk_attached_local_state = SNK_ATTACHED_GET_PDOS;
+		port->snk_attached_local_state = SNK_ATTACHED_EVALUATE_PDOS;
 		return;
 	} else if (atomic_test_and_clear_bit(port->snk_policy.flags,
 					     SNK_POLICY_EVAL_SWAP_TO_SRC)) {
@@ -1752,6 +1770,17 @@ static void pdc_unattached_entry(void *obj)
 					   BIT_MASK(PD_STATUS_EVENT_COUNT));
 		pdc_power_mgmt_notify_event(port_number,
 					    PD_STATUS_EVENT_DISCONNECTED);
+
+		if (IS_ENABLED(CONFIG_PDC_POWER_MGMT_USB_MUX)) {
+			usb_mux_set(port_number, USB_PD_MUX_NONE,
+				    USB_SWITCH_DISCONNECT,
+				    /* port is unattacehd, not meaningful */
+				    POLARITY_CC1);
+		}
+
+		if (port->board_unattach_cb) {
+			port->board_unattach_cb(port_number);
+		}
 	}
 }
 
@@ -1793,6 +1822,8 @@ static void pdc_unattached_run(void *obj)
 static void pdc_src_attached_entry(void *obj)
 {
 	struct pdc_port_t *port = (struct pdc_port_t *)obj;
+	const struct pdc_config_t *config = port->dev->config;
+	int port_number = config->connector_num;
 
 	print_current_pdc_state(port);
 	set_attached_pdc_state(port, SRC_ATTACHED_STATE);
@@ -1807,6 +1838,13 @@ static void pdc_src_attached_entry(void *obj)
 		/* We always want to evalulate sink caps when we a source. */
 		atomic_set_bit(port->src_policy.flags,
 			       SRC_POLICY_GET_SINK_CAPS);
+
+		if (IS_ENABLED(CONFIG_PDC_POWER_MGMT_USB_MUX)) {
+			usb_mux_set(
+				port_number, USB_PD_MUX_USB_ENABLED,
+				USB_SWITCH_CONNECT,
+				pdc_power_mgmt_pd_get_polarity(port_number));
+		}
 	}
 
 	/* Clear a piece of sink policy as it is no longer relevant in the
@@ -1924,76 +1962,14 @@ static void pdc_snk_attached_entry(void *obj)
 		 * attached sink has been disconnected.
 		 */
 		pdc_dpm_remove_sink(port_number);
-	}
-}
 
-/**
- * @brief Evaluate a set of source PDOs and return the index of the best PDO.
- *
- * The rule used to choose a PDO is select the highest-wattage, highest-voltage
- * PDO that does not exceed the board's maximum PD voltage.
- *
- * @param pdos Input list of PDOs to check
- * @param num_pdos Number of PDOs in \p pdos
- * @param selected[out] Output parameter for 0-based index of selected PDO
- *
- * @return 0 on success
- * @return -EINVAL if \p selected is NULL or \p num_pdos is 0
- * @return -ENOTSUP if no PDO in \p pdos meets criteria
- */
-STATIC_IF_NOT(CONFIG_ZTEST)
-int evaluate_src_pdos(const uint32_t *pdos, size_t num_pdos, size_t *selected)
-{
-	uint32_t highest_mw = 0, highest_mv = 0;
-	int best_index = -1;
-
-	if (pdos == NULL || selected == NULL || num_pdos == 0) {
-		return -EINVAL;
-	}
-
-	for (size_t i = 0; i < num_pdos; i++) {
-		/* PD spec requires the first PDO to be a 5V fixed, so there
-		 * is expected to always be a usable PDO in this list.
-		 */
-
-		if ((pdos[i] & PDO_TYPE_MASK) != PDO_TYPE_FIXED) {
-			/* Only consider fixed PDOs */
-			continue;
-		}
-
-		/* Extract voltage and current from PDO, and compute wattage */
-		uint32_t mv = PDO_FIXED_GET_VOLT(pdos[i]);
-		uint32_t ma = PDO_FIXED_GET_CURR(pdos[i]);
-		uint32_t mw = (mv * ma) / 1000;
-
-		LOG_INF("PDO%d: %08x, %d %d %d", i + 1, pdos[i], mv, ma, mw);
-
-		/* Find highest-wattage PDO that does not exceed the board max
-		 * voltage.
-		 */
-
-		if (mv > pdc_max_request_mv) {
-			/* Voltage too high. Skip. */
-			continue;
-		}
-
-		if ((mw > highest_mw) ||
-		    (mw == highest_mw && mv > highest_mv)) {
-			/* Found a higher-wattage PDO, or an equivalent-wattage
-			 * PDO that is higher voltage. */
-			highest_mw = mw;
-			highest_mv = mv;
-			best_index = i;
+		if (IS_ENABLED(CONFIG_PDC_POWER_MGMT_USB_MUX)) {
+			usb_mux_set(
+				port_number, USB_PD_MUX_USB_ENABLED,
+				USB_SWITCH_CONNECT,
+				pdc_power_mgmt_pd_get_polarity(port_number));
 		}
 	}
-
-	if (best_index < 0) {
-		/* No PDO matched. */
-		return -ENOTSUP;
-	}
-
-	*selected = best_index;
-	return 0;
 }
 
 /**
@@ -2003,10 +1979,10 @@ static void pdc_snk_attached_run(void *obj)
 {
 	struct pdc_port_t *port = (struct pdc_port_t *)obj;
 	const struct pdc_config_t *const config = port->dev->config;
-	uint32_t max_ma, max_mv, max_mw, max_mw_pdo;
+	uint32_t max_ma, max_mv, max_mw, max_mw_pdo, unused;
 	uint32_t flags;
-	size_t selected_pdo = 0;
-	int rv;
+	int pdo_index = 0;
+	uint32_t selected_pdo;
 
 	/* The CCI_EVENT is set to re-query connector status, so check the
 	 * connector status and take the appropriate action.
@@ -2124,38 +2100,51 @@ static void pdc_snk_attached_run(void *obj)
 		port->snk_attached_local_state = SNK_ATTACHED_START_CHARGING;
 		flags = RDO_COMM_CAP;
 
-		rv = evaluate_src_pdos(port->snk_policy.src.pdos, PDO_NUM,
-				       &selected_pdo);
-		if (rv) {
-			LOG_ERR("C%d: No suitable PDO found (%d)",
-				config->connector_num, rv);
+		for (int i = 0; i < PDO_NUM; i++) {
+			pd_extract_pdo_power_unclamped(
+				port->snk_policy.src.pdos[i], &max_ma, &max_mv,
+				&unused);
+			max_mw = max_ma * max_mv / 1000;
+			LOG_INF("PDO%d: %08x, %d %d %d", i + 1,
+				port->snk_policy.src.pdos[i], max_mv, max_ma,
+				max_mw);
+		}
+
+		pdo_index =
+			pd_select_best_pdo(PDO_NUM, port->snk_policy.src.pdos,
+					   pdc_max_request_mv, &selected_pdo);
+
+		if (port->snk_policy.pdo == selected_pdo &&
+		    port->snk_policy.pdo_index == (pdo_index + 1)) {
+			/* Selected PDO didn't change - no need to send RDO */
+			LOG_INF("C%d: Retaining PDO[%d]=0x%08X",
+				config->connector_num, pdo_index, selected_pdo);
+			return;
 		}
 
 		/* Store the selected PDO. Convert the PDO number to 1-based
 		 * indexing.
 		 */
-		port->snk_policy.pdo = port->snk_policy.src.pdos[selected_pdo];
-		port->snk_policy.pdo_index = selected_pdo + 1;
+		port->snk_policy.pdo = port->snk_policy.src.pdos[pdo_index];
+		port->snk_policy.pdo_index = pdo_index + 1;
+
+		/* Get the unclamped PDO voltage and current to determine
+		 * whether we need to set the capability mismatch bit if
+		 * less power is offered than our operating requirement.
+		 */
+		pd_extract_pdo_power_unclamped(selected_pdo, &max_ma, &max_mv,
+					       &unused);
+		max_mw_pdo = max_ma * max_mv / 1000;
+		if (max_mw_pdo < pdc_max_operating_power) {
+			flags |= RDO_CAP_MISMATCH;
+		}
 
 		/* Extract Current, Voltage, and calculate Power. Current is
 		 * clamped to the board maximum here so that the RDO and charge
 		 * manager are given the correct board operating current.
 		 */
-		max_ma = MIN(PDO_FIXED_GET_CURR(port->snk_policy.pdo),
-			     CONFIG_PLATFORM_EC_PD_MAX_CURRENT_MA);
-		max_mv = PDO_FIXED_GET_VOLT(port->snk_policy.pdo);
+		pd_extract_pdo_power(selected_pdo, &max_ma, &max_mv, &unused);
 		max_mw = max_ma * max_mv / 1000;
-
-		/* max_mw_pdo holds the raw PDO wattage without clamping. Use
-		 * this to set the mismatch bit if less power is offered than
-		 * our operating requirement.
-		 */
-		max_mw_pdo = PDO_FIXED_GET_CURR(port->snk_policy.pdo) *
-			     PDO_FIXED_GET_VOLT(port->snk_policy.pdo) / 1000;
-
-		if (max_mw_pdo < pdc_max_operating_power) {
-			flags |= RDO_CAP_MISMATCH;
-		}
 
 		/* Set RDO to send */
 		if ((port->snk_policy.pdo & PDO_TYPE_MASK) ==
@@ -2164,6 +2153,7 @@ static void pdc_snk_attached_run(void *obj)
 				RDO_BATT(port->snk_policy.pdo_index, max_mw,
 					 max_mw, flags);
 		} else {
+			/* Fixed or variable RDO. */
 			port->snk_policy.rdo_to_send =
 				RDO_FIXED(port->snk_policy.pdo_index, max_ma,
 					  max_ma, flags);
@@ -2173,9 +2163,9 @@ static void pdc_snk_attached_run(void *obj)
 		queue_internal_cmd(port, CMD_PDC_SET_RDO);
 		return;
 	case SNK_ATTACHED_START_CHARGING:
-		max_ma = MIN(PDO_FIXED_GET_CURR(port->snk_policy.pdo),
-			     CONFIG_PLATFORM_EC_PD_MAX_CURRENT_MA);
-		max_mv = PDO_FIXED_GET_VOLT(port->snk_policy.pdo);
+		max_ma = MIN(PDO_FIXED_CURRENT(port->snk_policy.pdo),
+			     CONFIG_PLATFORM_EC_USB_PD_MAX_CURRENT_MA);
+		max_mv = PDO_FIXED_VOLTAGE(port->snk_policy.pdo);
 		max_mw = max_ma * max_mv / 1000;
 
 		LOG_INF("Available charging on C%d", config->connector_num);
@@ -2632,6 +2622,8 @@ static void pdc_send_cmd_wait_exit(void *obj)
 static void pdc_src_typec_only_entry(void *obj)
 {
 	struct pdc_port_t *port = (struct pdc_port_t *)obj;
+	const struct pdc_config_t *config = port->dev->config;
+	int port_number = config->connector_num;
 
 	print_current_pdc_state(port);
 	set_attached_pdc_state(port, SRC_ATTACHED_TYPEC_ONLY_STATE);
@@ -2650,6 +2642,13 @@ static void pdc_src_typec_only_entry(void *obj)
 		 */
 		k_timer_start(&port->typec_only_timer,
 			      K_USEC(PD_T_SINK_WAIT_CAP), K_NO_WAIT);
+
+		if (IS_ENABLED(CONFIG_PDC_POWER_MGMT_USB_MUX)) {
+			usb_mux_set(
+				port_number, USB_PD_MUX_USB_ENABLED,
+				USB_SWITCH_CONNECT,
+				pdc_power_mgmt_pd_get_polarity(port_number));
+		}
 	}
 }
 
@@ -2706,6 +2705,8 @@ static void pdc_src_typec_only_run(void *obj)
 static void pdc_snk_typec_only_entry(void *obj)
 {
 	struct pdc_port_t *port = (struct pdc_port_t *)obj;
+	const struct pdc_config_t *config = port->dev->config;
+	int port_number = config->connector_num;
 
 	port->send_cmd.intern.pending = false;
 	if (get_pdc_state(port) != port->send_cmd_return_state) {
@@ -2721,6 +2722,13 @@ static void pdc_snk_typec_only_entry(void *obj)
 		 */
 		k_timer_start(&port->typec_only_timer,
 			      K_USEC(PD_T_SINK_WAIT_CAP), K_NO_WAIT);
+
+		if (IS_ENABLED(CONFIG_PDC_POWER_MGMT_USB_MUX)) {
+			usb_mux_set(
+				port_number, USB_PD_MUX_USB_ENABLED,
+				USB_SWITCH_CONNECT,
+				pdc_power_mgmt_pd_get_polarity(port_number));
+		}
 	}
 
 	print_current_pdc_state(port);
@@ -2791,6 +2799,8 @@ static void pdc_snk_typec_only_run(void *obj)
 static void pdc_init_entry(void *obj)
 {
 	struct pdc_port_t *port = (struct pdc_port_t *)obj;
+	const struct pdc_config_t *config = port->dev->config;
+	int port_number = config->connector_num;
 
 	print_current_pdc_state(port);
 
@@ -2805,6 +2815,9 @@ static void pdc_init_entry(void *obj)
 		/* Set up GET_VDO command data */
 		discovery_info_init(port);
 
+		if (IS_ENABLED(CONFIG_PDC_POWER_MGMT_USB_MUX)) {
+			usb_mux_init(port_number);
+		}
 		port->init_local_state = INIT_WAIT_FOR_READY;
 		port->public_api_buff = NULL;
 	}
@@ -2839,13 +2852,13 @@ static void enforce_pd_chipset_resume_policy_1(int port)
 
 /**
  * @brief Chipset Resume (S3->S0) Policy 2:
- *	a) DRP Toggle ON
+ *	a) Set DRP role based on platform
  */
 static void enforce_pd_chipset_resume_policy_2(int port)
 {
 	LOG_DBG("C%d: Chipset Resume Policy 2", port);
 
-	pdc_power_mgmt_set_dual_role(port, PD_DRP_TOGGLE_ON);
+	pdc_power_mgmt_set_dual_role(port, pd_get_drp_state_in_s0());
 }
 
 /**
@@ -3122,6 +3135,7 @@ static void init_port_variables(struct pdc_port_t *port,
 
 	port->last_state = PDC_INIT;
 	port->next_state = PDC_INIT;
+	port->send_cmd_return_state = PDC_INVALID;
 }
 
 /**
@@ -3165,6 +3179,9 @@ static int pdc_subsys_init(const struct device *dev)
 
 	/* Initialize typec only timer */
 	k_timer_init(&port->typec_only_timer, NULL, NULL);
+
+	/* Initialize platform policy */
+	enforce_pd_chipset_shutdown_policy_1(config->connector_num);
 
 	/* Create the thread for this port */
 	config->create_thread(dev);
@@ -3339,9 +3356,6 @@ int pdc_power_mgmt_set_new_power_request(int port)
 		return -ENOTCONN;
 	}
 
-	/* TODO: b/382277419
-	 * NEW_POWER_REQUEST should build up a new RDO request only.
-	 */
 	atomic_set_bit(pdc_data[port]->port.snk_policy.flags,
 		       SNK_POLICY_NEW_POWER_REQUEST);
 
@@ -3901,7 +3915,12 @@ static void pd_chipset_shutdown(void)
 
 	LOG_INF("PD:S3->S5");
 }
+#ifdef CONFIG_PLATFORM_EC_CHIPSET_RESUME_INIT_HOOK
+DECLARE_HOOK(HOOK_CHIPSET_SHUTDOWN_COMPLETE, pd_chipset_shutdown,
+	     HOOK_PRIO_DEFAULT);
+#else
 DECLARE_HOOK(HOOK_CHIPSET_SHUTDOWN, pd_chipset_shutdown, HOOK_PRIO_DEFAULT);
+#endif
 
 test_mockable int pdc_power_mgmt_get_drp_mode(int port,
 					      enum drp_mode_t *drp_mode)
@@ -4369,6 +4388,22 @@ uint8_t pdc_power_mgmt_get_dp_pin_mode(int port)
 
 	return pin_mode;
 }
+
+mux_state_t pdc_power_mgmt_get_dp_mux_mode(int port)
+{
+	int pin_mode = get_dp_pin_mode(port);
+	/* Default dp_port_mf_allow is true */
+	int mf_pref = PD_VDO_DPSTS_MF_PREF(pdc_power_mgmt_get_dp_status(port));
+
+	/*
+	 * Multi-function operation is only allowed if that pin config is
+	 * supported.
+	 */
+	if ((pin_mode & MODE_DP_PIN_MF_MASK) && mf_pref)
+		return USB_PD_MUX_DOCK;
+	else
+		return USB_PD_MUX_DP_ENABLED;
+}
 #endif
 
 void pdc_power_mgmt_set_max_voltage(unsigned int mv)
@@ -4575,6 +4610,31 @@ int pdc_power_mgmt_register_ppm_callback(const struct pdc_callback *callback)
 	for (port = 0; port < pdc_power_mgmt_get_usb_pd_port_count(); ++port) {
 		pdc = &pdc_data[port]->port;
 		pdc->ppm_ci_cb = callback;
+	}
+
+	return 0;
+}
+
+int pdc_power_mgmt_register_board_callback(enum pdc_power_mgmt_board_cb_t type,
+					   const void *callback)
+{
+	struct pdc_port_t *pdc;
+	int port;
+
+	for (port = 0; port < pdc_power_mgmt_get_usb_pd_port_count(); ++port) {
+		pdc = &pdc_data[port]->port;
+		switch (type) {
+		case PDC_BOARD_CB_UNATTACH:
+			pdc->board_unattach_cb =
+				(pdc_power_mgmt_board_unattached_cb)callback;
+			break;
+		case PDC_BOARD_CB_DP_ATTENTION:
+			pdc->board_dp_attention_cb =
+				(pdc_power_mgmt_board_dp_attention_cb)callback;
+			break;
+		default:
+			break;
+		};
 	}
 
 	return 0;

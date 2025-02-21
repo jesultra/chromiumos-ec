@@ -127,7 +127,7 @@ static void kb_raw_ite_drive_column_reg_set_v1(const struct device *dev)
 	 *       rest be configured as GPIO output mode. In this case that we
 	 *       disable the ISR in critical section to avoid race condition.
 	 */
-	inst->KBS_KSOH1 &= ~KSOH_PIN_MASK;
+	inst->KBS_KSOH1 &= (uint8_t)~KSOH_PIN_MASK;
 	/* restore interrupts */
 	irq_unlock(key);
 	/* KSO[17:16] pins output low */

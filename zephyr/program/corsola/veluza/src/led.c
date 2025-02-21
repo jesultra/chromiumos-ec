@@ -189,10 +189,10 @@ static struct {
 static void battery_set_pwm_led_tick(void);
 DECLARE_DEFERRED(battery_set_pwm_led_tick);
 
-#define BATT_LOW_LED_PULSE_MS (875 * MSEC)
-#define BATT_CRI_LED_PULSE_MS (375 * MSEC)
-#define BATT_LED_ON_TIME_MS (125 * MSEC)
-#define BATT_LED_PULSE_TICK_MS (25 * MSEC)
+#define BATT_LOW_LED_PULSE_MS (875 * USEC_PER_MSEC)
+#define BATT_CRI_LED_PULSE_MS (375 * USEC_PER_MSEC)
+#define BATT_LED_ON_TIME_MS (125 * USEC_PER_MSEC)
+#define BATT_LED_PULSE_TICK_MS (25 * USEC_PER_MSEC)
 
 #define BATT_LOW_LED_CONFIG_TICK(interval, color)                        \
 	batt_led_config_tick(                                            \
@@ -360,10 +360,10 @@ static void battery_led_tick(void)
 }
 DECLARE_HOOK(HOOK_TICK, battery_led_tick, HOOK_PRIO_DEFAULT);
 
-#define PWR_LED_PULSE_US (1500 * MSEC)
-#define PWR_LED_OFF_TIME_US (1500 * MSEC)
+#define PWR_LED_PULSE_US (1500 * USEC_PER_MSEC)
+#define PWR_LED_OFF_TIME_US (1500 * USEC_PER_MSEC)
 /* 30 msec for nice and smooth transition. */
-#define PWR_LED_PULSE_TICK_US (30 * MSEC)
+#define PWR_LED_PULSE_TICK_US (30 * USEC_PER_MSEC)
 
 enum power_led_mode {
 	MODE_NO_CHANGE = 0,

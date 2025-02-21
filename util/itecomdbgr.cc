@@ -7,6 +7,7 @@
  * Function: ITE COM DBGR Flash Utility
  */
 
+#include <errno.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <stdbool.h>
@@ -251,6 +252,58 @@ static ssize_t write_com(struct itecomdbgr_config *conf,
 	return bWriteStat;
 }
 
+/*
+ * Discards (flushes) any data received via UART, but not yet retrieved through
+ * `read_com()`.
+ */
+static void flush_com(struct itecomdbgr_config *conf)
+{
+	fd_set read_fds;
+	struct timeval timeout;
+	char buf[256];
+	int cc;
+
+	/* First ask the kernel to drop any data. */
+	tcflush(conf->g_fd, TCIOFLUSH);
+
+	/*
+	 * For devices where the above is not properly implemented, we
+	 * additionally attempt to manually drain any buffered data below, by
+	 * repeatedly reading and discarding, for as long as more data remains
+	 * available.  We could have used a zero timeout, but instead chose a
+	 * very short timeout of 1ms, just to be sure that the kernel actually
+	 * queries the USB device, rather than maybe instantly replying if no
+	 * data is buffered in the kernel driver.
+	 */
+	for (;;) {
+		FD_ZERO(&read_fds);
+		FD_SET(conf->g_fd, &read_fds);
+		timeout.tv_sec = 0;
+		timeout.tv_usec = 1000;
+		/*
+		 * Ask the operating system to wait up to 1ms for data to become
+		 * available to read from the serial port.
+		 */
+		cc = select(conf->g_fd + 1, &read_fds, NULL, NULL, &timeout);
+		if (cc < 0)
+			fprintf(stderr, "Error from select(): %s\n",
+				strerror(errno));
+		if (!cc || !FD_ISSET(0, &read_fds)) {
+			/* No more data immediately available */
+			break;
+		}
+		/*
+		 * Select indicated that data is available to read, get whatever
+		 * we can, discard it, and then go back and ask if there is
+		 * more.
+		 */
+		cc = read(conf->g_fd, buf, sizeof(buf));
+		if (cc < 0)
+			fprintf(stderr, "Error reading serial data: %s\n",
+				strerror(errno));
+	}
+}
+
 static uint8_t debug_getc(struct itecomdbgr_config *conf)
 {
 	uint8_t data[1];
@@ -456,7 +509,7 @@ static int check_status(struct itecomdbgr_config *conf, uint8_t wait_mask,
 	return 0;
 }
 
-static void getchipid(struct itecomdbgr_config *conf)
+static int getchipid(struct itecomdbgr_config *conf)
 {
 	uint8_t chipid[3], chipver, eflash_size_flag;
 
@@ -464,14 +517,21 @@ static void getchipid(struct itecomdbgr_config *conf)
 
 	/* Get CHIPID_1 for dbgr command set */
 	write_com(conf, test, 3);
-	printf("getchipid = %02x\n", debug_getc(conf));
+	chipid[1] = debug_getc(conf); /* read for clear buffer */
 
 	chipid[0] = rd_reg_or_ff(conf, 0xF02085);
 	chipid[1] = rd_reg_or_ff(conf, 0xF02086);
 	chipid[2] = rd_reg_or_ff(conf, 0xF02087);
 	chipver = rd_reg_or_ff(conf, 0xF02002);
+
+	if ((chipid[0] != 0x08) && (chipid[0] != 0x05)) {
+		/* Get Chip ID Fail */
+		return FAIL;
+	}
+
 	printf("Chip ID = %02x %02x %02x", chipid[0], chipid[1], chipid[2]);
 	printf(", Chip Ver = %02x", chipver);
+
 	eflash_size_flag = chipver >> 4;
 	if (eflash_size_flag == 0xC)
 		conf->eflash_size_in_k = 1024;
@@ -494,6 +554,7 @@ static void getchipid(struct itecomdbgr_config *conf)
 	} else {
 		conf->update_end_addr = conf->g_flash_size;
 	}
+	return SUCCESS;
 }
 
 static int read_id_2(struct itecomdbgr_config *conf)
@@ -513,7 +574,7 @@ static int read_id_2(struct itecomdbgr_config *conf)
 	write_com(conf, disable_follow_mode, sizeof(disable_follow_mode));
 	printf("Flash ID = %02x %02x %02x\n", FlashID[0], FlashID[1],
 	       FlashID[2]);
-	tcflush(conf->g_fd, TCIOFLUSH);
+	flush_com(conf);
 
 	if ((FlashID[0] == 0xFF) && (FlashID[1] == 0xFF) &&
 	    (FlashID[2] == 0xFE)) {
@@ -927,10 +988,11 @@ static int uart_app(struct itecomdbgr_config *conf)
 	if (tcsetattr(conf->g_fd, TCSANOW, &tty) != 0) {
 		perror("tcsetattr");
 	}
-	tcflush(conf->g_fd, TCIOFLUSH);
+	flush_com(conf);
 
 	int tries = 0;
 	while (++tries < 25) {
+		flush_com(conf);
 		if (conf->g_steps == STEPS_TEST) {
 			enter_uart_dbgr_mode(conf);
 			read_id_2(conf);
@@ -940,30 +1002,22 @@ static int uart_app(struct itecomdbgr_config *conf)
 		if (conf->g_steps == STEPS_NORMAL) {
 			enter_uart_dbgr_mode_and_set_nack_mode(conf);
 
-			write_com(conf, cs_high, sizeof(cs_high));
-			write_com(conf, cs_low, sizeof(cs_low));
-
 			/* dbgr reset */
 			write_com(conf, dbgr_reset_buf, sizeof(dbgr_reset_buf));
 
-			write_com(conf, cs_high, sizeof(cs_high));
-			write_com(conf, cs_low, sizeof(cs_low));
+			if (getchipid(conf) == SUCCESS) {
+				/* Reset UART1*/
+				wr_reg(conf, 0xF02011, 1);
 
-			getchipid(conf);
-
-			/* Reset UART1*/
-			wr_reg(conf, 0xF02011, 1);
-
-			wr_reg(conf, 0xF01618, 0xFF);
-			wr_reg(conf, 0xF01619, 0xFF);
-
-			read_id_2(conf);
-
-			tcflush(conf->g_fd, TCIOFLUSH);
+				wr_reg(conf, 0xF01618, 0xFF);
+				wr_reg(conf, 0xF01619, 0xFF);
+				read_id_2(conf);
+			}
+			flush_com(conf);
 		}
 
 		if (conf->g_steps == STEPS_EXIT) {
-			tcflush(conf->g_fd, TCIOFLUSH);
+			flush_com(conf);
 			break;
 		}
 
@@ -1022,7 +1076,7 @@ out:
 
 	/* dbgr reset */
 	write_com(conf, dbgr_reset_buf, sizeof(dbgr_reset_buf));
-	tcflush(conf->g_fd, TCIOFLUSH);
+	flush_com(conf);
 	tcsetattr(tty_saved_fd, TCSANOW, &tty_saved);
 	close(tty_saved_fd);
 	tty_saved_fd = -1;

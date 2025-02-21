@@ -62,6 +62,7 @@ static const struct ec_response_keybd_config banshee_kb_id2 = {
 	.capabilities = KEYBD_CAP_SCRNLOCK_KEY,
 };
 
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_VIVALDI));
 __override const struct ec_response_keybd_config *
 board_vivaldi_keybd_config(void)
 {
@@ -97,3 +98,6 @@ __override const struct key {
 	{ .row = 0, .col = 11 }, /* T15 */
 };
 BUILD_ASSERT(ARRAY_SIZE(vivaldi_keys) == MAX_TOP_ROW_KEYS);
+
+/* TODO(b/219051027): Add assert to check that key_typ.{row,col}_refresh == the
+ * row/col in this table. */

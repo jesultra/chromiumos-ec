@@ -215,6 +215,19 @@ if(DEFINED CONFIG_BOARD_QUANDISO)
 	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_FAN "quandiso/src/fan.c")
 	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_USBC "quandiso/src/usbc.c")
 endif()
+if(DEFINED CONFIG_BOARD_QUANDISO2)
+	project(quandiso2)
+	zephyr_library_sources(
+			"quandiso2/src/board.c"
+			"quandiso2/src/sub_board.c"
+			"quandiso2/src/keyboard.c"
+			"quandiso2/src/led.c"
+			"quandiso2/src/thermal.c"
+	)
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGER "quandiso2/src/charger.c")
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_FAN "quandiso2/src/fan.c")
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_USBC "quandiso2/src/usbc.c")
+endif()
 if(DEFINED CONFIG_BOARD_PIRRHA)
 	project(pirrha)
 	zephyr_include_directories("pirrha/include")
@@ -246,6 +259,8 @@ if(DEFINED CONFIG_BOARD_GLASSWAY)
 			"glassway/src/sub_board.c"
 			"glassway/src/kb_backlight.c"
 			"glassway/src/board.c"
+			"glassway/src/usb_mux_config.c"
+			"glassway/src/keyboard.c"
 	)
 	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_FAN "glassway/src/fan.c")
 	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_USBC "glassway/src/usbc.c")
@@ -354,7 +369,43 @@ if(DEFINED CONFIG_BOARD_TELITH)
 			"telith/src/keyboard_customization.c"
 	)
 endif()
+if(DEFINED CONFIG_BOARD_PUJJONIRU)
+	project(pujjoniru)
+	zephyr_include_directories("pujjoniru/include")
+	zephyr_library_sources(
+			"pujjoniru/src/board.c"
+			"pujjoniru/src/sub_board.c"
+			"pujjoniru/src/board_touchpanel.c"
+	)
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_USBC "pujjoniru/src/usbc.c")
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGER "pujjoniru/src/charger.c")
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_KEYBOARD_CUSTOMIZATION
+			"pujjoniru/src/keyboard_customization.c"
+	)
+endif()
+if(DEFINED CONFIG_BOARD_GUREN)
+	project(guren)
+	zephyr_library_sources(
+			"guren/src/sub_board.c"
+			"guren/src/kb_backlight.c"
+			"guren/src/board.c"
+			"guren/src/usb_mux_config.c"
+			"guren/src/keyboard.c"
+	)
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_FAN "guren/src/fan.c")
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_USBC "guren/src/usbc.c")
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGER "guren/src/charger.c")
+endif()
 if(DEFINED CONFIG_BOARD_INTEL_ISH_5_4_1)
 	project(orisa-ish)
 	add_subdirectory(orisa-ish)
+endif()
+if(DEFINED CONFIG_BOARD_DIRKS)
+	project(dirks)
+	zephyr_include_directories("dirks/include")
+	zephyr_library_sources(
+			"dirks/src/led.c"
+			"dirks/src/hdmi.c"
+	)
+	zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_USBC "dirks/src/usbc.c")
 endif()

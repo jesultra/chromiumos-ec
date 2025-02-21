@@ -96,6 +96,11 @@ tests:
     - CONFIG_TEST_USB_PD_POLICY=y
     extra_dtc_overlay_files:
     - kingler.default.overlay
+  kingler.voltorb_dps:
+    extra_configs:
+    - CONFIG_TEST_VOLTORB_DPS=y
+    extra_dtc_overlay_files:
+    - kingler.default.overlay
   kingler.usb_port_count:
     extra_configs:
     - CONFIG_TEST_DB_DETECTION_USB_COUNT=y

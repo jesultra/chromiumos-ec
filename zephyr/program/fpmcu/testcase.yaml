@@ -221,6 +221,11 @@ tests:
     - CONFIG_HW_TEST_UTILS_STR=y
     extra_conf_files:
     - prj_hw_tests.conf
+  watchdog:
+    extra_configs:
+    - CONFIG_HW_TEST_WATCHDOG=y
+    extra_conf_files:
+    - prj_hw_tests.conf
   stdlib:
     extra_configs:
     - CONFIG_HW_TEST_STDLIB=y

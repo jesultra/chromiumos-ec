@@ -17,12 +17,17 @@ FAKE_VOID_FUNC(pd_power_supply_reset, int);
 FAKE_VALUE_FUNC(int, pd_check_vconn_swap, int);
 FAKE_VALUE_FUNC(int, pd_set_power_supply_ready, int);
 
+/* Normally implemented in zephyr/shim/src/espi.c */
+void lpc_keyboard_resume_irq(void)
+{
+}
+
 ZTEST_SUITE(kanix_charger, NULL, NULL, NULL, NULL, NULL);
 
 ZTEST(kanix_charger, test_get_leave_safe_mode_delay_ms)
 {
 	/* battery should delay 2000ms to leave safe mode. */
-	battery_conf = &board_battery_info[2];
+	battery_conf = &board_battery_info[3];
 	zassert_equal(board_get_leave_safe_mode_delay_ms(), 2000);
 
 	/* Not battery would use defaut delay time 500ms. */
@@ -32,7 +37,7 @@ ZTEST(kanix_charger, test_get_leave_safe_mode_delay_ms)
 	battery_conf = &board_battery_info[1];
 	zassert_equal(board_get_leave_safe_mode_delay_ms(), 500);
 
-	battery_conf = &board_battery_info[3];
+	battery_conf = &board_battery_info[2];
 	zassert_equal(board_get_leave_safe_mode_delay_ms(), 500);
 
 	battery_conf = &board_battery_info[4];

@@ -55,16 +55,6 @@ static uint32_t *get_pdo_data(struct emul_pdc_pdo_t *pdos,
 	}
 }
 
-static bool is_epr_pdo(uint32_t pdo)
-{
-	uint32_t type = PDO_GET_TYPE(pdo);
-
-	return (type == PDO_GET_TYPE(PDO_TYPE_AUGMENTED) &&
-		PDO_AUG_GET_PPS(pdo) == PDO_AUG_PPS_EPR) ||
-	       (type == PDO_GET_TYPE(PDO_TYPE_FIXED) &&
-		(pdo & PDO_FIXED_EPR_MODE_CAPABLE) != 0);
-}
-
 int emul_pdc_pdo_reset(struct emul_pdc_pdo_t *pdos)
 {
 	memset(pdos, 0, sizeof(struct emul_pdc_pdo_t));
@@ -103,6 +93,7 @@ int emul_pdc_pdo_set_direct(struct emul_pdc_pdo_t *data,
 			    enum pdo_source_t source, const uint32_t *pdos)
 {
 	uint32_t *target_pdos = get_pdo_data(data, source, pdo_type);
+	uint8_t blank_pdos = PDO_OFFSET_MAX - (pdo_offset + num_pdos);
 
 	if (!target_pdos) {
 		return -EINVAL;
@@ -119,22 +110,19 @@ int emul_pdc_pdo_set_direct(struct emul_pdc_pdo_t *data,
 		return -EINVAL;
 	}
 
-	for (uint8_t i = 0; i < num_pdos; i++) {
-		/* EPR PDOs are only supported in offsets 1-4. */
-		if (is_epr_pdo(pdos[i]) &&
-		    pdo_offset + i > EMUL_PDO_MAX_EPR_PDO_OFFSET) {
-			LOG_ERR("Only PDOs 1-4 support EPR");
-			return -EINVAL;
-		}
-	}
-
 	memcpy(&target_pdos[pdo_offset], pdos, sizeof(uint32_t) * num_pdos);
+
+	/* LPMs and partners should track the number of valid PDOs.
+	 * Zero fill the invalid PDOs.
+	 */
+	memset(&target_pdos[pdo_offset + num_pdos], 0,
+	       sizeof(uint32_t) * blank_pdos);
 
 	/* By default, if the test sets the partner sink PDOs, also update
 	 * the partner RDO to match the fixed PDO.
 	 */
 	if (pdo_offset == 0 && source == PARTNER_PDO && pdo_type == SINK_PDO) {
-		int max_curr = PDO_FIXED_GET_CURR(target_pdos[0]);
+		int max_curr = PDO_FIXED_CURRENT(target_pdos[0]);
 		data->partner_rdo = RDO_FIXED(1, max_curr, 500, 0);
 	}
 

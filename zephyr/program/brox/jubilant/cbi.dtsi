@@ -67,6 +67,27 @@
 		};
 
 		/*
+		 * FW_CONFIG field to enable touch panel power sequence
+		 * control or not.
+		 */
+		touch-en {
+			enum-name = "FW_PANEL_PWRSEQ_EC_CONTROL";
+			start = <19>;
+			size = <1>;
+
+			touch-en-disable {
+				compatible = "cros-ec,cbi-fw-config-value";
+				enum-name = "FW_PANEL_PWRSEQ_EC_CONTROL_DISABLE";
+				value = <0>;
+			};
+			touch-en-enable {
+				compatible = "cros-ec,cbi-fw-config-value";
+				enum-name = "FW_PANEL_PWRSEQ_EC_CONTROL_ENABLE";
+				value = <1>;
+			};
+		};
+
+		/*
 		 * FW_CONFIG field to indicate which keyboard numeric
 		 * pad should be used.
 		 */

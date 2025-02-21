@@ -417,7 +417,7 @@ static void hid_kb_proc_queue(void)
 	}
 
 	mutex_unlock(keyboard.report_queue_mutex);
-	hook_call_deferred(&hid_kb_proc_queue_data, 1 * MSEC);
+	hook_call_deferred(&hid_kb_proc_queue_data, 1 * USEC_PER_MSEC);
 }
 
 __maybe_unused static void kb_msg_deferred(void)

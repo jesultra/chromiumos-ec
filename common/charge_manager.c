@@ -538,9 +538,9 @@ charge_manager_fill_power_info(int port,
 			 * DPS enabled. This is to prevent the system think it's
 			 * using a low power charger.
 			 */
-			pd_find_pdo_index(pd_get_src_cap_cnt(port),
-					  pd_get_src_caps(port),
-					  pd_get_max_voltage(), &pdo);
+			pd_select_best_pdo(pd_get_src_cap_cnt(port),
+					   pd_get_src_caps(port),
+					   pd_get_max_voltage(), &pdo);
 			pd_extract_pdo_power(pdo, &max_ma, &max_mv, &unused);
 		} else {
 			max_mv = available_charge[sup][port].voltage;
@@ -1011,7 +1011,7 @@ static void charge_manager_refresh(void)
 				 * Check if we can get more power from this
 				 * port. If yes, send new power request
 				 */
-				pd_find_pdo_index(
+				pd_select_best_pdo(
 					pd_get_src_cap_cnt(updated_new_port),
 					pd_get_src_caps(updated_new_port),
 					pd_get_max_voltage(), &pdo);
@@ -1643,7 +1643,7 @@ static void charge_manager_set_external_power_limit(int current_lim,
 	if (current_lim == EC_POWER_LIMIT_NONE)
 		current_lim = CHARGE_CEIL_NONE;
 	if (voltage_lim == EC_POWER_LIMIT_NONE)
-		voltage_lim = PD_MAX_VOLTAGE_MV;
+		voltage_lim = CONFIG_USB_PD_MAX_VOLTAGE_MV;
 
 	for (port = 0; port < board_get_usb_pd_port_count(); ++port) {
 		charge_manager_set_ceil(port, CEIL_REQUESTOR_HOST, current_lim);

@@ -194,19 +194,6 @@ endif()
 
 add_subdirectory("subsys")
 
-# Creates a phony target all.libraries in case you only want to build the
-# libraries and not the binaries. For example for creating the initial zero
-# coverage files.
-get_property(ZEPHYR_LIBS_PROPERTY GLOBAL PROPERTY ZEPHYR_LIBS)
-add_custom_target(
-  all.libraries
-  DEPENDS
-  ${ZEPHYR_LIBS_PROPERTY}
-  kernel
-  ${CMAKE_BINARY_DIR}/gcov.sh
-  )
-configure_file(gcov.tmpl.sh ${CMAKE_BINARY_DIR}/gcov.sh)
-
 # CONFIG_PLATFORM_EC files that don't relate to something below should be
 # included here, sorted by filename. This is common functionality which is
 # supported by all boards and emulators (including unit tests) using the shim
@@ -322,10 +309,11 @@ zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGER_SM5803
                                                 "${PLATFORM_EC}/driver/charger/sm5803.c")
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGESPLASH
                                                 "${PLATFORM_EC}/common/chargesplash.c")
+zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGER
+						"${PLATFORM_EC}/common/charger.c"
+						"${PLATFORM_EC}/common/charge_state.c")
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGE_MANAGER
-                                                "${PLATFORM_EC}/common/charger.c"
-                                                "${PLATFORM_EC}/common/charge_manager.c"
-                                                "${PLATFORM_EC}/common/charge_state.c")
+                                                "${PLATFORM_EC}/common/charge_manager.c")
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGE_RAMP_HW
                                                 "${PLATFORM_EC}/common/charge_ramp.c")
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_CHARGE_RAMP_SW
@@ -489,6 +477,8 @@ zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_POWERSEQ_MT8186
 # Re-use mt8186.c code
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_POWERSEQ_MT8188
                                                 "${PLATFORM_EC}/power/mt8186.c")
+zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_POWERSEQ_MT8196
+                                                "${PLATFORM_EC}/power/mt8186.c")
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_POWERSEQ_MT8192
                                                 "${PLATFORM_EC}/power/mt8192.c")
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_POWERSEQ_SC7180
@@ -580,7 +570,8 @@ zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_USB_POWER_DELIVERY
                                                 "${PLATFORM_EC}/common/usb_pd_flags.c")
 
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_USB_PD_CONTROLLER
-                                                "${PLATFORM_EC}/common/usbc_utils.c")
+                                                "${PLATFORM_EC}/common/usbc_utils.c"
+                                                "${PLATFORM_EC}/common/usb_common.c")
 
 zephyr_library_sources_ifdef(CONFIG_PLATFORM_EC_TOUCHPAD_ELAN
                                                 "${PLATFORM_EC}/driver/touchpad_elan.c")
@@ -749,6 +740,22 @@ add_subdirectory("fake")
 add_subdirectory("mock")
 add_subdirectory_ifdef(CONFIG_PLATFORM_EC "shim")
 add_subdirectory_ifdef(CONFIG_HW_TEST_ON "test/hwtest")
+
+# Creates a phony target all.libraries in case you only want to build the
+# libraries and not the binaries. For example for creating the initial zero
+# coverage files.
+#
+# NOTE: This target MUST come after all subdirectories were added otherwise
+# some ZEPHYR_LIBS might be missed.
+get_property(ZEPHYR_LIBS_PROPERTY GLOBAL PROPERTY ZEPHYR_LIBS)
+add_custom_target(
+  all.libraries
+  DEPENDS
+  ${ZEPHYR_LIBS_PROPERTY}
+  kernel
+  ${CMAKE_BINARY_DIR}/gcov.sh
+  )
+configure_file(gcov.tmpl.sh ${CMAKE_BINARY_DIR}/gcov.sh)
 
 # Use external script to generate the ec_version.h header and add as
 # a dependency to the EC application library.

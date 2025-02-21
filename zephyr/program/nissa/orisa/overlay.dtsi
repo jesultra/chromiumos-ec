@@ -257,8 +257,13 @@
 };
 
 &i2c1_0 {
-	label = "I2C_SENSOR";
+	label = "I2C_DSP";
 	clock-frequency = <I2C_BITRATE_FAST>;
+	dsp_service: dsp-service@20 {
+		compatible = "cros,dsp-service";
+		reg = <0x20>;
+		int-gpios = <&gpioa 3 (GPIO_ACTIVE_LOW)>;
+	};
 };
 
 &i2c3_0 {

@@ -91,6 +91,7 @@ __override struct key {
 };
 BUILD_ASSERT(ARRAY_SIZE(vivaldi_keys) == MAX_TOP_ROW_KEYS);
 
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_VIVALDI));
 __override const struct ec_response_keybd_config *
 board_vivaldi_keybd_config(void)
 {
@@ -106,3 +107,6 @@ board_vivaldi_keybd_config(void)
 		return &taeko_kb;
 	}
 }
+
+/* TK_REFRESH is always T2 above, vivaldi_keys are overridden. */
+BUILD_ASSERT_REFRESH_RC(3, 2);

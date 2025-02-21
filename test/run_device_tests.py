@@ -134,7 +134,14 @@ DATA_ACCESS_VIOLATION_200A8000_REGEX = re.compile(
 This is 32K less than Helipilot's start address (0x200B0000). This corresponds
 to HELIPILOT_DATA_RAM_SIZE_BYTES being increased from 156KiB to 188KiB.
 """
+DATA_ACCESS_VIOLATION_20098000_REGEX = re.compile(
+    r"Data access violation, mfar = 20098000\r\n"
+)
+"""Gwendolin's data RAM starting address.
 
+This is 96K less than Helipilot's start address (0x200B0000). This corresponds
+to HELIPILOT_DATA_RAM_SIZE_BYTES being increased from 156KiB to 252KiB.
+"""
 
 # \r is added twice by Zephyr code.
 PRINTF_CALLED_REGEX = re.compile(r"printf called(\r){1,2}\n")
@@ -142,6 +149,7 @@ PRINTF_CALLED_REGEX = re.compile(r"printf called(\r){1,2}\n")
 BLOONCHIPPER = "bloonchipper"
 BUCCANEER = "buccaneer"
 DARTMONKEY = "dartmonkey"
+GWENDOLIN = "gwendolin"
 HELIPILOT = "helipilot"
 
 JTRACE = "jtrace"
@@ -202,6 +210,12 @@ class FPSensorType(Enum):
 
     ELAN = 0
     FPC = 1
+    # TODO(b/385142008): On Quincy Rev3, Egis is represented by value 2, which
+    # utilizes two binary select lines. The current servod config only
+    # understands the first control line, so we can't use value 2.
+    # To fix this, we would need to add the additional control line to servod
+    # config.
+    EGIS = 0
     UNKNOWN = -1
 
 
@@ -385,9 +399,19 @@ class Renode(Platform):
     ) -> bool:
         cmd = [
             "./util/renode-ec-launch",
+            "--board",
             board_config.name,
-            "zephyr" if zephyr else test_name,
         ]
+        if zephyr:
+            # We've adopted the convention that we prefix upstream Zephyr test
+            # names with "zephyr_".
+            if test_name.startswith("zephyr_"):
+                cmd.extend(["--zephyr-bin", image_path])
+            else:
+                cmd.append("--zephyr")
+        else:
+            cmd.extend(["--ec", test_name])
+
         if enable_hw_write_protect:
             cmd.append("--enable-write-protect")
 
@@ -404,50 +428,51 @@ class Renode(Platform):
     def skip_test(
         self, test_name: str, board_config: BoardConfig, zephyr: bool
     ) -> bool:
-        # TODO(b/380468811): Re-enable upstream Zephyr tests when they work.
+        # Tests failures that are independent of the board.
         if test_name in [
-            test.test_name for test in AllTests.get_zephyr_tests()
+            "fpsensor_hw",  # TODO(b/384743080)
+            "power_utilization",  # Can't measure power on Renode.
+            "production_app_test",  # TODO(b/384740370)
+            "watchdog",  # TODO(b/390021699)
         ]:
             return True
 
         if board_config.name in [BLOONCHIPPER, DARTMONKEY]:
             if board_config.name == BLOONCHIPPER:
-                if test_name in [
-                    "timer",  # TODO(b/372968708)
-                ]:
-                    return True
+                # bloonchipper Zephyr tests to skip on Renode.
                 if zephyr and test_name in [
                     "abort",  # TODO(b/384094781)
+                    "benchmark",  # TODO(b/390253975)
+                    "exception",  # TODO(b/388327673)
+                    # TODO(b/382705460): We have seen this flake in the CQ.
+                    # Re-enable when missing character bug is fixed.
+                    "flash_physical",
                     "fp_transport",  # TODO(b/384094788)
                     "fpsensor_debug",  # TODO(b/384110894)
                     "ftrapv",  # TODO(b/384095271)
                     "panic",  # TODO(b/384095226)
                     "panic_data",  # TODO(b/384095623)
+                    "zephyr_flash_stm32f4",  # TODO(b/384974228)
+                    # TODO(b/384975384)
+                    "zephyr_counter_basic_api_stm32_subsec",
+                    # TODO(b/390255521)
+                    "timer",
+                    # TODO(b/394642587)
+                    "utils",
                 ]:
                     return True
-            # TODO(b/356476313): Remove these when Renode is fixed.
+
+                # bloonchipper EC tests to skip on Renode.
+                if test_name in [
+                    "rtc_stm32f4",  # TODO(b/384991107)
+                ]:
+                    return True
+        elif board_config.name in [HELIPILOT, BUCCANEER, GWENDOLIN]:
             if test_name in [
-                "production_app_test",
-                "benchmark",
-                "exception",
-                "fpsensor_hw",
-                "libcxx",
-                "power_utilization",
-                "rtc_stm32f4",
-                "timer_dos",  # TODO(b/374798079)
-            ]:
-                return True
-        elif board_config.name in [HELIPILOT, BUCCANEER]:
-            if test_name in [
-                "production_app_test",
-                "benchmark",
-                "exception",
-                "fpsensor_hw",
-                "libcxx",
-                "otp_key",
-                "power_utilization",
-                "ram_lock",
-                "rtc_npcx9",
+                "exception",  # TODO(b/384730599)
+                "otp_key",  # TODO(b/385216796)
+                "ram_lock",  # TODO(b/385216805)
+                "rtc_npcx9",  # TODO(b/385217282)
             ]:
                 return True
 
@@ -573,7 +598,7 @@ class AllTests:
                 # TODO(b/365628799): Need to port to Zephyr.
                 skip_for_zephyr=True,
             ),
-            TestConfig(test_name="benchmark"),
+            TestConfig(test_name="benchmark", timeout_secs=90),
             TestConfig(test_name="boringssl_crypto"),
             TestConfig(test_name="cortexm_fpu"),
             TestConfig(test_name="crc"),
@@ -631,7 +656,7 @@ class AllTests:
                 ),
             ),
             TestConfig(test_name="fpsensor_utils"),
-            TestConfig(test_name="ftrapv", timeout_secs=60),
+            TestConfig(test_name="ftrapv"),
             TestConfig(
                 test_name="libc_printf",
                 finish_regexes=[PRINTF_CALLED_REGEX],
@@ -708,7 +733,7 @@ class AllTests:
             # Covered by Zephyr drivers.counter.basic_api.stm32_subsec test
             TestConfig(
                 test_name="rtc_stm32f4",
-                exclude_boards=[DARTMONKEY, HELIPILOT, BUCCANEER],
+                exclude_boards=[DARTMONKEY, HELIPILOT, BUCCANEER, GWENDOLIN],
                 skip_for_zephyr=True,
             ),
             TestConfig(test_name="sbrk", imagetype_to_use=ImageType.RO),
@@ -744,6 +769,11 @@ class AllTests:
             TestConfig(test_name="unaligned_access_benchmark"),
             TestConfig(test_name="utils"),
             TestConfig(test_name="utils_str"),
+            TestConfig(
+                test_name="watchdog",
+                # Increase timeout since this executes more slowly in Renode.
+                timeout_secs=120,
+            ),
             TestConfig(
                 config_name="power_utilization_idle",
                 test_name="power_utilization",
@@ -831,14 +861,16 @@ class AllTests:
         """Return Zephyr upstream test configs."""
         # Make sure proper paths are added in the twister script, see ZEPHYR_TEST_PATHS
         tests = [
-            TestConfig(
-                zephyr_name="cpp.main.newlib",
-                test_name="zephyr_cpp_newlib",
-            ),
-            TestConfig(
-                zephyr_name="cpp.main.cpp20",
-                test_name="zephyr_cpp_std20",
-            ),
+            # TODO(b/380492754): Fix compilation.
+            # TestConfig(
+            #    zephyr_name="cpp.main.newlib",
+            #    test_name="zephyr_cpp_newlib",
+            # ),
+            # TODO(b/380491850): Test hangs.
+            # TestConfig(
+            #    zephyr_name="cpp.main.cpp20",
+            #    test_name="zephyr_cpp_std20",
+            # ),
             TestConfig(
                 zephyr_name="drivers.entropy",
                 test_name="zephyr_drivers_entropy",
@@ -894,9 +926,8 @@ BLOONCHIPPER_CONFIG = BoardConfig(
     expected_fp_power_zephyr=PowerUtilization(
         idle=RangedValue(0.17, 0.04), sleep=RangedValue(0.17, 0.04)
     ),
-    # TODO(b/311568657) Update expected value once b/311568657 is closed.
     expected_mcu_power_zephyr=PowerUtilization(
-        idle=RangedValue(14.61, 0.14 * 2), sleep=RangedValue(0.28, 0.04)
+        idle=RangedValue(14.10, 0.14 * 2), sleep=RangedValue(0.28, 0.04)
     ),
     variants={
         "bloonchipper_v2.0.4277": {
@@ -988,10 +1019,16 @@ BUCCANEER_CONFIG.expected_fp_power = PowerUtilization(
     idle=RangedValue(0.25, 0.3), sleep=RangedValue(0.25, 0.3)
 )
 
+GWENDOLIN_CONFIG = copy.deepcopy(HELIPILOT_CONFIG)
+GWENDOLIN_CONFIG.name = GWENDOLIN
+GWENDOLIN_CONFIG.sensor_type = FPSensorType.EGIS
+GWENDOLIN_CONFIG.mpu_regex = DATA_ACCESS_VIOLATION_20098000_REGEX
+
 BOARD_CONFIGS = {
     "bloonchipper": BLOONCHIPPER_CONFIG,
     "buccaneer": BUCCANEER_CONFIG,
     "dartmonkey": DARTMONKEY_CONFIG,
+    "gwendolin": GWENDOLIN_CONFIG,
     "helipilot": HELIPILOT_CONFIG,
 }
 
@@ -1362,12 +1399,15 @@ def run_test(
 
     while True:
         console.flush()
-        line = readline(executor, console, 1)
+
+        elapsed_secs = time.time() - start
+        remaining_secs = int(test.timeout_secs - elapsed_secs)
+        if remaining_secs <= 0:
+            logging.debug("Test timed out")
+            return False
+
+        line = readline(executor, console, remaining_secs)
         if not line:
-            now = time.time()
-            if now - start > test.timeout_secs:
-                logging.debug("Test timed out")
-                return False
             continue
 
         test.logs.append(line)

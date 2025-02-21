@@ -740,6 +740,11 @@ static const struct ec_response_keybd_config keybd1 = {
 	/* No function keys, no numeric keypad, has screenlock key */
 	.capabilities = KEYBD_CAP_SCRNLOCK_KEY,
 };
+
+/* TK_REFRESH is always T3 above, vivaldi_keys are not overridden. */
+BUILD_ASSERT_REFRESH_RC(2, 2);
+
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_VIVALDI));
 __override const struct ec_response_keybd_config *
 board_vivaldi_keybd_config(void)
 {

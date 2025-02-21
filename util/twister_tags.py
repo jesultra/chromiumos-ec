@@ -67,13 +67,11 @@ def main(args):
         def test_tags_generator(root):
             """Returns space separated tags denoted by a tags key"""
             if "tags" in root:
-                for tag in root["tags"]:
-                    yield tag
+                yield from root["tags"]
 
             for val in root.values():
                 if isinstance(val, dict):
-                    for found in test_tags_generator(val):
-                        yield found
+                    yield from test_tags_generator(val)
 
         for testcase_yaml in testcase_yamls:
             logger.info("Validating test tags in %s", testcase_yaml)

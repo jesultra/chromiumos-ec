@@ -8,7 +8,7 @@
 #include "gpio.h"
 #include "hooks.h"
 #include "keyboard_8042_sharedlib.h"
-#include "keyboard_customization.h"
+#include "keyboard_config.h"
 #include "keyboard_protocol.h"
 #include "keyboard_raw.h"
 

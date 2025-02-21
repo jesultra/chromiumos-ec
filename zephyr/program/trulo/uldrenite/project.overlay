@@ -17,13 +17,14 @@
 #include "cbi.dtsi"
 #include "gpio.dtsi"
 #include "i2c.dtsi"
-#include "fan.dtsi"
 #include "keyboard.dtsi"
 #include "led_pins.dtsi"
 #include "led_policy.dtsi"
 #include "temp_sensors.dtsi"
 #include "usb_typec.dtsi"
 #include "usba.dtsi"
+#include "motionsense.dtsi"
+
 
 /* Trulo overrides follow... */
 

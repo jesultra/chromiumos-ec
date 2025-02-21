@@ -386,8 +386,7 @@ def main(args):
             for fail in os.listdir(failed_dir):
                 print(f"\t{fail}")
         return 1
-    else:
-        return 0
+    return 0
 
 
 if __name__ == "__main__":

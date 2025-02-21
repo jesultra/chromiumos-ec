@@ -55,19 +55,19 @@
 		};
 	};
 
-	temp_sensor1_thermistor: sensor-temp1-thermistor {
+	temp_sensor_pwr_thermistor: sensor-temp-pwr-thermistor {
 		compatible = "cros-ec,temp-sensor-thermistor";
 		thermistor = <&thermistor_3V3_100K_100K_4250B>;
 		adc = <&adc_temp_sensor1>;
 	};
 
-	temp_sensor2_thermistor: sensor-temp2-thermistor {
+	temp_sensor_cpu_thermistor: sensor-temp-cpu-thermistor {
 		compatible = "cros-ec,temp-sensor-thermistor";
 		thermistor = <&thermistor_3V3_100K_100K_4250B>;
 		adc = <&adc_temp_sensor2>;
 	};
 
-	temp_sensor3_thermistor: sensor-temp3-thermistor {
+	temp_sensor_chg_thermistor: sensor-temp-chg-thermistor {
 		compatible = "cros-ec,temp-sensor-thermistor";
 		thermistor = <&thermistor_3V3_100K_100K_4250B>;
 		adc = <&adc_temp_sensor3>;
@@ -75,14 +75,14 @@
 
 	named-temp-sensors {
 		compatible = "cros-ec,temp-sensors";
-		temp_sensor_1 {
-			sensor = <&temp_sensor1_thermistor>;
+		temp_sensor_pwr {
+			sensor = <&temp_sensor_pwr_thermistor>;
 		};
-		temp_sensor_2 {
-			sensor = <&temp_sensor2_thermistor>;
+		temp_sensor_cpu {
+			sensor = <&temp_sensor_cpu_thermistor>;
 		};
-		temp_sensor_3 {
-			sensor = <&temp_sensor3_thermistor>;
+		temp_sensor_chg {
+			sensor = <&temp_sensor_chg_thermistor>;
 		};
 	};
 

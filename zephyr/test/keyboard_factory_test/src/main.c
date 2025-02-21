@@ -27,14 +27,30 @@ FAKE_VALUE_FUNC(int, vnd_keyboard_pm_action, const struct device *,
 FAKE_VALUE_FUNC(int, pinctrl_configure_pins, const pinctrl_soc_pin_t *, uint8_t,
 		uintptr_t);
 FAKE_VALUE_FUNC(int, system_is_locked);
+FAKE_VOID_FUNC(test_drive_column, const struct device *, int);
+FAKE_VALUE_FUNC(kbd_row_t, test_read_row, const struct device *);
+FAKE_VOID_FUNC(test_set_detect_mode, const struct device *, bool);
+
+static const struct input_kbd_matrix_api test_api = {
+	.drive_column = test_drive_column,
+	.read_row = test_read_row,
+	.set_detect_mode = test_set_detect_mode,
+};
 
 #define VND_KEYBOARD_NODE DT_INST(0, vnd_keyboard_input_device)
 
+INPUT_KBD_MATRIX_DT_DEFINE(VND_KEYBOARD_NODE);
+
+static const struct input_kbd_matrix_common_config kbd_cfg =
+	INPUT_KBD_MATRIX_DT_COMMON_CONFIG_INIT(VND_KEYBOARD_NODE, &test_api);
+
+static struct input_kbd_matrix_common_data kbd_data;
+
 PM_DEVICE_DT_DEFINE(VND_KEYBOARD_NODE, vnd_keyboard_pm_action);
 
-DEVICE_DT_DEFINE(VND_KEYBOARD_NODE, NULL, PM_DEVICE_DT_GET(VND_KEYBOARD_NODE),
-		 NULL, NULL, PRE_KERNEL_1, CONFIG_KERNEL_INIT_PRIORITY_DEVICE,
-		 NULL);
+DEVICE_DT_DEFINE(VND_KEYBOARD_NODE, input_kbd_matrix_common_init,
+		 PM_DEVICE_DT_GET(VND_KEYBOARD_NODE), &kbd_data, &kbd_cfg,
+		 POST_KERNEL, CONFIG_KERNEL_INIT_PRIORITY_DEVICE, NULL);
 
 static const struct device *gpio_dev = DEVICE_DT_GET(DT_NODELABEL(gpio0));
 

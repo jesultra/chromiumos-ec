@@ -166,31 +166,26 @@ class Zmake:
         checkout=None,
         jobserver: Optional[zmake.jobserver.JobClient] = None,
         jobs=0,
-        goma=False,
-        gomacc="/mnt/host/depot_tools/.cipd_bin/gomacc",
         modules_dir=None,
         projects_dirs=None,
         zephyr_base=None,
     ):
         zmake.multiproc.LogWriter.reset()
         self.logger = logging.getLogger(self.__class__.__name__)
-        self._checkout = checkout
-        self.goma = goma
-        self.gomacc = gomacc
+        if not checkout and (not zephyr_base or not modules_dir):
+            checkout = util.locate_cros_checkout().resolve()
         if zephyr_base:
             self.zephyr_base = zephyr_base
         else:
             self.zephyr_base = (
-                self.checkout / "src" / "third_party" / "zephyr" / "main"
+                checkout / "src" / "third_party" / "zephyr" / "main"
             )
         self.zephyr_base = self.zephyr_base.resolve()
 
         if modules_dir:
             self.module_paths = zmake.modules.locate_from_directory(modules_dir)
         else:
-            self.module_paths = zmake.modules.locate_from_checkout(
-                self.checkout
-            )
+            self.module_paths = zmake.modules.locate_from_checkout(checkout)
 
         if projects_dirs:
             self.projects_dirs = []
@@ -207,16 +202,9 @@ class Zmake:
             self.jobserver = zmake.jobserver.GNUMakeJobServer(jobs=jobs)
 
         self.executor = zmake.multiproc.Executor()
-        self._sequential = self.jobserver.is_sequential() and not goma
+        self._sequential = self.jobserver.is_sequential()
         self.cmp_failed_projects = {}
         self.failed_projects = []
-
-    @property
-    def checkout(self):
-        """Returns the location of the cros checkout."""
-        if not self._checkout:
-            self._checkout = util.locate_cros_checkout()
-        return self._checkout.resolve()
 
     def _filter_projects(
         self,
@@ -238,14 +226,7 @@ class Zmake:
             all_projects=all_projects,
         )
 
-        # TODO: b/299112542 - "zmake compare-builds -a" fails to build
-        # bloonchipper
-        skipped_projects = set(
-            filter(
-                lambda project: project.config.project_name == "bloonchipper",
-                projects,
-            )
-        )
+        skipped_projects = set()
 
         for project in skipped_projects:
             self.logger.warning(
@@ -436,8 +417,6 @@ class Zmake:
         else:
             self.logger.info("Temporary dir %s will be retained", temp_dir)
 
-        # TODO: b/299112542 - "zmake compare-builds -a" fails to build
-        # bloonchipper
         projects, project_names, all_projects = self._filter_projects(
             project_names, all_projects
         )
@@ -448,7 +427,9 @@ class Zmake:
 
         self.logger.info("Compare zephyr builds")
 
-        cmp_builds = zmake.compare_builds.CompareBuilds(temp_dir, ref1, ref2)
+        cmp_builds = zmake.compare_builds.CompareBuilds(
+            temp_dir, ref1, ref2, self.executor, self._sequential
+        )
 
         for checkout in cmp_builds.checkouts:
             self.logger.info(
@@ -553,53 +534,42 @@ class Zmake:
                 if static_version:
                     ec_version_flags.append("--static")
 
+                # Prune the module paths to just those required by the project.
+                module_paths = project.prune_modules(self.module_paths)
+
+                default_cmake_defs = {
+                    "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                    "ZEPHYR_BASE": str(self.zephyr_base),
+                    "ZMAKE_INCLUDE_DIR": str(generated_include_dir),
+                    "Python3_EXECUTABLE": sys.executable,
+                }
+                if "ec" in module_paths:
+                    default_cmake_defs["DTS_ROOT"] = str(
+                        module_paths["ec"] / "zephyr"
+                    )
+                    default_cmake_defs["SYSCALL_INCLUDE_DIRS"] = str(
+                        module_paths["ec"] / "zephyr" / "include" / "drivers"
+                    )
+                    default_cmake_defs["USER_CACHE_DIR"] = str(
+                        module_paths["ec"] / "build" / "zephyr" / "user-cache"
+                    )
+                if "pigweed" in module_paths:
+                    default_cmake_defs["PW_ROOT"] = str(module_paths["pigweed"])
+                if "nanopb" in module_paths:
+                    default_cmake_defs["NANOPB_DIR"] = str(
+                        module_paths["nanopb"]
+                    )
+                if ec_version_flags:
+                    default_cmake_defs[
+                        "EXTRA_EC_VERSION_FLAGS"
+                    ] = util.repr_command(ec_version_flags)
                 base_config = zmake.build_config.BuildConfig(
-                    cmake_defs={
-                        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                        "DTS_ROOT": str(self.module_paths["ec"] / "zephyr"),
-                        "SYSCALL_INCLUDE_DIRS": str(
-                            self.module_paths["ec"]
-                            / "zephyr"
-                            / "include"
-                            / "drivers"
-                        ),
-                        "USER_CACHE_DIR": str(
-                            self.module_paths["ec"]
-                            / "build"
-                            / "zephyr"
-                            / "user-cache"
-                        ),
-                        "ZEPHYR_BASE": str(self.zephyr_base),
-                        "ZMAKE_INCLUDE_DIR": str(generated_include_dir),
-                        "PW_ROOT": str(
-                            self.checkout / "src" / "third_party" / "pigweed"
-                        ),
-                        "NANOPB_DIR": str(
-                            self.checkout
-                            / "src"
-                            / "third_party"
-                            / "zephyr"
-                            / "nanopb"
-                        ),
-                        "Python3_EXECUTABLE": sys.executable,
-                        **(
-                            {
-                                "EXTRA_EC_VERSION_FLAGS": util.repr_command(
-                                    ec_version_flags
-                                )
-                            }
-                            if ec_version_flags
-                            else {}
-                        ),
-                    },
+                    cmake_defs=default_cmake_defs
                 )
                 if cmake_defs:
                     base_config |= zmake.build_config.BuildConfig.from_args(
                         cmake_defs
                     )
-
-                # Prune the module paths to just those required by the project.
-                module_paths = project.prune_modules(self.module_paths)
 
                 module_config = zmake.modules.setup_module_symlinks(
                     build_dir / "modules", module_paths
@@ -635,13 +605,6 @@ class Zmake:
                 if extra_cflags:
                     base_config |= zmake.build_config.BuildConfig(
                         cmake_defs={"EXTRA_CFLAGS": extra_cflags},
-                    )
-                if self.goma:
-                    base_config |= zmake.build_config.BuildConfig(
-                        cmake_defs={
-                            "CMAKE_C_COMPILER_LAUNCHER": self.gomacc,
-                            "CMAKE_CXX_COMPILER_LAUNCHER": self.gomacc,
-                        },
                     )
 
                 if not build_dir.exists():
@@ -909,10 +872,7 @@ class Zmake:
                 "-C",
                 dirs[build_name].as_posix(),
             ]
-            if self.goma:
-                # Go nuts ninja, goma does the heavy lifting!
-                cmd.append("-j1024")
-            elif self._sequential:
+            if self._sequential:
                 cmd.append("-j1")
             if coverage:
                 cmd.append("all.libraries")

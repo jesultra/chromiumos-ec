@@ -42,7 +42,7 @@ test_export_static void kb_init(void)
 	 * Increase delay before the next key scan to prevent from WDT reset
 	 * under some specific condition.
 	 */
-	keyscan_config.min_post_scan_delay_us = 2 * MSEC;
+	keyscan_config.min_post_scan_delay_us = 2 * USEC_PER_MSEC;
 }
 DECLARE_HOOK(HOOK_INIT, kb_init, HOOK_PRIO_POST_FIRST);
 

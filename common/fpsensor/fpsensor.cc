@@ -303,7 +303,7 @@ extern "C" void fp_task(void)
 				enroll_session = global_context.sensor_mode &
 						 FP_MODE_ENROLL_SESSION;
 			}
-			if (is_test_capture(mode)) {
+			if (!is_finger_needed(mode)) {
 				fp_acquire_image_with_mode(
 					fp_buffer, FP_CAPTURE_TYPE(mode));
 				global_context.sensor_mode &= ~FP_MODE_CAPTURE;

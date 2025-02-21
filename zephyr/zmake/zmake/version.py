@@ -132,7 +132,7 @@ def get_version_string(
     if not version:
         version = "0.0.0"
 
-    dir_path = pathlib.Path(
+    dir_path_1 = pathlib.Path(
         EC_BASE.resolve().parent.parent
         / "build"
         / "zephyr"
@@ -144,7 +144,25 @@ def get_version_string(
         / "zephyr"
     )
 
-    if dir_path.exists():
+    dir_path_2 = pathlib.Path(
+        EC_BASE.resolve().parent.parent.parent.parent
+        / "build"
+        / f"{project}"
+        / "build-singleimage"
+        / "zephyr"
+        / "include"
+        / "generated"
+        / "zephyr"
+    )
+
+    if dir_path_1.exists():
+        dir_path = dir_path_1
+    elif dir_path_2.exists():
+        dir_path = dir_path_2
+    else:
+        dir_path = None
+
+    if dir_path:
         ish_prj = util.read_kconfig_autoconf_value(
             dir_path,
             "CONFIG_SOC_FAMILY_INTEL_ISH",

@@ -1378,8 +1378,8 @@ __overridable bool pd_can_charge_from_device(int port, const int pdo_cnt,
 		 * Get max power that the partner offers (not necessarily what
 		 * this board will request)
 		 */
-		pd_find_pdo_index(pdo_cnt, pdos, pd_get_max_voltage(),
-				  &max_pdo);
+		pd_select_best_pdo(pdo_cnt, pdos, pd_get_max_voltage(),
+				   &max_pdo);
 		pd_extract_pdo_power(max_pdo, &max_ma, &max_mv, &unused);
 		max_mw = max_ma * max_mv / 1000;
 
@@ -1656,7 +1656,7 @@ static bool common_src_snk_dpm_requests(int port)
 						     PD_ROLE_VCONN_SRC :
 						     PD_ROLE_VCONN_OFF;
 		if (request == current) {
-			PE_CLR_DPM_REQUEST(port, DPM_REQUEST_DATA_RESET);
+			PE_CLR_DPM_REQUEST(port, DPM_REQUEST_VCONN_SWAP);
 			return false;
 		}
 		pe_set_dpm_curr_request(port, DPM_REQUEST_VCONN_SWAP);
@@ -1893,7 +1893,7 @@ static bool sink_dpm_requests(int port)
 		}
 
 		pe_set_dpm_curr_request(port, DPM_REQUEST_EPR_MODE_ENTRY);
-		pd_set_max_voltage(PD_MAX_VOLTAGE_MV);
+		pd_set_max_voltage(CONFIG_USB_PD_MAX_VOLTAGE_MV);
 		set_state_pe(port, PE_SNK_SEND_EPR_MODE_ENTRY);
 		return true;
 	} else if (PE_CHK_DPM_REQUEST(port, DPM_REQUEST_EPR_MODE_EXIT)) {
@@ -1977,8 +1977,10 @@ static void send_source_cap(int port)
 
 /*
  * Request desired charge voltage from source.
+ * @param port USB-C port number
+ * @return true if the Request message was sent; false otherwise
  */
-static void pe_send_request_msg(int port)
+static bool pe_send_request_msg(int port)
 {
 	uint32_t vpd_vdo = 0;
 	uint32_t rdo;
@@ -2003,11 +2005,22 @@ static void pe_send_request_msg(int port)
 	/* Build and send request RDO */
 	pd_build_request(vpd_vdo, &rdo, &curr_limit, &supply_voltage, port);
 
-	CPRINTF("C%d: Req [%d] %dmV %dmA", port, RDO_POS(rdo), supply_voltage,
-		curr_limit);
-	if (rdo & RDO_CAP_MISMATCH)
-		CPRINTF(" Mismatch");
-	CPRINTF("\n");
+	CPRINTS("C%d: Req [%d] %dmV %dmA %s", port, RDO_POS(rdo),
+		supply_voltage, curr_limit,
+		rdo & RDO_CAP_MISMATCH ? "Mismatch" : "");
+
+	/* TODO(b/386401791): Repeated, identical Requests add noise to traces,
+	 * waste time, and interfere with some compliance tests. The charge
+	 * manager should not generate such Requests, but sometimes, it does.
+	 * Until the charge manager is fixed, prevent redundant Requests here.
+	 */
+	if (get_last_state_pe(port) == PE_SNK_READY &&
+	    curr_limit == pe[port].curr_limit &&
+	    supply_voltage == pe[port].supply_voltage) {
+		CPRINTS("C%d: %s: Duplicate Request %u mV, %u mA", port,
+			__func__, supply_voltage, curr_limit);
+		return false;
+	}
 
 	pe[port].curr_limit = curr_limit;
 	pe[port].supply_voltage = supply_voltage;
@@ -2028,6 +2041,8 @@ static void pe_send_request_msg(int port)
 	}
 
 	send_data_msg(port, TCPCI_MSG_SOP, msg);
+
+	return true;
 }
 
 static void pe_update_src_pdo_flags(int port, int pdo_cnt, uint32_t *pdos)
@@ -3541,7 +3556,10 @@ static void pe_snk_select_capability_entry(int port)
 	print_current_state(port);
 
 	/* Send Request */
-	pe_send_request_msg(port);
+	if (!pe_send_request_msg(port)) {
+		set_state_pe(port, PE_SNK_READY);
+		return;
+	}
 	pe_sender_response_msg_entry(port);
 
 	/* We are PD Connected */
@@ -4779,15 +4797,19 @@ __maybe_unused static void pe_give_sink_cap_ext_entry(int port)
 #if CONFIG_DEDICATED_CHARGE_PORT_COUNT > 0
 	skedb.sink_modes |= SKEDB_SINK_MAINS_POWERED;
 #endif
-	skedb.sink_minimum_pdp = DIV_ROUND_UP(PD_OPERATING_POWER_MW, 1000);
-	skedb.sink_operational_pdp = DIV_ROUND_UP(PD_OPERATING_POWER_MW, 1000);
-	skedb.sink_maximum_pdp = DIV_ROUND_UP(PD_MAX_POWER_MW, 1000);
+	skedb.sink_minimum_pdp =
+		DIV_ROUND_UP(CONFIG_USB_PD_OPERATING_POWER_MW, 1000);
+	skedb.sink_operational_pdp =
+		DIV_ROUND_UP(CONFIG_USB_PD_OPERATING_POWER_MW, 1000);
+	skedb.sink_maximum_pdp = DIV_ROUND_UP(CONFIG_USB_PD_MAX_POWER_MW, 1000);
 
 #ifdef CONFIG_USB_PD_EPR
-	skedb.epr_sink_minimum_pdp = DIV_ROUND_UP(PD_OPERATING_POWER_MW, 1000);
+	skedb.epr_sink_minimum_pdp =
+		DIV_ROUND_UP(CONFIG_USB_PD_OPERATING_POWER_MW, 1000);
 	skedb.epr_sink_operational_pdp =
-		DIV_ROUND_UP(PD_OPERATING_POWER_MW, 1000);
-	skedb.epr_sink_maximum_pdp = DIV_ROUND_UP(PD_MAX_POWER_MW, 1000);
+		DIV_ROUND_UP(CONFIG_USB_PD_OPERATING_POWER_MW, 1000);
+	skedb.epr_sink_maximum_pdp =
+		DIV_ROUND_UP(CONFIG_USB_PD_MAX_POWER_MW, 1000);
 #endif
 
 	tx_emsg[port].len = sizeof(skedb);
@@ -5681,31 +5703,47 @@ __maybe_unused static void pe_prs_frs_shared_exit(int port)
 }
 
 /**
+ * This function is called from interrupt context,
+ * It is a special behavior in the current code content.
+ * Currently this function is only called in
+ * raa489000_tcpm_should_enter_bist_mode.
+ */
+test_mockable bool pd_vbus_valid_for_bist(int port)
+{
+	int vbus_mv;
+	int ibus_ma;
+
+	/* Get the current nominal VBUS value */
+	if (pd_get_power_role(port) == PD_ROLE_SOURCE) {
+		const uint32_t *src_pdo;
+		uint32_t unused;
+
+		pd_get_source_pdo(&src_pdo, port);
+		pd_extract_pdo_power(src_pdo[pe[port].requested_idx - 1],
+				     &ibus_ma, &vbus_mv, &unused);
+	} else {
+		vbus_mv = pd_get_requested_voltage(port);
+	}
+
+	/* If VBUS is not at vSafe5V, then don't enter BIST test mode */
+	if (vbus_mv != PD_V_SAFE5V_NOM) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
  * PE_BIST_TX
  */
 static void pe_bist_tx_entry(int port)
 {
 	uint32_t *payload = (uint32_t *)rx_emsg[port].buf;
 	uint8_t mode = BIST_MODE(payload[0]);
-	int vbus_mv;
-	int ibus_ma;
 
 	print_current_state(port);
 
-	/* Get the current nominal VBUS value */
-	if (pe[port].power_role == PD_ROLE_SOURCE) {
-		const uint32_t *src_pdo;
-		uint32_t unused;
-
-		dpm_get_source_pdo(&src_pdo, port);
-		pd_extract_pdo_power(src_pdo[pe[port].requested_idx - 1],
-				     &ibus_ma, &vbus_mv, &unused);
-	} else {
-		vbus_mv = pe[port].supply_voltage;
-	}
-
-	/* If VBUS is not at vSafe5V, then don't enter BIST test mode */
-	if (vbus_mv != PD_V_SAFE5V_NOM) {
+	if (!pd_vbus_valid_for_bist(port)) {
 		pe_set_ready_state(port);
 		return;
 	}

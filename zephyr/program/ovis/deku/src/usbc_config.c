@@ -27,16 +27,16 @@ __override int bb_retimer_power_enable(const struct usb_mux *me, bool enable)
 		 * For deku, we need 8ms delay before RT_RST de-assertion, see
 		 * b:346883913.
 		 */
-		crec_msleep(8);
+		k_msleep(8);
 		gpio_set_level(control->retimer_rst_gpio, 1);
 		/*
 		 * Allow 1ms time for the retimer to power up lc_domain
 		 * which powers I2C controller within retimer
 		 */
-		crec_msleep(1);
+		k_msleep(1);
 	} else {
 		gpio_set_level(control->retimer_rst_gpio, 0);
-		crec_msleep(1);
+		k_msleep(1);
 		gpio_set_level(control->usb_ls_en_gpio, 0);
 	}
 	return EC_SUCCESS;

@@ -30,9 +30,7 @@
 	clock-frequency = <I2C_BITRATE_STANDARD>;
 };
 
-&i2c1 {
-	label = "I2C_PORT_WC_USBC_PD";
-	clock-frequency = <I2C_BITRATE_STANDARD>;
+pd_pow_i2c: &i2c1 {
 };
 
 &i2c3 {
@@ -40,12 +38,19 @@
 	clock-frequency = <I2C_BITRATE_STANDARD>;
 };
 
-&i2c4 {
-	label = "I2C_PORT_SMB_BS";
-	clock-frequency = <I2C_BITRATE_STANDARD>;
+charger_i2c: &i2c4 {
 };
 
 &i2c5 {
 	label = "I2C_PORT_ISH_EC";
 	clock-frequency = <I2C_BITRATE_STANDARD>;
 };
+
+#include "../../intelrvp/ptlrvp/i2c.dtsi"
+
+/*
+ * Using IT8801 MFD driver
+ * These lines can be deleted after all PTL platforms support the MFD driver.
+ * b/386325459
+ */
+/delete-node/ &kb_discrete;

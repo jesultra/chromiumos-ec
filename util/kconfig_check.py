@@ -42,7 +42,7 @@ else:
     )
 
 if not os.path.exists(ZEPHYR_BASE):
-    raise Exception(
+    raise FileNotFoundError(
         f"ZEPHYR_BASE path does not exist!\nZEPHYR_BASE={ZEPHYR_BASE}"
     )
 

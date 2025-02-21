@@ -92,8 +92,9 @@ int fp_sensor_init(void)
 	if (IC_SELECTION == EFSA80SG)
 		elan_set_hv_chip(1);
 
-	errors |= elan_check_hwid();
-	if (errors) {
+	int rc = elan_check_hwid();
+	if (rc != EC_SUCCESS) {
+		errors |= rc;
 		return EC_SUCCESS;
 	}
 

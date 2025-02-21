@@ -123,6 +123,7 @@ static const struct ec_response_keybd_config xol_kb2 = {
 };
 
 static uint32_t board_id = (uint32_t)UINT8_MAX;
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_VIVALDI));
 __override const struct ec_response_keybd_config *
 board_vivaldi_keybd_config(void)
 {
@@ -193,6 +194,9 @@ static void board_init(void)
 	}
 }
 DECLARE_HOOK(HOOK_INIT, board_init, HOOK_PRIO_PRE_DEFAULT);
+
+/* TK_REFRESH is always T2 above, vivaldi_keys are overridden. */
+BUILD_ASSERT_REFRESH_RC(3, 2);
 
 __override void board_set_charge_limit(int port, int supplier, int charge_ma,
 				       int max_ma, int charge_mv)

@@ -99,7 +99,13 @@ all:
 # rw -> ro
 #    -> y
 # usage: common-$(call not_cfg,$(CONFIG_FOO))+=bar.o
-not_cfg = $(subst ro rw,y,$(filter-out $(1:y=ro rw),ro rw))
+not_cfg = $(notdir $(filter $(strip $(1))/%, y/ ro/rw rw/ro /y))
+
+# Returns the logical conjuction of two configuration variables
+# usage: common-$(call and_cfg,$(CONFIG_FOO),$(CONFIG_BAR))+=foobar.o
+and_cfg = $(notdir $(filter $(strip $(1))_$(strip $(2))/%, \
+	y_y/y y_ro/ro y_rw/rw y_/ ro_y/ro ro_ro/ro ro_rw/ ro_/ \
+	rw_y/rw rw_ro/ rw_rw/rw rw_/ _y/ _ro/ _rw/ _/))
 
 # Run the given shell command and capture the output, but echo the command
 # itself, if V is not 0 or empty.

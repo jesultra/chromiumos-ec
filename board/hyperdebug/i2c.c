@@ -284,19 +284,21 @@ static int board_i2c_xfer(int portindex, uint16_t addr_flags,
 	if (gsc_ready_pin == GPIO_COUNT)
 		return USB_I2C_UNSUPPORTED_COMMAND;
 
-	/* Ensure that any pulse from a previous transaction is done. */
-	int ret = await_high_level(gsc_ready_pin, deadline);
+	/* Enable polling from fast timer interrupt. */
+	start_monitoring_for_falling_edge(gsc_ready_pin);
 
+	int ret = i2c_xfer_unlocked(port, addr_flags, out, out_bytes, NULL, 0,
+				    I2C_XFER_START | I2C_XFER_STOP);
 	if (ret == EC_SUCCESS)
-		i2c_xfer_unlocked(port, addr_flags, out, out_bytes, NULL, 0,
-				  I2C_XFER_START | I2C_XFER_STOP);
-	if (ret == EC_SUCCESS)
-		ret = await_low_level(gsc_ready_pin, deadline);
+		ret = wait_for_falling_edge(deadline);
 	if (in_bytes > 0 && ret == EC_SUCCESS) {
 		ret = i2c_xfer_unlocked(port, addr_flags, NULL, 0, in, in_bytes,
 					I2C_XFER_START |
 						(no_stop ? 0 : I2C_XFER_STOP));
 	}
+
+	/* Disable fast timer interrupt. */
+	stop_monitoring_for_falling_edge();
 	return ret;
 }
 

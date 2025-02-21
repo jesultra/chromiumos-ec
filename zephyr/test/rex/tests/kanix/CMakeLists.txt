@@ -29,3 +29,7 @@ target_sources_ifdef(CONFIG_TEST_PROGRAM_I2C_POLICY app PRIVATE
 target_sources_ifdef(CONFIG_TEST_PROJECT_TOUCH_PANEL app PRIVATE src/touch_panel.c)
 target_sources_ifdef(CONFIG_TEST_PROJECT_TOUCH_PANEL app PRIVATE
 	${PLATFORM_EC_PROGRAM_DIR}/rex/kanix/src/touch_panel.c)
+
+target_sources_ifdef(CONFIG_TEST_BOARD_FAN_CUSTOM app PRIVATE src/fan.c)
+target_sources_ifdef(CONFIG_TEST_BOARD_FAN_CUSTOM app PRIVATE
+	${PLATFORM_EC_PROGRAM_DIR}/rex/kanix/src/thermal.c)

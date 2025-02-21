@@ -8,7 +8,7 @@
 #include "fw_config.h"
 #include "hooks.h"
 #include "keyboard_8042_sharedlib.h"
-#include "keyboard_customization.h"
+#include "keyboard_config.h"
 #include "keyboard_raw.h"
 #include "keyboard_scan.h"
 #include "timer.h"
@@ -62,6 +62,7 @@ static const struct ec_response_keybd_config omniknight_kb = {
 	.capabilities = KEYBD_CAP_SCRNLOCK_KEY | KEYBD_CAP_NUMERIC_KEYPAD,
 };
 
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_VIVALDI));
 __override const struct ec_response_keybd_config *
 board_vivaldi_keybd_config(void)
 {
@@ -97,6 +98,9 @@ __override const struct key {
 	{ .row = 0, .col = 11 }, /* T15 */
 };
 BUILD_ASSERT(ARRAY_SIZE(vivaldi_keys) == MAX_TOP_ROW_KEYS);
+
+/* TK_REFRESH is always T2 above, vivaldi_keys are overridden. */
+BUILD_ASSERT_REFRESH_RC(3, 2);
 
 void kb_init(void)
 {

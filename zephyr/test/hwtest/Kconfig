@@ -242,5 +242,11 @@ config HW_TEST_UTILS_STR
 	help
 	  The test verifies util string functions.
 
+config HW_TEST_WATCHDOG
+	bool "Watchdog test"
+	select ZTEST
+	help
+	  The test verifies that the watchdog fires on a busy loop.
+
 config MOCK_ROLLBACK
 	bool "Mock rollback for tests"

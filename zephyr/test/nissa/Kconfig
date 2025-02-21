@@ -56,6 +56,11 @@ choice TEST_TARGET
 	  help
 		The test target that exercises nissa/gothrax/*.c
 
+	config TEST_GOTHRAX_SUB_BOARD
+		bool "Tests for sub_board.c"
+		help
+		  The test target that exercises nissa/gothrax/src/sub_board.c
+
 	config TEST_NISSA_PUJJO
 	  bool "Tests for Pujjo-specific code"
 	  help
@@ -115,6 +120,11 @@ choice TEST_TARGET
 	  help
 		The test target that exercises nissa/quandiso/*.c
 
+	config TEST_NISSA_QUANDISO2
+	  bool "Tests for Quandiso2-specific code"
+	  help
+		The test target that exercises nissa/quandiso2/*.c
+
 	config TEST_NISSA_YAVILLA
 	  bool "Tests for Yavilla-specific code"
 	  help
@@ -141,6 +151,12 @@ choice TEST_TARGET
 	  bool "Tests for Teliks-specific code"
 	  help
 		The test target that exercises nissa/teliks/*.c
+
+	config TEST_NISSA_DIRKS
+	  bool "Tests for Dirks-specific code"
+	  select TEST_DISABLE_INLINE_CHIPSET_IN_STATE
+	  help
+		The test target that exercises nissa/dirks/*.c
 endchoice
 
 config TEST_DISABLE_INLINE_CHIPSET_IN_STATE

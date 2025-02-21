@@ -392,7 +392,7 @@ static void hid_kb_proc_queue(void)
 
 next:
 	mutex_unlock(report_queue_mutex);
-	hook_call_deferred(&hid_kb_proc_queue_data, 1 * MSEC);
+	hook_call_deferred(&hid_kb_proc_queue_data, 1 * USEC_PER_MSEC);
 }
 
 static int usb_hid_kb_init(void)

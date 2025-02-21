@@ -121,7 +121,8 @@ static int command_fpcapture(int argc, const char **argv)
 		char *e;
 
 		capture_type = strtoi(argv[1], &e, 0);
-		if (*e || capture_type < 0)
+		if (*e || capture_type < 0 ||
+		    capture_type >= FP_CAPTURE_TYPE_MAX)
 			return EC_ERROR_PARAM1;
 	}
 	const uint32_t mode = FP_MODE_CAPTURE |

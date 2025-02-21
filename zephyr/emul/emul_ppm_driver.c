@@ -6,11 +6,13 @@
 /* UCSI PPM Driver */
 
 #include "ec_commands.h"
+#include "emul/emul_ppm_driver.h"
 #include "usb_pd.h"
 #include "usbc/ppm.h"
 #include "util.h"
 
 #include <zephyr/devicetree.h>
+#include <zephyr/fff.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/sys_clock.h>
@@ -28,51 +30,46 @@ LOG_MODULE_REGISTER(ppm, LOG_LEVEL_INF);
 BUILD_ASSERT(DT_NUM_INST_STATUS_OKAY(DT_DRV_COMPAT) == 1,
 	     "Exactly one instance of ucsi-ppm should be defined.");
 
-static struct ucsi_ppm_device *emul_ucsi_ppm_device;
-static int ucsi_init_ppm_retval;
+/*
+ * Public emulator control API
+ */
 
-void emul_ppm_driver_set_init_ppm_retval(int rv)
+void emul_ppm_driver_reset(void)
 {
-	ucsi_init_ppm_retval = rv;
+	RESET_FAKE(ppm_driver_mock_init_ppm);
+	RESET_FAKE(ppm_driver_mock_get_ppm_dev);
+	RESET_FAKE(ppm_driver_mock_execute_cmd_sync);
+	RESET_FAKE(ppm_driver_mock_get_active_port_count);
+
+	ppm_driver_mock_get_active_port_count_fake.return_val = 1;
 }
 
-static int ucsi_init_ppm(const struct device *device)
-{
-	return ucsi_init_ppm_retval;
-}
+/*
+ * API implementation functions using FFF fakes
+ */
 
-void emul_ppm_driver_set_ucsi_ppm_device(struct ucsi_ppm_device *ppm_device)
-{
-	emul_ucsi_ppm_device = ppm_device;
-}
-
-static struct ucsi_ppm_device *ucsi_ppm_get_ppm_dev(const struct device *device)
-{
-	return emul_ucsi_ppm_device;
-}
-
-static int ucsi_ppm_execute_cmd_sync(const struct device *device,
-				     struct ucsi_control_t *control,
-				     uint8_t *lpm_data_out)
-{
-	return 0;
-}
-
-static int ucsi_get_active_port_count(const struct device *dev)
-{
-	return 1;
-}
+DEFINE_FAKE_VALUE_FUNC(int, ppm_driver_mock_init_ppm, const struct device *);
+DEFINE_FAKE_VALUE_FUNC(struct ucsi_ppm_device *, ppm_driver_mock_get_ppm_dev,
+		       const struct device *);
+DEFINE_FAKE_VALUE_FUNC(int, ppm_driver_mock_execute_cmd_sync,
+		       const struct device *, struct ucsi_control_t *,
+		       uint8_t *);
+DEFINE_FAKE_VALUE_FUNC(int, ppm_driver_mock_get_active_port_count,
+		       const struct device *);
 
 static struct ucsi_pd_driver ppm_drv = {
-	.init_ppm = ucsi_init_ppm,
-	.get_ppm_dev = ucsi_ppm_get_ppm_dev,
-	.execute_cmd = ucsi_ppm_execute_cmd_sync,
-	.get_active_port_count = ucsi_get_active_port_count,
+	.init_ppm = ppm_driver_mock_init_ppm,
+	.get_ppm_dev = ppm_driver_mock_get_ppm_dev,
+	.execute_cmd = ppm_driver_mock_execute_cmd_sync,
+	.get_active_port_count = ppm_driver_mock_get_active_port_count,
 };
 
 static int ppm_init(const struct device *device)
 {
+	emul_ppm_driver_reset();
+
 	return 0;
 }
+
 DEVICE_DT_INST_DEFINE(0, &ppm_init, NULL, NULL, NULL, POST_KERNEL,
 		      CONFIG_PDC_POWER_MGMT_INIT_PRIORITY, &ppm_drv);

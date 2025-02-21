@@ -21,6 +21,7 @@ void board_battery_detection_init(void)
 	/* disable battery detection for 1000ms */
 	gpio_pin_configure_dt(GPIO_DT_FROM_NODELABEL(ec_batt_pres_odl),
 			      GPIO_OUTPUT_HIGH);
-	hook_call_deferred(&enable_battery_detection_data, 1000 * MSEC);
+	hook_call_deferred(&enable_battery_detection_data,
+			   1000 * USEC_PER_MSEC);
 }
 DECLARE_HOOK(HOOK_INIT, board_battery_detection_init, HOOK_PRIO_DEFAULT);

@@ -14,12 +14,12 @@ properties:
   device_name:
     default: "AP23CBP"
   ship_mode_reg_addr:
-    default: 0x00
+    default: 0x3A
   ship_mode_reg_data:
-    default: [0x0010, 0x0010]
+    default: [0xC574, 0xC574]
 
   flags:
-    default: 0x00
+    default: 0x04
   fet_reg_addr:
     default: 0x0054
   fet_reg_mask:

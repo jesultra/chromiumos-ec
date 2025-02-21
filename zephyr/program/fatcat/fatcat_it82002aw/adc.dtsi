@@ -7,6 +7,9 @@
 	named-adc-channels {
 		compatible = "named-adc-channels";
 
+		c_chrg_amon_bmon_r {
+			enum-name = "ADC_AMON_BMON";
+		};
 		vr_temp_v_1p05_pch_ec_r {
 			enum-name = "ADC_PP1050_PROC";
 		};

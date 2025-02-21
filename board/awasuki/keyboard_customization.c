@@ -9,7 +9,7 @@
 #include "gpio.h"
 #include "hooks.h"
 #include "keyboard_8042_sharedlib.h"
-#include "keyboard_customization.h"
+#include "keyboard_config.h"
 #include "keyboard_protocol.h"
 #include "keyboard_raw.h"
 #include "timer.h"
@@ -110,6 +110,7 @@ static const struct ec_response_keybd_config awadoron_keybd = {
 			KEYBD_CAP_ASSISTANT_KEY,
 };
 
+BUILD_ASSERT(IS_ENABLED(CONFIG_KEYBOARD_VIVALDI));
 __override const struct ec_response_keybd_config *
 board_vivaldi_keybd_config(void)
 {
@@ -141,6 +142,9 @@ __override struct key {
 	{ .row = 0, .col = 12 }, /* T15 */
 };
 BUILD_ASSERT(ARRAY_SIZE(vivaldi_keys) == MAX_TOP_ROW_KEYS);
+
+/* TK_REFRESH is always T2 above, T2 is row 3, col 2. */
+BUILD_ASSERT_REFRESH_RC(3, 2);
 
 static void board_update_keyboard_layout(void)
 {

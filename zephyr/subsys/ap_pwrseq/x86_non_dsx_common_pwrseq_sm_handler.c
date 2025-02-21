@@ -277,7 +277,7 @@ void ap_power_force_shutdown(enum ap_power_shutdown_reason reason)
 
 void set_start_from_g3_delay_seconds(uint32_t d_time)
 {
-	start_from_g3_delay_ms = d_time * MSEC;
+	start_from_g3_delay_ms = d_time * USEC_PER_MSEC;
 }
 
 void ap_power_reset(enum ap_power_shutdown_reason reason)

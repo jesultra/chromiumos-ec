@@ -79,6 +79,7 @@ test-list-y=\
        unaligned_access_benchmark \
        utils \
        utils_str \
+       watchdog \
 
 # Note that this variable includes the trailing "/"
 _nocturne_fp_cur_dir:=$(dir $(lastword $(MAKEFILE_LIST)))

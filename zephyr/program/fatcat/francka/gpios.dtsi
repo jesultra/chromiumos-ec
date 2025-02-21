@@ -240,6 +240,7 @@
 		};
 		gpio_ec_kbl_pwr_en: ec_kbl_pwr_en {
 			gpios = <&gpio8 6 GPIO_OUTPUT_LOW>;
+			enum-name = "GPIO_EN_KEYBOARD_BACKLIGHT";
 		};
 		gpio_ec_cse_early_sw: ec_cse_early_sw {
 			gpios = <&gpioa 2 (GPIO_OUTPUT | GPIO_VOLTAGE_1P8)>;

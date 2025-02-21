@@ -6,7 +6,7 @@
 
 ## Usage
 
-**Usage:** `zmake [-h] [--checkout CHECKOUT] [-j JOBS] [--goma] [-l {DEBUG,INFO,WARNING,ERROR,CRITICAL} | -D] [-L] [--log-label] [--modules-dir MODULES_DIR] [--projects-dir PROJECTS_DIR] [--zephyr-base ZEPHYR_BASE] subcommand ...`
+**Usage:** `zmake [-h] [--checkout CHECKOUT] [-j JOBS] [-l {DEBUG,INFO,WARNING,ERROR,CRITICAL} | -D] [-L] [--log-label] [--modules-dir MODULES_DIR] [--projects-dir PROJECTS_DIR] [--zephyr-base ZEPHYR_BASE] subcommand ...`
 
 Chromium OS's meta-build tool for Zephyr
 
@@ -23,7 +23,6 @@ Chromium OS's meta-build tool for Zephyr
 | `-h`, `--help` | show this help message and exit |
 | `--checkout CHECKOUT` | Path to ChromiumOS checkout |
 | `-j JOBS`, `--jobs JOBS` | Degree of multiprogramming to use |
-| `--goma` | Enable hyperspeed compilation with Goma! (Googlers only) |
 | `-l {DEBUG,INFO,WARNING,ERROR,CRITICAL}`, `--log-level {DEBUG,INFO,WARNING,ERROR,CRITICAL}` | Set the logging level (default=INFO) |
 | `-D`, `--debug` | Alias for --log-level=DEBUG |
 | `-L`, `--no-log-label` | Turn off logging labels |

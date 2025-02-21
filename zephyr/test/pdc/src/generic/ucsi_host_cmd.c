@@ -4,6 +4,7 @@
  */
 
 #include "ec_commands.h"
+#include "emul/emul_ppm_driver.h"
 #include "host_command.h"
 
 #include <zephyr/fff.h>
@@ -17,8 +18,8 @@ struct ucsi_ppm_device {
 };
 
 int eppm_init(void);
-void emul_ppm_driver_set_ucsi_ppm_device(struct ucsi_ppm_device *ppm_device);
-void emul_ppm_driver_set_init_ppm_retval(int rv);
+
+FAKE_VOID_FUNC(pd_send_host_event, int);
 
 FAKE_VALUE_FUNC(int, ucsi_ppm_write, struct ucsi_ppm_device *, unsigned int,
 		const void *, size_t);
@@ -33,10 +34,23 @@ ZTEST_USER(ucsi_host_cmd, test_eppm_init_enodev)
 {
 	int rv;
 
-	emul_ppm_driver_set_init_ppm_retval(1);
+	ppm_driver_mock_init_ppm_fake.return_val = 1;
 
 	rv = eppm_init();
 	zassert_equal(rv, -ENODEV);
+}
+
+ZTEST_USER(ucsi_host_cmd, test_eppm_init_success)
+{
+	int rv;
+
+	rv = eppm_init();
+	zassert_ok(rv, "ePPM failed to initialize");
+
+	zassert_equal(1, pd_send_host_event_fake.call_count,
+		      "No call to pd_send_host_event detected");
+	zassert_true(pd_send_host_event_fake.arg0_history[0] & PD_EVENT_INIT,
+		     "Event mask does not include PD_EVENT_INIT");
 }
 
 ZTEST_USER(ucsi_host_cmd, test_get_error)
@@ -48,7 +62,7 @@ ZTEST_USER(ucsi_host_cmd, test_get_error)
 	enum ec_status rv;
 	struct ucsi_ppm_device fake_ppm_device;
 
-	emul_ppm_driver_set_ucsi_ppm_device(&fake_ppm_device);
+	ppm_driver_mock_get_ppm_dev_fake.return_val = &fake_ppm_device;
 	eppm_init();
 
 	ucsi_ppm_read_fake.return_val = -1;
@@ -68,7 +82,7 @@ ZTEST_USER(ucsi_host_cmd, test_get_success)
 	enum ec_status rv;
 	struct ucsi_ppm_device fake_ppm_device;
 
-	emul_ppm_driver_set_ucsi_ppm_device(&fake_ppm_device);
+	ppm_driver_mock_get_ppm_dev_fake.return_val = &fake_ppm_device;
 	eppm_init();
 
 	ucsi_ppm_read_fake.return_val = 0;
@@ -100,7 +114,7 @@ ZTEST_USER(ucsi_host_cmd, test_set_error)
 	enum ec_status rv;
 	struct ucsi_ppm_device fake_ppm_device;
 
-	emul_ppm_driver_set_ucsi_ppm_device(&fake_ppm_device);
+	ppm_driver_mock_get_ppm_dev_fake.return_val = &fake_ppm_device;
 	eppm_init();
 
 	ucsi_ppm_write_fake.return_val = 1;
@@ -120,7 +134,7 @@ ZTEST_USER(ucsi_host_cmd, test_set_success)
 	enum ec_status rv;
 	struct ucsi_ppm_device fake_ppm_device;
 
-	emul_ppm_driver_set_ucsi_ppm_device(&fake_ppm_device);
+	ppm_driver_mock_get_ppm_dev_fake.return_val = &fake_ppm_device;
 	eppm_init();
 
 	ucsi_ppm_write_fake.return_val = 0;
@@ -149,9 +163,11 @@ static void ucsi_host_cmd_before(void *fixture)
 	RESET_FAKE(ucsi_ppm_write);
 	RESET_FAKE(ucsi_ppm_read);
 	RESET_FAKE(ucsi_ppm_register_notify);
-	emul_ppm_driver_set_init_ppm_retval(0);
-	emul_ppm_driver_set_ucsi_ppm_device(NULL);
+
+	emul_ppm_driver_reset();
 	eppm_init();
+
+	RESET_FAKE(pd_send_host_event);
 }
 
 ZTEST_SUITE(ucsi_host_cmd, NULL, NULL, ucsi_host_cmd_before, NULL, NULL);

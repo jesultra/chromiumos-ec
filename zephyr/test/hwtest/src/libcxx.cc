@@ -19,7 +19,7 @@ ZTEST_SUITE(libcxx, NULL, NULL, NULL, NULL, NULL);
 ZTEST(libcxx, test_system_clock)
 {
 	auto start = std::chrono::system_clock::now();
-	udelay(0.5 * SECOND);
+	k_busy_wait(0.5 * USEC_PER_SEC);
 	auto end = std::chrono::system_clock::now();
 	auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
 				  end - start)
