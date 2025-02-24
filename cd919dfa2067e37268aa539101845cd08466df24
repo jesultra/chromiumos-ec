@@ -22,6 +22,30 @@
       },
       "revId": "cd919dfa2067e37268aa539101845cd08466df24",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e61a5ff_52d9ef42",
+        "filename": "zephyr/test/intelrvp/tests/intelrvp/src/board_id.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1131142
+      },
+      "writtenOn": "2025-02-24T20:54:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e49096d2_0aa00381",
+      "range": {
+        "startLine": 75,
+        "startChar": 1,
+        "endLine": 75,
+        "endChar": 21
+      },
+      "revId": "cd919dfa2067e37268aa539101845cd08466df24",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
