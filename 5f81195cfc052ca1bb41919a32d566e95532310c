@@ -16,6 +16,24 @@
       "message": "```\n[FAILED] chromiumos/platform/ec: check_ztest\n    Hook script \"util/check_ztest.py --commit ${PRESUBMIT_COMMIT}\" failed with code 1:\n      error: \u0027test_\u0027 prefix missing from test function name\n      zephyr/test/intelrvp/tests/intelrvp/src/board_id.c:93: pca95xx_not_init_test\n```",
       "revId": "5f81195cfc052ca1bb41919a32d566e95532310c",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2144c049_80c13c00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1131142
+      },
+      "writtenOn": "2025-02-24T23:36:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6269b90f_953861d7",
+      "revId": "5f81195cfc052ca1bb41919a32d566e95532310c",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
