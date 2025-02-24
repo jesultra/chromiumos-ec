@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e49096d2_0aa00381",
+        "filename": "zephyr/test/intelrvp/tests/intelrvp/src/board_id.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1352056
+      },
+      "writtenOn": "2025-02-24T19:24:19Z",
+      "side": 1,
+      "message": "Based on this [comment](https://chromium-review.googlesource.com/c/chromiumos/platform/ec/+/6292243/comment/01cd5701_94362ba2/), please use `ap_pwrseq_post_event` to do state transition and trigger callback.",
+      "range": {
+        "startLine": 75,
+        "startChar": 1,
+        "endLine": 75,
+        "endChar": 21
+      },
+      "revId": "cd919dfa2067e37268aa539101845cd08466df24",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    }
+  ]
+}
