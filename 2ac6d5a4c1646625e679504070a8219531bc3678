@@ -52,6 +52,24 @@
       "parentUuid": "7731c148_57772339",
       "revId": "2ac6d5a4c1646625e679504070a8219531bc3678",
       "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8db2cca5_837f4add",
+        "filename": "zephyr/program/intelrvp/ptlrvp/src/board_id.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1131142
+      },
+      "writtenOn": "2025-02-24T18:19:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44959952_e6916344",
+      "revId": "2ac6d5a4c1646625e679504070a8219531bc3678",
+      "serverId": "3ce6091f-6c88-37e8-8c75-72f92ae8dfba"
     }
   ]
 }
