@@ -3,14 +3,19 @@
  * found in the LICENSE file.
  */
 
-#ifndef _HYPERDEBUG_BOARD_CMSIS_DAP__H_
-#define _HYPERDEBUG_BOARD_CMSIS_DAP__H_
+#ifndef _COMMON_CMSIS_DAP__H_
+#define _COMMON_CMSIS_DAP__H_
 
 #include "queue.h"
 
 /*****************************************************************************
  * Methods to be implemented by board code:
  */
+
+/* Set the JTAG clock speed. */
+int cmsis_dap_set_period(uint32_t new_clock_hz);
+/* Busy-wait half a JTAG clock cycle. */
+void cmsis_dap_half_clock_delay(void);
 
 /* Enable output on pins, including any level-shifters or buffers. */
 void cmsis_dap_enable_jtag_pins(void);
@@ -33,6 +38,9 @@ extern struct queue const cmsis_dap_rx_queue;
 
 extern uint8_t rx_buffer[256];
 extern uint8_t tx_buffer[256];
+
+/* Reset JTAG state to power on defaults. */
+void cmsis_dap_reinit(void);
 
 /*
  * If this function returns true, it means that the currently executing
