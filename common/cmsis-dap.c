@@ -152,6 +152,12 @@ const uint8_t SEQ_NumBits = 0x3F;
 const uint8_t SEQ_Tms = 0x40;
 const uint8_t SEQ_CaptureTdo = 0x80;
 
+/* Bitfield used for SWD device ack response */
+const uint8_t SWD_ACK_Ok = 0x01;
+const uint8_t SWD_ACK_Wait = 0x02;
+const uint8_t SWD_ACK_Fault = 0x04;
+const uint8_t SWD_ACK_ParityError = 0x08;
+
 /*
  * Incoming and outgoing byte streams.
  */
@@ -163,6 +169,27 @@ struct queue const cmsis_dap_rx_queue;
  * JTAG state
  */
 static bool jtag_enabled = false;
+
+#ifdef CONFIG_USB_CMSIS_DAP_SWD
+/* Turnaround clock period of the SWD device. */
+static uint8_t swd_turn_cycles;
+/*
+ * false: Do not generate Data Phase on WAIT/FAULT (default).
+ * true: Always generate Data Phase (also on WAIT/FAULT; Required for
+ *       Sticky Overrun behavior).
+ */
+static bool swd_data_on_wait_or_fault;
+/* Number of extra idle cycles after each transfer. */
+static uint8_t swd_idle_cycles;
+/* Number of transfer retries after WAIT response. */
+static uint16_t swd_wait_retries;
+/*
+ * Number of retries on reads with Value Match in DAP_Transfer. On
+ * value mismatch the Register is read again until its value matches
+ * or the Match Retry count exceeds.
+ */
+static uint16_t swd_match_retries;
+#endif
 
 void cmsis_dap_queue_blocking_add(const void *src, size_t count)
 {
@@ -232,6 +259,25 @@ struct queue_chunk cmsis_dap_queue_get_read_chunk(void)
 	return res;
 }
 
+int parity32(uint32_t a)
+{
+	a ^= a >> 16;
+	a ^= a >> 8;
+	a ^= a >> 4;
+	a ^= a >> 2;
+	a ^= a >> 1;
+	return a & 1;
+}
+
+/* SWD devices sample and change state on rising clock edge. */
+static inline __attribute__((always_inline)) void clock_cycle(void)
+{
+	gpio_set_level(GPIO_JTAG_TCLK, false);
+	cmsis_dap_half_clock_delay();
+	gpio_set_level(GPIO_JTAG_TCLK, true);
+	cmsis_dap_half_clock_delay();
+}
+
 /*
  * Implementation of handler routines for each CMSIS-DAP command.
  */
@@ -243,6 +289,9 @@ static void cmsis_dap_info(void)
 	const uint16_t CAPABILITIES =
 #ifdef CONFIG_USB_CMSIS_DAP_JTAG
 		CAP_Jtag |
+#endif
+#ifdef CONFIG_USB_CMSIS_DAP_SWD
+		CAP_Swd |
 #endif
 		0;
 	uint8_t i, len;
@@ -276,8 +325,22 @@ static void cmsis_dap_info(void)
 		queue_add_unit(&cmsis_dap_tx_queue, &len);
 		queue_add_units(&cmsis_dap_tx_queue, &CAPABILITIES, len);
 		break;
+	case INFO_PacketCount: {
+		uint8_t resp[] = { 0x40 };
+		i = sizeof(resp);
+		queue_add_unit(&cmsis_dap_tx_queue, &i);
+		queue_add_units(&cmsis_dap_tx_queue, resp, i);
+		break;
+	}
+	case INFO_PacketSize: {
+		uint8_t resp[] = { 0x40, 0x00 };
+		i = sizeof(resp);
+		queue_add_unit(&cmsis_dap_tx_queue, &i);
+		queue_add_units(&cmsis_dap_tx_queue, resp, i);
+		break;
+	}
 	default:
-		ccprintf("Unknown info request %02x\n", req[1]);
+		ccprintf("Unknown info request 0x%02x\n", req[1]);
 		len = 0;
 		queue_add_unit(&cmsis_dap_tx_queue, &len);
 		break;
@@ -313,6 +376,13 @@ static void cmsis_dap_connect(void)
 			cmsis_dap_enable_jtag_pins();
 		}
 		break;
+	case CONN_REQ_Swd:
+		resp = CONN_RESP_Swd;
+		if (!jtag_enabled) {
+			jtag_enabled = true;
+			cmsis_dap_enable_swd_pins();
+		}
+		break;
 	default:
 		resp = CONN_RESP_Failed;
 	}
@@ -330,7 +400,7 @@ static void cmsis_dap_disconnect(void)
 
 	if (jtag_enabled) {
 		jtag_enabled = false;
-		cmsis_dap_disable_jtag_pins();
+		cmsis_dap_disable_jtag_swd_pins();
 	}
 
 	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
@@ -338,7 +408,7 @@ static void cmsis_dap_disconnect(void)
 	queue_add_unit(&cmsis_dap_tx_queue, &resp);
 }
 
-#ifdef CONFIG_USB_CMSIS_DAP_JTAG
+#if defined(CONFIG_USB_CMSIS_DAP_JTAG) || defined(CONFIG_USB_CMSIS_DAP_SWD)
 /* Configure parameters for DAP_Transfer family of requests. */
 static void cmsis_dap_transfer_configure(void)
 {
@@ -347,19 +417,237 @@ static void cmsis_dap_transfer_configure(void)
 	if (cmsis_dap_unwind_requested())
 		return;
 
-	/*
-	 * This file does not offer support for the DAP_Transfer family of
-	 * requests, and OpenOCD does not seem to issue any requests (at least
-	 * not when operating on a RISC-V OpenTitan code.
-	 *
-	 * OpenOCD still sends this configuration request as part of its setup
-	 * sequence, we can safely ignore the parameters given, and report
-	 * success to the caller.
-	 */
+#ifdef CONFIG_USB_CMSIS_DAP_SWD
+	swd_idle_cycles = req[1];
+	swd_wait_retries = req[2] + (req[3] << 8);
+	swd_match_retries = req[4] + (req[5] << 8);
+#else
+		/*
+		 * This file does not offer support for the DAP_Transfer family
+		 * of requests, and OpenOCD does not seem to issue any requests
+		 * (at least not when operating on a RISC-V OpenTitan code.
+		 *
+		 * OpenOCD still sends this configuration request as part of its
+		 * setup sequence, we can safely ignore the parameters given,
+		 * and report success to the caller.
+		 */
+#endif
 
 	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
 	uint8_t resp = STATUS_Ok;
 	queue_add_unit(&cmsis_dap_tx_queue, &resp);
+}
+
+/*
+ * Send eight SWD request bits, followed by reading three bits of response.
+ */
+static uint8_t swd_transfer_header(bool read_write, bool port, uint8_t addr)
+{
+	// Start bit
+	gpio_set_level(GPIO_JTAG_TMS, true);
+	clock_cycle();
+
+	// DP=0/AP=1
+	gpio_set_level(GPIO_JTAG_TMS, port);
+	clock_cycle();
+
+	// Read=1/Write=0
+	gpio_set_level(GPIO_JTAG_TMS, read_write);
+	clock_cycle();
+
+	// Addr
+	gpio_set_level(GPIO_JTAG_TMS, !!(addr & BIT(2)));
+	clock_cycle();
+	// Addr
+	gpio_set_level(GPIO_JTAG_TMS, !!(addr & BIT(3)));
+	clock_cycle();
+
+	// Parity
+	gpio_set_level(GPIO_JTAG_TMS, read_write ^ port ^ !!(addr & BIT(2)) ^
+					      !!(addr & BIT(3)));
+	clock_cycle();
+
+	// Stop
+	gpio_set_level(GPIO_JTAG_TMS, false);
+	clock_cycle();
+
+	// Park
+	gpio_set_level(GPIO_JTAG_TMS, true);
+	clock_cycle();
+
+	// Turnaround
+	cmsis_dap_swdio_input();
+	for (int i = 0; i < swd_turn_cycles; i++) {
+		clock_cycle();
+	}
+
+	// Three bit ack from device
+	uint8_t ack = 0;
+	ack |= gpio_get_level(GPIO_JTAG_TMS) ? SWD_ACK_Ok : 0;
+	clock_cycle();
+	ack |= gpio_get_level(GPIO_JTAG_TMS) ? SWD_ACK_Wait : 0;
+	clock_cycle();
+	ack |= gpio_get_level(GPIO_JTAG_TMS) ? SWD_ACK_Fault : 0;
+	clock_cycle();
+	return ack;
+}
+
+static int dap_read_register(bool port, uint8_t addr, uint32_t *value)
+{
+	uint8_t ack = swd_transfer_header(true, port, addr);
+
+	if (ack != SWD_ACK_Ok && !swd_data_on_wait_or_fault) {
+		// Turnaround
+		for (int i = 0; i < swd_turn_cycles; i++)
+			clock_cycle();
+		cmsis_dap_swdio_output(true);
+		return ack;
+	}
+
+	uint32_t rdata = 0;
+	for (int i = 0; i < 32; i++) {
+		rdata |= gpio_get_level(GPIO_JTAG_TMS) ? (1 << i) : 0;
+		clock_cycle();
+	}
+
+	// Parity
+	bool parity = gpio_get_level(GPIO_JTAG_TMS);
+	clock_cycle();
+
+	// Turnaround
+	for (int i = 0; i < swd_turn_cycles; i++)
+		clock_cycle();
+	cmsis_dap_swdio_output(true);
+
+	if (parity32(rdata) != parity)
+		ack |= SWD_ACK_ParityError;
+
+	if (ack == SWD_ACK_Ok)
+		*value = rdata;
+	return ack;
+}
+
+static int dap_write_register(bool port, uint8_t addr, uint32_t value)
+{
+	uint8_t ack = swd_transfer_header(false, port, addr);
+
+	// Turnaround
+	for (int i = 0; i < swd_turn_cycles; i++)
+		clock_cycle();
+
+	if (ack != SWD_ACK_Ok && !swd_data_on_wait_or_fault) {
+		cmsis_dap_swdio_output(true);
+		return ack;
+	}
+
+	cmsis_dap_swdio_output(value & 0x01);
+	for (int i = 0; i < 32; i++) {
+		gpio_set_level(GPIO_JTAG_TMS, !!(value & (1 << i)));
+		clock_cycle();
+	}
+
+	// Parity
+	gpio_set_level(GPIO_JTAG_TMS, parity32(value));
+	clock_cycle();
+	return ack;
+}
+
+void store_byte(struct queue_chunk chunk1, struct queue_chunk chunk2,
+		size_t offset, uint8_t val)
+{
+	if (offset < chunk1.count)
+		((uint8_t *)chunk1.buffer)[offset] = val;
+	else
+		((uint8_t *)chunk2.buffer)[offset - chunk1.count] = val;
+}
+
+static void dap_transfer(void)
+{
+	uint8_t req[3];
+	cmsis_dap_queue_blocking_remove(&req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
+		return;
+
+	struct queue_chunk chunk1 =
+		queue_get_write_chunk(&cmsis_dap_tx_queue, 0);
+	struct queue_chunk chunk2 =
+		queue_get_write_chunk(&cmsis_dap_tx_queue, chunk1.count);
+	store_byte(chunk1, chunk2, 0, req[0]);
+
+	uint8_t transfer_count = req[2];
+	uint8_t transfer_index;
+	uint8_t out_index = 3; // 7 if timestamped
+	uint8_t status = SWD_ACK_Ok;
+	for (transfer_index = 0;
+	     status == SWD_ACK_Ok && transfer_index < transfer_count;
+	     transfer_index++) {
+		uint8_t req;
+		cmsis_dap_queue_blocking_remove(&req, 1);
+		uint32_t data;
+		if (!(req & BIT(1))) {
+			/* Write register */
+			cmsis_dap_queue_blocking_remove((uint8_t *)&data, 4);
+		} else if (req & BIT(4)) {
+			/* Value match */
+			cmsis_dap_queue_blocking_remove((uint8_t *)&data, 4);
+			ccprintf("Unimplemented: value_match\n");
+		} else if (req & BIT(5)) {
+			/* Match mask */
+			cmsis_dap_queue_blocking_remove((uint8_t *)&data, 4);
+			ccprintf("Unimplemented: match_mask\n");
+		}
+
+		uint8_t addr = req & 0x0C;
+
+		if (!(req & BIT(1))) {
+			/* Write DAP register */
+			do {
+				status = dap_write_register(req & BIT(0), addr,
+							    data);
+			} while (status == SWD_ACK_Wait);
+			continue;
+		}
+		/* Read DAP register */
+		uint32_t value = 0;
+		do {
+			status = dap_read_register(req & BIT(0), addr, &value);
+		} while (status == SWD_ACK_Wait);
+		if (status != SWD_ACK_Ok)
+			break;
+		if (req & BIT(0)) {
+			/*
+			 * AP register value retrieved by reading DP
+			 * 0x0C in subsequent operation.
+			 */
+			do {
+				status = dap_read_register(false, 0x0C, &value);
+			} while (status == SWD_ACK_Wait);
+			if (status != SWD_ACK_Ok)
+				break;
+		}
+		store_byte(chunk1, chunk2, out_index, value & 0xFF);
+		store_byte(chunk1, chunk2, out_index + 1, (value >> 8) & 0xFF);
+		store_byte(chunk1, chunk2, out_index + 2, (value >> 16) & 0xFF);
+		store_byte(chunk1, chunk2, out_index + 3, (value >> 24) & 0xFF);
+		out_index += 4;
+	}
+
+	size_t leftover = queue_count(&cmsis_dap_rx_queue);
+	if (leftover > 0) {
+		ccprintf("ERROR: %d bytes not consumed\n", leftover);
+		queue_advance_head(&cmsis_dap_rx_queue, leftover);
+	}
+
+	if (swd_idle_cycles > 0) {
+		gpio_set_level(GPIO_JTAG_TMS, false);
+		for (int i = 0; i < swd_idle_cycles; i++) {
+			clock_cycle();
+		}
+	}
+
+	store_byte(chunk1, chunk2, 1, transfer_index);
+	store_byte(chunk1, chunk2, 2, status);
+	queue_advance_tail(&cmsis_dap_tx_queue, out_index);
 }
 #endif
 
@@ -478,10 +766,7 @@ static void cmsis_dap_swj_sequence(void)
 		gpio_set_level(GPIO_JTAG_TMS,
 			       !!(((const uint8_t *)chunk.buffer)[index] &
 				  (1 << (i % 8))));
-		gpio_set_level(GPIO_JTAG_TCLK, false);
-		cmsis_dap_half_clock_delay();
-		gpio_set_level(GPIO_JTAG_TCLK, true);
-		cmsis_dap_half_clock_delay();
+		clock_cycle();
 	}
 	if (++index > 0) {
 		queue_advance_head(&cmsis_dap_rx_queue, index);
@@ -490,6 +775,20 @@ static void cmsis_dap_swj_sequence(void)
 	uint8_t status = STATUS_Ok;
 	queue_add_unit(&cmsis_dap_tx_queue, &status);
 }
+
+#ifdef CONFIG_USB_CMSIS_DAP_SWD
+static void dap_swd_configure(void)
+{
+	uint8_t req[2];
+	cmsis_dap_queue_blocking_remove(&req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
+		return;
+	swd_turn_cycles = (req[1] & 0x03) + 1;
+	swd_data_on_wait_or_fault = !!(req[1] & 0x04);
+	req[1] = STATUS_Ok;
+	queue_add_units(&cmsis_dap_tx_queue, req, 2);
+}
+#endif
 
 #ifdef CONFIG_USB_CMSIS_DAP_JTAG
 /*
@@ -736,12 +1035,20 @@ static void (*dispatch_table[256])(void) = {
 	[DAP_Disconnect] = cmsis_dap_disconnect,
 	[DAP_ResetTarget] = cmsis_dap_reset_target,
 
-#ifdef CONFIG_USB_CMSIS_DAP_JTAG
+#if defined(CONFIG_USB_CMSIS_DAP_JTAG) || defined(CONFIG_USB_CMSIS_DAP_SWD)
 	[DAP_TransferConfigure] = cmsis_dap_transfer_configure,
 	[DAP_SWJ_Pins] = cmsis_dap_swj_pins,
 	[DAP_SWJ_Clock] = cmsis_dap_swj_clock,
 	[DAP_SWJ_Sequence] = cmsis_dap_swj_sequence,
+#endif
+
+#ifdef CONFIG_USB_CMSIS_DAP_JTAG
 	[DAP_JTAG_Sequence] = cmsis_dap_jtag_sequence,
+#endif
+
+#ifdef CONFIG_USB_CMSIS_DAP_SWD
+	[DAP_SWD_Configure] = dap_swd_configure,
+	[DAP_Transfer] = dap_transfer,
 #endif
 
 	/* Google extensions to CMSIS-DAP protocol. */
@@ -880,7 +1187,7 @@ void cmsis_dap_reinit(void)
 
 	if (jtag_enabled) {
 		jtag_enabled = false;
-		cmsis_dap_disable_jtag_pins();
+		cmsis_dap_disable_jtag_swd_pins();
 	}
 
 	mutex_unlock(&unwind_mutex);

@@ -92,11 +92,35 @@ void cmsis_dap_enable_jtag_pins(void)
 	gpio_set_flags(jtag_pins[JTAG_TDO], GPIO_INPUT | GPIO_PULL_UP);
 }
 
-void cmsis_dap_disable_jtag_pins(void)
+void cmsis_dap_enable_swd_pins(void)
+{
+	for (size_t i = 0; i < JTAG_INVALID; i++) {
+		saved_pin_flags[i] = gpio_get_flags(jtag_pins[i]);
+	}
+
+	gpio_set_flags(jtag_pins[JTAG_TMS], GPIO_OUT_HIGH);
+	gpio_set_flags(jtag_pins[JTAG_TDI], GPIO_INPUT | GPIO_PULL_UP);
+	gpio_set_flags(jtag_pins[JTAG_TCLK], GPIO_OUT_HIGH);
+	gpio_set_flags(jtag_pins[JTAG_TRSTn], GPIO_ODR_HIGH | GPIO_PULL_UP);
+	gpio_set_flags(jtag_pins[JTAG_TDO], GPIO_INPUT | GPIO_PULL_UP);
+}
+
+void cmsis_dap_disable_jtag_swd_pins(void)
 {
 	for (size_t i = 0; i < JTAG_INVALID; i++) {
 		gpio_set_flags(jtag_pins[i], saved_pin_flags[i]);
 	}
+}
+
+void cmsis_dap_swdio_input(void)
+{
+	gpio_set_flags(jtag_pins[JTAG_TMS], GPIO_INPUT);
+}
+
+void cmsis_dap_swdio_output(bool level)
+{
+	gpio_set_flags(jtag_pins[JTAG_TMS],
+		       level ? GPIO_OUT_HIGH : GPIO_OUT_LOW);
 }
 
 static int command_jtag_set_pins(int argc, const char **argv)

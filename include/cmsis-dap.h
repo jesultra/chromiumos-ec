@@ -17,10 +17,16 @@ int cmsis_dap_set_period(uint32_t new_clock_hz);
 /* Busy-wait half a JTAG clock cycle. */
 void cmsis_dap_half_clock_delay(void);
 
-/* Enable output on pins, including any level-shifters or buffers. */
+/* Enable output on pins for JTAG, including any level-shifters or buffers. */
 void cmsis_dap_enable_jtag_pins(void);
-/* Restore pins to state prior to JTAG connection. */
-void cmsis_dap_disable_jtag_pins(void);
+/* Enable output on pins for SWD, including any level-shifters or buffers. */
+void cmsis_dap_enable_swd_pins(void);
+/* Restore pins to state prior to JTAG/SWD connection. */
+void cmsis_dap_disable_jtag_swd_pins(void);
+
+/* Turn the direction of the SWDIO signal (initially output). */
+void cmsis_dap_swdio_input(void);
+void cmsis_dap_swdio_output(bool level);
 
 /*
  * Declaration of handlers of Google vendor extensions to CMSIS-DAP.
