@@ -73,6 +73,7 @@ ifneq ($(CONFIG_EC_EC_COMM_BATTERY_CLIENT),)
 common-$(CONFIG_BATTERY)+=charger_base.o
 endif
 common-$(CONFIG_CHARGER_PROFILE_OVERRIDE_COMMON)+=charger_profile_override.o
+common-$(CONFIG_USB_CMSIS_DAP)+=cmsis-dap.o
 common-$(CONFIG_CMD_I2CWEDGE)+=i2c_wedge.o
 common-$(CONFIG_COMMON_GPIO)+=gpio.o gpio_commands.o
 common-$(CONFIG_IO_EXPANDER)+=ioexpander.o ioexpander_commands.o

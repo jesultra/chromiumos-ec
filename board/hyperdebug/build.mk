@@ -10,6 +10,11 @@ CHIP:=stm32
 CHIP_FAMILY:=stm32l5
 CHIP_VARIANT:=stm32l552xe
 
+# For __builtin_parity
+ifneq ($(CROSS_COMPILE_CC_NAME),clang)
+LDFLAGS_EXTRA+=-static-libgcc -lgcc
+endif
+
 # These files are compiled into RO
 chip-ro=bkpdata.o system.o
 

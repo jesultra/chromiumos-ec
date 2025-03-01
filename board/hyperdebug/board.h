@@ -174,6 +174,12 @@
  * support for use by board-specific forwarding code.
  */
 #undef CONFIG_USB_I2C
+#define CONFIG_USB_CMSIS_DAP
+#define CONFIG_USB_CMSIS_DAP_JTAG
+#define CONFIG_USB_CMSIS_DAP_SWD
+#define CONFIG_USB_CMSIS_DAP_BOARD_I2C
+#define CONFIG_USB_CMSIS_DAP_BOARD_I2C_DEVICE
+#define CONFIG_USB_CMSIS_DAP_BOARD_GPIO
 #define CONFIG_I2C
 #define CONFIG_I2C_CONTROLLER
 
