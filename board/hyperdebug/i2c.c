@@ -302,6 +302,8 @@ static int board_i2c_xfer(int portindex, uint16_t addr_flags,
 	return ret;
 }
 
+static uint8_t rx_buffer[256];
+
 static void usb_i2c_execute(unsigned int expected_size)
 {
 	uint32_t count = queue_remove_units(&cmsis_dap_rx_queue, rx_buffer,
@@ -361,9 +363,10 @@ static void usb_i2c_execute(unsigned int expected_size)
 /*
  * Entry point for CMSIS-DAP vendor command for I2C forwarding.
  */
-void cmsis_dap_goog_i2c(size_t peek_c)
+void cmsis_dap_goog_i2c(void)
 {
 	unsigned int expected_size;
+	int peek_c = 17;
 
 	if (peek_c < 5)
 		return;
@@ -388,8 +391,9 @@ void cmsis_dap_goog_i2c(size_t peek_c)
 /*
  * Entry point for CMSIS-DAP vendor command for I2C device control.
  */
-void cmsis_dap_goog_i2c_device(size_t peek_c)
+void cmsis_dap_goog_i2c_device(void)
 {
+	int peek_c = 17;
 	if (peek_c < 3)
 		return;
 

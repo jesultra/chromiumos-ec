@@ -2413,22 +2413,28 @@ const uint16_t MON_GPIO_MISSING = 4;
 /* Buffer overrun, returned data is incomplete */
 const uint16_t MON_BUFFER_OVERRUN = 5;
 
-static void cmsis_dap_goog_gpio_monitoring_read(size_t peek_c)
+static void cmsis_dap_goog_gpio_monitoring_read(void)
 {
 	/*
 	 * Essentially the same as console command `gpio monitoring read`, but
 	 * with binary protocol for greatly improved efficiency.
 	 */
-	if (peek_c < 3)
+	uint8_t gpio_num;
+	cmsis_dap_queue_blocking_remove(&gpio_num, 1);
+	if (cmsis_dap_unwind_requested())
 		return;
-	int gpio_num = rx_buffer[2];
 	int gpios[16];
 	struct cyclic_buffer_header_t *buf = NULL;
 	int gpio_signals_by_no[16];
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 3);
 	for (int i = 0; i < gpio_num; i++) {
 		uint8_t str_len;
+		uint8_t rx_buffer[16];
 		cmsis_dap_queue_blocking_remove(&str_len, 1);
+		if (str_len >= sizeof(rx_buffer)) {
+			cmsis_dap_queue_blocking_discard(str_len);
+			gpios[i] = GPIO_COUNT;
+			continue;
+		}
 		cmsis_dap_queue_blocking_remove(rx_buffer, str_len);
 		rx_buffer[str_len] = '\0';
 		gpios[i] = gpio_find_by_name(rx_buffer);
@@ -2441,39 +2447,34 @@ static void cmsis_dap_goog_gpio_monitoring_read(size_t peek_c)
 	 * tx_buffer, such that our header struct which follows it will be
 	 * 8-byte aligned.
 	 */
-	struct gpio_monitoring_header_t *header =
-		(struct gpio_monitoring_header_t *)(tx_buffer + 8);
-	uint8_t *const encapsulated_header = tx_buffer + 7;
-	const size_t encapsulated_header_size = 1 + sizeof(*header);
-	encapsulated_header[0] = tx_buffer[0];
-	memset(header, 0, sizeof(*header));
-	header->transcript_offset = sizeof(*header);
-	header->status = MON_SUCCESS;
+	struct gpio_monitoring_header_t header;
+	memset(&header, 0, sizeof(header));
+	header.transcript_offset = sizeof(header);
+	header.status = MON_SUCCESS;
 
 	for (int i = 0; i < gpio_num; i++) {
 		if (gpios[i] == GPIO_COUNT)
-			header->status = MON_UNKNOWN_GPIO;
+			header.status = MON_UNKNOWN_GPIO;
 		struct monitoring_slot_t *slot =
 			monitoring_slots +
 			GPIO_MASK_TO_NUM(gpio_list[gpios[i]].mask);
 		if (slot->gpio_signal != gpios[i]) {
-			header->status = MON_GPIO_NOT_MONITORED;
+			header.status = MON_GPIO_NOT_MONITORED;
 		}
 		if (buf == NULL) {
 			buf = slot->buffer;
 		} else if (buf != slot->buffer) {
-			header->status = MON_GPIO_MIXED;
+			header.status = MON_GPIO_MIXED;
 		}
 		gpio_signals_by_no[slot->signal_no] = gpios[i];
 	}
 	if (gpio_num != buf->num_signals) {
-		header->status = MON_GPIO_MISSING;
+		header.status = MON_GPIO_MISSING;
 	}
 
-	if (header->status != 0) {
+	if (header.status != 0) {
 		/* Report error processing the request. */
-		queue_add_units(&cmsis_dap_tx_queue, encapsulated_header,
-				encapsulated_header_size);
+		queue_add_units(&cmsis_dap_tx_queue, &header, sizeof(header));
 		return;
 	}
 
@@ -2485,10 +2486,10 @@ static void cmsis_dap_goog_gpio_monitoring_read(size_t peek_c)
 		if (slot->head_level)
 			start_levels |= 1 << signal_no;
 	}
-	header->start_levels = start_levels;
-	header->start_timestamp = buf->head_time.val;
+	header.start_levels = start_levels;
+	header.start_timestamp = buf->head_time.val;
 	timestamp_t now = get_time();
-	header->end_timestamp = now.val;
+	header.end_timestamp = now.val;
 
 	const uint8_t *head =
 		traverse_buffer(buf, gpio_signals_by_no, now, (size_t)-1, NULL);
@@ -2498,7 +2499,7 @@ static void cmsis_dap_goog_gpio_monitoring_read(size_t peek_c)
 		 * Report overrun, but still transmit the events that we managed
 		 * to capture.
 		 */
-		header->status = MON_BUFFER_OVERRUN;
+		header.status = MON_BUFFER_OVERRUN;
 	}
 
 	/*
@@ -2511,17 +2512,14 @@ static void cmsis_dap_goog_gpio_monitoring_read(size_t peek_c)
 
 	if (buf->head <= head) {
 		/* One contiguous range */
-		header->transcript_size = head - buf->head;
-		cmsis_dap_queue_blocking_add(encapsulated_header,
-					     encapsulated_header_size);
-		cmsis_dap_queue_blocking_add(buf->head,
-					     header->transcript_size);
+		header.transcript_size = head - buf->head;
+		cmsis_dap_queue_blocking_add(&header, sizeof(header));
+		cmsis_dap_queue_blocking_add(buf->head, header.transcript_size);
 	} else {
 		/* Data wraps around */
-		header->transcript_size =
+		header.transcript_size =
 			head - buf->data + buf->end - buf->head;
-		cmsis_dap_queue_blocking_add(encapsulated_header,
-					     encapsulated_header_size);
+		cmsis_dap_queue_blocking_add(&header, sizeof(header));
 		cmsis_dap_queue_blocking_add(buf->head, buf->end - buf->head);
 		cmsis_dap_queue_blocking_add(buf->data, head - buf->data);
 	}
@@ -2628,13 +2626,12 @@ static uint8_t validate_received_waveform(uint16_t data_len, bool streaming)
  * Receive more bitbanging data to be inserted at bitbang.tail, then offload
  * data between bitbang.head and bitbang.irq.
  */
-void cmsis_dap_goog_gpio_bitbang(size_t peek_c, bool streaming)
+void cmsis_dap_goog_gpio_bitbang(bool streaming)
 {
-	if (peek_c < 4)
+	uint16_t data_len;
+	cmsis_dap_queue_blocking_remove(&data_len, 2);
+	if (cmsis_dap_unwind_requested())
 		return;
-
-	uint16_t data_len = rx_buffer[2] + (rx_buffer[3] << 8);
-	queue_advance_head(&cmsis_dap_rx_queue, 4);
 
 	uint8_t *tail_ptr = bitbang_data_ptr(bitbang.tail);
 	if (tail_ptr + data_len <= bitbang.data + sizeof(bitbang.data)) {
@@ -2649,6 +2646,12 @@ void cmsis_dap_goog_gpio_bitbang(size_t peek_c, bool streaming)
 	if (cmsis_dap_unwind_requested())
 		return;
 
+	struct {
+		uint8_t unused_id;
+		uint8_t status;
+		uint16_t free_bytes;
+		uint16_t data_len;
+	} resp_header;
 	uint8_t status = validate_received_waveform(data_len, streaming);
 	if (status != 0) {
 		stop_all_gpio_bitbanging();
@@ -2657,10 +2660,12 @@ void cmsis_dap_goog_gpio_bitbang(size_t peek_c, bool streaming)
 		uint16_t free_bytes =
 			bitbang.irq + BITBANG_BUFFER_SIZE - bitbang.tail;
 
-		tx_buffer[1] = status;
-		*(uint16_t *)(tx_buffer + 2) = free_bytes;
-		*(uint16_t *)(tx_buffer + 4) = 0;
-		queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 6);
+		resp_header.status = status;
+		resp_header.free_bytes = free_bytes;
+		resp_header.data_len = 0;
+		queue_add_units(&cmsis_dap_tx_queue,
+				((const char *)&resp_header) + 1,
+				sizeof(resp_header) - 1);
 		return;
 	}
 
@@ -2740,8 +2745,9 @@ void cmsis_dap_goog_gpio_bitbang(size_t peek_c, bool streaming)
 	} while (time_since32(start) < MAX_USB_RESPONSE_TIME_US);
 
 	uint32_t idx = bitbang.irq;
-	tx_buffer[1] = bitbang.head != bitbang.tail ? STATUS_BITBANG_ONGOING :
-						      STATUS_BITBANG_IDLE;
+	resp_header.status = bitbang.head != bitbang.tail ?
+				     STATUS_BITBANG_ONGOING :
+				     STATUS_BITBANG_IDLE;
 
 	if (!streaming && idx == bitbang.tail) {
 		/*
@@ -2756,22 +2762,19 @@ void cmsis_dap_goog_gpio_bitbang(size_t peek_c, bool streaming)
 	}
 
 	/* Number of data bytes to return in this response. */
-	data_len = idx - bitbang.head;
+	resp_header.data_len = data_len = idx - bitbang.head;
 
 	/* How much buffer space will be free after sending this response. */
-	uint16_t free_bytes = idx + BITBANG_BUFFER_SIZE - bitbang.tail;
+	resp_header.free_bytes = idx + BITBANG_BUFFER_SIZE - bitbang.tail;
 
-	*(uint16_t *)(tx_buffer + 2) = free_bytes;
-	*(uint16_t *)(tx_buffer + 4) = data_len;
-
+	cmsis_dap_queue_blocking_add(((const char *)&resp_header) + 1,
+				     sizeof(resp_header) - 1);
 	uint8_t *head_ptr = bitbang_data_ptr(bitbang.head);
 	if (head_ptr + data_len <= bitbang.data + sizeof(bitbang.data)) {
-		cmsis_dap_queue_blocking_add(tx_buffer, 6);
 		cmsis_dap_queue_blocking_add(head_ptr, data_len);
 	} else {
 		uint16_t remaining_space =
 			bitbang.data + sizeof(bitbang.data) - head_ptr;
-		cmsis_dap_queue_blocking_add(tx_buffer, 6);
 		cmsis_dap_queue_blocking_add(head_ptr, remaining_space);
 		cmsis_dap_queue_blocking_add(bitbang.data,
 					     data_len - remaining_space);
@@ -2803,29 +2806,28 @@ void cmsis_dap_goog_gpio_bitbang(size_t peek_c, bool streaming)
  * normal priority REINIT hook in this file will then be called, which resets
  * the state, such that it will be in a consistent and known initial state.
  */
-void cmsis_dap_goog_gpio(size_t peek_c)
+void cmsis_dap_goog_gpio(void)
 {
-	/*
-	 * We need to inspect sub-command on second byte below, in order to
-	 * start decoding.
-	 */
-	if (peek_c < 2)
+	uint8_t rx_header[2];
+	cmsis_dap_queue_blocking_remove(rx_header, 2);
+	if (cmsis_dap_unwind_requested())
 		return;
 
-	switch (rx_buffer[1]) {
+	queue_add_unit(&cmsis_dap_tx_queue, &rx_header[0]);
+	switch (rx_header[1]) {
 	case GPIO_REQ_MONITORING_READ:
 		/*
 		 * Hand off all available GPIO monitoring data so far,
 		 * suitable for streaming.
 		 */
-		cmsis_dap_goog_gpio_monitoring_read(peek_c);
+		cmsis_dap_goog_gpio_monitoring_read();
 		break;
 	case GPIO_REQ_BITBANG:
 		/*
 		 * Accept data for bitbanging, wait for waveform to be
 		 * complete, and then hand back data polled during.
 		 */
-		cmsis_dap_goog_gpio_bitbang(peek_c, false);
+		cmsis_dap_goog_gpio_bitbang(false);
 		break;
 	case GPIO_REQ_BITBANG_STREAMING:
 		/*
@@ -2833,7 +2835,7 @@ void cmsis_dap_goog_gpio(size_t peek_c)
 		 * waveform still in process, suitable for streaming if
 		 * invoked again before data runs out.
 		 */
-		cmsis_dap_goog_gpio_bitbang(peek_c, true);
+		cmsis_dap_goog_gpio_bitbang(true);
 		break;
 	}
 }

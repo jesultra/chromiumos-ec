@@ -25,9 +25,9 @@ void cmsis_dap_disable_jtag_pins(void);
 /*
  * Declaration of handlers of Google vendor extensions to CMSIS-DAP.
  */
-void cmsis_dap_goog_i2c(size_t peek_c);
-void cmsis_dap_goog_i2c_device(size_t peek_c);
-void cmsis_dap_goog_gpio(size_t peek_c);
+void cmsis_dap_goog_i2c(void);
+void cmsis_dap_goog_i2c_device(void);
+void cmsis_dap_goog_gpio(void);
 
 /*****************************************************************************
  * Methods and variables provided by common code:
@@ -35,9 +35,6 @@ void cmsis_dap_goog_gpio(size_t peek_c);
 
 extern struct queue const cmsis_dap_tx_queue;
 extern struct queue const cmsis_dap_rx_queue;
-
-extern uint8_t rx_buffer[256];
-extern uint8_t tx_buffer[256];
 
 /* Reset JTAG state to power on defaults. */
 void cmsis_dap_reinit(void);
@@ -57,5 +54,6 @@ bool cmsis_dap_unwind_requested(void);
  */
 void cmsis_dap_queue_blocking_add(const void *src, size_t count);
 void cmsis_dap_queue_blocking_remove(void *dest, size_t count);
+void cmsis_dap_queue_blocking_discard(size_t count);
 
 #endif
