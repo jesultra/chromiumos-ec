@@ -16,6 +16,7 @@
 #include "task.h"
 #include "timer.h"
 #include "usb-stream.h"
+#include "builtin/assert.h"
 
 /*
  * The CMSIS-DAP specification calls for identifying the USB interface by
@@ -149,9 +150,6 @@ const uint8_t SEQ_CaptureTdo = 0x80;
 struct queue const cmsis_dap_tx_queue;
 struct queue const cmsis_dap_rx_queue;
 
-uint8_t rx_buffer[256];
-uint8_t tx_buffer[256];
-
 /*
  * JTAG state
  */
@@ -189,6 +187,21 @@ void queue_blocking_remove(struct queue const *q, void *dest, size_t count)
 	}
 }
 
+void queue_blocking_discard(struct queue const *q, size_t count)
+{
+	while (!cmsis_dap_unwind_requested()) {
+		size_t progress = queue_advance_head(q, count);
+		if (progress >= count)
+			return;
+		count -= progress;
+		/*
+		 * Wait for queue producer to wake up this task, when there is
+		 * more data in the queue.
+		 */
+		task_wait_event(0);
+	}
+}
+
 /*
  * Implementation of handler routines for each CMSIS-DAP command.
  */
@@ -203,34 +216,34 @@ static void dap_info(size_t peek_c)
 #endif
 		0;
 	struct usb_string_desc *sd = usb_serialno_desc;
-	int i;
+	uint8_t i;
+	uint8_t req[2];
 
-	if (peek_c < 2)
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
 		return;
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 2);
-	switch (rx_buffer[1]) {
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	switch (req[1]) {
 	case INFO_Serial:
 		for (i = 0; i < CONFIG_SERIALNO_LEN && sd->_data[i]; i++)
-			tx_buffer[2 + i] = sd->_data[i];
-		tx_buffer[1] = i;
-		queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 2 + i);
+			;
+		queue_add_unit(&cmsis_dap_tx_queue, &i);
+		queue_add_units(&cmsis_dap_tx_queue, sd->_data, i);
 		break;
 	case INFO_Version:
-		tx_buffer[1] = strlen(CMSIS_DAP_VERSION_STR) + 1;
-		memcpy(tx_buffer + 2, CMSIS_DAP_VERSION_STR, tx_buffer[1]);
-		queue_add_units(&cmsis_dap_tx_queue, tx_buffer,
-				2 + tx_buffer[1]);
+		i = strlen(CMSIS_DAP_VERSION_STR) + 1;
+		queue_add_unit(&cmsis_dap_tx_queue, &i);
+		queue_add_units(&cmsis_dap_tx_queue, CMSIS_DAP_VERSION_STR, i);
 		break;
 	case INFO_Capabilities:
-		tx_buffer[1] = sizeof(CAPABILITIES);
-		memcpy(tx_buffer + 2, &CAPABILITIES, sizeof(CAPABILITIES));
-		queue_add_units(&cmsis_dap_tx_queue, tx_buffer,
-				2 + tx_buffer[1]);
+		i = sizeof(CAPABILITIES);
+		queue_add_unit(&cmsis_dap_tx_queue, &i);
+		queue_add_units(&cmsis_dap_tx_queue, &CAPABILITIES, i);
 		break;
 	default:
-		ccprintf("Unknown info request %02x\n", rx_buffer[1]);
-		tx_buffer[1] = 0;
-		queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 2);
+		ccprintf("Unknown info request %02x\n", req[1]);
+		i = 0;
+		queue_add_unit(&cmsis_dap_tx_queue, &i);
 		break;
 	}
 }
@@ -238,55 +251,65 @@ static void dap_info(size_t peek_c)
 /* Informational command, to allow debugging device to indicate status. */
 static void dap_host_status(size_t peek_c)
 {
-	if (peek_c < 3)
+	uint8_t req[3];
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
 		return;
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 3);
-	tx_buffer[1] = STATUS_Ok;
-	queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 2);
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	uint8_t resp = STATUS_Ok;
+	queue_add_unit(&cmsis_dap_tx_queue, &resp);
 }
 
 /* Establish JTAG connection, take control of JTAG pins. */
 static void dap_connect(size_t peek_c)
 {
-	if (peek_c < 2)
+	uint8_t req[2];
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
 		return;
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 2);
-	switch (rx_buffer[1]) {
+	uint8_t resp;
+	switch (req[1]) {
 	case CONN_REQ_Default:
 	case CONN_REQ_Jtag:
-		tx_buffer[1] = CONN_RESP_Jtag;
+		resp = CONN_RESP_Jtag;
 		if (!jtag_enabled) {
 			jtag_enabled = true;
 			cmsis_dap_enable_jtag_pins();
 		}
 		break;
 	default:
-		tx_buffer[1] = CONN_RESP_Failed;
+		resp = CONN_RESP_Failed;
 	}
-	queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 2);
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	queue_add_unit(&cmsis_dap_tx_queue, &resp);
 }
 
 /* Restore JTAG pins to previous configuration. */
 static void dap_disconnect(size_t peek_c)
 {
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 1);
+	uint8_t req[1];
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
+		return;
 
 	if (jtag_enabled) {
 		jtag_enabled = false;
 		cmsis_dap_disable_jtag_pins();
 	}
 
-	tx_buffer[1] = STATUS_Ok;
-	queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 2);
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	uint8_t resp = STATUS_Ok;
+	queue_add_unit(&cmsis_dap_tx_queue, &resp);
 }
 
 #ifdef CONFIG_USB_CMSIS_DAP_JTAG
 /* Configure parameters for DAP_Transfer family of requests. */
 static void dap_transfer_configure(size_t peek_c)
 {
-	if (peek_c < 6)
+	uint8_t req[6];
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
 		return;
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 6);
 
 	/*
 	 * This file does not offer support for the DAP_Transfer family of
@@ -298,54 +321,63 @@ static void dap_transfer_configure(size_t peek_c)
 	 * success to the caller.
 	 */
 
-	tx_buffer[1] = STATUS_Ok;
-	queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 2);
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	uint8_t resp = STATUS_Ok;
+	queue_add_unit(&cmsis_dap_tx_queue, &resp);
 }
 #endif
 
 /* Reset the GSC (using same pin as if blue button was pressed). */
 static void dap_reset_target(size_t peek_c)
 {
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 1);
+	uint8_t req[1];
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
+		return;
 
+	uint8_t resp;
 	if (GPIO_JTAG_RESET != GPIO_COUNT) {
 		gpio_set_level(GPIO_JTAG_RESET, false);
 		crec_usleep(100000);
 		gpio_set_level(GPIO_JTAG_RESET, true);
-		tx_buffer[2] = 1;
+		resp = 1;
 	} else {
-		tx_buffer[2] = 0;
+		resp = 0;
 	}
-	tx_buffer[1] = STATUS_Ok;
-	queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 3);
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	uint8_t status = STATUS_Ok;
+	queue_add_unit(&cmsis_dap_tx_queue, &status);
+	queue_add_unit(&cmsis_dap_tx_queue, &resp);
 }
 
 /* One-time setting of the output level of each JTAG signal. */
 static void dap_swj_pins(size_t peek_c)
 {
-	if (peek_c < 7)
-		return;
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 7);
-
-	uint8_t pin_value = rx_buffer[1];
-	uint8_t pin_mask = rx_buffer[2];
+	struct {
+		uint8_t header;
+		uint8_t value;
+		uint8_t mask;
+	} req;
 	uint32_t wait_us;
-	memcpy(&wait_us, rx_buffer + 3, sizeof(wait_us));
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	queue_blocking_remove(&cmsis_dap_rx_queue, &wait_us, sizeof(wait_us));
+	if (cmsis_dap_unwind_requested())
+		return;
 
-	if ((pin_mask & PIN_SwClk_Tck))
-		gpio_set_level(GPIO_JTAG_TCLK, !!(pin_value & PIN_SwClk_Tck));
-	if ((pin_mask & PIN_SwDio_Tms))
-		gpio_set_level(GPIO_JTAG_TMS, !!(pin_value & PIN_SwDio_Tms));
-	if ((pin_mask & PIN_Tdi) && GPIO_JTAG_TDI != GPIO_COUNT)
-		gpio_set_level(GPIO_JTAG_TDI, !!(pin_value & PIN_Tdi));
-	if ((pin_mask & PIN_Trst) && GPIO_JTAG_TRST != GPIO_COUNT)
-		gpio_set_level(GPIO_JTAG_TRST, !!(pin_value & PIN_Trst));
-	if ((pin_mask & PIN_Reset) && GPIO_JTAG_RESET != GPIO_COUNT)
-		gpio_set_level(GPIO_JTAG_RESET, !!(pin_value & PIN_Reset));
+	if ((req.mask & PIN_SwClk_Tck))
+		gpio_set_level(GPIO_JTAG_TCLK, !!(req.value & PIN_SwClk_Tck));
+	if ((req.mask & PIN_SwDio_Tms))
+		gpio_set_level(GPIO_JTAG_TMS, !!(req.value & PIN_SwDio_Tms));
+	if ((req.mask & PIN_Tdi) && GPIO_JTAG_TDI != GPIO_COUNT)
+		gpio_set_level(GPIO_JTAG_TDI, !!(req.value & PIN_Tdi));
+	if ((req.mask & PIN_Trst) && GPIO_JTAG_TRST != GPIO_COUNT)
+		gpio_set_level(GPIO_JTAG_TRST, !!(req.value & PIN_Trst));
+	if ((req.mask & PIN_Reset) && GPIO_JTAG_RESET != GPIO_COUNT)
+		gpio_set_level(GPIO_JTAG_RESET, !!(req.value & PIN_Reset));
 
 	crec_usleep(wait_us);
 
-	tx_buffer[1] =
+	uint8_t resp =
 		(gpio_get_level(GPIO_JTAG_TCLK) ? PIN_SwClk_Tck : 0) |
 		(gpio_get_level(GPIO_JTAG_TMS) ? PIN_SwDio_Tms : 0) |
 		(GPIO_JTAG_TDI == GPIO_COUNT ?
@@ -360,50 +392,65 @@ static void dap_swj_pins(size_t peek_c)
 		(GPIO_JTAG_RESET == GPIO_COUNT ?
 			 PIN_Reset :
 			 (gpio_get_level(GPIO_JTAG_RESET) ? PIN_Reset : 0));
-	queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 2);
+	queue_add_unit(&cmsis_dap_tx_queue, &req.header);
+	queue_add_unit(&cmsis_dap_tx_queue, &resp);
 }
 
 /* Set JTAG clock frequency. */
 static void dap_swj_clock(size_t peek_c)
 {
+	uint8_t req[1];
 	uint32_t new_clock_hz;
 
-	if (peek_c < 5)
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	queue_blocking_remove(&cmsis_dap_rx_queue, &new_clock_hz, sizeof(new_clock_hz));
+	if (cmsis_dap_unwind_requested())
 		return;
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 5);
 
-	memcpy(&new_clock_hz, rx_buffer + 1, sizeof(new_clock_hz));
-
+	uint8_t resp;
 	if (!new_clock_hz)
-		tx_buffer[1] = STATUS_Error;
+		resp = STATUS_Error;
 	else if (cmsis_dap_set_period(new_clock_hz) != EC_SUCCESS)
-		tx_buffer[1] = STATUS_Error;
+		resp = STATUS_Error;
 	else
-		tx_buffer[1] = STATUS_Ok;
+		resp = STATUS_Ok;
 
-	queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 2);
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	queue_add_unit(&cmsis_dap_tx_queue, &resp);
 }
 
 /* Clock data out on TMS. */
 static void dap_swj_sequence(size_t peek_c)
 {
-	if (peek_c < 2)
+	uint8_t req[2];
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
 		return;
-	unsigned int bit_count = rx_buffer[1] == 0 ? 256 : rx_buffer[1];
-	unsigned c = queue_count(&cmsis_dap_rx_queue);
-	if (c < 2 + (bit_count + 7) / 8)
-		return;
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, c);
+	unsigned int bit_count = req[1] == 0 ? 256 : req[1];
+	struct queue_chunk chunk = { 0, NULL };
+	size_t index = (size_t)-1; /* Index into the data in chunk. */
 	for (unsigned int i = 0; i < bit_count; i++) {
+		if (i % 8 == 0 && ++index == chunk.count) {
+			if (index > 0) {
+				queue_advance_head(&cmsis_dap_rx_queue, index);
+			}
+			chunk = queue_get_read_chunk(&cmsis_dap_rx_queue);
+			assert(chunk.count > 0);
+			index = 0;
+		}
 		gpio_set_level(GPIO_JTAG_TMS,
-			       !!(rx_buffer[2 + i / 8] & (1 << (i % 8))));
+			       !!(((const uint8_t *)chunk.buffer)[index] & (1 << (i % 8))));
 		gpio_set_level(GPIO_JTAG_TCLK, false);
 		cmsis_dap_half_clock_delay();
 		gpio_set_level(GPIO_JTAG_TCLK, true);
 		cmsis_dap_half_clock_delay();
 	}
-	tx_buffer[1] = STATUS_Ok;
-	queue_add_units(&cmsis_dap_tx_queue, tx_buffer, 2);
+	if (index > 0) {
+		queue_advance_head(&cmsis_dap_rx_queue, index);
+	}
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	uint8_t status = STATUS_Ok;
+	queue_add_unit(&cmsis_dap_tx_queue, &status);
 }
 
 #ifdef CONFIG_USB_CMSIS_DAP_JTAG
@@ -413,42 +460,28 @@ static void dap_swj_sequence(size_t peek_c)
  */
 static void dap_jtag_sequence(size_t peek_c)
 {
-	if (peek_c < 3)
+	uint8_t req[2];
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
 		return;
-	int c = queue_count(&cmsis_dap_rx_queue);
-
-	/* Check whether a complete request is in queue. */
-	queue_peek_units(&cmsis_dap_rx_queue, rx_buffer, 0, c);
-	size_t num_sequences = rx_buffer[1];
-	size_t offset = 2;
-	for (size_t i = 0; i < num_sequences; i++) {
-		uint8_t header = rx_buffer[offset];
-		unsigned int bit_count = header & 0x3F;
-		if (bit_count == 0)
-			bit_count = 0x40;
-		offset += 1 + (bit_count + 7) / 8;
-		if (offset > c) {
-			/* We do not yet have all bytes of the request. */
-			return;
-		}
-	}
-
 	/* We have a complete request, mark as removed from the queue. */
-	queue_advance_head(&cmsis_dap_rx_queue, offset);
-	/* Prepare output buffer for being populated one bit at a time. */
-	memset(tx_buffer + 1, 0, sizeof(tx_buffer) - 1);
+	//queue_advance_head(&cmsis_dap_rx_queue, offset);
+
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	uint8_t status = STATUS_Ok;
+	queue_add_unit(&cmsis_dap_tx_queue, &status);
 
 	/*
 	 * Iterate over the list of "sequences", each having a one-byte header
 	 * specifying how many bits in the sequence, what the value of TMS
 	 * during this sequence, and whether to record TDO during this sequence.
 	 */
-	const uint8_t *ptr = rx_buffer + 2;
-	uint8_t *tx_ptr = tx_buffer + 2;
-	const uint8_t *const end = rx_buffer + offset;
-	while (ptr < end) {
+	for (int seq_no = 0; seq_no < req[1]; seq_no++) {
 		/* Consume and decode header byte for this one "sequence". */
-		uint8_t header = *ptr++;
+		uint8_t header;
+		queue_blocking_remove(&cmsis_dap_rx_queue, &header, 1);
+		if (cmsis_dap_unwind_requested())
+			return;
 		gpio_set_level(GPIO_JTAG_TMS, header & SEQ_Tms);
 		bool capture_tdo = !!(header & SEQ_CaptureTdo);
 		unsigned int bit_count = (((header - 1) & SEQ_NumBits) + 1);
@@ -457,25 +490,31 @@ static void dap_jtag_sequence(size_t peek_c)
 		 * With TMS set at a given value, clock 1 - 64 bits of data on
 		 * TDI/TDO.
 		 */
+		uint8_t data, out_byte = 0;
 		for (unsigned int i = 0; i < bit_count; i++) {
+			if (i % 8 == 0)
+				queue_blocking_remove(&cmsis_dap_rx_queue, &data, 1);
 			gpio_set_level(GPIO_JTAG_TDI,
-				       ptr[i / 8] & (1 << (i % 8)));
+				       data & (1 << (i % 8)));
 			gpio_set_level(GPIO_JTAG_TCLK, false);
 			cmsis_dap_half_clock_delay();
 			uint32_t tdo_val = gpio_get_level(GPIO_JTAG_TDO);
-			if (capture_tdo)
-				tx_ptr[i / 8] |= tdo_val << (i % 8);
+			if (capture_tdo) {
+				out_byte |= tdo_val << (i % 8);
+				if (i % 8 == 7) {
+					queue_add_unit(&cmsis_dap_tx_queue, &out_byte);
+					out_byte = 0;
+				}
+			}
 			gpio_set_level(GPIO_JTAG_TCLK, true);
 			cmsis_dap_half_clock_delay();
 		}
-		/* Consume the data bytes of this one "sequence". */
-		ptr += (bit_count + 7) / 8;
-		if (capture_tdo)
-			tx_ptr += (bit_count + 7) / 8;
+		/* Transmit any "partial" byte. */
+		if (capture_tdo) {
+			if (bit_count % 8 != 0)
+				queue_add_unit(&cmsis_dap_tx_queue, &out_byte);
+		}
 	}
-
-	tx_buffer[1] = STATUS_Ok;
-	queue_add_units(&cmsis_dap_tx_queue, tx_buffer, tx_ptr - tx_buffer);
 }
 #endif
 
@@ -494,15 +533,23 @@ static void dap_goog_info(size_t peek_c)
 #endif
 		GOOG_CAP_UartClearQueue | GOOG_CAP_TpmPoll;
 
-	if (peek_c < 2)
+	uint8_t req[2];
+
+	queue_blocking_remove(&cmsis_dap_rx_queue, &req, sizeof(req));
+	if (cmsis_dap_unwind_requested())
 		return;
-	queue_remove_units(&cmsis_dap_rx_queue, rx_buffer, 2);
-	switch (rx_buffer[1]) {
+	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
+	uint8_t len;
+	switch (req[1]) {
 	case GOOG_INFO_Capabilities:
-		tx_buffer[1] = sizeof(CAPABILITIES);
-		memcpy(tx_buffer + 2, &CAPABILITIES, sizeof(CAPABILITIES));
-		queue_add_units(&cmsis_dap_tx_queue, tx_buffer,
-				2 + tx_buffer[1]);
+		len = sizeof(CAPABILITIES);
+		queue_add_unit(&cmsis_dap_tx_queue, &len);
+		queue_add_units(&cmsis_dap_tx_queue, &CAPABILITIES, len);
+		break;
+	default:
+		ccprintf("Unknown Google info request %02x\n", req[1]);
+		len = 0;
+		queue_add_unit(&cmsis_dap_tx_queue, &len);
 		break;
 	}
 }
@@ -547,17 +594,18 @@ static void (*dispatch_table[256])(size_t peek_c) = {
 static void cmsis_dap_dispatch(void)
 {
 	/* Peek at the incoming data. */
-	size_t peek_c = queue_peek_units(&cmsis_dap_rx_queue, rx_buffer, 0, 8);
+	uint8_t req;
+	size_t peek_c = queue_peek_units(&cmsis_dap_rx_queue, &req, 0, 1);
 	if (peek_c < 1) {
 		/* Not enough data to start decoding request. */
 		return;
 	}
 
-	if (dispatch_table[rx_buffer[0]]) {
+	if (dispatch_table[req]) {
 		/* First byte of response is always same as command byte. */
-		tx_buffer[0] = rx_buffer[0];
+		//tx_buffer[0] = rx_buffer[0];
 		/* Invoke handler routine. */
-		dispatch_table[rx_buffer[0]](peek_c);
+		dispatch_table[req](peek_c);
 		/* Trigger sending of response. */
 		queue_flush(&cmsis_dap_tx_queue);
 	} else {
@@ -698,7 +746,7 @@ struct producer const cmsis_dap_producer = {
 };
 
 struct queue const cmsis_dap_tx_queue = QUEUE_DIRECT(
-	sizeof(tx_buffer), uint8_t, cmsis_dap_producer, cmsis_dap_usb.consumer);
+	64, uint8_t, cmsis_dap_producer, cmsis_dap_usb.consumer);
 
 struct queue const cmsis_dap_rx_queue = QUEUE_DIRECT(
-	sizeof(rx_buffer), uint8_t, cmsis_dap_usb.producer, cmsis_dap_consumer);
+	64, uint8_t, cmsis_dap_usb.producer, cmsis_dap_consumer);

@@ -302,6 +302,8 @@ static int board_i2c_xfer(int portindex, uint16_t addr_flags,
 	return ret;
 }
 
+static uint8_t rx_buffer[256];
+
 static void usb_i2c_execute(unsigned int expected_size)
 {
 	uint32_t count = queue_remove_units(&cmsis_dap_rx_queue, rx_buffer,

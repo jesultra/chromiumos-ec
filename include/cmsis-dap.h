@@ -37,9 +37,6 @@ void dap_goog_gpio(size_t peek_c);
 extern struct queue const cmsis_dap_tx_queue;
 extern struct queue const cmsis_dap_rx_queue;
 
-extern uint8_t rx_buffer[256];
-extern uint8_t tx_buffer[256];
-
 /* Reset JTAG state to power on defaults. */
 void cmsis_dap_reinit(void);
 
@@ -58,5 +55,6 @@ bool cmsis_dap_unwind_requested(void);
  */
 void queue_blocking_add(struct queue const *q, const void *src, size_t count);
 void queue_blocking_remove(struct queue const *q, void *dest, size_t count);
+void queue_blocking_discard(struct queue const *q, size_t count);
 
 #endif
