@@ -212,7 +212,17 @@ struct usb_endpoint_descriptor {
 #define USB_PROTOCOL_GOOGLE_SPI 0x02
 
 #define USB_SUBCLASS_GOOGLE_I2C 0x52
+/* Google's protocol for tunneling I2C via USB. */
 #define USB_PROTOCOL_GOOGLE_I2C 0x01
+/*
+ * Same as above protocol, except each request and each response is preceded
+ * by one byte: 0x81.  This conforms to the requirements of a "vendor specific
+ * request" in the CMSIS-DAP protocol, allowing uServo and similar devices to
+ * implement the CMSIS-DAP protocol for JTAG/SWD debugging via openocd, while
+ * still supporting I2C tunnelling, without needing one more USB endpoint
+ * (which we do not have.)
+ */
+#define USB_PROTOCOL_GOOGLE_I2C_VIA_CMSIS_DAP 0x02
 
 #define USB_SUBCLASS_GOOGLE_UPDATE 0x53
 #define USB_PROTOCOL_GOOGLE_UPDATE 0xff
