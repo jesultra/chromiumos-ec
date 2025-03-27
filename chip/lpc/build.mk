@@ -16,4 +16,4 @@ $(error Unknown chip family: $(CHIP_FAMILY))
 endif
 
 chip-$(CONFIG_COMMON_RUNTIME)+=system.o hwtimer32.o gpio.o uart.o clock.o
-chip-$(CONFIG_USB)+=usb.o
+chip-$(CONFIG_USB)+=usb.o usb-stream.o usb_endpoints.o usb_console.o

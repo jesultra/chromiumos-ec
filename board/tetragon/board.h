@@ -78,7 +78,7 @@
 #undef CONFIG_STREAM_USART4
 #undef CONFIG_STREAM_USART5
 #undef CONFIG_STREAM_USART9
-#undef CONFIG_STREAM_USB
+#define CONFIG_STREAM_USB
 #undef CONFIG_CMD_USART_INFO
 
 /* Use faster SYSCLK for the UARTS used for USB forwarding */
@@ -106,11 +106,8 @@
 
 #define CONFIG_USB
 #define CONFIG_USB_PID 0x520e
-#undef CONFIG_USB_CONSOLE
+#define CONFIG_USB_CONSOLE
 #define CONFIG_USB_BCD_DEV 0x0001 /* v 0.01 */
-
-/* Reduced control endpoint buffer usage, to allow more for UART forwarding */
-#define CONFIG_USB_MAX_CONTROL_PACKET_SIZE 32
 
 /*
  * Some commands take a list of GPIO names, which can exceed the default 80
@@ -134,25 +131,14 @@
 
 /* USB interface indexes (use define rather than enum to expand them) */
 #define USB_IFACE_CONSOLE 0
-#define USB_IFACE_SPI 1
-#define USB_IFACE_CMSIS_DAP 2
-#define USB_IFACE_USART2_STREAM 3
-#define USB_IFACE_USART3_STREAM 4
-#define USB_IFACE_USART4_STREAM 5
-#define USB_IFACE_USART5_STREAM 6
-#define USB_IFACE_DFU 7
-#define USB_IFACE_COUNT 8
+#define USB_IFACE_CMSIS_DAP 1
+#define USB_IFACE_COUNT 2
 
 /* USB endpoint indexes (use define rather than enum to expand them) */
 #define USB_EP_CONTROL 0
 #define USB_EP_CONSOLE 1
-#define USB_EP_SPI 2
-#define USB_EP_CMSIS_DAP 3
-#define USB_EP_USART2_STREAM 4
-#define USB_EP_USART3_STREAM 5
-#define USB_EP_USART4_STREAM 6
-#define USB_EP_USART5_STREAM 7
-#define USB_EP_COUNT 8
+#define USB_EP_CMSIS_DAP 2
+#define USB_EP_COUNT 3
 
 /*
  * Do not enable the common EC command gpioset for recasting of GPIO
@@ -178,6 +164,8 @@
 #undef CONFIG_USB_I2C
 #undef CONFIG_I2C
 #undef CONFIG_I2C_CONTROLLER
+#define CONFIG_USB_CMSIS_DAP
+#define CONFIG_USB_CMSIS_DAP_SWD
 
 /* See i2c_ite_flash_support.c for more information about these values */
 /*#define CONFIG_ITE_FLASH_SUPPORT */
@@ -279,7 +267,12 @@ void user_button_edge(enum gpio_signal signal);
 /* Utility method */
 enum gpio_signal gpio_find_by_name(const char *name);
 
-extern int shield_reset_pin;
+#define GPIO_JTAG_TCLK GPIO_SAM3X_SWCLK
+#define GPIO_JTAG_TMS GPIO_SAM3X_SWDIO
+#define GPIO_JTAG_TDI GPIO_COUNT
+#define GPIO_JTAG_TDO GPIO_COUNT
+#define GPIO_JTAG_TRST GPIO_COUNT
+#define GPIO_JTAG_RESET GPIO_SAM3X_RESET
 
 /*
  * Utility methods shared by SPI and I2C TPM code.

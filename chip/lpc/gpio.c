@@ -97,8 +97,30 @@ void gpio_pre_init(void)
 
 int gpio_get_flags_by_mask(uint32_t port, uint32_t mask)
 {
-	/* TODO */
-	return 0;
+	int bit = __builtin_ctz(mask);
+	uint32_t ioconf = *get_ioconfig_reg(port, bit);
+	int flags;
+	if (LPC_GPIO_DIR(port) & mask) {
+		flags = GPIO_OUTPUT;
+	} else {
+		flags = GPIO_INPUT;		if (LPC_GPIO_DATA(port, mask))
+			flags |= GPIO_HIGH;
+		else
+			flags |= GPIO_LOW;
+
+	}
+	if (LPC_GPIO_DATA(port, mask))
+		flags |= GPIO_HIGH;
+	else
+		flags |= GPIO_LOW;
+	if (ioconf & LPC_IOCON_OD)
+		flags |= GPIO_OPEN_DRAIN;
+	if ((ioconf & LPC_IOCON_MODE_MASK) == LPC_IOCON_MODE_PULLUP) {
+		flags |= GPIO_PULL_UP;
+	} else if ((ioconf & LPC_IOCON_MODE_MASK) == LPC_IOCON_MODE_PULLDOWN) {
+		flags |= GPIO_PULL_DOWN;
+	}
+	return flags;
 }
 	
 void gpio_set_flags_by_mask(uint32_t port, uint32_t mask, uint32_t flags)
@@ -168,7 +190,7 @@ void gpio_set_level(enum gpio_signal signal, int value)
 
 int gpio_get_level(enum gpio_signal signal)
 {
-	return !!(LPC_GPIO_DATA(gpio_list[signal].port, 0) &
+	return !!(LPC_GPIO_DATA(gpio_list[signal].port, 0x0FFF) &
 		  gpio_list[signal].mask);
 }
 

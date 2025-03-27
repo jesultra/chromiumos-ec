@@ -10,4 +10,4 @@ CHIP:=lpc
 CHIP_FAMILY:=lpc13
 CHIP_VARIANT:=lpc1343
 
-board-y=board.o
+board-y=board.o cmsis-dap.o

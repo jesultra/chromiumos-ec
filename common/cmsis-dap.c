@@ -294,7 +294,6 @@ static void cmsis_dap_info(void)
 		CAP_Swd |
 #endif
 		0;
-	struct usb_string_desc *sd = usb_serialno_desc;
 	uint8_t i, len;
 	uint8_t req[2];
 
@@ -303,7 +302,9 @@ static void cmsis_dap_info(void)
 		return;
 	queue_add_unit(&cmsis_dap_tx_queue, &req[0]);
 	switch (req[1]) {
-	case INFO_Serial:
+#ifdef CONFIG_USB_SERIALNO
+	case INFO_Serial: {
+		struct usb_string_desc *sd = usb_serialno_desc;
 		for (len = 0; len < CONFIG_SERIALNO_LEN && sd->_data[len];
 		     len++)
 			;
@@ -311,6 +312,8 @@ static void cmsis_dap_info(void)
 		for (i = 0; i < len; i++)
 			queue_add_unit(&cmsis_dap_tx_queue, &sd->_data[i]);
 		break;
+	}
+#endif
 	case INFO_Version:
 		len = strlen(CMSIS_DAP_VERSION_STR) + 1;
 		queue_add_unit(&cmsis_dap_tx_queue, &len);
@@ -366,6 +369,7 @@ static void cmsis_dap_connect(void)
 	uint8_t resp;
 	switch (req[1]) {
 	case CONN_REQ_Default:
+#ifdef CONFIG_USB_CMSIS_DAP_JTAG
 	case CONN_REQ_Jtag:
 		resp = CONN_RESP_Jtag;
 		if (!jtag_enabled) {
@@ -373,6 +377,8 @@ static void cmsis_dap_connect(void)
 			cmsis_dap_enable_jtag_pins();
 		}
 		break;
+#endif
+#ifdef CONFIG_USB_CMSIS_DAP_SWD
 	case CONN_REQ_Swd:
 		resp = CONN_RESP_Swd;
 		if (!jtag_enabled) {
@@ -380,6 +386,7 @@ static void cmsis_dap_connect(void)
 			cmsis_dap_enable_swd_pins();
 		}
 		break;
+#endif
 	default:
 		resp = CONN_RESP_Failed;
 	}

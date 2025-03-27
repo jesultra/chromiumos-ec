@@ -13,6 +13,7 @@
 #include "task.h"
 #include "timer.h"
 #include "hooks.h"
+#include "usb-stream.h"
 
 /* Must come after other header files and interrupt handler declarations */
 #include "gpio_list.h"
@@ -20,6 +21,28 @@
 void board_config_pre_init(void)
 {
 }
+
+/******************************************************************************
+ * Define the strings used in our USB descriptors.
+ */
+
+const void *const usb_strings[] = {
+	[USB_STR_DESC] = usb_string_desc,
+	[USB_STR_VENDOR] = USB_STRING_DESC("Google LLC"),
+	[USB_STR_PRODUCT] = USB_STRING_DESC("Tetragon CMSIS-DAP"),
+	[USB_STR_SERIALNO] = 0,
+	[USB_STR_VERSION] = USB_STRING_DESC(CROS_EC_VERSION32),
+	[USB_STR_CONSOLE_NAME] = USB_STRING_DESC("Tetragon Shell"),
+	[USB_STR_SPI_NAME] = USB_STRING_DESC("SPI"),
+	[USB_STR_CMSIS_DAP_NAME] = USB_STRING_DESC("I2C CMSIS-DAP"),
+	[USB_STR_USART2_STREAM_NAME] = USB_STRING_DESC("UART2"),
+	[USB_STR_USART3_STREAM_NAME] = USB_STRING_DESC("UART3"),
+	[USB_STR_USART4_STREAM_NAME] = USB_STRING_DESC("UART4"),
+	[USB_STR_USART5_STREAM_NAME] = USB_STRING_DESC("UART5"),
+	[USB_STR_DFU_NAME] = USB_STRING_DESC("DFU"),
+};
+
+BUILD_ASSERT(ARRAY_SIZE(usb_strings) == USB_STR_COUNT);
 
 /******************************************************************************
  * Initialize board.  (More initialization done by hooks in other files.)
